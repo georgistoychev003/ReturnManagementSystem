@@ -1,6 +1,6 @@
 ﻿
 
-||![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.001.jpeg)|
+||![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.001.jpeg)|
 | :- | - |
 |||
 ||Functional Design |
@@ -264,7 +264,7 @@ By implementing these solutions, the myShop RMA application aims to provide an e
 |F14  |The system allows customers to view and interact with their order history, facilitating informed decision-making for returns. |S |U8 |
 |F15 |The system provides admins to view the RMA history of a given customer, to ensure non abusive behaviour. |M |U3, U13 |
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.002.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.002.png)
 
 
 
@@ -300,7 +300,7 @@ By implementing these solutions, the myShop RMA application aims to provide an e
 
 <a name="_page10_x69.00_y308.92"></a>6.2 Use case diagram: 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.003.jpeg)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.003.jpeg)
 
 *Figure 1: Use case diagram of activities of user’s interactions with the system* 
 
@@ -471,7 +471,7 @@ U15: As a user, I want to be able to change my password in case I have forgotten
 
 <a name="_page16_x69.00_y72.92"></a>6.4- Flow diagram:  
 
-This is the Flow diagram for the RMA system, this ![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.004.jpeg)shows how the system works from start to finish. Firstly, the administrator starts by creating the test environment as well as the accounts. The customer can then make their RMA and fill in the information in relation to it.  
+This is the Flow diagram for the RMA system, this ![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.004.jpeg)shows how the system works from start to finish. Firstly, the administrator starts by creating the test environment as well as the accounts. The customer can then make their RMA and fill in the information in relation to it.  
 
 This will then get delivered to the warehouse where the controller can then scan the barcode and check the goods inside. The RMA is now assigned to the collector where they will process the RMA while also updating the stock. ￼ 
 
@@ -483,13 +483,13 @@ This will then get delivered to the warehouse where the controller can then scan
 
 Please check the figures below for more details and insight 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.005.jpeg)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.005.jpeg)
 
 *Figure 3: Admin navigation graph* 
 
 For more details for admin, check wireframe 1, 2, 3, 4, 5, 6, this navigation chart shows how the admin can navigate through the system. He can login then go to dashboard, then go either for list of requests, or to users list then create a user or go to an existing user details to delete him or assign him new role.  
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.006.jpeg)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.006.jpeg)
 
 *Figure 4: Collector navigation graph* 
 
@@ -497,13 +497,13 @@ For more details for collector check Wireframes 13, 14, 15, 16, 17, 18, 19
 
 In this navigational diagram, you can see how can the controller surf the system. He first logs in, then he gets to his dashboard. Then he either goes to the list of requests and select a request to check its details. Or he selects the scan barcode to perform the scanning with camera then he gets a page with the returned items, customer and comments, then he perform quality check, after that he takes picture of the return items if needed. After that he marks the RMA as received. 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.007.jpeg)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.007.jpeg)
 
 *Figure 5: Controller navigation graph* 
 
 In the figure 4, you can see the navigation diagram that shows how can a controller navigate the system. He first logs in then he gets to the controller dashboard. From the dashboard he can go either to stock page and then to product details. Or to received RMA, then select a RMA to check its details, then to notify customer if he gets refund or not and then update stock For more details for the flow of the controller, check wireframes 20, 21, 22 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.008.jpeg)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.008.jpeg)
 
 *Figure 6: Customer navigation graph* 
 
@@ -513,7 +513,7 @@ Figure 5 shows the way a customer can navigate through the system. First custome
 
 **Login:**  
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.009.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.009.png)
 
 *Wireframe 1 : Login page* 
 
@@ -521,31 +521,31 @@ In the wireframe, you see the landing page of the system. This is the login page
 
 **Admin POV:**
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.010.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.010.png)
 
 *Wireframe 2 : Admin Dashboard:*  
 
 In the wireframe 2, you can see the Admin’s dashboard. You can access this page after successfully logging in as an admin. The page has a greeting for the admin “Hello admin”. You can also see a header with 4 options. The dashboard has a red line under it because we are currently in the dashboard. Users, to manage the users. And Requests to manage requests. And logout to sign out of the account. You can also see a red box counting the number of return requests placed by the customers. And another red box has the live total number of users on the system. Then you have a control panel with all the quick links that the admin will need. Managing, creating users, and viewing RMAs.  
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.011.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.011.png)
 
 *Wireframe 3: Requests page for Admin* 
 
 In wireframe 3, you can see the RMA requests page for the admin. You can see the header again. And you can find list of all the placed requests, the customer’s name who placed the request. The title of the request, date when the request was placed. And the total price of the returned products. The system shows 20 results, then u can press on more to see more requests. (U3) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.012.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.012.png)
 
 *Wireframe 4 : Users page for Admin.* 
 
 In the wireframe 4 you can see the users page for the Admin. As mentioned by you that the admin should manage the users. This page has the header also. And a list of users with their username, name, email, and role. There is next to each user a details button to get more details about that specific user. There is also a create user button to create a new user. (U24) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.013.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.013.png)
 
 *Wireframe 5:  User details page for Admin* 
 
 For Wireframe 5, you can see the user details page, it is accessible by the admin. The admin can see the details of the user (name + role + email + address). And his history of requests. And two buttons, one for assigning a new role for the user, and other one to delete the account of the user
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.014.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.014.png)
 
 *Wireframe 6 : Create user page for Admin.* 
 
@@ -553,37 +553,37 @@ Wireframe 6 is the user registration page for the admin. The admin can fill in t
 
 **Customer POV:**   
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.015.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.015.png)
 
 *Wireframe 7 : Customer home page* 
 
 In wireframe 7, you can see the home page of the customer. It shows the header that has some quick links that are home, it has a red line under it because we are currently on the home page. My orders page (wireframe 8) and my return requests page (wireframe 9). It also shows an inbox to have the notifications and updates the customer gets from the store. 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.016.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.016.png)
 
 *Wireframe 8 : orders page for customers* 
 
 In wireframe 8, it shows the list of the orders that the customer has, so that he can select what he desiring to return. The list shows the details of orders and shows the return button if only the product is not food and ordered withing 14 days. (U8) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.017.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.017.png)
 
 *Wireframe 9 : Return requests list page for customer* 
 
 In Wireframe 9, the customer can see the list of return requests placed by them. Showing the id and overview of the items and total worth price of the returned items. Also, date when request was done and status. Aldo details button to check details of certain request. (*U19).* 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.018.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.018.png)
 
 *Wireframe 10 : creating an RMA page for customer.* 
 
 For wireframe 10, you can see the page where customer can create a new request, by selecting the products to return and putting a comment. Then pressing on the button create request. (U4, U5) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.019.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.019.png)
 
 *Wireframe 11 : Label download page for customer*  
 
 In this wireframe 11, you can see the label page where customer can download the return label, he gets this page after successfully creating a request. (U4) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.020.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.020.png)
 
 *Wireframe 12 : Request detail page for customer* 
 
@@ -591,43 +591,43 @@ In wireframe 12, you can see the page where a customer can check the details of 
 
 **COLLECTOR POV:**  
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.021.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.021.png)
 
 *Wireframe 13 : Dashboard of the collector pc overview* 
 
 For Wireframe 13, you can see the collector’s dashboard. You can access this page after successfully logging in as a collector. The page has a greeting for the collector “Hello (and then their name).” You can also see a header with 3 options. The Dashboard has a red line under because we are currently in dashboard. Return Requests which is used to see all the RMA’s. And logout to sign out of the account. You can also see a red button which will open the camera for the collector to scan the barcode.  
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.022.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.022.png)
 
 *Wireframe 14 : Dashboard of the collector mobile overview*  
 
 In wireframe 14, we can see how the website will look for a collector. This is because collectors will mostly be using their phones, as scanning the barcode while on a computer may be a bit challenging. 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.023.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.023.png)
 
 *Wireframe 15 : Bar-code scanning page for collector – pc overview*  
 
 Wireframe 15 shows what happens after the ‘Scan Barcode’ button is pressed. The devices camera is turned on and now the Collector can scan the barcode on the returned goods. (U9) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.024.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.024.png)
 
 *Wireframe 16 : bar-code scanning for collector – mobile overview.* 
 
 Wireframe 16 shows how the camera will show up on the website for a phone. You are then able to use your phone to scan the barcode. (U9) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.025.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.025.png)
 
 *Wireframe 17 : request process page for collector – pc overview*  
 
 In Wireframe 17, we can see the screen that will pop up after the barcode has successfully scanned by the collector. This page contains the Information on the products and the customer that returned them. The collector is then asked to select one of the goods statuses as either, good, damaged, or missing. An image can then be attached by the collector with a description on the goods which will contain anything wrong with the retuned goods. After the information about the goods has been filled out, the Collector can press on the Confirm and Create button to finalise the return process on their end and assign the RMA to a controller. (U16, U10, U23) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.026.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.026.png)
 
 *Wireframe 18 : request process page for collector – mobile overview*  
 
 Wireframe 18 shows the Phone screen for the product information after the barcode has been scanned. The page contains the Information on the products and the customer that returned them. The collector is then asked to select one of the goods statuses as either, good, damaged, or missing. An image can then be attached by the collector with a description on the goods which will contain anything wrong with the retuned goods. After the information about the goods has been filled out, the Collector can press on the Confirm and Create button to finalise the return process on their end and assign the RMA to a controller. (U16, U10, U23) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.027.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.027.png)
 
 *Wireframe 19 : collected requests page for collector.* 
 
@@ -635,19 +635,19 @@ Wireframe 19 shows the full list of RMAs that must be processed by the Collector
 
 **CONTROLLER POV:**  
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.028.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.028.png)
 
 *Wireframe 20 : collected requests page for controller.* 
 
 Wireframe 20 shows the full list of RMAs that must be assigned to the Controllers. This page has the ID number for the RMA, the Customer name, an overview which will have a quick look at how many products are in the RMA, the price of the order, the date of the return, the status of the RMA and then a details button beside every RMA which will hold all of the Information on the goods within the RMA and the reason for the RMA. (U21) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.029.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.029.png)
 
 *Wireframe 21 : request process page for controller* 
 
 Wireframe 21 shows the request process page after selecting one of the RMA’s, on this page you can select an action for the RMA based on the information given previously on the Collectors, the controller can either choose to refund the customer and send to the stock or the controller can say that the goods are damaged and notify the customer. After selecting your action, the controller can then press on the confirm button to finalise the RMA’s process. (U11) 
 
-![](Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.030.png)
+![](../Images/Aspose.Words.07085014-f8ab-4ba4-a03e-5e6196abdaa2.030.png)
 
 *Wireframe 22 : stock page for controller* 
 
