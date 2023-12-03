@@ -1,4 +1,4 @@
-<a name="_page40_x69.00_y502.92"></a> Plan of approach:
+ # Plan of approach:
 
 **Development Plan and Milestones Sprint 1**: Basic Functionality and Setup
 
