@@ -61,10 +61,10 @@ GET table:
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-</table>
 
 
-<table><tr><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
+
+<tr><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
 <tr><td colspan="1"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
 <tr><td colspan="1" rowspan="5"></td><td colspan="1">200 </td><td colspan="2">The list of users is shown. </td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
@@ -116,10 +116,10 @@ GET table:
 <tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
 <tr><td colspan="2" rowspan="2" valign="top"><i>* required parameters.</i> </td><td colspan="1">productId* </td><td colspan="1">path </td><td colspan="1">The unique id of the product </td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-</table>
 
 
-<table><tr><th colspan="1" rowspan="3"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
+
+<tr><th colspan="1" rowspan="3"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
@@ -166,7 +166,7 @@ GET table:
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 </table>
 
-6
+
 3. POST<a name="_page6_x69.00_y72.92"></a> requests 
 
 POST table: 
@@ -194,13 +194,13 @@ POST table:
 <tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
 <tr><td colspan="2" rowspan="2" valign="top"><i>* required parameters.</i> </td><td colspan="1" valign="top">Request* </td><td colspan="1" valign="top">body </td><td colspan="1"><p>The Request to add. As JSON, based on content-type header. </p><p>Example: example of json body  { </p><p>items: [] </p><p>comments: “test” </p><p>userId: 1 </p><p>} </p></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-</table>
-
-7
 
 
 
-<table><tr><th colspan="1" rowspan="3"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
+
+
+
+<tr><th colspan="1" rowspan="3"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
@@ -211,7 +211,7 @@ POST table:
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 </table>
 
-8
+
 4. PUT<a name="_page8_x69.00_y72.92"></a> requests 
 
 PUT table: 
@@ -241,13 +241,13 @@ PUT table:
 <tr><td colspan="1" valign="top">Request*  </td><td colspan="1" valign="top">body </td><td colspan="1"><p>The kit attributes values to. As a JSON, based on content-type header. </p><p>Example: example of json body  { </p><p>Status : “delivered” </p><p>} </p></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-</table>
-
-9
 
 
 
-<table><tr><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
+
+
+
+<tr><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
 <tr><td colspan="1"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
 <tr><td colspan="1" rowspan="5"></td><td colspan="1">200 </td><td colspan="2">The user is updated </td></tr>
 <tr><td colspan="1">404 </td><td colspan="2">The user is not found. </td></tr>
@@ -274,7 +274,7 @@ PUT table:
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 </table>
 
-10 
+
 
 <a name="_page10_x69.00_y72.92"></a>5. DELETE requests 
 
@@ -315,4 +315,4 @@ DELETE tables:
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 </table>
 
-11 
+
