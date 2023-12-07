@@ -1,0 +1,15 @@
+import Database from "better-sqlite3";
+import * as queries from '../database/database-queries.js'
+import * as initData from '../database/data.js'
+
+let db;
+try{
+    db = new Database('./database/myShop.sql')
+    console.log('Database Created!')
+} catch(e){
+    console.error('Error while initializing DB', e)
+    throw e;
+}
+
+db.prepare(queries.createProductTable).run();
+
