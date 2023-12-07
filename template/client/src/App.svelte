@@ -1,57 +1,57 @@
-<script>
-import router from 'page';
+	`<script>
+	import router from 'page';
 
-import Home from "./pages/Home.svelte";
-import About from "./pages/About.svelte";
-import Header from "./components/Header.svelte";
-import Login from "./pages/Login.svelte";
-
-
-
-let page;
-let params;
-let currentRoute;
-
-router('/', (ctx) => {
-		page = Home;
-		currentRoute = ctx.pathname;
-});
-router('/about', (ctx) => {
-		page = About;
-		currentRoute = ctx.pathname;
-});
-
-router('/login', (ctx) => {
-		page = Login;
-		currentRoute = ctx.pathname;
-});
+	import Home from "./pages/Home.svelte";
+	import About from "./pages/About.svelte";
+	import Header from "./components/Header.svelte";
+	import Login from "./pages/Login.svelte";
 
 
 
-router.start();
-</script>
+	let page;
+	let params;
+	let currentRoute;
 
-<svelte:head>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</svelte:head>
+	router('/', (ctx) => {
+			page = Home;
+			currentRoute = ctx.pathname;
+	});
+	router('/about', (ctx) => {
+			page = About;
+			currentRoute = ctx.pathname;
+	});
 
-<main>
-	<Header active={currentRoute} />
-	<div class="content">
-		<svelte:component this={page} {params} />
-	</div>
-</main>
-<style>
+	router('/login', (ctx) => {
+			page = Login;
+			currentRoute = ctx.pathname;
+	});
 
-	:root {
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	}
 
-	main {
-		text-align: center;
-		padding: 1em;
-		margin: 0 auto;
-		position: relative;
-	}
-</style>
+
+	router.start();
+	</script>
+
+	<svelte:head>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	</svelte:head>
+
+	<main>
+		<Header active={currentRoute} />
+		<div class="content">
+			<svelte:component this={page} {params} />
+		</div>
+	</main>
+	<style>
+
+		:root {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+			Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+		}
+
+		main {
+			text-align: center;
+			padding: 1em;
+			margin: 0 auto;
+			position: relative;
+		}
+	</style>`
