@@ -35,7 +35,6 @@ export const createOrderDetailsTable = `CREATE TABLE IF NOT EXISTS orderDetail(
 --     ^^ Is this value the combined value for the quantity?
 )`
 
-
 export const countUsers = `SELECT count(email) FROM user`
 export const countOrderDetails = `SELECT count(orderId) FROM orderDetail`
 export const countOrders = `SELECT count(orderId) FROM "order"`
@@ -66,7 +65,7 @@ export const selectUserById = `SELECT * FROM user WHERE userID = ?`;
 export const selectAllProducts = `SELECT * FROM product`;
 export const selectProductById = `SELECT * FROM product WHERE productId = ?`;
 export const selectAllOrders = `SELECT * FROM "order"`;
-export const selectOrderById = `SELECT * FROM "order" WHERE orderId = ?`;
+export const selectOrderByUserId = `SELECT * FROM "order" WHERE userId = ?`;
 export const selectOrderByDate = `SELECT * FROM "order" WHERE orderDate = ?`;
 export const selectOrderDetailById = `SELECT * FROM orderDetail WHERE orderDetailId = ?`;
 export const selectAllOrderDetails = `SELECT * FROM orderDetail`;

@@ -127,8 +127,6 @@ export function updateOrderByOrderId(orderId, orderData) {
     return db.prepare(queries.updateOrderByOrderId).run(userId, orderDate, totalPrice, orderId);
 }
 
-
-
 export function getOrderDetailById(orderDetailId) {
     return db.prepare(queries.selectOrderDetailById).get(orderDetailId);
 }
