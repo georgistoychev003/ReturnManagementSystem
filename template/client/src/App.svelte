@@ -5,6 +5,8 @@
 	import About from "./pages/About.svelte";
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
+	import Dashboard from "./pages/CollectorDashboard.svelte";
+
 
 
 
@@ -24,6 +26,11 @@
 	router('/login', (ctx) => {
 			page = Login;
 			currentRoute = ctx.pathname;
+	});
+
+	router('/Collector', (ctx) => {
+		page = Dashboard;
+		currentRoute = ctx.pathname;
 	});
 
 
