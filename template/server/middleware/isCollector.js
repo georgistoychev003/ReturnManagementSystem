@@ -1,7 +1,7 @@
-export function isCollector (req, res, next) {
-    if (req.payload.isCollector){
+export const isCollector = (req, res, next) => {
+    if (req.user && req.user.userRole === 'collector') {
         next();
     } else {
-        return res.status(401).json({Error: "Not a collector"});
+        res.status(403).json({ Error: "Access denied. Not a collector." });
     }
 }

@@ -1,7 +1,7 @@
-export function isCollector (req, res, next) {
-    if (req.payload.isCustomer){
+export const isCustomer = (req, res, next) => {
+    if (req.user && req.user.userRole === 'customer') {
         next();
-    }else{
-        return res.status(401).json({Error: "Not a customer"});
+    } else {
+        res.status(403).send({ Error: "Access denied. Not a customer." });
     }
 }
