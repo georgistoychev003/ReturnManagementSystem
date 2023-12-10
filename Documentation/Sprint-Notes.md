@@ -106,3 +106,4 @@ During this standUp, we checked who had done what, and here are the results :
 * Desmond : Finished his task
 * Frankie : Finished his task
 * Georgi  : Finished his task
+* Brice : Finished his task
