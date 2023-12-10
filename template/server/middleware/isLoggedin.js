@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
-import { usersData } from '../data/init-data.js';
+import { usersData } from '../database/init-data.js';
 
 const jwtSecret = 'ShhhhhItsASecret';
 
