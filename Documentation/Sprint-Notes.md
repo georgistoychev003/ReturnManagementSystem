@@ -97,3 +97,12 @@ we assigned the following tasks and started working on them in class :
 On this standUp, we finally had completed all the tasks by all the members. Client was emailed with the updated version of the FD and SD.
 
 
+### sprint 1 standup 2 (2023-12-10)
+During this standUp, we checked who had done what, and here are the results :
+
+* Marcelo : he didn't attend the standup for emergency reason. he didn't prove doing his task
+* Badr : Finished his task
+* Pablo : Finished his task
+* Desmond : Finished his task
+* Frankie : Finished his task
+* Georgi  : Finished his task
