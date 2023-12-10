@@ -115,7 +115,7 @@ export function getAllOrders() {
 }
 
 export function getOrderById(orderId) {
-    return db.prepare(queries.selectOrderById).get(orderId);
+    return db.prepare(queries.selectOrderByUserId).get(orderId);
 }
 
 export function deleteOrderById(orderId) {
