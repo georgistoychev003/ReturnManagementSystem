@@ -5,7 +5,9 @@
 	import About from "./pages/About.svelte";
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
-	import ForgotPassword from "./pages/ForgotPassword.svelte";
+	import Dashboard from "./pages/CollectorDashboard.svelte";
+
+
 
 
 	let page;
@@ -26,8 +28,8 @@
 			currentRoute = ctx.pathname;
 	});
 
-	router('/forgot-password', (ctx) => {
-		page = ForgotPassword;
+	router('/Collector', (ctx) => {
+		page = Dashboard;
 		currentRoute = ctx.pathname;
 	});
 
