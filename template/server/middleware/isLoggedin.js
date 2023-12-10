@@ -19,7 +19,7 @@ export const isLoggedIn = (req, res, next) => {
 
         const user = usersData.find(user => user.email === payload.email);
         if (!user) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ Error: "User not found" });
+            return res.status(StatusCodes.NOT_FOUND).json({ Error: "User not found" });
         }
 
         req.user = user;
