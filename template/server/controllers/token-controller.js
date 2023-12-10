@@ -2,9 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {StatusCodes} from "http-status-codes";
 
-
-const saltRounds = 10;
-
 const jwtSecret = 'ShhhhhItsASecret';
 
 export async function checkUserCredentials(req, res) {
