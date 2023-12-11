@@ -8,10 +8,16 @@
         { id: 'S005', name: 'Tablet', type: 'Electronics', price: '$300', quantity: '10'},
     ];
 
-    const viewDetails = (stockId) => {
-        // Logic to view details of the return stock should go here once backend is setup
-        console.log(`View details for stock ID: ${stockId}`);
+    const updateStockQuantity = (stockId) => {
+        const stock = returnStock.find(item => item.id === stockId);
+        const newQuantity = prompt(`Update quantity for ${stock.name}. Current quantity: ${stock.quantity}`);
 
+        if (newQuantity !== null) {
+            // update the stock quantity
+            console.log(`Updated stock ID ${stockId} to new quantity ${newQuantity}`);
+            stock.quantity = newQuantity;
+            // make an API call to update the database
+        }
     };
 </script>
 
@@ -25,7 +31,7 @@
             <th>TYPE</th>
             <th>PRICE</th>
             <th>QUANTITY</th>
-            <th></th> <!-- Details column -->
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -37,7 +43,7 @@
                 <td>{stock.price}</td>
                 <td>{stock.quantity}</td>
                 <td>
-                    <button on:click={() => viewDetails(stock.id)} class="details-btn">Details</button>
+                    <button on:click={() => updateStockQuantity(stock.id)} class="update-btn">Update</button>
                 </td>
             </tr>
         {/each}
@@ -76,7 +82,7 @@
         color: #555;
     }
 
-    .details-btn {
+    .update-btn {
         padding: 0.5rem 1rem;
         background-color: #007BFF;
         color: white;
@@ -86,7 +92,7 @@
         transition: background-color 0.3s, transform 0.3s;
     }
 
-    .details-btn:hover {
+    .update-btn:hover {
         background-color: #0056b3;
         transform: translateY(-2px);
     }
