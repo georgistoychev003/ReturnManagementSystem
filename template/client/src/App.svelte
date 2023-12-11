@@ -5,6 +5,7 @@
 	import About from "./pages/About.svelte";
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
+	import Controller from "./pages/ControllerDashboard.svelte"
 
 
 
@@ -13,11 +14,15 @@
 	let currentRoute;
 
 	router('/', (ctx) => {
-			page = Home;
+		page = Controller;
 			currentRoute = ctx.pathname;
 	});
 	router('/about', (ctx) => {
 			page = About;
+			currentRoute = ctx.pathname;
+	});
+	router('/controller', (ctx) => {
+			page = Controller;
 			currentRoute = ctx.pathname;
 	});
 
