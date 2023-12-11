@@ -6,6 +6,7 @@
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
 	import Dashboard from "./pages/CollectorDashboard.svelte";
+	import ForgotPassword from "./pages/ForgotPassword.svelte";
 
 
 
@@ -32,7 +33,10 @@
 		page = Dashboard;
 		currentRoute = ctx.pathname;
 	});
-
+	router('/forgot-password', (ctx) => {
+		page = ForgotPassword;
+		currentRoute = ctx.pathname;
+	});
 
 
 	router.start();
