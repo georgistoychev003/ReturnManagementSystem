@@ -5,7 +5,7 @@
 	import About from "./pages/About.svelte";
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
-	import Controller from "./pages/ControllerDashboard.svelte"
+	import Controller from "./pages/ControllerStock.svelte"
 
 
 
