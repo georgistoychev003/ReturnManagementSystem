@@ -1,5 +1,19 @@
 <script>
     //fetch and select the user
+    const fetchUserDetails = async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/users/${userId}`);
+
+            if (response.ok) {
+                selectedUser = await response.json();
+                renderUserDetails(); // Call the function to render user details after fetching data
+            } else {
+                console.error('Failed to fetch user details');
+            }
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+        }
+    };
 
     // Placeholder for the selected user's details, we neeed to replace with actual database data
     let selectedUser = {
@@ -14,6 +28,39 @@
         ]
     };
 
+
+    //render
+    const renderUserDetails = () => {
+        // Update UI with selected user's details
+        const usernameElement = document.querySelector('h2');
+        const nameElement = document.querySelector('.details p:nth-of-type(1)');
+        const roleElement = document.querySelector('.details p:nth-of-type(2)');
+        const emailElement = document.querySelector('.details p:nth-of-type(3)');
+        const addressElement = document.querySelector('.details p:nth-of-type(4)');
+        const tableBody = document.querySelector('.requests tbody');
+
+        usernameElement.textContent = selectedUser.username;
+        nameElement.textContent = `Name: ${selectedUser.name}`;
+        roleElement.textContent = `Role: ${selectedUser.role}`;
+        emailElement.textContent = `Email: ${selectedUser.email}`;
+        addressElement.textContent = `Address: ${selectedUser.address}`;
+
+        // Clear existing rows
+        tableBody.innerHTML = '';
+
+        // Populate the table with fetched user requests data
+        selectedUser.requests.forEach(request => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${request.id}</td>
+                <td>${request.products}</td>
+                <td>${request.date}</td>
+                <td>${request.price}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    };
+
     // Function to assign a new role to the user, to be implemented
     const assignRole = () => {
         console.log(`Assign new role to user: ${selectedUser.username}`);
@@ -23,6 +70,13 @@
     const deleteUser = () => {
         console.log(`Delete user: ${selectedUser.username}`);
     };
+
+
+// for now hard coded
+    //todo : database should be done for full functionality
+    const userId = '1';
+    fetchUserDetails(userId);
+
 </script>
 
 <div class="user-details">

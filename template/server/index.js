@@ -6,6 +6,7 @@ const app = express()
 
 import userRouter from "./routers/user-router.js";
 import tokenRouter from "./routers/token-router.js";
+import rmaRouter from "./routers/rma-router.js";
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -28,6 +29,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', userRouter);
 app.use('/token', tokenRouter);
+app.use('/requests', rmaRouter)
 
 
 app.listen(port, () => {

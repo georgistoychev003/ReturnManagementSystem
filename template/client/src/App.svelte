@@ -9,7 +9,10 @@
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
 	import ClientHome from "./pages/ClientHomePage.svelte";
 	import RegisterUser from "./pages/AdminCreateUser.svelte"
-	import Users from "./pages/AdminUsersList.svelte"
+	import Users from "./pages/AdminUsersList.svelte";
+	import UserDetails from "./pages/AdminUserDetails.svelte";
+	import Requests from "./pages/AdminRequestsList.svelte";
+
 
 
 
@@ -55,6 +58,16 @@
 
 	router('/users', (ctx) => {
 		page = Users;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/userDetails', (ctx) => {
+		page = UserDetails;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/requests', (ctx) => {
+		page = Requests;
 		currentRoute = ctx.pathname;
 	});
 
