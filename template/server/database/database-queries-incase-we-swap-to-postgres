@@ -1,0 +1,51 @@
+CREATE TABLE IF NOT EXISTS product(
+                                      productId INTEGER PRIMARY KEY AUTOINCREMENT,
+                                      type TEXT NOT NULL,
+                                      price DOUBLE NOT NULL,
+                                      description TEXT NOT NULL,
+                                      imageURL TEXT NOT NULL,
+                                      productWeight DOUBLE NOT NULL,
+                                      inventoryStock INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user(
+                                   userId SERIAL PRIMARY KEY,
+                                   email TEXT NOT NULL,
+                                   password TEXT NOT NULL,
+                                   userRole TEXT NOT NULL,
+                                   isAdmin BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "order"(
+                                    orderId SERIAL PRIMARY KEY,
+                                    userId INT NOT NULL,
+                                    orderDate DATE NOT NULL,
+                                    totalPrice DOUBLE NOT NULL
+);
+
+
+INSERT INTO product (productId, type, price, description, imageURL, productWeight, inventoryStock)
+VALUES
+    (1, 'Electronics', 599.99, 'Smartphone with advanced features', 'https://example.com/image1.jpg', 0.2, 50),
+    (2, 'Clothing', 39.99, 'Casual T-shirt for everyday wear', 'https://example.com/image2.jpg', 0.3, 100),
+    (3, 'Home & Kitchen', 149.99, 'Coffee maker for brewing fresh coffee', 'https://example.com/image3.jpg', 2.5, 20),
+    (4, 'Books', 24.99, 'Bestseller mystery novel', 'https://example.com/image4.jpg', 0.8, 30);
+
+INSERT INTO "order" (orderId, userId, orderDate, totalPrice)
+VALUES
+    (1, 1, '2023-12-01', 99.99),
+    (2, 1, '2023-12-03', 149.50),
+    (3, 1, '2023-12-05', 249.75);
+
+INSERT INTO orderDetail (orderDetailId, orderId, productId, quantity)
+VALUES
+    (1, 1, 1, 2),
+    (2, 1, 3, 1),
+    (3, 2, 2, 3),
+    (4, 3, 4, 1);
+
+
+INSERT INTO Users (userId, email, password, userRole, isAdmin)
+VALUES
+    (1, customer@email.com, password, customer, false),
+    (2, collector@email.com, password, collector, false);
