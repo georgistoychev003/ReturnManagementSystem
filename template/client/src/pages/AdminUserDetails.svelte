@@ -1,4 +1,6 @@
 <script>
+    //fetch and select the user
+
     // Placeholder for the selected user's details, we neeed to replace with actual database data
     let selectedUser = {
         username: 'USERXX',

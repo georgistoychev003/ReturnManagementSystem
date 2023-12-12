@@ -9,6 +9,8 @@
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
 	import ClientHome from "./pages/ClientHomePage.svelte";
 	import RegisterUser from "./pages/AdminCreateUser.svelte"
+	import Users from "./pages/AdminUsersList.svelte"
+
 
 
 
@@ -47,6 +49,12 @@
 
 	router('/registerUser', (ctx) => {
 		page = RegisterUser;
+		currentRoute = ctx.pathname;
+	});
+
+
+	router('/users', (ctx) => {
+		page = Users;
 		currentRoute = ctx.pathname;
 	});
 

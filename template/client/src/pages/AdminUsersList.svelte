@@ -7,6 +7,51 @@
 
     ];
 
+    const getUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/users'); // Make a GET request to your backend API
+
+            if (response.ok) {
+                const fetchedUsers = await response.json(); // Assuming the response contains the list of users in JSON format
+
+                fetchedUsers.forEach(user => {
+                    users.push(user); // Append each fetched user to the existing users array
+                });
+
+                renderUsers(); // Call the function to render users after fetching data
+            } else {
+                console.error('Failed to fetch users');
+            }
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    const renderUsers = () => {
+        const tableBody = document.querySelector('tbody');
+
+        // Clear existing rows
+        tableBody.innerHTML = '';
+
+        // Populate the table with fetched user data
+        users.forEach(user => {
+            console.log(user.email);
+            users.push(user);
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.username}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>
+                    <button onclick="showUserDetails(${JSON.stringify(user)})">Details</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    };
+
+
     // Function to handle more users loading, we need to implement it in accordance to the backend
     const handleMoreUsersClick = () => {
         console.log('Load more users');
@@ -22,6 +67,10 @@
 
         console.log('Create user');
     };
+
+
+    getUsers();
+
 </script>
 
 <div class="admin-users">
