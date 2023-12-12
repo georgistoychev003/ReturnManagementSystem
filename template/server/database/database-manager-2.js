@@ -17,6 +17,7 @@ db.prepare(queries.createProductTable).run();
 db.prepare(queries.createUserTable).run();
 db.prepare(queries.createOrderTable).run();
 db.prepare(queries.createOrderDetailsTable).run();
+//db.prepare(queries.createRma).run();
 
 insertUsers();
 insertProducts();
@@ -122,6 +123,7 @@ export function deleteOrderById(orderId) {
     return db.prepare(queries.deleteOrderByOrderId).run(orderId);
 }
 
+
 export function updateOrderByOrderId(orderId, orderData) {
     const { userId, orderDate, totalPrice } = orderData;
     return db.prepare(queries.updateOrderByOrderId).run(userId, orderDate, totalPrice, orderId);
@@ -142,4 +144,11 @@ export function deleteOrderDetailById(orderDetailId) {
 
 export function getAllOrderDetails() {
     return db.prepare(queries.selectAllOrderDetails).all();
+}
+//TODO check once the design in corrected
+export function deleteRmaById(returnId) {
+    return db.prepare(queries.deleteRmaById).run(returnId);
+}
+export function getAllRma() {
+    return db.prepare(queries.selectAllRma).all();
 }
