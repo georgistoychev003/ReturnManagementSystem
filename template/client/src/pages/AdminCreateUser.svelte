@@ -6,13 +6,67 @@
     let address = '';
 
     const createUser = () => {
-        // we have to implement user creation logic
+        // Function to validate email format
+        const isValidEmail = (email) => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        };
+
+        // Function to escape HTML characters
+        const escapeHTML = (unsafe) => {
+            return unsafe.replace(/[&<"']/g, (m) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[m]));
+        };
+
+        // Validate inputs
+        if (!isValidEmail(email)) {
+            alert('Please enter a valid email address!');
+            return;
+        }
+
         if (password !== repeatPassword) {
             alert('Passwords do not match!');
             return;
         }
-        console.log('Creating user:', { username, email, password, address });
-        // send request to back to create the user
+
+        // Escape HTML characters
+        username = escapeHTML(username);
+        email = escapeHTML(email);
+        address = escapeHTML(address);
+
+        // Create user object
+        const user = { username, email, password, address };
+
+        console.log('Creating user:', user);
+
+        // Send request to backend to create the user
+        fetch('http://localhost:3000/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful creation (you may add further logic here)
+                console.log('User created:', data);
+                alert('User created successfully!');
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('There was a problem creating the user:', error);
+                alert('Failed to create user. Please try again.');
+            });
     };
 </script>
 
