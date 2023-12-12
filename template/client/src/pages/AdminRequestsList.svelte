@@ -5,10 +5,58 @@
 
     ];
 
+
+    const fetchRequests = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/requests');
+
+            if (response.ok) {
+                const data = await response.json();
+                requests = [...requests, ...data]; // Merge the fetched data with existing requests
+                renderRequests(); // Call the function to render requests after fetching data
+            } else {
+                console.error('Failed to fetch requests');
+            }
+        } catch (error) {
+            console.error('Error fetching requests:', error);
+        }
+    };
+
+    const renderRequests = () => {
+        // Select the tbody element where requests will be rendered
+        const tableBody = document.querySelector('tbody');
+
+        // Clear existing rows
+        tableBody.innerHTML = '';
+
+        // Populate the table with fetched request data
+        requests.forEach(request => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${request.id}</td>
+                <td>${request.user}</td>
+                <td>${request.title}</td>
+                <td>${request.date}</td>
+                <td>${request.price}</td>
+                <td>
+                    ${request.returnable ? '<button onclick="requestReturn()">Process Return</button>' : ''}
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    };
+
     const handleMoreClick = () => {
         // here we have to implement the logic to load more RMA requests
         console.log('Load more requests');
     };
+
+    function requestReturn(request) {
+        
+    }
+
+    // Call fetchRequests function when the page loads to fetch requests from the backend
+    window.onload = fetchRequests;
 </script>
 
 <div class="admin-requests">

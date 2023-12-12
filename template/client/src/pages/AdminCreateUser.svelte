@@ -4,6 +4,8 @@
     let password = '';
     let repeatPassword = '';
     let address = '';
+    let isAdmin = false;
+    let userRole = '';
 
     const createUser = () => {
         // Function to validate email format
@@ -37,10 +39,13 @@
         username = escapeHTML(username);
         email = escapeHTML(email);
         address = escapeHTML(address);
+        userRole = 'client';
+        isAdmin = false;
+
 
         // Create user object
-        const user = { username, email, password, address };
-
+     //   const user = { username, email, password, address };
+        const user = {  email, password, userRole, isAdmin };
         console.log('Creating user:', user);
 
         // Send request to backend to create the user
