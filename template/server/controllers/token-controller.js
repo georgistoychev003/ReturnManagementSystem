@@ -16,7 +16,7 @@ export async function checkUserCredentials(req, res) {
     if (user && password===user.password) {
         const payload = {
             email: user.email,
-            role: user.role
+            role: user.userRole
         };
 
         const token = jwt.sign(payload, jwtSecret, {

@@ -5,9 +5,11 @@
 	import About from "./pages/About.svelte";
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
-	import Dashboard from "./pages/CollectorDashboard.svelte";
+	import CollectorDashboard from "./pages/CollectorDashboard.svelte";
+	import ControllerDashboard from "./pages/ControllerDashboard.svelte";
+	import Admin from "./pages/AdminRequestsList.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
-	import ClientHome from "./pages/ClientHomePage.svelte";
+	import ClientDashboard from "./pages/ClientHomePage.svelte";
 	import RegisterUser from "./pages/AdminCreateUser.svelte"
 
 
@@ -31,17 +33,28 @@
 			currentRoute = ctx.pathname;
 	});
 
-	router('/Collector', (ctx) => {
-		page = Dashboard;
+	router('/collector', (ctx) => {
+		page = CollectorDashboard;
 		currentRoute = ctx.pathname;
 	});
+
+	router('/controller', (ctx) => {
+		page = ControllerDashboard;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/admin', (ctx) => {
+		page = Admin;
+		currentRoute = ctx.pathname;
+	});
+
 	router('/forgot-password', (ctx) => {
 		page = ForgotPassword;
 		currentRoute = ctx.pathname;
 	});
 
-	router('/clientHome', (ctx) => {
-		page = ClientHome;
+	router('/client', (ctx) => {
+		page = ClientDashboard;
 		currentRoute = ctx.pathname;
 	});
 

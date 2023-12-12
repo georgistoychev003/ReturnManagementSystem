@@ -4,11 +4,51 @@
     let username = '';
     let password = '';
 
-    const login = () => {
+    const login = async () => {
+        const response = await fetch('http://localhost:3000/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: username, // Change to 'username' if your backend expects a username
+                password: password,
+            }),
+        });
 
-        // For now, let's just navigate to the home page after "login"
-        page('/');
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log(data.token)
+            localStorage.setItem('token', data.token);
+            const payload = JSON.parse(atob(data.token.split('.')[1]));
+            console.log(payload)
+            redirectToRolePage(payload.role);
+        } else {
+            console.error(data.error); // Handle login error
+        }
     };
+
+    function redirectToRolePage(role) {
+        console.log("switching")
+        switch(role) {
+            case 'customer':
+                console.log("switched")
+                page('/client');
+                break;
+            case 'admin':
+                page('/admin');
+                break;
+            case 'collector':
+                page('/collector');
+                break;
+            case 'controller':
+                page('/controller');
+                break;
+            default:
+                page('/'); // Default redirect if role is not recognized
+        }
+    }
 </script>
 
 <div class="auth-container">
