@@ -77,12 +77,13 @@ export const createRma = `INSERT INTO return (userId, productId, returnId, descr
 export const deleteRmaById = `DELETE FROM return WHERE returnId = ?`;
 export const selectAllRma = `SELECT * FROM return`;
 
-export const createRmaTable = `CREATE TABLE IF NOT EXISTS return(
-                                                                    userId INT NOT NULL,
-                                                                    productId INT NOT NULL,
-                                                                    returnId INT AUTO_INCREMENT,
-                                                                    description TEXT NOT NULL,
-                                                                    barcode VARCHAR(35) NOT NULL,
+export const createRmaTable =
+    `CREATE TABLE IF NOT EXISTS return(
+    userId INT NOT NULL,
+    productId INT NOT NULL,
+    returnId INT AUTO_INCREMENT,
+    description TEXT NOT NULL,
+    barcode VARCHAR(35) NOT NULL,
     weight DOUBLE NOT NULL,
     PRIMARY KEY (userId, productId),
     FOREIGN KEY (userId) REFERENCES user(userId),
