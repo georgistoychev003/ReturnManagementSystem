@@ -7,6 +7,8 @@
 	import Login from "./pages/Login.svelte";
 	import Dashboard from "./pages/CollectorDashboard.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
+	import ClientHome from "./pages/ClientHomePage.svelte";
+	import RegisterUser from "./pages/AdminCreateUser.svelte"
 
 
 
@@ -37,6 +39,18 @@
 		page = ForgotPassword;
 		currentRoute = ctx.pathname;
 	});
+
+	router('/clientHome', (ctx) => {
+		page = ClientHome;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/registerUser', (ctx) => {
+		page = RegisterUser;
+		currentRoute = ctx.pathname;
+	});
+
+
 
 
 	router.start();
