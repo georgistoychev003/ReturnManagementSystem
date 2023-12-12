@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {StatusCodes} from "http-status-codes";
+import {getUserByEmail} from "../database/database-manager-2.js";
 
 const jwtSecret = 'ShhhhhItsASecret';
 
