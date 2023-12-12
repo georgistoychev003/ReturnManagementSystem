@@ -11,5 +11,7 @@ router.get('/:productId', productRouter.getProduct);
 
 router.patch('/:productId', productRouter.patchProduct);
 
+router.delete('/:productId', productRouter.deleteProduct);
+
 
 export default router;

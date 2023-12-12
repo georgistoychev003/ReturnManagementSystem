@@ -5,7 +5,11 @@
 	import About from "./pages/About.svelte";
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
-	import Controller from "./pages/ControllerDashboard.svelte"
+	import Dashboard from "./pages/CollectorDashboard.svelte";
+	import ForgotPassword from "./pages/ForgotPassword.svelte";
+	import ClientHome from "./pages/ClientHomePage.svelte";
+	import RegisterUser from "./pages/AdminCreateUser.svelte"
+
 
 
 
@@ -14,15 +18,11 @@
 	let currentRoute;
 
 	router('/', (ctx) => {
-		page = Controller;
+			page = Home;
 			currentRoute = ctx.pathname;
 	});
 	router('/about', (ctx) => {
 			page = About;
-			currentRoute = ctx.pathname;
-	});
-	router('/controller', (ctx) => {
-			page = Controller;
 			currentRoute = ctx.pathname;
 	});
 
@@ -30,6 +30,26 @@
 			page = Login;
 			currentRoute = ctx.pathname;
 	});
+
+	router('/Collector', (ctx) => {
+		page = Dashboard;
+		currentRoute = ctx.pathname;
+	});
+	router('/forgot-password', (ctx) => {
+		page = ForgotPassword;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/clientHome', (ctx) => {
+		page = ClientHome;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/registerUser', (ctx) => {
+		page = RegisterUser;
+		currentRoute = ctx.pathname;
+	});
+
 
 
 
