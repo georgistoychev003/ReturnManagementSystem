@@ -1,43 +1,29 @@
 <script>
-    import page from 'page';
+    let email = '';
 
-    let username = '';
-    let password = '';
-
-    const login = () => {
-
-        // For now, let's just navigate to the home page after "login"
-        page('/');
+    const requestPasswordReset = () => {
+        // we should implement our password reset logic here
+        // For example, sending a password reset request to our backend
+        console.log(`Password reset requested for: ${email}`);
+        // Navigate to a confirmation page or show a message, we should discuss how we will handle the forgot password case
     };
 </script>
 
 <div class="auth-container">
-    <div class="logo">
-        <img class="logo" src="https://myshop.s3-external-3.amazonaws.com/shop6116500.images.logo-myshop.webp" alt="Logo">
-    </div>
-    <h2>LOGIN</h2>
-    <form on:submit|preventDefault={login}>
+    <h2>Forgot Password</h2>
+    <p>Please enter your email address to request a password reset link.</p>
+    <form on:submit|preventDefault={requestPasswordReset}>
         <div class="input-group">
-            <label for="username">Username:</label>
-            <input type="text" bind:value={username} id="username" placeholder="Enter your username" required />
+            <label for="email">Email:</label>
+            <input type="email" bind:value={email} id="email" placeholder="Enter your email" required />
         </div>
-
-        <div class="input-group">
-            <label for="password">Password:</label>
-            <input type="password" bind:value={password} id="password" placeholder="Enter your password" required />
-        </div>
-
-        <div class="forgot-password">
-            <a href="/forgot-password" on:click|preventDefault={() => page('/forgot-password')}>Forgot your password?</a>
-        </div>
-
-        <button type="submit" class="login-btn">Login</button>
+        <button type="submit" class="login-btn">Send Reset Link</button>
     </form>
 </div>
 
 <style>
     :root {
-        --gradient-start: #6dd5ed;
+        --gradient-start: #87e8ff;
         --gradient-end: #000000;
         --btn-hover: #880000;
         --btn-active: rgba(231, 72, 36, 0.2);
@@ -170,4 +156,5 @@
         }
     }
 </style>
+
 
