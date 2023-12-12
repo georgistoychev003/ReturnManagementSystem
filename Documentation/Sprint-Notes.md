@@ -97,7 +97,7 @@ we assigned the following tasks and started working on them in class :
 On this standUp, we finally had completed all the tasks by all the members. Client was emailed with the updated version of the FD and SD.
 
 
-### sprint 1 standup 2 (2023-12-10)
+### sprint 1 standup 3 (2023-12-10)
 During this standUp, we checked who had done what, and here are the results :
 
 * Marcelo : he didn't attend the standup for emergency reason. he didn't prove doing his task
@@ -107,3 +107,12 @@ During this standUp, we checked who had done what, and here are the results :
 * Frankie : Finished his task
 * Georgi  : Finished his task
 * Brice : Finished his task
+
+### sprint 1 standup 4  (2023-12-12)
+* Marcelo : he left the course for personal reasons.
+* Badr : working on fetches for admin and login (frontend side)
+* Pablo : working on database
+* Desmond : working on fetches for client
+* Frankie : working on controller dashboard
+* Georgi  : working on his task : admin components partially finished
+* Brice : finish all the api spec for orders and users. RMA need to be done after pablo done with DB

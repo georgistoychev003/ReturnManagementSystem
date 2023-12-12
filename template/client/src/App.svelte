@@ -7,6 +7,7 @@
 	import Login from "./pages/Login.svelte";
 	import Dashboard from "./pages/CollectorDashboard.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
+	import ClientHome from "./pages/ClientHomePage.svelte";
 
 
 
@@ -35,6 +36,11 @@
 	});
 	router('/forgot-password', (ctx) => {
 		page = ForgotPassword;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/clientHome', (ctx) => {
+		page = ClientHome;
 		currentRoute = ctx.pathname;
 	});
 
