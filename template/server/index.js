@@ -5,6 +5,7 @@ import cors from 'cors';
 const app = express()
 
 import userRouter from "./routers/user-router.js";
+import tokenRouter from "./routers/token-router.js";
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -12,7 +13,11 @@ app.use(express.urlencoded({
 }));
 
 
-app.use(cors);
+app.use(cors({
+    origin: '*', // Allow requests from any origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+}));
 const port = 3000
 
 app.get('/', (req, res) => {
@@ -22,6 +27,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/users', userRouter);
+app.use('/token', tokenRouter);
 
 
 app.listen(port, () => {

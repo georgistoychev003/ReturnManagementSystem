@@ -9,8 +9,11 @@ export async function checkUserCredentials(req, res) {
     const { email, password } = req.body;
 
     const user = await getUserByEmail(email);
+    console.log(user)
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    // await bcrypt.compare(password, user.password)
+
+    if (user && password===user.password) {
         const payload = {
             email: user.email,
             role: user.role
