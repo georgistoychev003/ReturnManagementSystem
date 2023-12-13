@@ -4,8 +4,6 @@
     function greet() {
         alert(`HELLO COLLECTOR NAME ${name}`);
     }
-
-
     async function scanBarcode() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
