@@ -1,28 +1,54 @@
 <script>
+    // Replace this with the actual fetch call to get products from your backend
+    import {onMount} from "svelte";
 
-    //this again we need to update with actual contents from the back end once it is setup
-    let availableProducts = [
-        { name: 'Product 1', quantity: 0 },
-        { name: 'Product 2', quantity: 0 },
-        { name: 'Product 3', quantity: 0 },
-        { name: 'Product 4', quantity: 0 }
-    ];
+    let availableProducts = []; // This will be fetched from the backend
+
+    // Fetch available products on component mount
+    onMount(async () => {
+        try {
+            const response = await fetch('http://localhost:3000/products');
+            availableProducts = await response.json();
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    });
 
     let selectedProducts = [];
     let comment = '';
 
     const updateQuantity = (product, quantity) => {
-        product.quantity = quantity;
+        product.quantity = parseInt(quantity);
         selectedProducts = availableProducts.filter(p => p.quantity > 0);
     };
 
-    const createRMARequest = () => {
+    const createRMARequest = async () => {
         if (selectedProducts.length === 0) {
-            console.error('Please select at least one product.');
+            alert('Please select at least one product.');
             return;
         }
-        console.log('Creating RMA request:', { selectedProducts, comment });
-        // Submit to backend here
+
+        try {
+            const response = await fetch('http://localhost:3000/returns', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    //here we will need the bearer authorization header when the jwt is done
+                },
+                body: JSON.stringify({ selectedProducts, comment })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to create RMA request: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log('RMA request created', result);
+            // Handle success, maybe clear the form or redirect, we have to discuss with client how he wants us to handle this
+        } catch (error) {
+            console.error('Error creating RMA request:', error);
+            throw error;
+        }
     };
 </script>
 
@@ -32,7 +58,9 @@
         <div class="select-products">
             {#each availableProducts as product, index}
                 <div class="product-entry">
-                    <input type="number" placeholder={product.name} min="0" bind:value={product.quantity} on:input={() => updateQuantity(product, product.quantity)}>
+                    <label for={`product-${index}`}>{product.name}</label>
+                    <input id={`product-${index}`} type="number" placeholder="Quantity" min="0"
+                           bind:value={product.quantity} on:input={() => updateQuantity(product, product.quantity)}>
                 </div>
             {/each}
         </div>

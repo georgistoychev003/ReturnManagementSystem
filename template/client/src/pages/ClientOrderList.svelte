@@ -1,48 +1,76 @@
 <script>
-    // Sample data for the orders, we should replace that with the database contents once database functions
-    let orders = [
-        { quantity: 1, product: 'book', price: '23', type: 'books', orderedSince: '1 HOUR', returnable: true },
-        { quantity: 3, product: 'bananas', price: '1', type: 'food', orderedSince: '4 DAYS', returnable: false },
+    import { onMount } from 'svelte';
 
-    ];
+    let orders = [];
+    let isLoading = true;
+    let errorMessage = '';
+
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/orders');
+            if (!response.ok) {
+                throw new Error('Failed to fetch orders');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            throw error;
+        }
+    };
+
+    onMount(async () => {
+        try {
+            orders = await fetchOrders();
+        } catch (error) {
+            errorMessage = error.message;
+        } finally {
+            isLoading = false;
+        }
+    });
 
     const requestReturn = (order) => {
-        //here we should implement the return order logic once backend is setup
         console.log(`Return requested for order: ${order.product}`);
+        // Implement return logic here
     };
 </script>
 
-<div class="client-return-order">
-    <h1>My Orders</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>QUANTITY</th>
-            <th>PRODUCT</th>
-            <th>PRICE</th>
-            <th>TYPE</th>
-            <th>ORDERED SINCE</th>
-            <th></th> <!-- Return column -->
-        </tr>
-        </thead>
-        <tbody>
-        {#each orders as order}
+{#if isLoading}
+    <p>Loading orders...</p>
+{:else if errorMessage}
+    <p>Error: {errorMessage}</p>
+{:else}
+    <div class="client-return-order">
+        <h1>My Orders</h1>
+        <table>
+            <thead>
             <tr>
-                <td>{order.quantity}</td>
-                <td>{order.product}</td>
-                <td>{order.price}</td>
-                <td>{order.type}</td>
-                <td>{order.orderedSince}</td>
-                <td>
-                    {#if order.returnable}
-                        <button on:click={() => requestReturn(order)}>Return</button>
-                    {/if}
-                </td>
+                <th>QUANTITY</th>
+                <th>PRODUCT</th>
+                <th>PRICE</th>
+                <th>TYPE</th>
+                <th>ORDERED SINCE</th>
+                <th></th> <!-- Return column -->
             </tr>
-        {/each}
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            {#each orders as order}
+                <tr>
+                    <td>{order.quantity}</td>
+                    <td>{order.product}</td>
+                    <td>{order.price}</td>
+                    <td>{order.type}</td>
+                    <td>{order.orderedSince}</td>
+                    <td>
+                        {#if order.returnable}
+                            <button on:click={() => requestReturn(order)}>Return</button>
+                        {/if}
+                    </td>
+                </tr>
+            {/each}
+            </tbody>
+        </table>
+    </div>
+{/if}
 
 <style>
     .client-return-order {
