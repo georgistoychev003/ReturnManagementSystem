@@ -2,12 +2,12 @@ import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
 
-// TODO autoincrement Ids, get functions for orders and orderdetails
+
 
 let db;
 try{
     db = new Database('my-shop-database')
-    console.log('Database Created!')
+    console.log('Database Initialised')
 } catch(e){
     console.error('Error while initializing DB', e)
     throw e;
@@ -25,7 +25,7 @@ insertOrderDetails();
 
 function insertUsers(){
     const countResult = db.prepare(queries.countUsers).get();
-    if(countResult['count(email)'] === 0){
+    if(countResult && countResult['count(email)'] === 0){
         const insert = db.prepare(queries.createUser);
         for(const user of initData.usersData){
             insert.run(user.userId, user.email, user.password, user.userRole, user.isAdmin);
@@ -63,6 +63,13 @@ function insertOrderDetails(){
     }
 }
 
+export function insertUser(user){
+    const insert = db.prepare(queries.createUser);
+    insert.run(
+        user.userId, user.email, user.password, user.userRole, user.isAdmin
+    );
+}
+
 export function getAllUsers() {
     return db.prepare(queries.selectAllUsers).all();
 }
@@ -84,13 +91,13 @@ export function deleteUserById(userId) {
 }
 
 export function updateUserByEmail(email, userData) {
-    const { updatedEmail, password, userRole, isAdmin } = userData;
-    return db.prepare(queries.updateUserByEmail).run(updatedEmail, password, userRole, isAdmin, email);
+    const { userId, updatedEmail, password, userRole, isAdmin } = userData;
+    return db.prepare(queries.updateUserByEmail).run(userId, updatedEmail, password, userRole, isAdmin);
 }
 
 export function updateUserById(userId, userData) {
     const { email, password, userRole, isAdmin } = userData;
-    return db.prepare(queries.updateUserById).run(email, password, userRole, isAdmin, userId);
+    return db.prepare(queries.updateUserById).run(userId, email, password, userRole, isAdmin);
 }
 
 export function getAllProducts() {
