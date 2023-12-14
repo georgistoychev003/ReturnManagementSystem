@@ -44,6 +44,7 @@ export async  function postUser(req, res) {
     }
 }
 
+
 export async function updateUserInformation(req, res) {
     //TODO update the user information
     const { emailOrUserId } = req.params;
