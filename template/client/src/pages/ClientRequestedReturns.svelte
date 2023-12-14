@@ -1,46 +1,75 @@
 <script>
-    // Sample data for return requests, we should replace it with the database contents when database is setup
-    let returnRequests = [
-        { id: 'XX', overview: 'XXXXXXXXXX', price: 'XXX', date: 'XXXXX', status: 'RETURNED' },
+    import { onMount } from 'svelte';
 
-    ];
+    let returnRequests = [];
+    let isLoading = true;
+    let errorMessage = '';
+
+    const fetchReturnRequests = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/returns');
+            if (!response.ok) {
+                throw new Error('Failed to fetch return requests');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching return requests:', error);
+            throw error;
+        }
+    };
+
+    onMount(async () => {
+        try {
+            returnRequests = await fetchReturnRequests();
+        } catch (error) {
+            errorMessage = error.message;
+        } finally {
+            isLoading = false;
+        }
+    });
 
     const viewDetails = (requestId) => {
-        // Logic to view details of the return request should go here once backend is setup
         console.log(`View details for request ID: ${requestId}`);
-
+        // Here we should most likely  redirect the user to a details page or open a modal with more information
     };
 </script>
 
-<div class="client-return-requests">
-    <h1>My Requests</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>OVERVIEW</th>
-            <th>PRICE</th>
-            <th>DATE</th>
-            <th>STATUS</th>
-            <th></th> <!-- Details column -->
-        </tr>
-        </thead>
-        <tbody>
-        {#each returnRequests as request}
+{#if isLoading}
+    <p>Loading return requests...</p>
+{:else if errorMessage}
+    <p>Error: {errorMessage}</p>
+{:else}
+    <div class="client-return-requests">
+        <h1>My Requests</h1>
+        <table>
+            <thead>
             <tr>
-                <td>{request.id}</td>
-                <td>{request.overview}</td>
-                <td>{request.price}</td>
-                <td>{request.date}</td>
-                <td class="status">{request.status}</td>
-                <td>
-                    <button on:click={() => viewDetails(request.id)} class="details-btn">Details</button>
-                </td>
+                <th>ID</th>
+                <th>OVERVIEW</th>
+                <th>PRICE</th>
+                <th>DATE</th>
+                <th>STATUS</th>
+                <th></th> <!-- Details column -->
             </tr>
-        {/each}
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+            {#each returnRequests as request}
+                <tr>
+                    <td>{request.id}</td>
+                    <td>{request.overview}</td>
+                    <td>{request.price}</td>
+                    <td>{request.date}</td>
+                    <td class="status">{request.status}</td>
+                    <td>
+                        <button on:click={() => viewDetails(request.id)} class="details-btn">Details</button>
+                    </td>
+                </tr>
+            {/each}
+            </tbody>
+        </table>
+    </div>
+{/if}
+
 
 <style>
     .client-return-requests {

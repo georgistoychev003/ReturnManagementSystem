@@ -1,37 +1,86 @@
 <script>
+    import { onMount } from 'svelte';
 
-    //once database is setup, this will no longer be hardcoded and updated with the actual contents
-    let requestData = {
-        products: ["Product 1", "Product 2"],
-        date: "2023-01-01",
-        status: "Pending",
-        comment: "Please process my return quickly.",
-        label: "RETURN-NR-1"
+    let returnRequests = [];
+    let isLoading = true;
+    let errorMessage = '';
+
+    const fetchReturnRequests = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/returns');
+            if (!response.ok) {
+                throw new Error('Failed to fetch return requests');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching return requests:', error);
+            throw error;
+        }
     };
 
-    const cancelRequest = () => {
-        console.log('RMA request cancelled');
-        // we should implement cancellation logic here
+    onMount(async () => {
+        try {
+            returnRequests = await fetchReturnRequests();
+        } catch (error) {
+            errorMessage = error.message;
+        } finally {
+            isLoading = false;
+        }
+    });
+
+    const cancelRequest = async (requestId) => {
+        if (!confirm('Are you sure you want to cancel this RMA request?')) {
+            return; // User cancelled the action
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/returns/${requestId}`, {
+                method: 'DELETE',
+                // Include headers if your API requires them, e.g., Authorization
+            });
+            if (!response.ok) {
+                throw new Error(`Failed to cancel RMA request: ${response.statusText}`);
+            }
+            const result = await response.json();
+            console.log('RMA request cancelled', result);
+            // Remove the cancelled request from the list
+            returnRequests = returnRequests.filter(request => request.id !== requestId);
+        } catch (error) {
+            console.error('Error cancelling RMA request:', error);
+
+        }
     };
 </script>
 
-<div class="rma-cancel-container">
-    <h1>Request Details</h1>
-    <div class="rma-details">
-        <div class="details">
-            <p><strong>Products:</strong> {requestData.products.join(", ")}</p>
-            <p><strong>Date:</strong> {requestData.date}</p>
-            <p><strong>Status:</strong> {requestData.status}</p>
-            <p><strong>Comment:</strong> {requestData.comment}</p>
-        </div>
-        <div class="barcode-container">
-
-            <img src="" alt="Barcode for RMA Request" />
-            <p>{requestData.label}</p>
-        </div>
+{#if isLoading}
+    <p>Loading return requests...</p>
+{:else if errorMessage}
+    <p>Error: {errorMessage}</p>
+{:else if returnRequests.length === 0}
+    <p>No return requests found.</p>
+{:else}
+    <div class="rma-cancel-container">
+        <h1>My Return Requests</h1>
+        {#each returnRequests as request}
+            <div class="rma-details">
+                <div class="details">
+                    <p><strong>Products:</strong> {request.products.join(", ")}</p>
+                    <p><strong>Date:</strong> {request.date}</p>
+                    <p><strong>Status:</strong> {request.status}</p>
+                    <p><strong>Comment:</strong> {request.comment}</p>
+                </div>
+                <div class="barcode-container">
+                    <!-- Replace the following with your barcode image generation logic -->
+                    <img src="/path-to-barcode/{request.label}" alt="Barcode for RMA Request" />
+                    <p>{request.label}</p>
+                </div>
+                {#if request.status !== 'Cancelled' && request.status !== 'Processed'}
+                    <button on:click={() => cancelRequest(request.id)} class="cancel-request-btn">Cancel Request</button>
+                {/if}
+            </div>
+        {/each}
     </div>
-    <button on:click={cancelRequest} class="cancel-request-btn">Cancel Request</button>
-</div>
+{/if}
 
 <style>
     .rma-cancel-container {
