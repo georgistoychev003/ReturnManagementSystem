@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
+import {selectAllReturnedProductById} from "../database/database-queries.js";
 
 // TODO autoincrement Ids, get functions for orders and orderdetails
 
@@ -149,6 +150,23 @@ export function getAllOrderDetails() {
 export function deleteRmaById(returnId) {
     return db.prepare(queries.deleteRmaById).run(returnId);
 }
+
 export function getAllRma() {
     return db.prepare(queries.selectAllRma).all();
+}
+
+export function getAllRmaById() {
+    return db.prepare(queries.selectAllReturnedProductById).all();
+}
+
+export function getALlReturnedProducts(){
+    return db.prepare(queries.selectAllReturnedProducts).all();
+}
+
+export function getALlReturnedProductsByRMAId(){
+    return db.prepare(queries.selectAllReturnedProducts).get(RMAId);
+}
+
+export function deleteRMAById(orderId) {
+    return db.prepare(queries.deleteOrderByOrderId).run(RMAI);
 }
