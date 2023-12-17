@@ -43,6 +43,12 @@
 - Offer help to team members in need.
 - Share resources and knowledge for the collective benefit of the team.
 
+### Team Values:
+- Considering that this is the first project where we have a client on board, we are going to learn a lot a long the way we want to keep that in mind, as we are not going to do everything perfect from the beginning, but will try to get better every day individually as well as a team.
+- It is important to maintain a good harmony in the group and a safe space for everyone to feel comfortable and work in the most optimal conditions.
+- As this is a team project its everyones job to keep up to date with the tasks that are assigned in order to keep the truth we put on each other in this assignment.
+- In addition to the trust we must have , we lso need to be transparent with each other and support each other to become better, by being transparent we can help each other out and know each others strengths and weakness in order to rely on each other
+
 ### Conflict Resolution:
 - Avoid confrontation.
 - Focus on problem-solving rather than personal blame.
@@ -50,3 +56,12 @@
 
 ### Effective Time Management:
 - Register your work time in the mutual Excel time management spreadsheet.
+
+
+### Dicipline
+- In the case that someone does not respect the rules and the values that we are stading on, actions will be taken against them:
+-  - In case its the first time, we will give a warning.
+-  - Second time, a strike will be given to the person
+-  - Third time, a second strike will be given to the person
+-  - And lastly the person will be removed from the team.
+- We do not want this to happen but this will be the measures we will take in case
