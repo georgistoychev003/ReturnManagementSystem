@@ -1,16 +1,9 @@
-import {
-    deleteUserByEmail, deleteUserById, getAllUsers,
-    getUserByEmail,
-    getUserById,
-    updateUserByEmail,
-    updateUserById
-} from "../database/database-manager-2.js";
+import * as db  from "../database/database-manager-2.js";
 import * as queries from "../database/database-queries.js";
 import {StatusCodes} from "http-status-codes";
-import db from "better-sqlite3";
+
 
 export async function getUser(req, res) {
-    //TODO get a user
     const { emailOrUserId } = req.params;
     try {
         let user;
@@ -30,53 +23,44 @@ export async function getUser(req, res) {
 }
 
 export async  function postUser(req, res) {
-    //TODO query the database to update a user
-    const { email, password, userRole, isAdmin } = req.body;
+    const user = req.body;
     try {
-        const createUserResult = db.prepare(queries.createUser).run(email, password, userRole, isAdmin);
-        if (createUserResult.changes > 0) {
-            res.status(StatusCodes.CREATED).json({ message: "User created successfully." });
-        } else {
-            res.status(StatusCodes.BAD_REQUEST).json({ error: "Failed to create user." });
-        }
+        db.insertUser(user);
+        res.status(StatusCodes.CREATED).json({ message: "User created successfully." });
+
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to create user." });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "INTERNAL_SERVER_ERROR Failed to create user." });
     }
 }
 
 
 export async function updateUserInformation(req, res) {
-    //TODO update the user information
     const { emailOrUserId } = req.params;
     const userData = req.body;
     try {
         let updateResult;
         if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrUserId)) { // Check if emailOrUserId is an email
-            updateResult = updateUserByEmail(emailOrUserId, userData);
+            db.updateUserByEmail(emailOrUserId, userData);
         } else {
-            updateResult = updateUserById(emailOrUserId, userData);
+            db.updateUserById(emailOrUserId, userData);
         }
-        if (updateResult.changes > 0) {
-            res.status(StatusCodes.OK).json({ message: "User updated successfully." });
-        } else {
-            res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
-        }
+        res.status(StatusCodes.OK).json({ message: "User updated successfully." });
+
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to update user." });
     }
 }
 
 export async function deleteUser(req, res) {
-    //TODO delete a user
     const { emailOrUserId } = req.params;
     try {
         let deleteResult;
         if (typeof emailOrUserId === 'string') {
-            deleteResult = deleteUserByEmail(emailOrUserId);
+            deleteResult = db.deleteUserByEmail(emailOrUserId);
         } else if (typeof emailOrUserId === 'number') {
-            deleteResult = deleteUserById(emailOrUserId);
+            deleteResult = db.deleteUserById(emailOrUserId);
         }
-        if (deleteResult.changes > 0) {
+        if(db.getUserById(emailOrUserId)){
             res.status(StatusCodes.OK).json({ message: "User deleted successfully." });
         } else {
             res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
@@ -87,7 +71,6 @@ export async function deleteUser(req, res) {
 }
 
 export async function getListOfUsers(req, res){
-    //TODO get a list of users
     try {
         const users = getAllUsers();
         res.status(StatusCodes.OK).json(users);

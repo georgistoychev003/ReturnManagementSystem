@@ -25,7 +25,7 @@
             console.log(payload)
             redirectToRolePage(payload.role);
         } else {
-            console.error(data.error); // Handle login error
+            console.error(data.error);
         }
     };
 
@@ -46,7 +46,7 @@
                 page('/controller');
                 break;
             default:
-                page('/'); // Default redirect if role is not recognized
+                page('/');
         }
     }
 </script>

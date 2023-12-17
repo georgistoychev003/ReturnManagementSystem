@@ -1,14 +1,18 @@
 <script>
-    // Replace this with the actual fetch call to get products from your backend
+
     import {onMount} from "svelte";
 
     let availableProducts = []; // This will be fetched from the backend
 
-    // Fetch available products on component mount
+    // Fetch available products on component mount with returnable status
     onMount(async () => {
         try {
             const response = await fetch('http://localhost:3000/products');
-            availableProducts = await response.json();
+            const products = await response.json();
+            availableProducts = products.map(product => ({
+                ...product,
+                isReturnable: checkReturnEligibility(product)
+            }));
         } catch (error) {
             console.error('Error fetching products:', error);
         }
@@ -20,6 +24,17 @@
     const updateQuantity = (product, quantity) => {
         product.quantity = parseInt(quantity);
         selectedProducts = availableProducts.filter(p => p.quantity > 0);
+    };
+
+
+
+    const checkReturnEligibility = (product) => {
+        const purchaseDateLimit = new Date();
+        purchaseDateLimit.setDate(purchaseDateLimit.getDate() - 14);
+
+        return product.type !== 'food' &&
+            (product.type !== 'video games' || product.isSealed) &&
+            new Date(product.orderDate) >= purchaseDateLimit;
     };
 
     const createRMARequest = async () => {

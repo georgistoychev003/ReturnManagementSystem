@@ -1,54 +1,66 @@
-import * as databaseManager from '../database/database-manager-2.js';
-
-
-
-export function createRMA(req, res) {
-    // Should be a logic on whether the item is already returned or not
-    //TODO check once the design in corrected
-    const rma = req.body;
-    if (rma.type === "food"){
-        res
-            .status(408)
-            .json(
-            {message: "you cannot return a food item"}
-        )
-    }
-    // Check the 14 days return requirement
-    // Check that the product has not yet been returned
-    else{
-        res
-            .status(201)
-            .json({message : "The RMA was successfully created"})
-    }
-}
-
-export function deleteRma(req, res) {
-    //TODO check once the design in corrected
-    const returnId = req.params.returnId;
-    const listOfRMa = databaseManager.getAllRma();
-    const returnIdExists = listOfRMa.some(obj => Object.values(obj).includes(returnId));
-    if (returnIdExists){
-        databaseManager.deleteRmaById(returnId);
-        res
-            .status(201)
-            .json(
-                {message : "The RMA with Id "  + returnId + "was successfully deleted"});
-    }
-    else{
-        res
-            .status(404)
-            .json({message : "The RMA with Id " + returnId + " does not exist and thus cannot be deleted"})
-    }
-}
-
-export function patchRma() {
-    //TODO update an rma
-}
-
-export function getRma() {
-    //TODO get an rma
-}
-
-export function getListOfRmas() {
-    //TODO get list of rmas
-}
+// import {
+//     deleteUserByEmail,
+//     deleteUserById,
+//     getAllUsers,
+//     getUserByEmail,
+//     getUserById, updateOrderDetailById
+// } from "../database/database-manager-2.js";
+// import {StatusCodes} from "http-status-codes";
+//
+// export function deleteRma(req, res) {
+//     const { rmaId } = req.params;
+//     try {
+//         let deleteResult;
+//         if (typeof rmaId === 'string') {
+//             deleteResult = //TODO query
+//         } else if (typeof rmaId === 'number') {
+//             deleteResult = //TODO query
+//         }
+//         if (deleteResult.changes > 0) {
+//             res.status(StatusCodes.OK).json({ message: "RMA deleted successfully." });
+//         } else {
+//             res.status(StatusCodes.NOT_FOUND).json({ error: "RMA not found." });
+//         }
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to delete RMA." });
+//     }
+// }
+//
+// export function patchRma(req, res) {
+//     const { rmaId } = req.params;
+//     const updateData = req.body;
+//     try {
+//         const updatedRMADetails = updateOrderDetailById(rmaId, updateData);
+//         res.status(StatusCodes.OK).json(updatedRMADetails);
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to update RMA details." });
+//     }
+// }
+//
+// export function getRma(req, res) {
+//     //TODO get an rma
+//     const { rmaId } = req.params;
+//     try {
+//         let rmaResult;
+//         if (rmaId) { // Check if emailOrUserId is an email
+//             rmaResult = // TODO query
+//         }
+//         if (rmaResult) {
+//             res.status(StatusCodes.OK).json(rmaResult);
+//         } else {
+//             res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
+//         }
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve user." });
+//     }
+// }
+//
+// export function getListOfRmas(req, res) {
+//     //TODO get list of rmas
+//     try {
+//         const rmas = //TODO query
+//             res.status(StatusCodes.OK).json(rmas);
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+//     }
+// }

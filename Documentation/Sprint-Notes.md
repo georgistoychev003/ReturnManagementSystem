@@ -116,3 +116,13 @@ During this standUp, we checked who had done what, and here are the results :
 * Frankie : working on controller dashboard
 * Georgi  : working on his task : admin components partially finished
 * Brice : finish all the api spec for orders and users. RMA need to be done after pablo done with DB
+
+
+### sprint 1 standup 5  (2023-12-13)
+* Badr : finished fetches for Admin
+* Pablo : changed database design, and table (done)
+* Desmond : queries and tested backend (task done) 
+* Frankie : working on controller dashboard
+* Georgi  : working on his task : admin components partially finished
+* Brice : finish fetches from
+
