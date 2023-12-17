@@ -123,12 +123,13 @@
 
 # Changelog
 
-| Version | Date       | Location            | Description                               | Author         |
-|---------|------------|---------------------|-------------------------------------------|----------------|
-| 1.0     | 01-12-2023 | -                   | Initial Document Created – Pending Review | Entire Group 2 |
-| 2.0     | 16-12-2023 | Multiple locations  |                                           | Badr           |
-|         |            |                     |                                           |                |
-|         |            |                     |                                           |                |
+| Version | Date       | Location     | Description                               | Author         |
+|---------|------------|--------------|-------------------------------------------|----------------|
+| 1.0     | 01-12-2023 | -            | Initial Document Created – Pending Review | Entire Group 2 |
+| 1.1     | 05-12-2023 | Requirements | Updated based on clients feedback         | Georgi/Badr    |
+| 2.0     | 16-12-2023 | Wireframes   | Updated based on Lecturers feedback       | Badr           |
+|         |            |              |                                           |                |
+|         |            |              |                                           |                |
 
 ## *See Appendix C for a full list of changes
 
