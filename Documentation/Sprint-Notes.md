@@ -136,5 +136,5 @@ During this standUp, we checked who had done what, and here are the results :
 
 
 these are the results of this sprint, all the objectives that were planned are done. and here is the burnout chart : 
-![img.png](img.png)
+![img_1.png](img_1.png)
 
