@@ -126,3 +126,15 @@ During this standUp, we checked who had done what, and here are the results :
 * Georgi  : working on his task : admin components partially finished
 * Brice : finish fetches from
 
+### sprint 1 standup 6  (2023-12-17)
+* Badr : after presentation, went through code for refactoring 
+* Pablo : worked on CoC
+* Desmond : worked on system design
+* Frankie : went through the controller pages and connect them
+* Georgi  : worked on refactoring the code 
+* Brice : went through the documentation for refactoring
+
+
+these are the results of this sprint, all the objectives that were planned are done. and here is the burnout chart : 
+![img_1.png](img_1.png)
+
