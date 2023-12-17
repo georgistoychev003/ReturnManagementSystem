@@ -24,6 +24,8 @@ export const createOrderTable = `CREATE TABLE IF NOT EXISTS "order"(
     totalPrice DOUBLE NOT NULL
     )`
 
+
+// TODO issue with foreign key when deleting a product. Do we need to delete products as I assume and RMA wouldn't be involved?
 export const createOrderDetailsTable = `CREATE TABLE IF NOT EXISTS orderDetail(
     orderDetailId INT PRIMARY KEY,
     orderId INT NOT NULL,

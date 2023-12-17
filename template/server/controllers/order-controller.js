@@ -9,7 +9,6 @@ import {StatusCodes} from "http-status-codes";
 
 
 export async function getOrdersDetails(req, res) {
-    //TODO get all order details
     try {
         const orderDetails = getAllOrderDetails();
         res.status(StatusCodes.OK).json(orderDetails);
@@ -19,7 +18,6 @@ export async function getOrdersDetails(req, res) {
 }
 
 export async function deleteOrderDetails(req, res){
-    //TODO delete order details
     const { orderDetailId } = req.params;
     try {
         const deleteResult = deleteOrderDetailById(orderDetailId);
@@ -34,7 +32,6 @@ export async function deleteOrderDetails(req, res){
 }
 
 export async function patchOrderDetails(req, res) {
-    //TODO update order details
     const { orderDetailId } = req.params;
     const updateData = req.body;
     try {
@@ -46,7 +43,6 @@ export async function patchOrderDetails(req, res) {
 }
 
 export async function getOrderDetails(req, res){
-    //TODO get an order's details
     const { orderId } = req.params;
     try {
         const orderDetails = getOrderDetailById(orderId);
@@ -61,7 +57,6 @@ export async function getOrderDetails(req, res){
 }
 
 export async function deleteOrder(req, res) {
-    //TODO delete an order
     const { orderId } = req.params;
     try {
         const deleteResult = await deleteOrderById(orderId);
@@ -76,7 +71,6 @@ export async function deleteOrder(req, res) {
 }
 
 export async function patchOrder(req, res) {
-    //TODO update an order
     const { orderId } = req.params;
     const updateData = req.body;
     try {
@@ -88,7 +82,6 @@ export async function patchOrder(req, res) {
 }
 
 export async function getOrder(req, res) {
-    //TODO get an order
     const {orderId} = req.params;
     try {
         const order = await getOrderById(orderId);
@@ -103,7 +96,6 @@ export async function getOrder(req, res) {
 }
 
 export async function getListOfOrders(req, res) {
-        //TODO get list of orders
     try {
         const orders = await getAllOrders();
         res.status(StatusCodes.OK).json(orders);

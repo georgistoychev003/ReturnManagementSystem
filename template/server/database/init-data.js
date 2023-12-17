@@ -9,15 +9,15 @@ export const usersData =[
     {
         userId: 2,
         email: "collector@email.com",
-        password: "collector",
+        password: "password",
         userRole: "collector",
         isAdmin: "false"
     },
     {
         userId: 3,
-        email: "collector@email.com",
+        email: "controller@email.com",
         password: "password",
-        userRole: "collector",
+        userRole: "controller",
         isAdmin: "false"
     },
     {

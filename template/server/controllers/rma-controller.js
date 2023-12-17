@@ -1,15 +1,66 @@
-export function deleteRma() {
-    //TODO delete an rma
-}
-
-export function patchRma() {
-    //TODO update an rma
-}
-
-export function getRma() {
-    //TODO get an rma
-}
-
-export function getListOfRmas() {
-    //TODO get list of rmas
-}
+// import {
+//     deleteUserByEmail,
+//     deleteUserById,
+//     getAllUsers,
+//     getUserByEmail,
+//     getUserById, updateOrderDetailById
+// } from "../database/database-manager-2.js";
+// import {StatusCodes} from "http-status-codes";
+//
+// export function deleteRma(req, res) {
+//     const { rmaId } = req.params;
+//     try {
+//         let deleteResult;
+//         if (typeof rmaId === 'string') {
+//             deleteResult = //TODO query
+//         } else if (typeof rmaId === 'number') {
+//             deleteResult = //TODO query
+//         }
+//         if (deleteResult.changes > 0) {
+//             res.status(StatusCodes.OK).json({ message: "RMA deleted successfully." });
+//         } else {
+//             res.status(StatusCodes.NOT_FOUND).json({ error: "RMA not found." });
+//         }
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to delete RMA." });
+//     }
+// }
+//
+// export function patchRma(req, res) {
+//     const { rmaId } = req.params;
+//     const updateData = req.body;
+//     try {
+//         const updatedRMADetails = updateOrderDetailById(rmaId, updateData);
+//         res.status(StatusCodes.OK).json(updatedRMADetails);
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to update RMA details." });
+//     }
+// }
+//
+// export function getRma(req, res) {
+//     //TODO get an rma
+//     const { rmaId } = req.params;
+//     try {
+//         let rmaResult;
+//         if (rmaId) { // Check if emailOrUserId is an email
+//             rmaResult = // TODO query
+//         }
+//         if (rmaResult) {
+//             res.status(StatusCodes.OK).json(rmaResult);
+//         } else {
+//             res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
+//         }
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve user." });
+//     }
+// }
+//
+// export function getListOfRmas(req, res) {
+//     //TODO get list of rmas
+//     try {
+//         const rmas = //TODO query
+//             res.status(StatusCodes.OK).json(rmas);
+//     } catch (error) {
+//         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+//     }
+// }

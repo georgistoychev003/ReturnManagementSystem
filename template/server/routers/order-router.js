@@ -7,7 +7,7 @@ import * as orderController from '../controllers/order-controller.js';
 // Order routes
 router.get('/', orderController.getListOfOrders);
 
-router.get('/:oderId', orderController.getOrder);
+router.get('/:orderId', orderController.getOrder);
 
 router.patch('/:orderId', orderController.patchOrder);
 
