@@ -64,4 +64,4 @@
 -  - Second time, a strike will be given to the person
 -  - Third time, a second strike will be given to the person
 -  - And lastly the person will be removed from the team.
-- We do not want this to happen but this will be the measures we will take in case
+- We do not want this to happen but this will be the measures we will take in case.
