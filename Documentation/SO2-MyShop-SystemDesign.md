@@ -74,17 +74,19 @@
 
 [4.3.4 SQLite Database](#434-sqlite-database)
 
-[4.4 Security architecture](#_Toc153670450)
+[4.4 Component Interactions - Sequence Diagram](#_Toc1536704510)
 
-[4.5 Performance](#performance)
+[4.5 Security architecture](#_Toc153670450)
 
-[4.5.1 Performance Goals](#451-performance-goals)
+[4.6 Performance](#performance)
 
-[4.5.2 System Responsiveness](#452-system-responsiveness)
+[4.6.1 Performance Goals](#451-performance-goals)
 
-[4.5.3 Load Handling](#453-load-handling)
+[4.6.2 System Responsiveness](#452-system-responsiveness)
 
-[4.5.4 Error Handling](#454-error-handling)
+[4.6.3 Load Handling](#453-load-handling)
+
+[4.6.4 Error Handling](#454-error-handling)
 
 [5.0 System Design](#system-design)
 
@@ -140,7 +142,7 @@ Lastly, the security design emphasizes procedures such as bcrypt hashing, unique
 
 Overall the SDD serves as a proposal for the myShop.com RMA system, highlighting the required functionality, security, and user experience, striving to meet client expectations within the specified timeframe and constraints.
 
-# Introduction
+# 1.0 Introduction
 
 The System Design Document (SDD) details how the functional and non-functional requirements, use cases, and system flow recorded in the Functional Design Document (FDD) should be implemented within the technical system when being built.
 
@@ -150,7 +152,7 @@ The SDD provides an overview of the system architecture broken into smaller sect
 
 The SDD provides an outline to the client on how the RMA system at myShop.com will be developed, explaining how everything works such as what each user can do, how they interact with the system and what happens in the background to make it all function as it should. The SDD also explains how the components of the system are connected ensuring the system functions and meets the user’s needs. The SDD provides the framework for the team of developers (Group 2) ensuring a shared understanding of what to build.
 
-# General Overview and Approach
+# 2.0 General Overview and Approach
 
 The myShop.com web system will be designed to address the distinct issues and requirements related to the RMA process for various purchases through a web shop. Focusing on the key aspects of functionality, security, and user experience over the course of 8 weeks, broken down into four 2-week sprints, our objective is to develop a working RMA system.
 
@@ -395,7 +397,12 @@ Choosing SQLite as the database for your team's project can be attributed to sev
 -   SQLite offers a high degree of reliability. It is well-tested and widely used in various systems, from small to large-scale.
 -   For development and testing phases, SQLite is particularly useful. It allows each developer to have a local copy of the database.
 
-## 4.4 Security architecture
+## 4.4 Component Interactions - Sequence Diagram
+![img.png](images/img.png)
+
+The diagram illustrates the interaction flow between a user's device, a Svelte frontend, and a Node.js/Express.js server with an SQLite database for a Return Merchandise Authorization (RMA) system. It outlines the steps from accessing the system and logging in to initiating and confirming an RMA request. The process includes credential verification and data storage, showcasing the sequence of user and server actions required to complete the transaction.
+
+## 4.5 Security architecture
 
 The security architecture discusses how the system will allow users to access the correct part of the system by logging in with an email and password.
 
@@ -403,15 +410,15 @@ The user logs into the system with his email and password. The information of hi
 
 ![A diagram of a computer Description automatically generated](images/aae5383fa18ef76ddd530ce8e38adcaf.png)
 
-## 4.5 Performance
+## 4.6 Performance
 
-### 4.5.1 Performance Goals
+### 4.6.1 Performance Goals
 
 Based on the requirements discussed in the Functional Design Documentation, the average response time of the system should be 1000ms (1 second) across core functions such as the user interface, database query to display data and authenticate users.
 
 Secondly, the system should be capable of processing and handling 50 requests simultaneously while maintaining response times within specified thresholds.
 
-### 4.5.2 System Responsiveness
+### 4.6.2 System Responsiveness
 
 **Core User Interactions**: The system should achieve an average response time of 1000ms for critical user interactions, measured and validated through user experience testing scenarios within the system.
 
@@ -421,11 +428,11 @@ Secondly, the system should be capable of processing and handling 50 requests si
 
 **Authentication and Authorization:** Processes related to user authentication and authorization shall complete within specified timeframes to ensure access to secured areas without delays, verified through security and performance tests within the system.
 
-### 4.5.3 Load Handling
+### 4.6.3 Load Handling
 
 The system shall sustain a throughput of approximately 50 requests simultaneously under peak load conditions, as verified by load testing tools and performance benchmarks.
 
-### 4.5.4 Error Handling
+### 4.6.4 Error Handling
 
 In error conditions or exceptions, the system shall provide clear and understandable error messages within milliseconds, validated through error simulation tests and user validation within the system.
 
