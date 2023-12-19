@@ -123,7 +123,7 @@ During this standUp, we checked who had done what, and here are the results :
 * Pablo : changed database design, and table (done)
 * Desmond : queries and tested backend (task done) 
 * Frankie : working on controller dashboard
-* Georgi  : working on his task : admin components partially finished
+* Georgi  : finished his admin components task
 * Brice : finish fetches from
 
 ### sprint 1 standup 6  (2023-12-17)
@@ -131,7 +131,7 @@ During this standUp, we checked who had done what, and here are the results :
 * Pablo : worked on CoC
 * Desmond : worked on system design
 * Frankie : went through the controller pages and connect them
-* Georgi  : worked on refactoring the code 
+* Georgi  : worked on sequence diagrams for the system design,implemented return constraints on the client side,worked on refactoring the code 
 * Brice : went through the documentation for refactoring
 
 
