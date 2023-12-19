@@ -1,5 +1,7 @@
 <script>
     // Sample data for return requests, we should replace it with the database contents when database is setup
+    import {onMount} from "svelte";
+
     let returnRequests = [
         { id: 'R001', customer: 'John Doe', overview: 'Defective electronic item', price: '$299', date: '2023-12-01', status: 'APPROVED' },
         { id: 'R002', customer: 'Jane Smith', overview: 'Wrong size clothing', price: '$45', date: '2023-12-03', status: 'APPROVED' },
@@ -13,6 +15,23 @@
         console.log(`View details for request ID: ${requestId}`);
 
     };
+    onMount(async () => {
+        await fetchReturnRequests();
+    });
+
+    async function fetchReturnRequests() {
+        try {
+            const response = await fetch('http://localhost:3000/api/return-requests'); // Replace with your actual API endpoint
+            if (response.ok) {
+                const data = await response.json();
+                returnRequests = data; // Assuming the response is an array of return requests
+            } else {
+                console.error('Failed to fetch return requests');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 </script>
 
 <div class="customer-returns">
