@@ -60,6 +60,7 @@ export const updateUserById = `UPDATE user SET email = ?, password = ?, userRole
 export const updateProductById = `UPDATE product SET type = ?, price = ?, description = ?, imageURL = ?, productWeight = ?, inventoryStock = ? WHERE productId = ?`;
 export const updateOrderByOrderId = `UPDATE "order" SET userId = ?, orderDate = ?, totalPrice = ? WHERE orderId = ?`;
 export const updateOrderDetailById = `UPDATE orderDetail SET orderId = ?, productId = ?, quantity = ? WHERE orderDetailId = ?`;
+export const updateProductStockById = `UPDATE product SET inventoryStock = ? WHERE productId = ?`;
 
 export const selectAllUsers = `SELECT * FROM user`;
 export const selectUserByEmail = `SELECT * FROM user WHERE email = ?`;

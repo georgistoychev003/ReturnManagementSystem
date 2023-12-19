@@ -1,4 +1,5 @@
 <script>
+    // Sample data for return stocks, we should replace it with the database contents when database is setup
     import {onMount} from "svelte";
     let returnStock = [];
 
@@ -29,17 +30,23 @@
     async function updateStockQuantity(stockId) {
         const stock = returnStock.find(item => item.id === stockId);
         const newQuantity = prompt(`Update quantity for ${stock.name}. Current quantity: ${stock.quantity}`);
+
         if (newQuantity !== null) {
-            stock.quantity = newQuantity; // Update local state
             try {
-                await fetch(`http://localhost:3000/api/stock/${stockId}`, { // Replace with your API endpoint
-                    method: 'PUT',
+                const response = await fetch(`http://localhost:3000/product/${stockId}`, {
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ quantity: newQuantity })
+                    body: JSON.stringify({ inventoryStock: newQuantity })
                 });
-                console.log(`Updated stock ID ${stockId} to new quantity ${newQuantity}`);
+
+                if (response.ok) {
+                    console.log(`Updated stock ID ${stockId} to new quantity ${newQuantity}`);
+                    await fetchStockData(); // Re-fetch data to update the frontend
+                } else {
+                    console.error('Failed to update stock');
+                }
             } catch (error) {
                 console.error('Error updating stock:', error);
             }

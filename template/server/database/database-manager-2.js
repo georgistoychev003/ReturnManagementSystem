@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
-import {selectAllReturnedProductById} from "../database/database-queries.js";
+
 
 
 
@@ -141,6 +141,10 @@ export function getOrderDetailById(orderDetailId) {
     return db.prepare(queries.selectOrderDetailById).get(orderDetailId);
 }
 
+export async function updateProductStock(productId, inventoryStock) {
+    const updateStatement = db.prepare(queries.updateProductStockById);
+    return updateStatement.run(inventoryStock, productId);
+}
 export function updateOrderDetailById(orderDetailId, orderDetailData) {
     const { orderId, productId, quantity } = orderDetailData;
     return db.prepare(queries.updateOrderDetailById).run(orderId, productId, quantity, orderDetailId);

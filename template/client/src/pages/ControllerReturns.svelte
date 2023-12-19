@@ -15,6 +15,7 @@
         console.log(`View details for request ID: ${requestId}`);
 
     };
+
     onMount(async () => {
         await fetchReturnRequests();
     });
