@@ -1,7 +1,28 @@
 <script>
-    // once the authorization with a token is donee, this will be replaced to obtain the username of the user
-    // from the payload of the token stored in a tokenstore here on the client side
-    let userName = "Mr Zanoni";
+    import { onMount } from 'svelte';
+    let userName = "Loading...";
+
+    onMount(async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const response = await fetch('http://localhost:3000/api/userinfo', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    userName = data.name; // Assuming the response includes a field 'name'
+                } else {
+                    console.error('Failed to fetch user details');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    });
 </script>
 
 <div class="controller-home">
