@@ -1,4 +1,6 @@
 <script>
+    import { onMount } from 'svelte';
+
     let username = '';
     let email = '';
     let password = '';
@@ -6,7 +8,28 @@
     let address = '';
     let isAdmin = false;
     let userRole = '';
+    let roles = [];
+    let selectedRole = '';
 
+
+
+    onMount(async () => {
+        try {
+            const response = await fetch('http://localhost:3000/users/roles');
+            if (response.ok) {
+                const data = await response.json();
+                roles = data.roles; // Assuming the response contains a "roles" array
+            } else {
+                console.error('Failed to fetch user roles');
+            }
+        } catch (error) {
+            console.error('Error fetching user roles:', error);
+        }
+    });
+
+    const assignUserRole = (event) => {
+        userRole = event.target.value; // Update the userRole variable with the selected role
+    };
     const createUser = () => {
         // Function to validate email format
         const isValidEmail = (email) => {
@@ -43,6 +66,7 @@
         isAdmin = false;
 
 
+
         // Create user object
      //   const user = { username, email, password, address };
         const user = {  email, password, userRole, isAdmin };
@@ -73,6 +97,7 @@
                 alert('Failed to create user. Please try again.');
             });
     };
+
 </script>
 
 <div class="registration-form">
@@ -82,6 +107,13 @@
     <input type="password" bind:value={password} placeholder="Password" required>
     <input type="password" bind:value={repeatPassword} placeholder="Repeat Password" required>
     <input type="text" bind:value={address} placeholder="Address" required>
+    <select bind:value={userRole} on:change={assignUserRole}>
+        <option value="">Select User Role</option>
+        <!-- Fetch and populate options dynamically from user roles -->
+        {#each roles as role}
+            <option value={role}>{role}</option>
+        {/each}
+    </select>
     <button class="create-user-button" on:click={createUser}>Create User</button>
 </div>
 
@@ -122,6 +154,13 @@
 
     .create-user-button:hover {
         background-color: #c9302c;
+    }
+
+    select {
+        padding: 10px;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 </style>
 
