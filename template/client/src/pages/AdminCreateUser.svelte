@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from 'svelte';
+
 
     let username = '';
     let email = '';
@@ -8,24 +8,11 @@
     let address = '';
     let isAdmin = false;
     let userRole = '';
-    let roles = [];
+
     let selectedRole = '';
 
 
 
-    onMount(async () => {
-        try {
-            const response = await fetch('http://localhost:3000/users/roles');
-            if (response.ok) {
-                const data = await response.json();
-                roles = data.roles; // Assuming the response contains a "roles" array
-            } else {
-                console.error('Failed to fetch user roles');
-            }
-        } catch (error) {
-            console.error('Error fetching user roles:', error);
-        }
-    });
 
     const assignUserRole = (event) => {
         userRole = event.target.value; // Update the userRole variable with the selected role
@@ -63,7 +50,8 @@
         email = escapeHTML(email);
         address = escapeHTML(address);
         userRole = 'client';
-        isAdmin = false;
+        isAdmin = 'false';
+      let userId = 100;
 
 
 
@@ -81,6 +69,7 @@
             body: JSON.stringify(user)
         })
             .then(response => {
+                console.log(response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -110,9 +99,10 @@
     <select bind:value={userRole} on:change={assignUserRole}>
         <option value="">Select User Role</option>
         <!-- Fetch and populate options dynamically from user roles -->
-        {#each roles as role}
-            <option value={role}>{role}</option>
-        {/each}
+        <option value= "admin"> Admin </option>
+        <option value="collector">Collector</option>
+        <option value="controller">Controller</option>
+        <option value="customer">customer</option>
     </select>
     <button class="create-user-button" on:click={createUser}>Create User</button>
 </div>

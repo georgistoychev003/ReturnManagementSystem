@@ -6,15 +6,7 @@
     let selectedRole = '';
     let selectedUser = ''; // Assuming there's a way to select a user
 
-    onMount(async () => {
-        try {
-            const response = await fetch('http://localhost:3000/users/roles');
-            const data = await response.json();
-            roles = data.roles; // Assuming the response contains a "roles" array
-        } catch (error) {
-            console.error('Error fetching roles:', error);
-        }
-    });
+
 
     async function assignRole() {
         if (selectedRole && selectedUser) {
@@ -45,9 +37,11 @@
 <h2>Select User Role</h2>
 
 <select bind:value={selectedRole}>
-    {#each roles as role}
-        <option value={role}>{role}</option>
-    {/each}
+    <option value= "admin"> Admin </option>
+    <option value="collector">Collector</option>
+    <option value="controller">Controller</option>
+    <option value="customer">customer</option>
+
 </select>
 
 <!-- Add a way to select a user -->
