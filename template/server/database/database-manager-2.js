@@ -154,7 +154,7 @@ export function getAllOrderDetails() {
     return db.prepare(queries.selectAllOrderDetails).all();
 }
 //TODO check once the design in corrected
-export function deleteRmaById(returnId) {
+export function deleteRmaByReturnId(returnId) {
     return db.prepare(queries.deleteRmaById).run(returnId);
 }
 
