@@ -20,6 +20,15 @@
         <hr>
     </div>
 
+    <div class="my-orders">
+        <ul>
+            <p> Order 1</p>
+            <p> Order 1</p>
+            <p> Order 1</p>
+            <p> Order 1</p>
+        </ul>
+    </div>
+
     <div class="inbox">
         <h2>Inbox:</h2>
         <div class="message-preview">
@@ -28,9 +37,6 @@
         </div>
     </div>
 
-    <div class="discover">
-        <h2>Discover our newest products, <a href="#" on:click|preventDefault={shopOnline}>shop online here</a>.</h2>
-    </div>
 </div>
 
 <style>
