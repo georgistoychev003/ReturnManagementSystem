@@ -9,12 +9,12 @@
 
     async function fetchStockData() {
         try {
-            const response = await fetch('http://localhost:3000/product'); // Replace with your API endpoint
+            const response = await fetch('http://localhost:3000/product');
             if (response.ok) {
                 const data = await response.json();
                 returnStock = data.map(item => ({
                     id: item.productId,
-                    name: item.description, // Assuming 'description' is the product name
+                    name: item.description,
                     type: item.type,
                     price: `$${item.price.toFixed(2)}`,
                     quantity: item.inventoryStock
@@ -43,7 +43,7 @@
 
                 if (response.ok) {
                     console.log(`Updated stock ID ${stockId} to new quantity ${newQuantity}`);
-                    await fetchStockData(); // Re-fetch data to update the frontend
+                    await fetchStockData();
                 } else {
                     console.error('Failed to update stock');
                 }
