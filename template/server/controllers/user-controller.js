@@ -1,5 +1,4 @@
 import * as db  from "../database/database-manager-2.js";
-import * as queries from "../database/database-queries.js";
 import {StatusCodes} from "http-status-codes";
 
 
@@ -8,9 +7,9 @@ export async function getUser(req, res) {
     try {
         let user;
         if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrUserId)) { // Check if emailOrUserId is an email
-            user = getUserByEmail(emailOrUserId);
+            user = db.getUserByEmail(emailOrUserId);
         } else {
-            user = getUserById(emailOrUserId);
+            user = db.getUserById(emailOrUserId);
         }
         if (user) {
             res.status(StatusCodes.OK).json(user);
@@ -38,7 +37,6 @@ export async function updateUserInformation(req, res) {
     const { emailOrUserId } = req.params;
     const userData = req.body;
     try {
-        let updateResult;
         if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrUserId)) { // Check if emailOrUserId is an email
             db.updateUserByEmail(emailOrUserId, userData);
         } else {
@@ -72,7 +70,7 @@ export async function deleteUser(req, res) {
 
 export async function getListOfUsers(req, res){
     try {
-        const users = getAllUsers();
+        const users = db.getAllUsers();
         res.status(StatusCodes.OK).json(users);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve users." });
