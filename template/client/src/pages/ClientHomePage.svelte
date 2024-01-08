@@ -20,15 +20,6 @@
         <hr>
     </div>
 
-    <div class="my-orders">
-        <ul>
-            <p> Order 1</p>
-            <p> Order 1</p>
-            <p> Order 1</p>
-            <p> Order 1</p>
-        </ul>
-    </div>
-
     <div class="inbox">
         <h2>Inbox:</h2>
         <div class="message-preview">
