@@ -14,7 +14,8 @@
 	import Users from "./pages/AdminUsersList.svelte";
 	import UserDetails from "./pages/AdminUserDetails.svelte";
 	import Requests from "./pages/AdminRequestsList.svelte";
-
+	import MyOrders from "./pages/ClientOrderList.svelte"
+	import OrderDetails from "./pages/ClientOrderDetailsList.svelte"
 
 
 
@@ -84,6 +85,15 @@
 		currentRoute = ctx.pathname;
 	});
 
+	router('/myOrders', (ctx) =>{
+		page = MyOrders;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/orderDetails', (ctx) =>{
+		page = OrderDetails;
+		currentRoute = ctx.pathname;
+	})
 
 
 

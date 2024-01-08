@@ -21,7 +21,9 @@ export const createOrderTable = `CREATE TABLE IF NOT EXISTS "order"(
     orderId SERIAL PRIMARY KEY,
     userId INT NOT NULL,
     orderDate DATE NOT NULL,
-    totalPrice DOUBLE NOT NULL
+    totalPrice DOUBLE NOT NULL,
+    returnStatus TEXT,
+    credit DOUBLE                              
     )`
 
 
@@ -45,7 +47,7 @@ export const countProducts = `SELECT count(productId) FROM product`
 
 export const createUser = `INSERT INTO user (userID, email, password, userRole, isAdmin) VALUES (?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, description, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
-export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
+export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice, returnStatus, credit) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderDetail (orderDetailId, orderId, productId, quantity) VALUES (?, ?, ?, ?)`
 
 
@@ -67,9 +69,10 @@ export const selectUserById = `SELECT * FROM user WHERE userID = ?`;
 export const selectAllProducts = `SELECT * FROM product`;
 export const selectProductById = `SELECT * FROM product WHERE productId = ?`;
 export const selectAllOrders = `SELECT * FROM "order"`;
+export const selectOrderById = `SELECT * FROM "order" WHERE OrderId = ?`;
 export const selectOrderByUserId = `SELECT * FROM "order" WHERE userId = ?`;
 export const selectOrderByDate = `SELECT * FROM "order" WHERE orderDate = ?`;
-export const selectOrderDetailById = `SELECT * FROM orderDetail WHERE orderDetailId = ?`;
+export const selectOrderDetailById = `SELECT * FROM orderDetail WHERE orderId = ?`;
 export const selectAllOrderDetails = `SELECT * FROM orderDetail`;
 
 

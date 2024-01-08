@@ -8,7 +8,7 @@
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch('http://localhost:3000/orders');
+            const response = await fetch('http://localhost:3000/orders/details/1');
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
@@ -45,36 +45,37 @@
         <table>
             <thead>
             <tr>
-                <th>ORDER ID</th>
-                <th>PRICE</th>
-                <th>ORDER DATE</th>
+                <th>PRODUCT ID</th>
+                <th>PRODUCT NAME</th>
+                <th>QUANTITY</th>
+                <th>PRICE PER ITEM</th>
                 <th>RETURN STATUS</th>
+                <th>Return Date</th>
+                <th>Return Reason</th>
                 <th>CREDIT</th>
-                <th></th> <!-- Return column -->
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            {#each orders as order}
+            {#each orders as orderDetails}
                 <tr>
-                    <td>{order.orderId}</td>
-                    <td>{order.totalPrice}</td>
-                    <td>{order.orderDate}</td>
-                    <td>{order.returnStatus}</td>
+                    <td>{orderDetails.productId}</td>
+                    <td>{orderDetails.quantity}</td>
+                    <td>{orderDetails.orderDate}</td>
+                    <td>{orderDetails.returnStatus}</td>
                     <td>
-                        {#if order.credit === null}
+                        {#if orderDetails.credit === null}
                             -
                         {:else}
-                            {order.credit}
+                            {orderDetails.credit}
                         {/if}
                     </td>
                     <td>
-                        <a href={`/orderDetails`}>
-                            <button>Order Details</button>
-                        </a>
+                        <button>Return Product</button>
                     </td>
                     <td>
-                        {#if order.returnable}
-                            <button on:click={() => requestReturn(order)}>Return</button>
+                        {#if orderDetails.returnable}
+                            <button on:click={() => requestReturn(orderDetails)}>Return</button>
                         {/if}
                     </td>
                 </tr>

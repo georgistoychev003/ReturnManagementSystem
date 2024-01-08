@@ -76,10 +76,10 @@
    {:else }
     <!-- Show default links for customer or other user types -->
     <li><a href="#">HOME &nbsp; |</a></li>
-    <li><a href="#">MY ORDERS &nbsp; |</a></li>
+    <li><a href="/MyOrders">MY ORDERS &nbsp; |</a></li>
     <li><a href="#">RETURN REQUESTS &nbsp; |</a></li>
    {/if}
-   <li><a href="#" on:click={handleLogout}>LOGOUT</a></li>
+   <li><a on:click={handleLogout}>LOGOUT</a></li>
   </ul>
  </div>
  <img class="user-image" src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="User Image">

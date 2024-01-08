@@ -50,7 +50,7 @@ function insertOrders(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrder);
         for(const order of initData.ordersData){
-            insert.run(order.orderId, order.userId, order.orderDate, order.totalPrice);
+            insert.run(order.orderId, order.userId, order.orderDate, order.totalPrice, order.returnStatus, order.credit);
         }
     }
 }
@@ -123,7 +123,10 @@ export function getAllOrders() {
     return db.prepare(queries.selectAllOrders).all();
 }
 
-export function getOrderById(orderId) {
+export function getOrderByOrderId(orderId) {
+    return db.prepare(queries.selectOrderById).get(orderId);
+}
+export function getOrderByUserId(orderId) {
     return db.prepare(queries.selectOrderByUserId).get(orderId);
 }
 
@@ -137,8 +140,8 @@ export function updateOrderByOrderId(orderId, orderData) {
     return db.prepare(queries.updateOrderByOrderId).run(userId, orderDate, totalPrice, orderId);
 }
 
-export function getOrderDetailById(orderDetailId) {
-    return db.prepare(queries.selectOrderDetailById).get(orderDetailId);
+export function getOrderDetailById(orderId) {
+    return db.prepare(queries.selectOrderDetailById).all(orderId);
 }
 
 export function updateOrderDetailById(orderDetailId, orderDetailData) {

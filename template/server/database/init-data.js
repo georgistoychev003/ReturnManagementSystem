@@ -73,19 +73,27 @@ export const ordersData = [
         "orderId": 1,
         "userId": 1,
         "orderDate": "2023-12-01",
-        "totalPrice": 99.99
+        "totalPrice": 99.99,
+        "quantity": 3,
+        "returnStatus": "N/A",
+        "credit": null
+
     },
     {
         "orderId": 2,
         "userId": 1,
         "orderDate": "2023-12-03",
-        "totalPrice": 149.50
+        "totalPrice": 149.50,
+        "returnStatus": "Completed",
+        "credit": 49.99
     },
     {
         "orderId": 3,
         "userId": 1,
         "orderDate": "2023-12-05",
-        "totalPrice": 249.75
+        "totalPrice": 249.75,
+        "returnStatus": "In Progress",
+        "credit": null
     }
 ];
 
