@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
-import {selectAllReturnedProductById} from "../database/database-queries.js";
+
 
 
 
@@ -67,6 +67,7 @@ function insertOrderDetails(){
 
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
+
     insert.run(
         user.userId, user.email, user.password, user.userRole, user.isAdmin
     );

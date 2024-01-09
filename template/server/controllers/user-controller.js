@@ -1,6 +1,7 @@
 import * as db  from "../database/database-manager-2.js";
 import * as queries from "../database/database-queries.js";
 import {StatusCodes} from "http-status-codes";
+import { v4 as uuidv4 } from 'uuid';
 
 
 export async function getUser(req, res) {
@@ -24,8 +25,15 @@ export async function getUser(req, res) {
 
 export async  function postUser(req, res) {
     const user = req.body;
+    console.log(user);
+
+    // Generate a UUID for the new user
+    const userId = uuidv4();
+    user.userId = userId;
+    console.log(user.userId)
     try {
         db.insertUser(user);
+
         res.status(StatusCodes.CREATED).json({ message: "User created successfully." });
 
     } catch (error) {
