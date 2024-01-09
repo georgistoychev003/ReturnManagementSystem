@@ -1,4 +1,10 @@
-import {deleteProductById, getAllProducts, getProductById, updateProductById} from "../database/database-manager-2.js";
+import {
+    deleteProductById,
+    getAllProducts,
+    getProductById,
+    updateProductById,
+    updateProductStock
+} from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 
 export async function getProduct(req, res) {
@@ -24,18 +30,26 @@ export async function getListOfProducts(req, res) {
     }
 }
 
+
 export async function patchProduct(req, res) {
     const { productId } = req.params;
-    const productData = req.body;
+    const { inventoryStock } = req.body; // Extract only inventoryStock
     try {
-        const updateResult = await updateProductById(productId, productData);
-        if (updateResult) {
-            res.status(StatusCodes.OK).json({ message: "Product updated successfully." });
-        } else {
-            res.status(StatusCodes.NOT_FOUND).json({ error: "Product not found." });
+        const product = await getProductById(productId);
+        if (!product) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "Product not found." });
         }
+
+        // Update the product stock and wait for the operation to complete
+        await updateProductStock(productId, inventoryStock);
+
+        // Fetch the updated products list
+        const updatedProducts = await getAllProducts();
+        console.log(updatedProducts);
+
+        res.status(StatusCodes.OK).json({ message: "Stock updated successfully." });
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to update product." });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Server error." });
     }
 }
 
