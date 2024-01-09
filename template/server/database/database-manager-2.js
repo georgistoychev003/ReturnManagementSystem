@@ -40,7 +40,14 @@ function insertProducts(){
     if(countResult['count(productId)'] === 0 ){
         const insert = db.prepare(queries.createProduct);
         for(const product of initData.productsData){
-            insert.run(product.type, product.price, product.description, product.imageURL, product.productWeight, product.inventoryStock);
+            insert.run(
+                product.type,
+                product.price,
+                product.description,
+                product.imageURL,
+                product.productWeight,
+                product.inventoryStock
+            );
         }
     }
 }
