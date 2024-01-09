@@ -4,7 +4,6 @@ import * as initData from '../database/init-data.js'
 
 
 
-
 let db;
 try{
     db = new Database('my-shop-database')
@@ -17,8 +16,10 @@ try{
 db.prepare(queries.createProductTable).run();
 db.prepare(queries.createUserTable).run();
 db.prepare(queries.createOrderTable).run();
-db.prepare(queries.createOrderDetailsTable).run();
-//db.prepare(queries.createRma).run();
+db.prepare(queries.createOrderedProductTable).run();
+db.prepare(queries.createReturnTable).run();
+db.prepare(queries.createReturnedProductTable).run();
+db.prepare(queries.createRma).run();
 
 insertUsers();
 insertProducts();
@@ -178,6 +179,6 @@ export function getALlReturnedProductsByRMAId(){
     return db.prepare(queries.selectAllReturnedProducts).get(RMAId);
 }
 
-export function deleteRMAById(orderId) {
-    return db.prepare(queries.deleteOrderByOrderId).run(RMAI);
+export function deleteRMAOrderById(orderId) {
+    return db.prepare(queries.deleteOrderByOrderId).run(orderId);
 }

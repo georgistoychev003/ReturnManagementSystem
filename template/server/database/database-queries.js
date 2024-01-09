@@ -46,15 +46,16 @@ export const createReturnTable = `CREATE TABLE IF NOT EXISTS return(
     )`
 
 export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedProduct(
-    returnedProductId INT NOT NULL PRIMARY KEY,
-    orderedProductId INT NOT NULL PRIMARY KEY,
-    RMAId INT NOT NULL PRIMARY KEY,
+    returnedProductId INT NOT NULL,
+    orderedProductId INT NOT NULL,
+    RMAId INT NOT NULL,
     returnedDate DATE NOT NULL,
     description TEXT NOT NULL,
     weight DOUBLE NOT NULL,
     statusProduct TEXT NOT NULL,
     FOREIGN KEY (RMAId) REFERENCES return(RMAId),
-    FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId)
+    FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
+    PRIMARY KEY (returnedProductId, orderedProductId, RMAId)
                                   )`
 
 
@@ -105,7 +106,6 @@ export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
 export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ? AND returnedProductId = ?AND orderedProductId = ?`;
 //TODO check once the design in corrected
 
-export const createRma = `INSERT INTO return (userId, productId, returnId, description, barcode, weight) VALUES (?, ?, ?, ?, ?, ?)`
 export const selectAllRma = `SELECT * FROM return`;
 
 

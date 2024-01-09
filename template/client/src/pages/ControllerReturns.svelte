@@ -11,7 +11,6 @@
     ];
 
     const viewDetails = (requestId) => {
-        // Logic to view details of the return request should go here once backend is setup
         console.log(`View details for request ID: ${requestId}`);
 
     };
@@ -22,10 +21,9 @@
 
     async function fetchReturnRequests() {
         try {
-            const response = await fetch('http://localhost:3000/api/return-requests'); // Replace with your actual API endpoint
+            const response = await fetch('http://localhost:3000/rma/');
             if (response.ok) {
-                const data = await response.json();
-                returnRequests = data; // Assuming the response is an array of return requests
+                returnRequests = await response.json();
             } else {
                 console.error('Failed to fetch return requests');
             }
@@ -46,7 +44,7 @@
             <th>PRICE</th>
             <th>DATE</th>
             <th>STATUS</th>
-            <th></th> <!-- Details column -->
+            <th></th>
         </tr>
         </thead>
         <tbody>
