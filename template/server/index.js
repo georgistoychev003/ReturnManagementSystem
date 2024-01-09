@@ -8,6 +8,8 @@ import userRouter from "./routers/user-router.js";
 import productRouter from "./routers/product-router.js";
 import tokenRouter from "./routers/token-router.js";
 import orderRouter from "./routers/order-router.js";
+import rmaRouter from "./routers/rma-router.js";
+import barcodeRouter from "./routers/barcode-router.js";
 
 app.use(express.json());
 app.use(express.urlencoded({
@@ -32,6 +34,7 @@ app.use('/users', userRouter);
 app.use('/token', tokenRouter);
 app.use('/orders', orderRouter);
 app.use('/product', productRouter);
+app.use('/barcode', barcodeRouter);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
