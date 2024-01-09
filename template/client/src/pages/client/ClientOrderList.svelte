@@ -76,7 +76,7 @@
                         {/if}
                     </td>
                     <td>
-                        <a href={`/orderDetails/1`}>
+                        <a href={`/orderDetails/${order.orderId}`}>
                             <button>Order Details</button>
                         </a>
                     </td>

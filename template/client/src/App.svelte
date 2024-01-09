@@ -17,6 +17,7 @@
 	import MyOrders from "./pages/client/ClientOrderList.svelte"
 	import OrderDetails from "./pages/client/ClientOrderDetailsList.svelte"
 	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
+	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 
 
 
@@ -91,7 +92,7 @@
 		currentRoute = ctx.pathname;
 	});
 
-	router('/orderDetails', (ctx) =>{
+	router(`/orderDetails/:orderId`, (ctx) =>{
 		page = OrderDetails;
 		currentRoute = ctx.pathname;
 	});
@@ -99,7 +100,12 @@
 	router('/myReturns', (ctx) =>{
 		page = MyReturns;
 		currentRoute = ctx.pathname;
-	})
+	});
+
+	router('/rmaClientForm', (ctx) =>{
+		page = RMAClientForm;
+		currentRoute = ctx.pathname;
+	});
 
 
 

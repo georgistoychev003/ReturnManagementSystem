@@ -75,7 +75,7 @@ export const selectOrderByDate = `SELECT * FROM "order" WHERE orderDate = ?`;
 export const selectOrderDetailById = `SELECT * FROM orderDetail WHERE orderId = ?`;
 export const selectAllOrderDetails = `SELECT * FROM orderDetail`;
 
-export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderProduct.productId, orderProduct.quantity, product.name, product.price FROM "order" 
+export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderProduct.productId, orderProduct.quantity, product.name, product.price, product.type FROM "order" 
            INNER JOIN orderProduct ON "order".orderId = orderProduct.orderId 
            INNER JOIN product ON orderProduct.productId = product.productId
                      WHERE "order".orderId = ?;`;

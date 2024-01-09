@@ -1,38 +1,38 @@
 <script>
     import { onMount } from 'svelte';
+
     import About from "../About.svelte";
 
     let orders = [];
     let isLoading = true;
     let errorMessage = '';
+    let orderId = 1;
 
-    const fetchOrders = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/orders/details/1');
-            if (!response.ok) {
-                throw new Error('Failed to fetch orders');
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('Error fetching orders:', error);
-            throw error;
-        }
-    };
 
     onMount(async () => {
         try {
-            orders = await fetchOrders();
+            const response = await fetch(`http://localhost:3000/orders/details/${orderId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch orders');
+            }
+            orders = await response.json();
+
+            orders.forEach(product => {
+                product.quantityToReturn = 0;
+                product.selected = false;
+            });
+            console.log(orders);
         } catch (error) {
             errorMessage = error.message;
         } finally {
             isLoading = false;
         }
     });
-
     const requestReturn = (order) => {
         console.log(`Return requested for order: ${order.product}`);
         // Implement return logic here
     };
+
 </script>
 
 {#if isLoading}
@@ -42,18 +42,20 @@
 {:else}
     <div class="client-return-order">
         <h1>Ordered Products</h1>
-        <p>Order Id:</p>
-        <p>Order Date:</p>
+        <p>Order Id: {orders.orderId}</p>
+        <p>Order Date: {orders.orderDate}</p>
         <table>
             <thead>
             <tr>
                 <th>QUANTITY</th>
                 <th>PRODUCT NAME</th>
-                <th>PRICE PER ITEM</th>
+                <th>PRICE</th>
                 <th>RETURN STATUS</th>
-                <th>Return Date</th>
-                <th>Return Reason</th>
+                <th>RETURN DATE</th>
+                <th>RETURN REASON</th>
                 <th>CREDIT</th>
+                <th>QUANTITY TO RETURN</th>
+                <th>RETURN (CHECK IF YES)</th>
                 <th></th>
             </tr>
             </thead>
@@ -63,7 +65,7 @@
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
                     <td>{orderProducts.price}</td>
-                    <td>{orderProducts.orderDate}</td>
+                    <td>{orderProducts.returnDate}</td>
                     <td>{orderProducts.returnStatus}</td>
                     <td>{orderProducts.returnReason}</td>
                     <td>
@@ -73,15 +75,25 @@
                             {orderProducts.credit}
                         {/if}
                     </td>
-                    <td>
-                        {#if orderProducts.type !== "food"}
-                            <button on:click={() => requestReturn(orderProducts)}>Return Product</button>
-                        {/if}
-                    </td>
-                </tr>
+                    <td><input type="number" bind:value={orderProducts.quantityToReturn}></td>
+                    <td><input type="checkbox" bind:checked={orderProducts.selected}></td>
+
             {/each}
             </tbody>
         </table>
+
+            <button id="returnButton">Return Selected Products</button>
+    </div>
+
+    <div class="selected-products">
+        <h2>Selected Products for Return</h2>
+        <ul>
+            {#each orders as orderProducts (orderProducts.productId)}
+                {#if orderProducts.selected}
+                    <li>{orderProducts.name} - Quantity: {orderProducts.quantity}</li>
+                {/if}
+            {/each}
+        </ul>
     </div>
 {/if}
 

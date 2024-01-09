@@ -75,7 +75,7 @@
 <!--    Replace below else with above and make an else to always display login only-->
    {:else }
     <!-- Show default links for customer or other user types -->
-    <li><a href="#">HOME &nbsp; |</a></li>
+    <li><a href="/">HOME &nbsp; |</a></li>
     <li><a href="/MyOrders">MY ORDERS &nbsp; |</a></li>
     <li><a href="/myReturns">RETURN REQUESTS &nbsp; |</a></li>
    {/if}
