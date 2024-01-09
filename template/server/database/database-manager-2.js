@@ -1,6 +1,7 @@
-import Database from "better-sqlite3";
+import atabase from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
+import Database from "better-sqlite3";
 // import {selectAllReturnedProductById} from "../database/database-queries.js";
 
 
@@ -40,7 +41,7 @@ function insertProducts(){
     if(countResult['count(productId)'] === 0 ){
         const insert = db.prepare(queries.createProduct);
         for(const product of initData.productsData){
-            insert.run(product.type, product.price, product.description, product.imageURL, product.productWeight, product.inventoryStock);
+            insert.run(product.type, product.price, product.name, product.imageURL, product.productWeight, product.inventoryStock);
         }
     }
 }
@@ -116,7 +117,7 @@ export function deleteProductById(productId) {
 
 export function updateProductById(productId, productData) {
     const { type, price, description, imageURL, productWeight, inventoryStock } = productData;
-    return db.prepare(queries.updateProductById).run(type, price, description, imageURL, productWeight, inventoryStock, productId);
+    return db.prepare(queries.updateProductById).run(type, price, name, imageURL, productWeight, inventoryStock, productId);
 }
 
 export function getAllOrders() {
@@ -155,6 +156,10 @@ export function deleteOrderDetailById(orderDetailId) {
 
 export function getAllOrderDetails() {
     return db.prepare(queries.selectAllOrderDetails).all();
+}
+
+export function getOrderedProductsByOrderId(orderId){
+    return db.prepare(queries.selectOrderedProducts).all(orderId);
 }
 //TODO check once the design in corrected
 export function deleteRmaById(returnId) {

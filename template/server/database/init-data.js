@@ -34,16 +34,16 @@ export const productsData = [
     "productId": 1,
     "type": "Electronics",
     "price": 599.99,
-    "description": "Smartphone with advanced features",
+    "name": "Smartphone",
     "imageURL": "https://example.com/image1.jpg",
     "productWeight": 0.2,
     "inventoryStock": 50
-},
+    },
     {
         "productId": 2,
         "type": "Clothing",
         "price": 39.99,
-        "description": "Casual T-shirt for everyday wear",
+        "name": "Casual T-shirt",
         "imageURL": "https://example.com/image2.jpg",
         "productWeight": 0.3,
         "inventoryStock": 100
@@ -52,16 +52,16 @@ export const productsData = [
         "productId": 3,
         "type": "Home & Kitchen",
         "price": 149.99,
-        "description": "Coffee maker for brewing fresh coffee",
+        "name": "Coffee Machine",
         "imageURL": "https://example.com/image3.jpg",
         "productWeight": 2.5,
         "inventoryStock": 20
     },
     {
         "productId": 4,
-        "type": "Books",
+        "type": "Food",
         "price": 24.99,
-        "description": "Bestseller mystery novel",
+        "name": "Frikandelbroodje",
         "imageURL": "https://example.com/image4.jpg",
         "productWeight": 0.8,
         "inventoryStock": 30
@@ -112,13 +112,13 @@ export const orderDetailsData = [
     },
     {
         "orderDetailId": 3,
-        "orderId": 2,
+        "orderId": 1,
         "productId": 2,
         "quantity": 3
     },
     {
         "orderDetailId": 4,
-        "orderId": 3,
+        "orderId": 1,
         "productId": 4,
         "quantity": 1
     }

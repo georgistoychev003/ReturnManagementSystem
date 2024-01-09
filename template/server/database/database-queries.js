@@ -3,7 +3,7 @@ export const createProductTable = `CREATE TABLE IF NOT EXISTS product(
     productId INTEGER PRIMARY KEY AUTOINCREMENT,
     type TEXT NOT NULL,
     price DOUBLE NOT NULL, 
-    description TEXT NOT NULL,
+    name TEXT NOT NULL,
     imageURL TEXT NOT NULL,
     productWeight DOUBLE NOT NULL,
     inventoryStock INT NOT NULL
@@ -46,7 +46,7 @@ export const countProducts = `SELECT count(productId) FROM product`
 
 
 export const createUser = `INSERT INTO user (userID, email, password, userRole, isAdmin) VALUES (?, ?, ?, ?, ?)`
-export const createProduct = `INSERT INTO product (type, price, description, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
+export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice, returnStatus, credit) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderDetail (orderDetailId, orderId, productId, quantity) VALUES (?, ?, ?, ?)`
 
@@ -59,7 +59,7 @@ export const deleteOrderDetailById = `DELETE FROM orderDetail WHERE orderDetailI
 
 export const updateUserByEmail = `UPDATE user SET email = ?, password = ?, userRole = ?, isAdmin = ? WHERE email = ?`;
 export const updateUserById = `UPDATE user SET email = ?, password = ?, userRole = ?, isAdmin = ? WHERE userID = ?`;
-export const updateProductById = `UPDATE product SET type = ?, price = ?, description = ?, imageURL = ?, productWeight = ?, inventoryStock = ? WHERE productId = ?`;
+export const updateProductById = `UPDATE product SET type = ?, price = ?, name = ?, imageURL = ?, productWeight = ?, inventoryStock = ? WHERE productId = ?`;
 export const updateOrderByOrderId = `UPDATE "order" SET userId = ?, orderDate = ?, totalPrice = ? WHERE orderId = ?`;
 export const updateOrderDetailById = `UPDATE orderDetail SET orderId = ?, productId = ?, quantity = ? WHERE orderDetailId = ?`;
 
@@ -75,6 +75,10 @@ export const selectOrderByDate = `SELECT * FROM "order" WHERE orderDate = ?`;
 export const selectOrderDetailById = `SELECT * FROM orderDetail WHERE orderId = ?`;
 export const selectAllOrderDetails = `SELECT * FROM orderDetail`;
 
+export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderProduct.productId, orderProduct.quantity, product.name, product.price FROM "order" 
+           INNER JOIN orderProduct ON "order".orderId = orderProduct.orderId 
+           INNER JOIN product ON orderProduct.productId = product.productId
+                     WHERE "order".orderId = ?;`;
 
 
 

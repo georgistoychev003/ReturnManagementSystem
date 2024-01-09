@@ -9,13 +9,14 @@
 	import ControllerDashboard from "./pages/ControllerDashboard.svelte";
 	import Admin from "./pages/AdminRequestsList.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
-	import ClientDashboard from "./pages/ClientHomePage.svelte";
+	import ClientDashboard from "./pages/client/ClientHomePage.svelte";
 	import RegisterUser from "./pages/AdminCreateUser.svelte"
 	import Users from "./pages/AdminUsersList.svelte";
 	import UserDetails from "./pages/AdminUserDetails.svelte";
 	import Requests from "./pages/AdminRequestsList.svelte";
-	import MyOrders from "./pages/ClientOrderList.svelte"
-	import OrderDetails from "./pages/ClientOrderDetailsList.svelte"
+	import MyOrders from "./pages/client/ClientOrderList.svelte"
+	import OrderDetails from "./pages/client/ClientOrderDetailsList.svelte"
+	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
 
 
 
@@ -92,6 +93,11 @@
 
 	router('/orderDetails', (ctx) =>{
 		page = OrderDetails;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/myReturns', (ctx) =>{
+		page = MyReturns;
 		currentRoute = ctx.pathname;
 	})
 

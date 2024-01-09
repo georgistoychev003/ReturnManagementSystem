@@ -2,7 +2,7 @@ import {
     deleteOrderById,
     deleteOrderDetailById, getAllOrderDetails,
     getAllOrders,
-    getOrderByOrderId, getOrderByUserId, getOrderDetailById,
+    getOrderByOrderId, getOrderByUserId, getOrderDetailById, getOrderedProductsByOrderId,
     updateOrderByOrderId, updateOrderDetailById
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
@@ -108,4 +108,13 @@ export async function getOrderForUserId(req, res) {
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: "Failed to retrieve order."});
     }
+}
+
+export async function getProductDetailsByOrderId(req, res){
+    const {orderId} = req.params;
+
+        const productDetails = await getOrderedProductsByOrderId(orderId);
+
+            res.status(StatusCodes.OK).json(productDetails);
+
 }

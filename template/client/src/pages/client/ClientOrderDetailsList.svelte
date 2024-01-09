@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import About from "./About.svelte";
+    import About from "../About.svelte";
 
     let orders = [];
     let isLoading = true;
@@ -41,13 +41,14 @@
     <p>Error: {errorMessage}</p>
 {:else}
     <div class="client-return-order">
-        <h1>My Orders</h1>
+        <h1>Ordered Products</h1>
+        <p>Order Id:</p>
+        <p>Order Date:</p>
         <table>
             <thead>
             <tr>
-                <th>PRODUCT ID</th>
-                <th>PRODUCT NAME</th>
                 <th>QUANTITY</th>
+                <th>PRODUCT NAME</th>
                 <th>PRICE PER ITEM</th>
                 <th>RETURN STATUS</th>
                 <th>Return Date</th>
@@ -57,25 +58,24 @@
             </tr>
             </thead>
             <tbody>
-            {#each orders as orderDetails}
+            {#each orders as orderProducts}
                 <tr>
-                    <td>{orderDetails.productId}</td>
-                    <td>{orderDetails.quantity}</td>
-                    <td>{orderDetails.orderDate}</td>
-                    <td>{orderDetails.returnStatus}</td>
+                    <td>{orderProducts.quantity}</td>
+                    <td>{orderProducts.name}</td>
+                    <td>{orderProducts.price}</td>
+                    <td>{orderProducts.orderDate}</td>
+                    <td>{orderProducts.returnStatus}</td>
+                    <td>{orderProducts.returnReason}</td>
                     <td>
-                        {#if orderDetails.credit === null}
+                        {#if orderProducts.credit === null}
                             -
                         {:else}
-                            {orderDetails.credit}
+                            {orderProducts.credit}
                         {/if}
                     </td>
                     <td>
-                        <button>Return Product</button>
-                    </td>
-                    <td>
-                        {#if orderDetails.returnable}
-                            <button on:click={() => requestReturn(orderDetails)}>Return</button>
+                        {#if orderProducts.type !== "food"}
+                            <button on:click={() => requestReturn(orderProducts)}>Return Product</button>
                         {/if}
                     </td>
                 </tr>

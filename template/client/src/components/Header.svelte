@@ -77,7 +77,7 @@
     <!-- Show default links for customer or other user types -->
     <li><a href="#">HOME &nbsp; |</a></li>
     <li><a href="/MyOrders">MY ORDERS &nbsp; |</a></li>
-    <li><a href="#">RETURN REQUESTS &nbsp; |</a></li>
+    <li><a href="/myReturns">RETURN REQUESTS &nbsp; |</a></li>
    {/if}
    <li><a on:click={handleLogout}>LOGOUT</a></li>
   </ul>
