@@ -58,10 +58,19 @@ export function getRma(req, res) {
 }
 
 export function getListOfRmas(req, res) {
-    //TODO get list of rmas
     try {
         const rmas = getAllRma();
             res.status(StatusCodes.OK).json(rmas);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+}
+
+export function getListOfReturns(req, res) {
+    try {
+        console.log("bruh")
+        const returns = getALlReturnedProducts();
+        res.status(StatusCodes.OK).json(returns);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
     }

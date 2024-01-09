@@ -8,6 +8,8 @@ router.get('/', rmaController.getListOfRmas);
 
 router.get('/:rmaId', rmaController.getRma);
 
+router.get('/rma/products', rmaController.getListOfReturns);
+
 router.patch('/:rmaId', rmaController.patchRma);
 
 router.delete('/:rmaId', rmaController.deleteRma);
