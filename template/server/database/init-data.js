@@ -137,6 +137,7 @@ export const returnedProduct = [
         returnedProductId: 1,
         orderedProductId: 1,
         RMAId: 1,
+        quantityToReturn: 1,
         returnedDate: "2023-01-01",
         description: "Defective item",
         weight: 1.2,

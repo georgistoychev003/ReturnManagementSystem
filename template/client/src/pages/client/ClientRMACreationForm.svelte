@@ -92,6 +92,9 @@
         </div>
     </div>
     <button on:click={createRMARequest} class="create-request-btn">Create Request</button>
+    <a href="orderDetails/1">
+    <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
+    </a>
 </div>
 
 <style>
@@ -167,6 +170,10 @@
         cursor: pointer;
         transition: all 0.3s ease;
         margin-top: 20px;
+    }
+    #cancel-btn {
+        background-color: #cccccc;
+        color: #333333;
     }
 
     .create-request-btn:hover {

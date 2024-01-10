@@ -73,9 +73,11 @@ export function insertReturned(){
     if(countResult['count(returnedProductId)'] === 0) {
         const insert = db.prepare(queries.createReturnedProduct);
         for (const returnedProductData of initData.returnedProduct) {
-            insert.run(returnedProductData.returnedProductId,
+            insert.run(
+                returnedProductData.returnedProductId,
                 returnedProductData.orderedProductId,
                 returnedProductData.RMAId,
+                returnedProductData.quantityToReturn,
                 returnedProductData.returnedDate,
                 returnedProductData.description,
                 returnedProductData.weight,

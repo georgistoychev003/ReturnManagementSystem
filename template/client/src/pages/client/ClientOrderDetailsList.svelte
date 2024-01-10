@@ -76,7 +76,9 @@
                         {/if}
                     </td>
                     {#if orderProducts.type !== "Food"}
-
+                        <td>
+                            <input type="number" min="0" max={orderProducts.quantity} bind:value={orderProducts.quantityToReturn} />
+                        </td>
                     <td><input type="checkbox" bind:checked={orderProducts.selected}></td>
                     {/if}
                     {#if orderProducts.type === "Food"}
@@ -86,10 +88,16 @@
             </tbody>
         </table>
 
-            <button id="returnButton">Return Selected Products</button>
+        <a href="/rmaClientForm">
+            <button>Return Selected Products</button>
+        </a>
+
     </div>
 
+
+<!--    test purposes will delete when finished-->
     <div class="selected-products">
+        <p>below is for test purposes will delete when finished </p>
         <h2>Selected Products for Return</h2>
         <ul>
             {#each orders as orderProducts (orderProducts.productId)}
