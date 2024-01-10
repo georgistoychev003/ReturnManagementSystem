@@ -17,5 +17,4 @@ router.patch('/:emailOrUserId', userController.updateUserInformation);
 
 router.delete('/:emailOrUserId', userController.deleteUser);
 
-
 export default router;

@@ -11,7 +11,7 @@
 	import ControllerStock from "./pages/ControllerStock.svelte";
 	import Admin from "./pages/AdminRequestsList.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
-	import ClientDashboard from "./pages/ClientHomePage.svelte";
+	import ClientDashboard from "./pages/client/ClientHomePage.svelte";
 	import RegisterUser from "./pages/AdminCreateUser.svelte"
 	import Users from "./pages/AdminUsersList.svelte";
 	import UserDetails from "./pages/AdminUserDetails.svelte";
@@ -19,6 +19,10 @@
 	import AdminDashboard from "./pages/AdminDashboard.svelte";
 
 
+	import MyOrders from "./pages/client/ClientOrderList.svelte"
+	import OrderDetails from "./pages/client/ClientOrderDetailsList.svelte"
+	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
+	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 
 
 
@@ -103,6 +107,25 @@
 		currentRoute = ctx.pathname;
 	});
 
+	router('/myOrders', (ctx) =>{
+		page = MyOrders;
+		currentRoute = ctx.pathname;
+	});
+
+	router(`/orderDetails/:orderId`, (ctx) =>{
+		page = OrderDetails;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/myReturns', (ctx) =>{
+		page = MyReturns;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/rmaClientForm', (ctx) =>{
+		page = RMAClientForm;
+		currentRoute = ctx.pathname;
+	});
 
 
 

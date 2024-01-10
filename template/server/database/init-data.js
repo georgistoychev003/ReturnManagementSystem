@@ -30,16 +30,16 @@ export const productsData = [
     "productId": 1,
     "type": "Electronics",
     "price": 599.99,
-    "description": "Smartphone with advanced features",
+    "name": "Smartphone",
     "imageURL": "https://example.com/image1.jpg",
     "productWeight": 0.2,
     "inventoryStock": 50
-},
+    },
     {
         "productId": 2,
         "type": "Clothing",
         "price": 39.99,
-        "description": "Casual T-shirt for everyday wear",
+        "name": "Casual T-shirt",
         "imageURL": "https://example.com/image2.jpg",
         "productWeight": 0.3,
         "inventoryStock": 100
@@ -48,16 +48,16 @@ export const productsData = [
         "productId": 3,
         "type": "Home & Kitchen",
         "price": 149.99,
-        "description": "Coffee maker for brewing fresh coffee",
+        "name": "Coffee Machine",
         "imageURL": "https://example.com/image3.jpg",
         "productWeight": 2.5,
         "inventoryStock": 20
     },
     {
         "productId": 4,
-        "type": "Books",
+        "type": "Food",
         "price": 24.99,
-        "description": "Bestseller mystery novel",
+        "name": "Frikandelbroodje",
         "imageURL": "https://example.com/image4.jpg",
         "productWeight": 0.8,
         "inventoryStock": 30
@@ -69,19 +69,27 @@ export const ordersData = [
         "orderId": 1,
         "userId": 1,
         "orderDate": "2023-12-01",
-        "totalPrice": 99.99
+        "totalPrice": 99.99,
+        "quantity": 3,
+        "returnStatus": "N/A",
+        "credit": null
+
     },
     {
         "orderId": 2,
         "userId": 1,
         "orderDate": "2023-12-03",
-        "totalPrice": 149.50
+        "totalPrice": 149.50,
+        "returnStatus": "Completed",
+        "credit": 49.99
     },
     {
         "orderId": 3,
         "userId": 1,
         "orderDate": "2023-12-05",
-        "totalPrice": 249.75
+        "totalPrice": 249.75,
+        "returnStatus": "In Progress",
+        "credit": null
     }
 ];
 
@@ -102,14 +110,14 @@ export const orderDetailsData = [
     },
     {
         "orderDetailId": 3,
-        "orderId": 2,
+        "orderId": 1,
         "productId": 2,
         "quantity": 3,
         "unitPrice": 1.2
     },
     {
         "orderDetailId": 4,
-        "orderId": 3,
+        "orderId": 1,
         "productId": 4,
         "quantity": 1,
         "unitPrice": 1.2
@@ -129,6 +137,7 @@ export const returnedProduct = [
         returnedProductId: 1,
         orderedProductId: 1,
         RMAId: 1,
+        quantityToReturn: 1,
         returnedDate: "2023-01-01",
         description: "Defective item",
         weight: 1.2,
