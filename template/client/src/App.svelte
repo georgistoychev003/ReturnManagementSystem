@@ -21,10 +21,6 @@
 	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 
-
-
-
-
 	let page;
 	let params;
 	let currentRoute;

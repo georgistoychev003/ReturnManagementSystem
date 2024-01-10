@@ -5,7 +5,7 @@ import {
     getALlReturnedProducts,
     getALlReturnedProductsByRMAId,
     updateOrderDetailById,
-    deleteRMAOrderById
+    deleteRMAOrderById, getAllReturnsByUserId
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 
@@ -69,9 +69,19 @@ export function getListOfRmas(req, res) {
 export function getListOfReturns(req, res) {
     try {
         console.log("bruh")
-        const returns = getALlReturnedProducts();
+        const returns = getALlReturnedProducts(userId);
         res.status(StatusCodes.OK).json(returns);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+}
+
+export function getReturnsByUserId(req, res){
+    const { userId } = req.params;
+    try{
+        const result = getAllReturnsByUserId(userId);
+        res.status(StatusCodes.OK).json(result);
+    }catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve User Returns." });
     }
 }

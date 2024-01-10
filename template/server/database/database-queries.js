@@ -109,6 +109,12 @@ export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate 
            INNER JOIN orderedProduct ON "order".orderId = orderedProduct.orderId 
            INNER JOIN product ON orderedProduct.productId = product.productId
                      WHERE "order".orderId = ?;`;
+
+export const selectAllRMAByUserId = `SELECT rp.returnedProductId, rp.orderedProductId, rp.RMAId, rp.returnedDate, rp.description, rp.weight, rp.statusProduct FROM returnedProduct rp
+JOIN orderedProduct op ON op.orderedProductId = rp.orderedProductId
+JOIN "order" o ON op.orderId = o.orderid
+JOIN user u ON o.userId = u.userId 
+WHERE u.userId = ?`
 export const selectAllRma = `SELECT * FROM returntable`;
 
 
