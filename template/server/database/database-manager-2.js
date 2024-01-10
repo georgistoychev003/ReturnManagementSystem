@@ -53,7 +53,7 @@ function insertOrders(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrder);
         for(const order of initData.ordersData){
-            insert.run(order.orderId, order.userId, order.orderDate, order.totalPrice, order.returnStatus, order.credit);
+            insert.run(order.orderId, order.userId, order.orderDate, order.totalPrice);
         }
     }
 }
