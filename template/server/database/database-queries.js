@@ -1,5 +1,5 @@
 
-export const createProductTable = `CREATE TABLE IF NOT EXISTS product (
+export const createProductTable = `CREATE TABLE IF NOT EXISTS product(
     productId INTEGER PRIMARY KEY AUTOINCREMENT,
     type TEXT NOT NULL,
     price DOUBLE NOT NULL, 
@@ -108,6 +108,6 @@ export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE
 export const createRma = `INSERT INTO return (userId, productId, returnId, description, barcode, weight) VALUES (?, ?, ?, ?, ?, ?)`
 export const selectAllRma = `SELECT * FROM return`;
 
-export const selectProductByBarcode = `SELECT * FROM product WHERE barcode = ?`;
+
 
 
