@@ -1,5 +1,14 @@
 <script>
     import page from 'page';
+    import {onMount} from "svelte";
+
+    onMount(() => {
+        clearToken();
+    });
+
+    function clearToken() {
+        localStorage.removeItem('token');
+    }
 
     let username = '';
     let password = '';

@@ -1,6 +1,43 @@
 <script>
  export let active;
  import router from 'page';
+ import { onMount } from 'svelte';
+ import page from 'page';
+ let token = '';
+ let userRole = '';
+ let isLoggedIn = false;
+
+ onMount(() => {
+  const token = localStorage.getItem('token');
+  isLoggedIn = !!token;
+  if (token) {
+   const payload = JSON.parse(atob(token.split('.')[1]));
+   console.log(token)
+   console.log(userRole)
+   userRole = payload.role;
+  }
+ });
+
+ $: if (token) {
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  userRole = payload.role;
+ }
+
+ function navigateToReturnRequests() {
+  console.log(userRole)
+
+  if (userRole === 'controller') {
+   page('/controller/return-requests');
+  } else {
+  }
+ }
+ function navigateToControllerStock() {
+  page('/controller/stock');
+ }
+ function logout(){
+  page('/');
+  localStorage.removeItem('token');
+ }
 </script>
 
 <style>
@@ -47,12 +84,17 @@
 
 <div class="header">
  <img class="logo" src="https://myshop.s3-external-3.amazonaws.com/shop6116500.images.logo-myshop.webp" alt="Logo">
- <div>
-  <ul class="nav-links">
-   <li><a href="#">DASHBOARD &nbsp; |</a></li>
-   <li><a href="#">RETURN REQUESTS &nbsp; |</a></li>
-   <li><a href="#">LOGOUT</a></li>
-  </ul>
- </div>
+ {#if isLoggedIn} <!-- Only show navigation links if the user is logged in -->
+  <div>
+   <ul class="nav-links">
+    <li><a href="#">DASHBOARD &nbsp; |</a></li>
+    <li><a href="javascript:void(0)" on:click={navigateToReturnRequests}>RETURN REQUESTS &nbsp; |</a></li>
+    {#if userRole === 'controller'}
+     <li><a href="javascript:void(0)" on:click={navigateToControllerStock}>STOCK &nbsp; |</a></li>
+    {/if}
+    <li><a href="#" on:click={logout}>LOGOUT</a></li>
+   </ul>
+  </div>
+ {/if}
  <img class="user-image" src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="User Image">
 </div>

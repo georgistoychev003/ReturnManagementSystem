@@ -1,4 +1,4 @@
-	`<script>
+`<script>
 	import router from 'page';
 
 	import Home from "./pages/Home.svelte";
@@ -7,6 +7,8 @@
 	import Login from "./pages/Login.svelte";
 	import CollectorDashboard from "./pages/CollectorDashboard.svelte";
 	import ControllerDashboard from "./pages/ControllerDashboard.svelte";
+	import ControllerReturns from "./pages/ControllerReturns.svelte";
+	import ControllerStock from "./pages/ControllerStock.svelte";
 	import Admin from "./pages/AdminRequestsList.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
 	import ClientDashboard from "./pages/ClientHomePage.svelte";
@@ -29,13 +31,8 @@
 		currentRoute = ctx.pathname;
 	});
 	router('/about', (ctx) => {
-			page = About;
-			currentRoute = ctx.pathname;
-	});
-
-	router('/login', (ctx) => {
-			page = Login;
-			currentRoute = ctx.pathname;
+		page = About;
+		currentRoute = ctx.pathname;
 	});
 
 	router('user/home', (ctx) => {
@@ -50,6 +47,16 @@
 
 	router('/controller', (ctx) => {
 		page = ControllerDashboard;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/controller/return-requests', (ctx) => {
+		page = ControllerReturns;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/controller/stock', (ctx) => {
+		page = ControllerStock;
 		currentRoute = ctx.pathname;
 	});
 
@@ -93,29 +100,29 @@
 
 
 	router.start();
-	</script>
+</script>
 
-	<svelte:head>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-	</svelte:head>
+<svelte:head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</svelte:head>
 
-	<main>
-		<Header active={currentRoute} />
-		<div class="content">
-			<svelte:component this={page} {params} />
-		</div>
-	</main>
-	<style>
+<main>
+	<Header active={currentRoute} />
+	<div class="content">
+		<svelte:component this={page} {params} />
+	</div>
+</main>
+<style>
 
-		:root {
-			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-			Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-		}
+	:root {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	}
 
-		main {
-			text-align: center;
-			padding: 1em;
-			margin: 0 auto;
-			position: relative;
-		}
-	</style>
+	main {
+		text-align: center;
+		padding: 1em;
+		margin: 0 auto;
+		position: relative;
+	}
+</style>

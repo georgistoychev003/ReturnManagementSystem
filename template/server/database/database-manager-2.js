@@ -4,7 +4,6 @@ import * as initData from '../database/init-data.js'
 
 
 
-
 let db;
 try{
     db = new Database('my-shop-database')
@@ -17,20 +16,24 @@ try{
 db.prepare(queries.createProductTable).run();
 db.prepare(queries.createUserTable).run();
 db.prepare(queries.createOrderTable).run();
-db.prepare(queries.createOrderDetailsTable).run();
-//db.prepare(queries.createRma).run();
+db.prepare(queries.createOrderedProductTable).run();
+db.prepare(queries.createReturnTable).run();
+db.prepare(queries.createReturnedProductTable).run();
+
 
 insertUsers();
 insertProducts();
 insertOrders();
 insertOrderDetails();
+insertRMA();
+insertReturned();
 
 function insertUsers(){
     const countResult = db.prepare(queries.countUsers).get();
     if(countResult && countResult['count(email)'] === 0){
         const insert = db.prepare(queries.createUser);
         for(const user of initData.usersData){
-            insert.run(user.userId, user.email, user.password, user.userRole, user.isAdmin);
+            insert.run(user.userId, user.email, user.password, user.userRole);
         }
     }
 }
@@ -60,14 +63,39 @@ function insertOrderDetails(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrderDetails);
         for(const order of initData.orderDetailsData){
-            insert.run(order.orderDetailId, order.orderId, order.productId, order.quantity);
+            insert.run(order.orderDetailId, order.orderId, order.productId, order.quantity, order.unitPrice);
+        }
+    }
+}
+
+export function insertReturned(){
+    const countResult = db.prepare(queries.countReturnedProducts).get();
+    if(countResult['count(returnedProductId)'] === 0) {
+        const insert = db.prepare(queries.createReturnedProduct);
+        for (const returnedProductData of initData.returnedProduct) {
+            insert.run(returnedProductData.returnedProductId,
+                returnedProductData.orderedProductId,
+                returnedProductData.RMAId,
+                returnedProductData.returnedDate,
+                returnedProductData.description,
+                returnedProductData.weight,
+                returnedProductData.statusProduct);
+        }
+    }
+}
+
+export function insertRMA(){
+    const countResult = db.prepare(queries.countReturns).get();
+    if(countResult['count(RMAId)'] === 0) {
+        const insert = db.prepare(queries.createRma);
+        for (const rma of initData.rmaData) {
+            insert.run(rma.barcode, rma.statusRma);
         }
     }
 }
 
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
-
     insert.run(
         user.userId, user.email, user.password, user.userRole, user.isAdmin
     );
@@ -142,6 +170,10 @@ export function getOrderDetailById(orderDetailId) {
     return db.prepare(queries.selectOrderDetailById).get(orderDetailId);
 }
 
+export async function updateProductStock(productId, inventoryStock) {
+    const updateStatement = db.prepare(queries.updateProductStockById);
+    return updateStatement.run(inventoryStock, productId);
+}
 export function updateOrderDetailById(orderDetailId, orderDetailData) {
     const { orderId, productId, quantity } = orderDetailData;
     return db.prepare(queries.updateOrderDetailById).run(orderId, productId, quantity, orderDetailId);
@@ -160,6 +192,7 @@ export function deleteRmaById(returnId) {
 }
 
 export function getAllRma() {
+
     return db.prepare(queries.selectAllRma).all();
 }
 
@@ -175,6 +208,6 @@ export function getALlReturnedProductsByRMAId(){
     return db.prepare(queries.selectAllReturnedProducts).get(RMAId);
 }
 
-export function deleteRMAById(orderId) {
-    return db.prepare(queries.deleteOrderByOrderId).run(RMAI);
+export function deleteRMAOrderById(orderId) {
+    return db.prepare(queries.deleteOrderByOrderId).run(orderId);
 }
