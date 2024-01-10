@@ -22,6 +22,12 @@ export const usersData =[
         email: "admin@email.com",
         password: "admin",
         userRole: "admin",
+    },
+    {
+        userId: 5,
+        email: "mitkopetrovich2021@gmail.com",
+        password: "password",
+        userRole: "customer",
     }
 ];
 

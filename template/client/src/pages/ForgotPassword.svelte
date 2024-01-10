@@ -1,11 +1,23 @@
 <script>
     let email = '';
 
-    const requestPasswordReset = () => {
-        // we should implement our password reset logic here
-        // For example, sending a password reset request to our backend
-        console.log(`Password reset requested for: ${email}`);
-        // Navigate to a confirmation page or show a message, we should discuss how we will handle the forgot password case
+    const requestPasswordReset = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch('http://localhost:3000/users/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email })
+            });
+            const data = await response.json();
+            console.log(data);
+            // Handle response, show confirmation message, etc.
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle error, show error message, etc.
+        }
     };
 </script>
 
