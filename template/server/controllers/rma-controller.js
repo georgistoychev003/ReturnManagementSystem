@@ -50,7 +50,25 @@ export function getRma(req, res) {
         if (rmaResult) {
             res.status(StatusCodes.OK).json(rmaResult);
         } else {
-            res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
+            res.status(StatusCodes.NOT_FOUND).json({ error: "RMA not found." });
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve user." });
+    }
+}
+
+export function getRmaByBarcode(req, res) {
+    //TODO get an rma
+    const { barcode } = req.params;
+    try {
+        let rmaBarcode;
+        if (barcode) {
+            rmaBarcode = getAllRmaById(barcode)
+        }
+        if (rmaBarcode) {
+            res.status(StatusCodes.OK).json(rmaBarcode);
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ error: "RMA not found." });
         }
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve user." });
