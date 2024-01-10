@@ -96,17 +96,17 @@ export const selectAllOrders = `SELECT * FROM "order"`;
 export const selectOrderById = `SELECT * FROM "order" WHERE OrderId = ?`;
 export const selectOrderByUserId = `SELECT * FROM "order" WHERE userId = ?`;
 export const selectOrderByDate = `SELECT * FROM "order" WHERE orderDate = ?`;
-export const selectOrderDetailById = `SELECT * FROM orderDetail WHERE orderId = ?`;
-export const selectAllOrderDetails = `SELECT * FROM orderDetail`;
+export const selectOrderDetailById = `SELECT * FROM orderedProduct WHERE orderId = ?`;
+export const selectAllOrderDetails = `SELECT * FROM orderProduct`;
 export const selectAllReturns =  `SELECT * FROM return`;
 export const selectReturnById =  `SELECT * FROM returntable WHERE RMAId = ?`;
 export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
 export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ? AND returnedProductId = ?AND orderedProductId = ?`;
 //TODO check once the design in corrected
 
-export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderProduct.productId, orderProduct.quantity, product.name, product.price, product.type FROM "order" 
-           INNER JOIN orderProduct ON "order".orderId = orderProduct.orderId 
-           INNER JOIN product ON orderProduct.productId = product.productId
+export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderedProduct.productId, orderedProduct.quantity, product.name, product.price, product.type FROM "order" 
+           INNER JOIN orderedProduct ON "order".orderId = orderedProduct.orderId 
+           INNER JOIN product ON orderedProduct.productId = product.productId
                      WHERE "order".orderId = ?;`;
 export const selectAllRma = `SELECT * FROM returntable`;
 

@@ -11,7 +11,7 @@
 
     onMount(async () => {
         try {
-            const response = await fetch(`http://localhost:3000/orders/details/${orderId}`);
+            const response = await fetch(`http://localhost:3000/orders/details/1`);
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
@@ -75,9 +75,13 @@
                             {orderProducts.credit}
                         {/if}
                     </td>
-                    <td><input type="number" bind:value={orderProducts.quantityToReturn}></td>
-                    <td><input type="checkbox" bind:checked={orderProducts.selected}></td>
+                    {#if orderProducts.type !== "Food"}
 
+                    <td><input type="checkbox" bind:checked={orderProducts.selected}></td>
+                    {/if}
+                    {#if orderProducts.type === "Food"}
+                        <p>** Food Items Cannot Be Returned</p>
+                    {/if}
             {/each}
             </tbody>
         </table>

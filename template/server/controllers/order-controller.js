@@ -115,6 +115,6 @@ export async function getProductDetailsByOrderId(req, res){
 
         const productDetails = await getOrderedProductsByOrderId(orderId);
 
-            res.status(StatusCodes.OK).json(productDetails);
+        res.status(StatusCodes.OK).json(productDetails);
 
 }
