@@ -218,3 +218,7 @@ export function getALlReturnedProductsByRMAId(){
 export function deleteRMAOrderById(orderId) {
     return db.prepare(queries.deleteOrderByOrderId).run(orderId);
 }
+export function updateUserPasswordById(userId, newPassword) {
+    const update = db.prepare(queries.updateUserPasswordById);
+    return update.run(newPassword, userId);
+}

@@ -20,6 +20,7 @@
 	import OrderDetails from "./pages/client/ClientOrderDetailsList.svelte"
 	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
+	import ResetPassword from "./pages/ResetPassword.svelte";
 
 
 
@@ -114,6 +115,10 @@
 		currentRoute = ctx.pathname;
 	});
 
+	router('/reset-password', (ctx) => {
+		page = ResetPassword;
+		currentRoute = ctx.pathname;
+	});
 
 
 	router.start();

@@ -110,6 +110,7 @@ export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate 
                      WHERE "order".orderId = ?;`;
 export const selectAllRma = `SELECT * FROM returntable`;
 
+export const updateUserPasswordById = `UPDATE user SET password = ? WHERE userID = ?`;
 
 
 

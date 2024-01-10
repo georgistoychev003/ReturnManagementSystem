@@ -13,5 +13,7 @@ router.post('/', userController.postUser);
 router.patch('/:emailOrUserId', userController.updateUserInformation);
 
 router.delete('/:emailOrUserId', userController.deleteUser);
+router.post('/forgot-password', userController.forgotPassword);
+router.post('/reset-password', userController.resetPassword);
 
 export default router;
