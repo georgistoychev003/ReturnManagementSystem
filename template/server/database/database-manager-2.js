@@ -104,6 +104,10 @@ export function insertUser(user){
 export function getAllUsers() {
     return db.prepare(queries.selectAllUsers).all();
 }
+export function getNumberOfUsers() {
+    return db.prepare(queries.countUsers).get();
+}
+
 
 export function getUserByEmail(email) {
     return db.prepare(queries.selectUserByEmail).get(email);
@@ -186,6 +190,7 @@ export function deleteOrderDetailById(orderDetailId) {
 export function getAllOrderDetails() {
     return db.prepare(queries.selectAllOrderDetails).all();
 }
+
 //TODO check once the design in corrected
 export function deleteRmaById(returnId) {
     return db.prepare(queries.deleteRmaById).run(returnId);

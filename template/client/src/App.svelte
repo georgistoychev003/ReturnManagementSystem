@@ -16,6 +16,8 @@
 	import Users from "./pages/AdminUsersList.svelte";
 	import UserDetails from "./pages/AdminUserDetails.svelte";
 	import Requests from "./pages/AdminRequestsList.svelte";
+	import AdminDashboard from "./pages/AdminDashboard.svelte";
+
 
 
 
@@ -35,7 +37,12 @@
 		currentRoute = ctx.pathname;
 	});
 
-	router('user/home', (ctx) => {
+	router('/admin/dashboard', (ctx) => {
+		page = AdminDashboard;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/user/home', (ctx) => {
 		page = Home;
 		currentRoute = ctx.pathname;
 	});

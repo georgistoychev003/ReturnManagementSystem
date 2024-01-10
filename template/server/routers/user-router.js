@@ -6,6 +6,9 @@ import * as userController from '../controllers/user-controller.js';
 
 router.get('/', userController.getListOfUsers);
 
+router.get('/count', userController.getCountOfUsers);
+
+
 router.get('/:emailOrUserId', userController.getUser);
 
 router.post('/', userController.postUser);

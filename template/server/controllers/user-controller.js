@@ -80,9 +80,18 @@ export async function deleteUser(req, res) {
 
 export async function getListOfUsers(req, res){
     try {
-        const users = getAllUsers();
+        const users = db.getAllUsers();
         res.status(StatusCodes.OK).json(users);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve users." });
+    }
+}
+
+export async function getCountOfUsers(req, res){
+    try {
+        const numberOfUsers = db.getNumberOfUsers();
+        res.status(StatusCodes.OK).json(numberOfUsers);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve number of users." });
     }
 }
