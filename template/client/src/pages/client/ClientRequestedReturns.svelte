@@ -5,6 +5,7 @@
     let isLoading = true;
     let errorMessage = '';
 
+
     const fetchReturnRequests = async () => {
         try {
             const response = await fetch('http://localhost:3000/returns');
@@ -55,7 +56,7 @@
             <tbody>
             {#each returnRequests as request}
                 <tr>
-                    <td>{request.id}</td>
+                    <td></td>
                     <td>{request.overview}</td>
                     <td>{request.price}</td>
                     <td>{request.date}</td>
