@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
-
+import {selectStatusById} from "../database/database-queries.js";
 
 
 let db;
@@ -48,6 +48,7 @@ function insertProducts(){
     }
 }
 
+
 function insertOrders(){
     const countResult = db.prepare(queries.countOrders).get();
     if(countResult['count(orderId)'] === 0){
@@ -63,7 +64,7 @@ function insertOrderDetails(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrderDetails);
         for(const order of initData.orderDetailsData){
-            insert.run(order.orderDetailId, order.orderId, order.productId, order.quantity, order.unitPrice);
+            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice);
         }
     }
 }
@@ -210,4 +211,21 @@ export function getALlReturnedProductsByRMAId(){
 
 export function deleteRMAOrderById(orderId) {
     return db.prepare(queries.deleteOrderByOrderId).run(orderId);
+}
+
+export function getStatusById(RMAId) {
+    return db.prepare(queries.selectStatusById).get(RMAId);
+}
+
+export function getTotalPriceOfRMA(RMAId) {
+    const query = `
+        SELECT r.RMAId, SUM(op.unitPrice) AS TotalReturnPrice
+        FROM returnedProduct rp
+        JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
+        JOIN returntable r ON rp.RMAId = r.RMAId
+        WHERE r.RMAId = ?
+        GROUP BY r.RMAId;
+    `;
+    console.log(query)
+    return db.prepare(query).get(RMAId);
 }

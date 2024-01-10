@@ -5,7 +5,7 @@ import {
     getALlReturnedProducts,
     getALlReturnedProductsByRMAId,
     updateOrderDetailById,
-    deleteRMAOrderById
+    deleteRMAOrderById, getTotalPriceOfRMA, getStatusById
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 
@@ -39,6 +39,30 @@ export function patchRma(req, res) {
     }
 }
 
+export function getRmaPrice(req, res) {
+    const { rmaId } = req.params;
+    try {
+
+        const total = getTotalPriceOfRMA(rmaId);
+        console.log(total)
+        res.status(StatusCodes.OK).json(total);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA price." });
+    }
+}
+
+export function getRmaStatus(req, res) {
+    const { rmaId } = req.params;
+    try {
+
+        const status = getStatusById(rmaId);
+        console.log(status)
+        res.status(StatusCodes.OK).json(status);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA price." });
+    }
+}
+
 export function getRma(req, res) {
     //TODO get an rma
     const { rmaId } = req.params;
@@ -68,7 +92,6 @@ export function getListOfRmas(req, res) {
 
 export function getListOfReturns(req, res) {
     try {
-        console.log("bruh")
         const returns = getALlReturnedProducts();
         res.status(StatusCodes.OK).json(returns);
     } catch (error) {

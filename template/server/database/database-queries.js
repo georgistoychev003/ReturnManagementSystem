@@ -95,8 +95,8 @@ export const selectOrderByUserId = `SELECT * FROM "order" WHERE userId = ?`;
 export const selectOrderByDate = `SELECT * FROM "order" WHERE orderDate = ?`;
 export const selectOrderDetailById = `SELECT * FROM orderDetail WHERE orderDetailId = ?`;
 export const selectAllOrderDetails = `SELECT * FROM orderDetail`;
-export const selectAllReturns =  `SELECT * FROM return`;
-export const selectReturnById =  `SELECT * FROM returntable WHERE RMAId = ?`;
+export const selectAllReturns =  `SELECT * FROM returntable`;
+export const selectStatusById =  `SELECT statusRma FROM returntable WHERE RMAId = ?`;
 export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
 export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ? AND returnedProductId = ?AND orderedProductId = ?`;
 //TODO check once the design in corrected

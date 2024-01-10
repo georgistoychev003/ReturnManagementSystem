@@ -87,32 +87,32 @@ export const ordersData = [
 
 export const orderDetailsData = [
     {
-        "orderDetailId": 1,
+        "orderedProductId": 1,
         "orderId": 1,
         "productId": 1,
         "quantity": 2,
-        "unitPrice": 1.2
+        "unitPrice": 5
     },
     {
-        "orderDetailId": 2,
+        "orderedProductId": 2,
         "orderId": 1,
         "productId": 3,
         "quantity": 1,
-        "unitPrice": 1.2
+        "unitPrice": 8
     },
     {
-        "orderDetailId": 3,
+        "orderedProductId": 3,
         "orderId": 2,
         "productId": 2,
         "quantity": 3,
-        "unitPrice": 1.2
+        "unitPrice": 2
     },
     {
-        "orderDetailId": 4,
+        "orderedProductId": 4,
         "orderId": 3,
         "productId": 4,
         "quantity": 1,
-        "unitPrice": 1.2
+        "unitPrice": 4
     }
 ];
 
@@ -122,6 +122,11 @@ export const rmaData = [
         "barcode": "barcode",
         "statusRma": "Returned"
     },
+    {
+        "RMAId": 2,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    }
 ];
 
 export const returnedProduct = [
@@ -132,6 +137,15 @@ export const returnedProduct = [
         returnedDate: "2023-01-01",
         description: "Defective item",
         weight: 1.2,
+        statusProduct: "Returned"
+    },
+    {
+        returnedProductId: 2,
+        orderedProductId: 2,
+        RMAId: 2,
+        returnedDate: "2023-01-02",
+        description: "Defective item",
+        weight: 1.4,
         statusProduct: "Returned"
     },
 ];
