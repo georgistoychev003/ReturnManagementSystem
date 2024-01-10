@@ -25,8 +25,8 @@
 	let currentRoute;
 
 	router('/', (ctx) => {
-			page = Home;
-			currentRoute = ctx.pathname;
+		page = Login;
+		currentRoute = ctx.pathname;
 	});
 	router('/about', (ctx) => {
 			page = About;
@@ -36,6 +36,11 @@
 	router('/login', (ctx) => {
 			page = Login;
 			currentRoute = ctx.pathname;
+	});
+
+	router('user/home', (ctx) => {
+		page = Home;
+		currentRoute = ctx.pathname;
 	});
 
 	router('/collector', (ctx) => {
