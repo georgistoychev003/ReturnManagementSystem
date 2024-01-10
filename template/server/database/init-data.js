@@ -4,28 +4,24 @@ export const usersData =[
         email: "customer@email.com",
         password: "password",
         userRole: "customer",
-        isAdmin: "false"
     },
     {
         userId: 2,
         email: "collector@email.com",
         password: "password",
         userRole: "collector",
-        isAdmin: "false"
     },
     {
         userId: 3,
         email: "controller@email.com",
         password: "password",
         userRole: "controller",
-        isAdmin: "false"
     },
     {
         userId: 4,
         email: "admin@email.com",
         password: "admin",
         userRole: "admin",
-        isAdmin: "true"
     }
 ];
 
@@ -102,27 +98,49 @@ export const orderDetailsData = [
         "orderDetailId": 1,
         "orderId": 1,
         "productId": 1,
-        "quantity": 2
+        "quantity": 2,
+        "unitPrice": 1.2
     },
     {
         "orderDetailId": 2,
         "orderId": 1,
         "productId": 3,
-        "quantity": 1
+        "quantity": 1,
+        "unitPrice": 1.2
     },
     {
         "orderDetailId": 3,
         "orderId": 1,
         "productId": 2,
-        "quantity": 3
+        "quantity": 3,
+        "unitPrice": 1.2
     },
     {
         "orderDetailId": 4,
         "orderId": 1,
         "productId": 4,
-        "quantity": 1
+        "quantity": 1,
+        "unitPrice": 1.2
     }
 ];
 
+export const rmaData = [
+    {
+        "RMAId": 1,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    },
+];
 
+export const returnedProduct = [
+    {
+        returnedProductId: 1,
+        orderedProductId: 1,
+        RMAId: 1,
+        returnedDate: "2023-01-01",
+        description: "Defective item",
+        weight: 1.2,
+        statusProduct: "Returned"
+    },
+];
 

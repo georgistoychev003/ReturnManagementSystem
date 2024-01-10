@@ -1,24 +1,57 @@
 <script>
     // Sample data for return stocks, we should replace it with the database contents when database is setup
-    let returnStock = [
-        { id: 'S001', name: 'Wireless Headphones', type: 'Electronics', price: '$150', quantity: '20'},
-        { id: 'S002', name: 'Running Shoes', type: 'Footwear', price: '$80', quantity: '35'},
-        { id: 'S003', name: 'Smartwatch', type: 'Electronics', price: '$199', quantity: '15'},
-        { id: 'S004', name: 'Backpack', type: 'Accessories', price: '$50', quantity: '25'},
-        { id: 'S005', name: 'Tablet', type: 'Electronics', price: '$300', quantity: '10'},
-    ];
+    import {onMount} from "svelte";
+    let returnStock = [];
 
-    const updateStockQuantity = (stockId) => {
+    onMount(async () => {
+        await fetchStockData();
+    });
+
+    async function fetchStockData() {
+        try {
+            const response = await fetch('http://localhost:3000/product');
+            if (response.ok) {
+                const data = await response.json();
+                returnStock = data.map(item => ({
+                    id: item.productId,
+                    name: item.description,
+                    type: item.type,
+                    price: `$${item.price.toFixed(2)}`,
+                    quantity: item.inventoryStock
+                }));
+            } else {
+                console.error('Failed to fetch stock data');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function updateStockQuantity(stockId) {
         const stock = returnStock.find(item => item.id === stockId);
         const newQuantity = prompt(`Update quantity for ${stock.name}. Current quantity: ${stock.quantity}`);
 
         if (newQuantity !== null) {
-            // update the stock quantity
-            console.log(`Updated stock ID ${stockId} to new quantity ${newQuantity}`);
-            stock.quantity = newQuantity;
-            // make an API call to update the database
+            try {
+                const response = await fetch(`http://localhost:3000/product/${stockId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ inventoryStock: newQuantity })
+                });
+
+                if (response.ok) {
+                    console.log(`Updated stock ID ${stockId} to new quantity ${newQuantity}`);
+                    await fetchStockData();
+                } else {
+                    console.error('Failed to update stock');
+                }
+            } catch (error) {
+                console.error('Error updating stock:', error);
+            }
         }
-    };
+    }
 </script>
 
 <div class="stock">

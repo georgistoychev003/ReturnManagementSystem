@@ -1,4 +1,6 @@
 <script>
+
+
     let username = '';
     let email = '';
     let password = '';
@@ -7,6 +9,14 @@
     let isAdmin = false;
     let userRole = '';
 
+    let selectedRole = '';
+
+
+
+
+    const assignUserRole = (event) => {
+        userRole = event.target.value; // Update the userRole variable with the selected role
+    };
     const createUser = () => {
         // Function to validate email format
         const isValidEmail = (email) => {
@@ -40,7 +50,9 @@
         email = escapeHTML(email);
         address = escapeHTML(address);
         userRole = 'client';
-        isAdmin = false;
+        isAdmin = 'false';
+      let userId = 100;
+
 
 
         // Create user object
@@ -57,6 +69,7 @@
             body: JSON.stringify(user)
         })
             .then(response => {
+                console.log(response);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -73,6 +86,7 @@
                 alert('Failed to create user. Please try again.');
             });
     };
+
 </script>
 
 <div class="registration-form">
@@ -82,6 +96,14 @@
     <input type="password" bind:value={password} placeholder="Password" required>
     <input type="password" bind:value={repeatPassword} placeholder="Repeat Password" required>
     <input type="text" bind:value={address} placeholder="Address" required>
+    <select bind:value={userRole} on:change={assignUserRole}>
+        <option value="">Select User Role</option>
+        <!-- Fetch and populate options dynamically from user roles -->
+        <option value= "admin"> Admin </option>
+        <option value="collector">Collector</option>
+        <option value="controller">Controller</option>
+        <option value="customer">customer</option>
+    </select>
     <button class="create-user-button" on:click={createUser}>Create User</button>
 </div>
 
@@ -122,6 +144,13 @@
 
     .create-user-button:hover {
         background-color: #c9302c;
+    }
+
+    select {
+        padding: 10px;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 </style>
 

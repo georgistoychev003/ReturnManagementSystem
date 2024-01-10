@@ -1,5 +1,7 @@
 <script>
     //fetch and select the user
+    import UserRoleDropdown from '../components/UserRoleDropdown.svelte';
+
     const fetchUserDetails = async (userId) => {
         try {
             const response = await fetch(`http://localhost:3000/users/${userId}`);
@@ -83,6 +85,11 @@
     <div class="header">
         <img class="user-icon" alt="User icon" src="/path-to-user-icon.png">
         <h2>{selectedUser.username}</h2>
+
+        <div class="role-dropdown">
+            <UserRoleDropdown />
+        </div>
+
         <button class="assign-role-button" on:click={assignRole}>Assign Role</button>
         <button class="delete-user-button" on:click={deleteUser}>Delete User</button>
     </div>
@@ -142,7 +149,7 @@
         height: 60px;
         border-radius: 50%;
         background: #ddd;
-        background-image: url('/.png'); /* User icon */
+      /*  background-image: url('/.png'); /* User icon */
         background-size: cover;
         background-position: center;
     }
