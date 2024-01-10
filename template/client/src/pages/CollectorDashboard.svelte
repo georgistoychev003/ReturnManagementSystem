@@ -1,66 +1,136 @@
 <script>
-    let name = 'COLLECTOR NAME'; // You can set a default name here
+    import {onMount} from "svelte";
 
+    let name = 'COLLECTOR NAME'; // You can set a default name here
+    let videoElementCreated = false; // Flag to track whether the video element is created
+    let barcode;
     function greet() {
         alert(`HELLO COLLECTOR NAME ${name}`);
     }
+
     async function scanBarcode() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            const videoElement = document.createElement('video');
-            videoElement.srcObject = stream;
-            videoElement.setAttribute('autoplay', '');
-            document.body.appendChild(videoElement);
+            // Check if the video element is already created
+            if (!videoElementCreated) {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoElement = document.createElement('video');
+                videoElement.srcObject = stream;
+                videoElement.setAttribute('autoplay', '');
+                document.body.appendChild(videoElement);
+                videoElementCreated = true; // Set the flag to true after creating the video element
+            }
         } catch (err) {
             console.error('Error accessing the camera: ', err);
         }
     }
 
-</script>
+    function submitReturnId() {
+        const returnId = document.getElementById('returnIdInput').value;
+        console.log('Return ID:', returnId);
+        // Add any further processing logic here
+    }
 
+    async function fetchUserDetails() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const response = await fetch(`http://localhost:3000/rma/barcode/${barcode}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    name = data.barcode;
+                    barcode = data.barcode;
+                } else {
+                    console.error('Failed to fetch user details');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    }
+</script>
 
 <div>
     <h1>HELLO {name}</h1>
     <div class="separator"></div>
     <div class="buttons-container">
         <button class="button" on:click={scanBarcode}>Scan Barcode</button>
-        <button class="button" on:click={() => console.log('Fill in returnId')}>Fill-in return id</button>
+
+        <!-- Replace the "Fill in returnId" button with an input field and a submit button -->
+        <div class="returnId-container">
+            <input type="text" id="returnIdInput" placeholder="Enter Return ID">
+            <button class="button submit-button" on:click={fetchUserDetails}>Submit</button>
+        </div>
     </div>
+
     <p class="text-below-button">PLEASE HOLD THE CAMERA 2 CM AWAY FROM BARCODE</p>
 </div>
 
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
+    div {
+        text-align: center;
+    }
 
     h1 {
-        size: 1vh;
         font-size: 4vh;
-
+        margin-bottom: 1vh;
     }
+
     .separator {
         border-top: 2px solid lightblue;
-        margin-left: 5vw;
-        margin-right: 5vw;
+        margin: 1vh 5vw;
     }
 
     .buttons-container {
         display: flex;
-        justify-content: center;
-        margin-top: 25vh;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 3vh;
     }
 
     .button {
-        margin: 0 4vh;
+        margin: 1vh;
         padding: 2vh 3vw;
         background-color: red;
         color: white;
         border: none;
-        border-radius: 0px;
+        border-radius: 5px;
         cursor: pointer;
+        font-size: 1.5vh;
+    }
+
+    .returnId-container {
+        display: flex;
+        margin-top: 1vh;
+    }
+
+    #returnIdInput {
+        padding: 1vh;
+        font-size: 1.5vh;
+    }
+
+    .submit-button {
+        margin-left: 1vh;
+        background-color: green;
     }
 
     .text-below-button {
         text-align: center;
         margin-top: 1vh;
+        font-size: 1.5vh;
     }
 </style>

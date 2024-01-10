@@ -16,10 +16,14 @@
 	import Users from "./pages/AdminUsersList.svelte";
 	import UserDetails from "./pages/AdminUserDetails.svelte";
 	import Requests from "./pages/AdminRequestsList.svelte";
+	import AdminDashboard from "./pages/AdminDashboard.svelte";
+
+
 	import MyOrders from "./pages/client/ClientOrderList.svelte"
 	import OrderDetails from "./pages/client/ClientOrderDetailsList.svelte"
 	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
+	import ResetPassword from "./pages/ResetPassword.svelte";
 
 	let page;
 	let params;
@@ -31,6 +35,16 @@
 	});
 	router('/about', (ctx) => {
 		page = About;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/admin/dashboard', (ctx) => {
+		page = AdminDashboard;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/user/home', (ctx) => {
+		page = Home;
 		currentRoute = ctx.pathname;
 	});
 
@@ -110,6 +124,10 @@
 		currentRoute = ctx.pathname;
 	});
 
+	router('/reset-password', (ctx) => {
+		page = ResetPassword;
+		currentRoute = ctx.pathname;
+	});
 
 
 	router.start();

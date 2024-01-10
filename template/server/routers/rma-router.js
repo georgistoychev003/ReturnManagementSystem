@@ -7,6 +7,8 @@ import * as userController from "../controllers/user-controller.js";
 
 router.get('/', rmaController.getListOfRmas);
 
+router.get('/:barcode', rmaController.getRmaByBarcode);
+
 router.get('/:rmaId', rmaController.getRma);
 
 router.get('/rma/products', rmaController.getListOfReturns);

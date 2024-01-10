@@ -117,6 +117,7 @@ JOIN user u ON o.userId = u.userId
 WHERE u.userId = ?`
 export const selectAllRma = `SELECT * FROM returntable`;
 
+export const updateUserPasswordById = `UPDATE user SET password = ? WHERE userID = ?`;
 
 
 
