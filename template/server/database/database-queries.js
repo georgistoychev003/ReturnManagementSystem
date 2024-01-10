@@ -20,9 +20,7 @@ export const createOrderTable = `CREATE TABLE IF NOT EXISTS "order"(
     orderId SERIAL PRIMARY KEY,
     userId INT NOT NULL,
     orderDate DATE NOT NULL,
-    totalPrice DOUBLE NOT NULL,
-    returnStatus TEXT,
-    credit DOUBLE                              
+    totalPrice DOUBLE NOT NULL
     )`
 
 export const createOrderedProductTable = `CREATE TABLE IF NOT EXISTS orderedProduct(
@@ -47,11 +45,11 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     returnedProductId INTEGER PRIMARY KEY AUTOINCREMENT,
     orderedProductId INT NOT NULL,
     RMAId INT,
-    quantityToReturn INT,
     returnedDate DATE,
     description TEXT,
     weight DOUBLE,
     statusProduct TEXT,
+    quantity INT NOT NULL,
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -67,7 +65,7 @@ export const countReturnedProducts = `SELECT count(returnedProductId) FROM retur
 
 export const createUser = `INSERT INTO user (userID, email, password, userRole) VALUES (?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma) VALUES (?, ?)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, quantityToReturn, returnedDate, description, weight, statusProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice) VALUES (?, ?, ?, ?, ?)`
@@ -99,10 +97,10 @@ export const selectOrderByUserId = `SELECT * FROM "order" WHERE userId = ?`;
 export const selectOrderByDate = `SELECT * FROM "order" WHERE orderDate = ?`;
 export const selectOrderDetailById = `SELECT * FROM orderedProduct WHERE orderId = ?`;
 export const selectAllOrderDetails = `SELECT * FROM orderProduct`;
-export const selectAllReturns =  `SELECT * FROM return`;
-export const selectReturnById =  `SELECT * FROM returntable WHERE RMAId = ?`;
+export const selectAllReturns =  `SELECT * FROM returntable`;
+export const selectStatusById =  `SELECT statusRma FROM returntable WHERE RMAId = ?`;
 export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
-export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ? AND returnedProductId = ?AND orderedProductId = ?`;
+export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ?`;
 //TODO check once the design in corrected
 
 export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderedProduct.productId, orderedProduct.quantity, product.name, product.price, product.type FROM "order" 
@@ -116,6 +114,28 @@ JOIN "order" o ON op.orderId = o.orderid
 JOIN user u ON o.userId = u.userId 
 WHERE u.userId = ?`
 export const selectAllRma = `SELECT * FROM returntable`;
+
+export const selectCustomerEmailByRMAId = `
+    SELECT u.email
+    FROM user u
+    JOIN "order" o ON u.userID = o.userId
+    JOIN orderedProduct op ON o.orderId = op.orderId
+    JOIN returnedProduct rp ON op.orderedProductId = rp.orderedProductId
+    JOIN returntable r ON rp.RMAId = r.RMAId
+    WHERE r.RMAId = ?;
+`;
+
+export const selectProductDescriptionsByRMAId = `
+    SELECT p.description
+    FROM returnedProduct rp
+    JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
+    JOIN product p ON op.productId = p.productId
+    JOIN returntable r ON rp.RMAId = r.RMAId
+    WHERE r.RMAId = ?;
+`;
+
+export const updateProductStockById = `UPDATE product SET inventoryStock = ? WHERE productId = ?`;
+
 
 export const updateUserPasswordById = `UPDATE user SET password = ? WHERE userID = ?`;
 
