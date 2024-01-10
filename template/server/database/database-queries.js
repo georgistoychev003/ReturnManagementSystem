@@ -67,7 +67,7 @@ export const countReturnedProducts = `SELECT count(returnedProductId) FROM retur
 
 export const createUser = `INSERT INTO user (userID, email, password, userRole) VALUES (?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma) VALUES (?, ?)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, quantityToReturn, returnedDate, description, weight, statusProduct) VALUES (?, ?, ?, ?, ?, ?, ?)`
+export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, quantityToReturn, returnedDate, description, weight, statusProduct) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice) VALUES (?, ?, ?, ?, ?)`
