@@ -80,7 +80,8 @@ export function insertReturned(){
                 returnedProductData.returnedDate,
                 returnedProductData.description,
                 returnedProductData.weight,
-                returnedProductData.statusProduct);
+                returnedProductData.statusProduct,
+                returnedProductData.quantity);
         }
     }
 }
@@ -197,8 +198,8 @@ export function getAllRma() {
     return db.prepare(queries.selectAllRma).all();
 }
 
-export function getAllRmaById() {
-    return db.prepare(queries.selectAllReturnedProductById).all();
+export function getAllRmaById(Id) {
+    return db.prepare(queries.selectAllReturnedProductById).get(Id);
 }
 
 export function getALlReturnedProducts(){
@@ -219,7 +220,7 @@ export function getStatusById(RMAId) {
 
 export function getTotalPriceOfRMA(RMAId) {
     const query = `
-        SELECT r.RMAId, SUM(op.unitPrice) AS TotalReturnPrice
+        SELECT r.RMAId, SUM(op.unitPrice * rp.quantity) AS TotalReturnPrice
         FROM returnedProduct rp
         JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
         JOIN returntable r ON rp.RMAId = r.RMAId
@@ -229,3 +230,14 @@ export function getTotalPriceOfRMA(RMAId) {
     console.log(query)
     return db.prepare(query).get(RMAId);
 }
+
+export function getCustomerEmailByRMAId(RMAId) {
+    const statement = db.prepare(queries.selectCustomerEmailByRMAId);
+    return statement.get(RMAId);
+}
+
+export function getProductByRMAId(RMAId) {
+    const statement = db.prepare(queries.selectProductDescriptionsByRMAId);
+    return statement.get(RMAId);
+}
+

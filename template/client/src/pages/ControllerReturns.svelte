@@ -1,10 +1,11 @@
 <script>
     import { onMount } from "svelte";
+    import page from 'page';
 
     let returnRequests = [];
 
     const viewDetails = (requestId) => {
-        console.log(`View details for request ID: ${requestId}`);
+        page(`/controller/return-requests-details/${requestId}`);
     };
 
     onMount(async () => {
@@ -44,14 +45,33 @@
         }
     }
 
+    async function fetchCustomerOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                return data.email;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
     async function fetchReturnRequests() {
         try {
-            const response = await fetch('http://localhost:3000/rma/rma/products');
+                const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
                 const requests = await response.json();
                 for (const request of requests) {
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
+                    const customer = await fetchCustomerOfRMA(request.RMAId);
+                    request.customer = customer;
                     request.totalPrice = totalPrice;
                     request.status = status
                 }
@@ -72,6 +92,7 @@
         <thead>
         <tr>
             <th>ID</th>
+            <th>CUSTOMER</th>
             <th>OVERVIEW</th>
             <th>PRICE</th>
             <th>DATE</th>
@@ -83,6 +104,7 @@
         {#each returnRequests as request}
             <tr>
                 <td>{request.RMAId}</td>
+                <td>{request.customer}</td>
                 <td>{request.description}</td>
                 <td>{request.totalPrice}</td>
                 <td>{request.returnedDate}</td>

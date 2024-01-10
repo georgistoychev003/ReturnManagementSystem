@@ -49,6 +49,7 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     description TEXT,
     weight DOUBLE,
     statusProduct TEXT,
+    quantity INT NOT NULL,
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -64,7 +65,7 @@ export const countReturnedProducts = `SELECT count(returnedProductId) FROM retur
 
 export const createUser = `INSERT INTO user (userID, email, password, userRole) VALUES (?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma) VALUES (?, ?)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, returnedDate, description, weight, statusProduct) VALUES (?, ?, ?, ?, ?, ?, ?)`
+export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, returnedDate, description, weight, statusProduct, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, description, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice) VALUES (?, ?, ?, ?, ?)`
@@ -98,10 +99,29 @@ export const selectAllOrderDetails = `SELECT * FROM orderDetail`;
 export const selectAllReturns =  `SELECT * FROM returntable`;
 export const selectStatusById =  `SELECT statusRma FROM returntable WHERE RMAId = ?`;
 export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
-export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ? AND returnedProductId = ?AND orderedProductId = ?`;
+export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ?`;
 //TODO check once the design in corrected
 
 export const selectAllRma = `SELECT * FROM returntable`;
+
+export const selectCustomerEmailByRMAId = `
+    SELECT u.email
+    FROM user u
+    JOIN "order" o ON u.userID = o.userId
+    JOIN orderedProduct op ON o.orderId = op.orderId
+    JOIN returnedProduct rp ON op.orderedProductId = rp.orderedProductId
+    JOIN returntable r ON rp.RMAId = r.RMAId
+    WHERE r.RMAId = ?;
+`;
+
+export const selectProductDescriptionsByRMAId = `
+    SELECT p.description
+    FROM returnedProduct rp
+    JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
+    JOIN product p ON op.productId = p.productId
+    JOIN returntable r ON rp.RMAId = r.RMAId
+    WHERE r.RMAId = ?;
+`;
 
 
 

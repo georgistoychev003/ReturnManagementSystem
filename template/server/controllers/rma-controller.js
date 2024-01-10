@@ -5,7 +5,7 @@ import {
     getALlReturnedProducts,
     getALlReturnedProductsByRMAId,
     updateOrderDetailById,
-    deleteRMAOrderById, getTotalPriceOfRMA, getStatusById
+    deleteRMAOrderById, getTotalPriceOfRMA, getStatusById, getCustomerEmailByRMAId, getProductByRMAId
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 
@@ -56,15 +56,34 @@ export function getRmaStatus(req, res) {
     try {
 
         const status = getStatusById(rmaId);
-        console.log(status)
         res.status(StatusCodes.OK).json(status);
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA price." });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA status." });
+    }
+}
+
+export function getRmaCustomer(req, res) {
+    const { rmaId } = req.params;
+    try {
+
+        const customer = getCustomerEmailByRMAId(rmaId);
+        res.status(StatusCodes.OK).json(customer);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA customer." });
+    }
+}
+
+export function getRmaProducts(req, res) {
+    const { rmaId } = req.params;
+    try {
+        const prod = getProductByRMAId(rmaId);
+        res.status(StatusCodes.OK).json(prod);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA customer." });
     }
 }
 
 export function getRma(req, res) {
-    //TODO get an rma
     const { rmaId } = req.params;
     try {
         let rmaResult;
@@ -92,6 +111,7 @@ export function getListOfRmas(req, res) {
 
 export function getListOfReturns(req, res) {
     try {
+        console.log("hello")
         const returns = getALlReturnedProducts();
         res.status(StatusCodes.OK).json(returns);
     } catch (error) {

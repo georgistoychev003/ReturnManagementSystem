@@ -8,6 +8,7 @@
 	import CollectorDashboard from "./pages/CollectorDashboard.svelte";
 	import ControllerDashboard from "./pages/ControllerDashboard.svelte";
 	import ControllerReturns from "./pages/ControllerReturns.svelte";
+	import ControllerReturnsDetails from "./pages/ControllerReturnDetails.svelte";
 	import ControllerStock from "./pages/ControllerStock.svelte";
 	import Admin from "./pages/AdminRequestsList.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
@@ -47,6 +48,11 @@
 
 	router('/controller/return-requests', (ctx) => {
 		page = ControllerReturns;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/controller/return-requests-details/:RMAId', (ctx) => {
+		page = ControllerReturnsDetails;
 		currentRoute = ctx.pathname;
 	});
 

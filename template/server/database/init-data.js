@@ -137,7 +137,8 @@ export const returnedProduct = [
         returnedDate: "2023-01-01",
         description: "Defective item",
         weight: 1.2,
-        statusProduct: "Returned"
+        statusProduct: "Returned",
+        quantity: "2"
     },
     {
         returnedProductId: 2,
@@ -146,7 +147,8 @@ export const returnedProduct = [
         returnedDate: "2023-01-02",
         description: "Defective item",
         weight: 1.4,
-        statusProduct: "Returned"
+        statusProduct: "Returned",
+        quantity: "3"
     },
 ];
 
