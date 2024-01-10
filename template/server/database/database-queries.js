@@ -123,6 +123,9 @@ export const selectProductDescriptionsByRMAId = `
     WHERE r.RMAId = ?;
 `;
 
+export const updateProductStockById = `UPDATE product SET inventoryStock = ? WHERE productId = ?`;
+
+
 
 
 
