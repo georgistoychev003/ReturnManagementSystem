@@ -108,6 +108,9 @@ export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE
 export const createRma = `INSERT INTO return (userId, productId, returnId, description, barcode, weight) VALUES (?, ?, ?, ?, ?, ?)`
 export const selectAllRma = `SELECT * FROM return`;
 
+export const selectProductByBarcode = `SELECT * FROM product WHERE barcode = ?`;
+
+
 
 
 
