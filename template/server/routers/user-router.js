@@ -11,6 +11,7 @@ router.get('/count', userController.getCountOfUsers);
 
 router.get('/:emailOrUserId', userController.getUser);
 
+
 router.post('/', userController.postUser);
 
 router.patch('/:emailOrUserId', userController.updateUserInformation);
