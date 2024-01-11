@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import {getUserByEmail, updateUserPasswordById} from "../database/database-manager-2.js";
+import {getUserByEmail, getUserById, updateUserPasswordById} from "../database/database-manager-2.js";
 
 
 export async function getUser(req, res) {

@@ -140,6 +140,12 @@
 		currentRoute = ctx.pathname;
 	});
 
+	router('/userDetails/:userID', (ctx) => {
+		page = UserDetails;
+		params = ctx.params;
+		currentRoute = ctx.pathname;
+	});
+
 	router.start();
 </script>
 
