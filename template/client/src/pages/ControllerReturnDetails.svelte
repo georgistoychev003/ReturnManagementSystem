@@ -1,30 +1,124 @@
 <script>
+    import {onMount} from "svelte";
+    import page from 'page';
+
+    let RMAId;
+
     let selectedAction = null;
+
+    let returnRequests = [];
 
     const selectAction = (action) => {
         selectedAction = action;
     };
+
+    function getRMAIdFromUrl() {
+        const path = window.location.pathname;
+        const parts = path.split('/');
+        return parts[parts.length - 1];
+    }
+
+    $: {
+        RMAId = getRMAIdFromUrl();
+    }
+
+    onMount(async () => {
+        await fetchReturnRequests();
+    });
+
+    async function handleConfirm() {
+        alert("Customer has been notified, email sent.");
+        page(`/controller`);
+    }
+
+    async function fetchReturnRequests() {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}`);
+            if (response.ok) {
+                returnRequests = await response.json();
+                const status = await fetchStatusOfRMA(returnRequests.RMAId);
+                const customer = await fetchCustomerOfRMA(returnRequests.RMAId);
+                const products = await fetchProductsOfRMA(returnRequests.RMAId);
+                returnRequests.customer = customer;
+                returnRequests.status = status
+                returnRequests.products = products
+                console.log(returnRequests)
+            } else {
+                console.error('Failed to fetch return requests');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function fetchStatusOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.statusRma;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchCustomerOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.email;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+    async function fetchProductsOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/products`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                return data.description;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
 </script>
 
 <div class="request-card">
     <div class="request-header">
-        REQUEST XX
+        REQUEST {RMAId}
     </div>
     <div class="details-section">
         <div class="details">
             <h2>DETAILS:</h2>
-            <p>PRODUCTS: XXXXXX XXXXXX</p>
-            <p>DATE: XXXXXX</p>
-            <p>CUSTOMER NAME: XXXXXXX</p>
-            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>
+<!--            <p>PRODUCTS: {returnRequests.products}</p>-->
+            <p>DATE: {returnRequests.returnedDate}</p>
+            <p>CUSTOMER NAME: {returnRequests.customer}</p>
+<!--            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>-->
             <div class="label">
                 <img src="barcode.png" alt="Barcode" />
             </div>
         </div>
         <div class="status-section">
-            <p>STATUS: XXXXXXXXX</p>
+            <p>STATUS: {returnRequests.status}</p>
             <div class="image-placeholder"></div>
-            <p>DESCRIPTION: XXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXX</p>
+            <p>DESCRIPTION: {returnRequests.description}</p>
             <div class="actions">
                 <button
                         class="action-btn"
@@ -39,7 +133,7 @@
                     PRODUCT DAMAGED, NOTIFY CUSTOMER
                 </button>
             </div>
-            <button class="confirm-btn">CONFIRM</button>
+            <button class="confirm-btn" on:click={handleConfirm}>CONFIRM</button>
         </div>
     </div>
 </div>

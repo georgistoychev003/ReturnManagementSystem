@@ -1,23 +1,35 @@
 <script>
+    import { selectedItemsStore } from '../../Store.js';
+    import {onDestroy, onMount} from "svelte";
 
-    import {onMount} from "svelte";
-
+    // Subscribe to changes in the selectedItemsStore
+    let selectedItems = [];
     let availableProducts = []; // This will be fetched from the backend
+    const unsubscribe = selectedItemsStore.subscribe(value => {
+        selectedItems = value;
+        console.log(selectedItems);
 
-    // Fetch available products on component mount with returnable status
-    onMount(async () => {
-        try {
-            const response = await fetch('http://localhost:3000/products');
-            const products = await response.json();
-            availableProducts = products.map(product => ({
-                ...product,
-                isReturnable: checkReturnEligibility(product)
-            }));
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
     });
 
+    // Unsubscribe when the component is destroyed to prevent memory leaks
+    onDestroy(() => {
+        unsubscribe();
+    });
+
+    // Fetch available products on component mount with returnable status
+    // onMount(async () => {
+    //     try {
+    //         const response = await fetch('http://localhost:3000/products');
+    //         const products = await response.json();
+    //         availableProducts = products.map(product => ({
+    //             ...product,
+    //             isReturnable: checkReturnEligibility(product)
+    //         }));
+    //     } catch (error) {
+    //         console.error('Error fetching products:', error);
+    //     }
+    // });
+    //
     let selectedProducts = [];
     let comment = '';
 
@@ -27,7 +39,11 @@
     };
 
 
+    let counter = 10001;
 
+    function generateId() {
+        return (counter++).toString();
+    }
     const checkReturnEligibility = (product) => {
         const purchaseDateLimit = new Date();
         purchaseDateLimit.setDate(purchaseDateLimit.getDate() - 14);
@@ -38,10 +54,17 @@
     };
 
     const createRMARequest = async () => {
-        if (selectedProducts.length === 0) {
-            alert('Please select at least one product.');
-            return;
-        }
+        const dataToSend = selectedItems.map(item => ({
+            returnedProductId: generateId(),
+            orderedProductId: item.orderedProductId,
+            RMAId: generateId(),
+            productName: item.productName,
+            quantity: item.quantity,
+            date: new Date().toISOString(),
+            description: 'Your Description Here'
+        }));
+
+        console.log(dataToSend);
 
         try {
             const response = await fetch('http://localhost:3000/returns', {
@@ -50,7 +73,7 @@
                     'Content-Type': 'application/json',
                     //here we will need the bearer authorization header when the jwt is done
                 },
-                body: JSON.stringify({ selectedProducts, comment })
+                body: JSON.stringify(dataToSend)
             });
 
             if (!response.ok) {
@@ -70,28 +93,46 @@
 <div class="rma-container">
     <h1>Create a RMA Request</h1>
     <div class="form-container">
-        <div class="select-products">
-            {#each availableProducts as product, index}
-                <div class="product-entry">
-                    <label for={`product-${index}`}>{product.name}</label>
-                    <input id={`product-${index}`} type="number" placeholder="Quantity" min="0"
-                           bind:value={product.quantity} on:input={() => updateQuantity(product, product.quantity)}>
-                </div>
-            {/each}
-        </div>
+        <h2>Return Request ID: </h2>
+        <h2>Order ID: </h2>
+
+
         <div class="selected-products">
             <h2>Selected Products</h2>
-            <ul>
-                {#each selectedProducts as product}
-                    <li>{product.quantity} x {product.name}</li>
+            <table>
+                <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <!-- Add more columns as needed -->
+                </tr>
+                </thead>
+                <tbody>
+                {#each selectedItems as item}
+                    <tr>
+                        <td>{item.productId}</td>
+                        <td>{item.name}</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.price}</td>
+                        <!-- Render other item details in respective columns -->
+                    </tr>
                 {/each}
-            </ul>
+                </tbody>
+            </table>
         </div>
-        <div class="comment-section">
-            <textarea bind:value={comment} rows="4" placeholder="Add any relevant information here..."></textarea>
         </div>
+
+    <div class="comment-section">
+        <textarea bind:value={comment} rows="4" placeholder="Add any relevant information here..."></textarea>
     </div>
+    <a href="/myReturns">
     <button on:click={createRMARequest} class="create-request-btn">Create Request</button>
+    </a>
+    <a href="orderDetails/1">
+    <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
+    </a>
 </div>
 
 <style>
@@ -126,6 +167,7 @@
     }
 
     .selected-products, .comment-section {
+        width: 100%;
         background-color: #f7f7f7;
         padding: 15px;
         border-radius: 8px;
@@ -167,6 +209,10 @@
         cursor: pointer;
         transition: all 0.3s ease;
         margin-top: 20px;
+    }
+    #cancel-btn {
+        background-color: #cccccc;
+        color: #333333;
     }
 
     .create-request-btn:hover {

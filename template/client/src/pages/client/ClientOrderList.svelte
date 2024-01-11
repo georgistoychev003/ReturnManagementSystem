@@ -1,9 +1,12 @@
 <script>
     import { onMount } from 'svelte';
+    import About from "../About.svelte";
+    import { writable } from 'svelte/store';
 
     let orders = [];
     let isLoading = true;
     let errorMessage = '';
+    export const orderId = writable(null);
 
     const fetchOrders = async () => {
         try {
@@ -44,26 +47,38 @@
         <table>
             <thead>
             <tr>
-                <th>QUANTITY</th>
-                <th>PRODUCT</th>
+                <th>ORDER ID</th>
                 <th>PRICE</th>
-                <th>TYPE</th>
-                <th>ORDERED SINCE</th>
+                <th>ORDER DATE</th>
+                <th>CREDIT</th>
+                <th>RETURN STATUS</th>
                 <th></th> <!-- Return column -->
             </tr>
             </thead>
             <tbody>
             {#each orders as order}
                 <tr>
-                    <td>{order.quantity}</td>
-                    <td>{order.product}</td>
-                    <td>{order.price}</td>
-                    <td>{order.type}</td>
-                    <td>{order.orderedSince}</td>
+                    <td>{order.orderId}</td>
+                    <td>{order.totalPrice}</td>
+                    <td>{order.orderDate}</td>
                     <td>
-                        {#if order.returnable}
-                            <button on:click={() => requestReturn(order)}>Return</button>
+                        {#if order.credit === null}
+                            -
+                        {:else}
+                            {order.credit}
                         {/if}
+                    </td>
+                    <td>
+                        {#if order.returnStatus === null}
+                            -
+                        {:else}
+                            {order.returnStatus}
+                        {/if}
+                    </td>
+                    <td>
+                        <a href={`/orderDetails/${order.orderId}`}>
+                            <button>Order Details</button>
+                        </a>
                     </td>
                 </tr>
             {/each}

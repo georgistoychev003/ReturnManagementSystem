@@ -1,31 +1,83 @@
 <script>
-    // Sample data for return requests, we should replace it with the database contents when database is setup
-    import {onMount} from "svelte";
+    import { onMount } from "svelte";
+    import page from 'page';
 
-    let returnRequests = [
-        { id: 'R001', customer: 'John Doe', overview: 'Defective electronic item', price: '$299', date: '2023-12-01', status: 'APPROVED' },
-        { id: 'R002', customer: 'Jane Smith', overview: 'Wrong size clothing', price: '$45', date: '2023-12-03', status: 'APPROVED' },
-        { id: 'R003', customer: 'Alice Johnson', overview: 'Damaged during shipping', price: '$120', date: '2023-12-05', status: 'APPROVED' },
-        { id: 'R004', customer: 'Bob Brown', overview: 'Missing accessories', price: '$60', date: '2023-12-07', status: 'APPROVED' },
-        { id: 'R005', customer: 'Emily White', overview: 'Not as described', price: '$85', date: '2023-12-10', status: 'APPROVED' },
-    ];
+    let returnRequests = [];
 
     const viewDetails = (requestId) => {
-        // Logic to view details of the return request should go here once backend is setup
-        console.log(`View details for request ID: ${requestId}`);
-
+        page(`/controller/return-requests-details/${requestId}`);
     };
 
     onMount(async () => {
         await fetchReturnRequests();
     });
 
-    async function fetchReturnRequests() {
+    async function fetchTotalPriceOfRMA(RMAId) {
         try {
-            const response = await fetch('http://localhost:3000/api/return-requests'); // Replace with your actual API endpoint
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/total-price`);
             if (response.ok) {
                 const data = await response.json();
-                returnRequests = data; // Assuming the response is an array of return requests
+                return data.TotalReturnPrice || 0;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchStatusOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                return data.statusRma;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchCustomerOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                return data.email;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchReturnRequests() {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/returns/products`);
+            if (response.ok) {
+                const requests = await response.json();
+                console.log(requests)
+                for (const request of requests) {
+                    const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
+                    const status = await fetchStatusOfRMA(request.RMAId);
+                    const customer = await fetchCustomerOfRMA(request.RMAId);
+                    request.customer = customer;
+                    request.totalPrice = totalPrice;
+                    request.status = status
+                }
+                returnRequests = requests;
+                console.log(returnRequests)
             } else {
                 console.error('Failed to fetch return requests');
             }
@@ -46,20 +98,20 @@
             <th>PRICE</th>
             <th>DATE</th>
             <th>STATUS</th>
-            <th></th> <!-- Details column -->
+            <th></th>
         </tr>
         </thead>
         <tbody>
         {#each returnRequests as request}
             <tr>
-                <td>{request.id}</td>
+                <td>{request.RMAId}</td>
                 <td>{request.customer}</td>
-                <td>{request.overview}</td>
-                <td>{request.price}</td>
-                <td>{request.date}</td>
+                <td>{request.description}</td>
+                <td>{request.totalPrice}</td>
+                <td>{request.returnedDate}</td>
                 <td class="status">{request.status}</td>
                 <td>
-                    <button on:click={() => viewDetails(request.id)} class="details-btn">Details</button>
+                    <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                 </td>
             </tr>
         {/each}

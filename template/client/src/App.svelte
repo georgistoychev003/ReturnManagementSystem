@@ -8,19 +8,24 @@
 	import CollectorDashboard from "./pages/CollectorDashboard.svelte";
 	import ControllerDashboard from "./pages/ControllerDashboard.svelte";
 	import ControllerReturns from "./pages/ControllerReturns.svelte";
+	import ControllerReturnsDetails from "./pages/ControllerReturnDetails.svelte";
 	import ControllerStock from "./pages/ControllerStock.svelte";
 	import Admin from "./pages/AdminRequestsList.svelte";
 	import ForgotPassword from "./pages/ForgotPassword.svelte";
-	import ClientDashboard from "./pages/ClientHomePage.svelte";
+	import ClientDashboard from "./pages/client/ClientHomePage.svelte";
 	import RegisterUser from "./pages/AdminCreateUser.svelte"
 	import Users from "./pages/AdminUsersList.svelte";
 	import UserDetails from "./pages/AdminUserDetails.svelte";
 	import Requests from "./pages/AdminRequestsList.svelte";
+	import AdminDashboard from "./pages/AdminDashboard.svelte";
 
 
-
-
-
+	import MyOrders from "./pages/client/ClientOrderList.svelte"
+	import OrderDetails from "./pages/client/ClientOrderDetailsList.svelte"
+	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
+	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
+	import ResetPassword from "./pages/ResetPassword.svelte";
+	import RMAProducts from "./pages/client/RMAProducts.svelte";
 
 	let page;
 	let params;
@@ -32,6 +37,16 @@
 	});
 	router('/about', (ctx) => {
 		page = About;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/admin', (ctx) => {
+		page = AdminDashboard;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/user/home', (ctx) => {
+		page = Home;
 		currentRoute = ctx.pathname;
 	});
 
@@ -47,6 +62,11 @@
 
 	router('/controller/return-requests', (ctx) => {
 		page = ControllerReturns;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/controller/return-requests-details/:RMAId', (ctx) => {
+		page = ControllerReturnsDetails;
 		currentRoute = ctx.pathname;
 	});
 
@@ -91,8 +111,40 @@
 		currentRoute = ctx.pathname;
 	});
 
+	router('/myOrders', (ctx) =>{
+		page = MyOrders;
+		currentRoute = ctx.pathname;
+	});
 
+	router(`/orderDetails/:orderId`, (ctx) =>{
+		page = OrderDetails;
+		currentRoute = ctx.pathname;
+	});
 
+	router('/myReturns', (ctx) =>{
+		page = MyReturns;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/rmaClientForm', (ctx) =>{
+		page = RMAClientForm;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/reset-password', (ctx) => {
+		page = ResetPassword;
+		currentRoute = ctx.pathname;
+	});
+	router('/RMAProducts', (ctx) => {
+		page = RMAProducts;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/userDetails/:userID', (ctx) => {
+		page = UserDetails;
+		params = ctx.params;
+		currentRoute = ctx.pathname;
+	});
 
 	router.start();
 </script>

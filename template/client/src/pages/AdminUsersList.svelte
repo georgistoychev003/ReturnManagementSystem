@@ -1,11 +1,24 @@
 <script>
     // Sample data for the users, we need to replace this with data fetching from the backend
+    import router from "page";
+
+
     let users = [
-        { username: 'USER001', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
-        { username: 'USER002', name: 'Michael Jackson', email: 'michael@example.com', role: 'Controller' },
-        { username: 'USER003', name: 'Jony Joe', email: 'johny@example.com', role: 'Collector' },
+        // { username: 'USER001', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+        // { username: 'USER002', name: 'Michael Jackson', email: 'michael@example.com', role: 'Controller' },
+        // { username: 'USER003', name: 'Jony Joe', email: 'johny@example.com', role: 'Collector' },
 
     ];
+    const navigateTo = (route) => {
+        router.push(route);
+    };
+
+    // Function to handle user detail view, we need to implement it in accordance to the backend
+     const showUserDetails = (user) => {
+        const route = `/userDetails/${user.userID}`;
+        navigateTo(route);
+    };
+
 
     const getUsers = async () => {
         try {
@@ -39,10 +52,10 @@
             users.push(user);
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${user.username}</td>
-                <td>${user.name}</td>
+                <td>USER00 ${user.userID}</td>
+                <td>${user.userName}</td>
                 <td>${user.email}</td>
-                <td>${user.role}</td>
+                <td>${user.userRole}</td>
                 <td>
                     <button onclick="showUserDetails(${JSON.stringify(user)})">Details</button>
                 </td>
@@ -57,10 +70,6 @@
         console.log('Load more users');
     };
 
-    // Function to handle user detail view, we need to implement it in accordance to the backend
-    const showUserDetails = (user) => {
-        console.log(`Show details for user: ${user.username}`);
-    };
 
     // Function to handle creating a new user, we need to implement it in accordance to the backend
     const createUser = () => {
@@ -87,17 +96,17 @@
         </tr>
         </thead>
         <tbody>
-        {#each users as user}
-            <tr>
-                <td>{user.username}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>
-                    <button on:click={() => showUserDetails(user)}>Details</button>
-                </td>
-            </tr>
-        {/each}
+        <!--{#each users as user}-->
+        <!--    <tr>-->
+        <!--        <td>{user.userID}</td>-->
+        <!--        <td>{user.name}</td>-->
+        <!--        <td>{user.email}</td>-->
+        <!--        <td>{user.userRole}</td>-->
+        <!--        <td>-->
+        <!--            <button on:click={() => showUserDetails(user)}>Details</button>-->
+        <!--        </td>-->
+        <!--    </tr>-->
+        <!--{/each}-->
         </tbody>
     </table>
     <div class="more-button">
