@@ -5,8 +5,8 @@ import {
     getALlReturnedProducts,
     getALlReturnedProductsByRMAId,
     updateOrderDetailById,
-    deleteRMAOrderById, getNumberOfRMA,
-    deleteRMAOrderById, getAllReturnsByUserId, getTotalPriceOfRMA, getStatusById, getCustomerEmailByRMAId, getProductByRMAId
+     getNumberOfRMA,
+     getAllReturnsByUserId, getTotalPriceOfRMA, getStatusById, getCustomerEmailByRMAId, getProductByRMAId
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 
