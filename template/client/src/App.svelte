@@ -39,7 +39,7 @@
 		currentRoute = ctx.pathname;
 	});
 
-	router('/admin/dashboard', (ctx) => {
+	router('/admin', (ctx) => {
 		page = AdminDashboard;
 		currentRoute = ctx.pathname;
 	});
