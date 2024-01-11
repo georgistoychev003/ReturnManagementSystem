@@ -1,5 +1,7 @@
 <script>
     import {onMount} from "svelte";
+    import page from 'page';
+
 
     let name = 'COLLECTOR NAME'; // You can set a default name here
     let videoElementCreated = false; // Flag to track whether the video element is created
@@ -26,15 +28,21 @@
 
     function submitReturnId() {
         const returnId = document.getElementById('returnIdInput').value;
-        console.log('Return ID:', returnId);
-        // Add any further processing logic here
+
+        // Check if the input field is not empty
+        if (returnId.trim() !== '') {
+            // Navigate to RMAProducts page
+            page('/RMAProducts');
+        } else {
+            alert("Please enter a Return ID");
+        }
     }
 
     async function fetchUserDetails() {
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                const response = await fetch(`http://localhost:3000/rma/barcode/${barcode}`, {
+                const response = await fetch(`http://localhost:3000/rma/${barcode}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -63,7 +71,7 @@
         <!-- Replace the "Fill in returnId" button with an input field and a submit button -->
         <div class="returnId-container">
             <input type="text" id="returnIdInput" placeholder="Enter Return ID">
-            <button class="button submit-button" on:click={fetchUserDetails}>Submit</button>
+            <button class="button submit-button" on:click={submitReturnId}>Submit</button>
         </div>
     </div>
 

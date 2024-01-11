@@ -25,6 +25,7 @@
 	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 	import ResetPassword from "./pages/ResetPassword.svelte";
+	import RMAProducts from "./pages/client/RMAProducts.svelte";
 
 	let page;
 	let params;
@@ -134,7 +135,10 @@
 		page = ResetPassword;
 		currentRoute = ctx.pathname;
 	});
-
+	router('/RMAProducts', (ctx) => {
+		page = RMAProducts;
+		currentRoute = ctx.pathname;
+	});
 
 	router.start();
 </script>
