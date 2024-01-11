@@ -1,5 +1,6 @@
 <script>
     import {onMount} from "svelte";
+    import page from 'page';
 
     let RMAId;
 
@@ -24,6 +25,11 @@
     onMount(async () => {
         await fetchReturnRequests();
     });
+
+    async function handleConfirm() {
+        alert("Customer has been notified, email sent.");
+        page(`/controller`);
+    }
 
     async function fetchReturnRequests() {
         try {
@@ -101,10 +107,10 @@
     <div class="details-section">
         <div class="details">
             <h2>DETAILS:</h2>
-            <p>PRODUCTS: {returnRequests.products}</p>
+<!--            <p>PRODUCTS: {returnRequests.products}</p>-->
             <p>DATE: {returnRequests.returnedDate}</p>
             <p>CUSTOMER NAME: {returnRequests.customer}</p>
-            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>
+<!--            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>-->
             <div class="label">
                 <img src="barcode.png" alt="Barcode" />
             </div>
@@ -127,7 +133,7 @@
                     PRODUCT DAMAGED, NOTIFY CUSTOMER
                 </button>
             </div>
-            <button class="confirm-btn">CONFIRM</button>
+            <button class="confirm-btn" on:click={handleConfirm}>CONFIRM</button>
         </div>
     </div>
 </div>
