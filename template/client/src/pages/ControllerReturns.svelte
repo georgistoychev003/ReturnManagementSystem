@@ -64,9 +64,10 @@
 
     async function fetchReturnRequests() {
         try {
-                const response = await fetch(`http://localhost:3000/rma/returns/products`);
+            const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
                 const requests = await response.json();
+                console.log(requests)
                 for (const request of requests) {
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);

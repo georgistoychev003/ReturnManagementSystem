@@ -12,9 +12,10 @@
             const response = await fetch('http://localhost:3000/product');
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 returnStock = data.map(item => ({
                     id: item.productId,
-                    name: item.description,
+                    name: item.name,
                     type: item.type,
                     price: `$${item.price.toFixed(2)}`,
                     quantity: item.inventoryStock
