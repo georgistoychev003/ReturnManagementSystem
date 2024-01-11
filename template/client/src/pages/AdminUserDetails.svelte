@@ -1,6 +1,7 @@
 <script>
     //fetch and select the user
     import UserRoleDropdown from '../components/UserRoleDropdown.svelte';
+    import {onMount} from "svelte";
 
     const fetchUserDetails = async (userId) => {
         try {
@@ -73,6 +74,18 @@
         console.log(`Delete user: ${selectedUser.username}`);
     };
 
+    onMount(() => {
+        // Get the userId from the URL params
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get('userId');
+
+        if (userId) {
+            // Fetch user details based on userId
+            fetchUserDetails(userId);
+        } else {
+            console.error('User ID not provided in the URL params.');
+        }
+    });
 
 // for now hard coded
     //todo : database should be done for full functionality
