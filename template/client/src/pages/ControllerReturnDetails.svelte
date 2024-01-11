@@ -9,7 +9,7 @@
     let returnRequests = [];
 
     const selectAction = (action) => {
-
+        selectedAction = action;
     };
 
     function getRMAIdFromUrl() {
