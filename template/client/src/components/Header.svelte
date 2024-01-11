@@ -35,7 +35,7 @@
   page('/controller/stock');
  }
  function logout(){
-  page('/');
+  window.location.href='/';
   localStorage.removeItem('token');
  }
  function navigateToControllerDashboard() {
