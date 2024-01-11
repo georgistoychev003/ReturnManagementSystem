@@ -1,30 +1,35 @@
 export const usersData =[
     {
         userId: 1,
+        userName : "Pablo",
         email: "customer@email.com",
         password: "password",
         userRole: "customer",
     },
     {
         userId: 2,
+        userName : "Georgi",
         email: "collector@email.com",
         password: "password",
         userRole: "collector",
     },
     {
         userId: 3,
+        userName: "Desmond",
         email: "controller@email.com",
         password: "password",
         userRole: "controller",
     },
     {
         userId: 4,
+        userName : "Badr",
         email: "admin@email.com",
         password: "admin",
         userRole: "admin",
     },
     {
         userId: 5,
+        userName: "TestAccount",
         email: "mitkopetrovich2021@gmail.com",
         password: "password",
         userRole: "customer",

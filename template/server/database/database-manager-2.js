@@ -35,7 +35,7 @@ function insertUsers(){
     if(countResult && countResult['count(email)'] === 0){
         const insert = db.prepare(queries.createUser);
         for(const user of initData.usersData){
-            insert.run(user.name, user.userId, user.email, user.password, user.userRole);
+            insert.run(user.userId, user.userName, user.email, user.password, user.userRole);
         }
     }
 }
@@ -102,7 +102,7 @@ export function insertRMA(){
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
     insert.run(
-        user.userId, user.email, user.password, user.userRole, user.isAdmin
+        user.userId, user.name, user.email, user.password, user.userRole, user.isAdmin
     );
 }
 

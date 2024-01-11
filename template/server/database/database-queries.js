@@ -11,7 +11,7 @@ export const createProductTable = `CREATE TABLE IF NOT EXISTS product(
 
 export const createUserTable = `CREATE TABLE IF NOT EXISTS user(
     userID INT PRIMARY KEY,
-    name TEXT NOT NULL, 
+    userName TEXT NOT NULL, 
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     userRole TEXT NOT NULL
@@ -46,6 +46,7 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     returnedProductId INTEGER PRIMARY KEY AUTOINCREMENT,
     orderedProductId INT NOT NULL,
     RMAId INT,
+    quantityToReturn INT,
     returnedDate DATE,
     description TEXT,
     weight DOUBLE,
@@ -64,9 +65,9 @@ export const countProducts = `SELECT count(productId) FROM product`
 export const countReturns = `SELECT count(RMAId) FROM returntable`
 export const countReturnedProducts = `SELECT count(returnedProductId) FROM returnedProduct`
 
-export const createUser = `INSERT INTO user (userID, email, password, userRole) VALUES (?, ?, ?, ?)`
+export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma) VALUES (?, ?)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,quantityToReturn,  returnedDate, description, weight, statusProduct, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )`
+export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, quantityToReturn,  returnedDate, description, weight, statusProduct, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice) VALUES (?, ?, ?, ?, ?)`

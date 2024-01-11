@@ -40,7 +40,7 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>USER00 ${user.userID}</td>
-                <td>${user.name}</td>
+                <td>${user.userName}</td>
                 <td>${user.email}</td>
                 <td>${user.userRole}</td>
                 <td>
