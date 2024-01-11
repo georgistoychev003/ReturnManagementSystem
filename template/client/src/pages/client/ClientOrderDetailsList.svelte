@@ -1,13 +1,18 @@
+
 <script>
     import { onMount } from 'svelte';
-
-    import About from "../About.svelte";
+    import { writable } from 'svelte/store';
+    import { selectedItemsStore } from '../../Store.js';
 
     let orders = [];
     let isLoading = true;
     let errorMessage = '';
     let orderId = 1;
 
+    function handleSelection(orderProducts) {
+        const selectedItems = orderProducts.filter(product => product.selected);
+        selectedItemsStore.set(selectedItems);
+    }
 
     onMount(async () => {
         try {
@@ -32,6 +37,7 @@
         console.log(`Return requested for order: ${order.product}`);
         // Implement return logic here
     };
+
 
 </script>
 
@@ -89,7 +95,7 @@
         </table>
 
         <a href="/rmaClientForm">
-            <button>Return Selected Products</button>
+            <button on:click={() => handleSelection(orders)}>Return Selected Products</button>
         </a>
 
     </div>

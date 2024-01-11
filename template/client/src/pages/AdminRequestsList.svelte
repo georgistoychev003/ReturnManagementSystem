@@ -8,7 +8,7 @@
 
     const fetchRequests = async () => {
         try {
-            const response = await fetch('http://localhost:3000/requests');
+            const response = await fetch('http://localhost:3000/rma/returns/products');
 
             if (response.ok) {
                 const data = await response.json();
@@ -30,21 +30,24 @@
         tableBody.innerHTML = '';
 
         // Populate the table with fetched request data
-        requests.forEach(request => {
-            const row = document.createElement('tr');
+       requests.forEach(request => {
+       /*     const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${request.id}</td>
+                <td>${request.returnedProductId}</td>
                 <td>${request.user}</td>
                 <td>${request.title}</td>
-                <td>${request.date}</td>
+                <td>${request.returnedDate}</td>
                 <td>${request.price}</td>
                 <td>
                     ${request.returnable ? '<button onclick="requestReturn()">Process Return</button>' : ''}
                 </td>
             `;
-            tableBody.appendChild(row);
+            tableBody.appendChild(row); */
         });
     };
+
+
+
 
     const handleMoreClick = () => {
         // here we have to implement the logic to load more RMA requests
@@ -75,10 +78,10 @@
         <tbody>
         {#each requests as request}
             <tr>
-                <td>{request.id}</td>
-                <td>{request.user}</td>
+                <td>{request.returnedProductId}</td>
+                <td>{request.userId}</td>
                 <td>{request.title}</td>
-                <td>{request.date}</td>
+                <td>{request.returnedDate}</td>
                 <td>{request.price}</td>
                 <td>
                     {#if request.returnable}

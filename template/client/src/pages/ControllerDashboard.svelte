@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    let userName = "Loading...";
+    let userName = "Mr Zanoni";
 
     onMount(async () => {
         const token = localStorage.getItem('token');

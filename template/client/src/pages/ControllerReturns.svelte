@@ -1,24 +1,81 @@
 <script>
-    // Sample data for return requests, we should replace it with the database contents when database is setup
-    import {onMount} from "svelte";
+    import { onMount } from "svelte";
+    import page from 'page';
 
-    let returnRequests = [
-    ];
+    let returnRequests = [];
 
     const viewDetails = (requestId) => {
-        console.log(`View details for request ID: ${requestId}`);
-
+        page(`/controller/return-requests-details/${requestId}`);
     };
 
     onMount(async () => {
         await fetchReturnRequests();
     });
 
+    async function fetchTotalPriceOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/total-price`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.TotalReturnPrice || 0;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchStatusOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                return data.statusRma;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchCustomerOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                return data.email;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
     async function fetchReturnRequests() {
         try {
-            const response = await fetch('http://localhost:3000/rma/rma/products');
+                const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
-                returnRequests = await response.json();
+                const requests = await response.json();
+                for (const request of requests) {
+                    const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
+                    const status = await fetchStatusOfRMA(request.RMAId);
+                    const customer = await fetchCustomerOfRMA(request.RMAId);
+                    request.customer = customer;
+                    request.totalPrice = totalPrice;
+                    request.status = status
+                }
+                returnRequests = requests;
                 console.log(returnRequests)
             } else {
                 console.error('Failed to fetch return requests');
@@ -49,11 +106,11 @@
                 <td>{request.RMAId}</td>
                 <td>{request.customer}</td>
                 <td>{request.description}</td>
-                <td>{request.price}</td>
+                <td>{request.totalPrice}</td>
                 <td>{request.returnedDate}</td>
                 <td class="status">{request.status}</td>
                 <td>
-                    <button on:click={() => viewDetails(request.id)} class="details-btn">Details</button>
+                    <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                 </td>
             </tr>
         {/each}
