@@ -200,6 +200,10 @@ export function getOrderedProductsByOrderId(orderId){
     return db.prepare(queries.selectOrderedProducts).all(orderId);
 }
 //TODO check once the design in corrected
+export function getNumberOfRMA() {
+    return db.prepare(queries.countReturns).get();
+}
+
 export function deleteRmaById(returnId) {
     return db.prepare(queries.deleteRmaById).run(returnId);
 }

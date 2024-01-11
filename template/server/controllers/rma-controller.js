@@ -5,7 +5,7 @@ import {
     getALlReturnedProducts,
     getALlReturnedProductsByRMAId,
     updateOrderDetailById,
-    deleteRMAOrderById
+    deleteRMAOrderById, getNumberOfRMA
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 
@@ -73,5 +73,14 @@ export function getListOfReturns(req, res) {
         res.status(StatusCodes.OK).json(returns);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+}
+
+export async function getCountOfRMA(req, res){
+    try {
+        const numberOfRMA = getNumberOfRMA();
+        res.status(StatusCodes.OK).json(numberOfRMA);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve number of users." });
     }
 }
