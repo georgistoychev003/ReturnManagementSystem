@@ -245,7 +245,6 @@ export function getTotalPriceOfRMA(RMAId) {
         WHERE r.RMAId = ?
         GROUP BY r.RMAId;
     `;
-    console.log(query)
     return db.prepare(query).get(RMAId);
 }
 
@@ -255,8 +254,11 @@ export function getCustomerEmailByRMAId(RMAId) {
 }
 
 export function getProductByRMAId(RMAId) {
-    const statement = db.prepare(queries.selectProductDescriptionsByRMAId);
-    return statement.get(RMAId);
+    return db.prepare(queries.selectProductDescriptionsByRMAId).all(RMAId);
+}
+
+export function getQunatityByRMAId(RMAId) {
+    return db.prepare(queries.selectReturnedProductQuantityByRMAId).all(RMAId);
 }
 
 
@@ -268,4 +270,15 @@ export function updateUserPasswordById(userId, newPassword) {
 
 export function getAllReturnsByUserId(userId){
     return db.prepare(queries.selectAllRMAByUserId).all(userId);
+}
+
+export function getProductPriceByName(productName) {
+    return db.prepare('SELECT price FROM product WHERE name = ?').get(productName);
+}
+
+export function increaseProductStockByName(productName, quantity) {
+    const currentStock = db.prepare('SELECT inventoryStock FROM product WHERE name = ?').get(productName).inventoryStock;
+    const newStock = currentStock + quantity;
+    const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
+    return update.run(newStock, productName);
 }

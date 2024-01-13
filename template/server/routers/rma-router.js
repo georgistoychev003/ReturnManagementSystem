@@ -23,6 +23,8 @@ router.get('/:rmaId/customer', rmaController.getRmaCustomer);
 
 router.get('/:rmaId/products', rmaController.getRmaProducts);
 
+router.get('/:rmaId/quantity', rmaController.getRmaQuantity);
+
 router.patch('/:rmaId', rmaController.patchRma);
 
 router.delete('/:rmaId', rmaController.deleteRma);

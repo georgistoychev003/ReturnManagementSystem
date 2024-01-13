@@ -103,6 +103,12 @@ export const selectAllReturns =  `SELECT * FROM returntable`;
 export const selectStatusById =  `SELECT statusRma FROM returntable WHERE RMAId = ?`;
 export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
 export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ?`;
+export const selectReturnedProductQuantityByRMAId = `
+    SELECT rp.quantityToReturn
+    FROM returnedProduct rp
+    JOIN returntable r ON rp.RMAId = r.RMAId
+    WHERE r.RMAId = ?;
+`;
 //TODO check once the design in corrected
 
 export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderedProduct.productId, orderedProduct.quantity, product.name, product.price, product.type FROM "order" 
@@ -128,7 +134,7 @@ export const selectCustomerEmailByRMAId = `
 `;
 
 export const selectProductDescriptionsByRMAId = `
-    SELECT p.description
+    SELECT p.name
     FROM returnedProduct rp
     JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
     JOIN product p ON op.productId = p.productId
