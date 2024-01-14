@@ -139,6 +139,54 @@ During this standUp, we checked who had done what, and here are the results:
 * Brice: went through the documentation for refactoring and update the logical view (requirements).
 
 
+
 these are the results of this sprint, all the objectives that were planned are done. and here is the burnout chart : 
 ![img_1.png](img_1.png)
+
+
+## Sprint 2 (18/12/24 - 14/01/24)
+Scrum Master - Georgi
+Note Taker - Desmond
+
+### Sprint 2 Standup 1 (19/12/23)
+* Badr - Role dropdown is created, but not complete and tested bcz there is no endpoint for that
+* Brice - Added missing notes what brice did and when through the documentation for refactoring.
+* Desmond - Updated the system design
+* Frankie - Updated the POA
+* Georgi - Ceated the return constraints on the client side so that an item (food, non sealed video game, order after 14 days) cannot be returned.
+* Pablo - Updated the COC document
+
+
+### Sprint 2 Standup 2 (21/12/23)
+* Badr - Created the drop down in the create user admin page
+* Brice -  Implementation of the controller RMA.
+* Desmond - Updated the functional design
+* Frankie - Connected the controller to the backend
+* Georgi - Refactored Sprint Notes
+* Pablo - Updated the Database design and implemented the new tables/queries
+
+
+### Sprint 2 Standup 3 (23/12/23)
+* Badr - Connecting the frontend and backend of the admin
+* Brice - Create the backend logic to store the image location in the database
+* Desmond - Connecting the backend and frontend of the client
+* Frankie - Work on the RMA router and controller
+* Georgi - Researched API for email service for user to reset password
+* Pablo - Connecting the backend and frontend of the collector
+
+### Sprint 2 Standup 4 (09/01/24)
+* Badr - Continued connecting the frontend and backend of the admin
+* Brice - Developed the image upload for the controller
+* Desmond - Continued connecting the backend and frontend of the client
+* Frankie - Connecting the backend and frontedn fof the controller
+* Georgi - Implemented the reset password function by sending an actual email to the client using external api
+* Pablo - Continued Connecting the backend and frontend of the collector
+
+### Sprint 2 Standup 5 (11/01/24)
+* Badr - Developed the admin graphs further and added some data points such as numbr of users
+* Brice - Developed the barcode scanner
+* Desmond - Developed the client further - request rmas
+* Frankie - Developed the controller further, fixed the header issue depending on role
+* Georgi - Developed the collector further - page after scanning the barcode
+* Pablo - Developed the collector further - testing
 

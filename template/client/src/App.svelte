@@ -6,7 +6,6 @@
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
 	import CollectorDashboard from "./pages/CollectorDashboard.svelte";
-	import ControllerDashboard from "./pages/ControllerDashboard.svelte";
 	import ControllerReturns from "./pages/ControllerReturns.svelte";
 	import ControllerReturnsDetails from "./pages/ControllerReturnDetails.svelte";
 	import ControllerStock from "./pages/ControllerStock.svelte";
@@ -56,11 +55,6 @@
 	});
 
 	router('/controller', (ctx) => {
-		page = ControllerDashboard;
-		currentRoute = ctx.pathname;
-	});
-
-	router('/controller/return-requests', (ctx) => {
 		page = ControllerReturns;
 		currentRoute = ctx.pathname;
 	});

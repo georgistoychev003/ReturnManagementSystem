@@ -5,8 +5,13 @@ import {
     getALlReturnedProducts,
     getALlReturnedProductsByRMAId,
     updateOrderDetailById,
-     getNumberOfRMA,
-     getAllReturnsByUserId, getTotalPriceOfRMA, getStatusById, getCustomerEmailByRMAId, getProductByRMAId
+    getNumberOfRMA,
+    getAllReturnsByUserId,
+    getTotalPriceOfRMA,
+    getStatusById,
+    getCustomerEmailByRMAId,
+    getProductByRMAId,
+    getQunatityByRMAId
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 
@@ -77,10 +82,20 @@ export function getRmaCustomer(req, res) {
 export function getRmaProducts(req, res) {
     const { rmaId } = req.params;
     try {
-        const prod = getProductByRMAId(rmaId);
-        res.status(StatusCodes.OK).json(prod);
+        const products = getProductByRMAId(rmaId);
+        res.status(StatusCodes.OK).json(products);
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA customer." });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA products." });
+    }
+}
+
+export function getRmaQuantity(req, res) {
+    const { rmaId } = req.params;
+    try {
+        const products = getQunatityByRMAId(rmaId);
+        res.status(StatusCodes.OK).json(products);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA products." });
     }
 }
 
