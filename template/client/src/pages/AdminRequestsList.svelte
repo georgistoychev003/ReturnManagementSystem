@@ -1,10 +1,59 @@
 <script>
     // Sample data for RMA requests, we need to replace it with a fetching from the backend when database is ready
     let requests = [
-        { id: 'XX', user: 'XXXX', title: 'XXXXXXXXX', date: 'XXXXXX', price: 'XXX', returnable: true },
+
 
     ];
 
+
+    async function fetchTotalPriceOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/total-price`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.TotalReturnPrice || 0;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchStatusOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                return data.statusRMA;
+            } else {
+
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
+
+    async function fetchCustomerOfRMA(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                return data.email;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
 
     const fetchRequests = async () => {
         try {
@@ -13,6 +62,14 @@
             if (response.ok) {
                 const data = await response.json();
                 requests = [...requests, ...data]; // Merge the fetched data with existing requests
+
+                // Fetch additional details for each request
+                for (let i = 0; i < requests.length; i++) {
+                    const request = requests[i];
+                    request.TotalReturnPrice = await fetchTotalPriceOfRMA(request.returnedProductId);
+                    request.email = await fetchCustomerOfRMA(request.returnedProductId);
+                    request.statusRMA = await fetchStatusOfRMA(request.returnedProductId);
+                }
                 renderRequests(); // Call the function to render requests after fetching data
             } else {
                 console.error('Failed to fetch requests');
@@ -31,18 +88,18 @@
 
         // Populate the table with fetched request data
        requests.forEach(request => {
-       /*     const row = document.createElement('tr');
+            const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${request.returnedProductId}</td>
-                <td>${request.user}</td>
+                <td>${request.email}</td>
                 <td>${request.title}</td>
                 <td>${request.returnedDate}</td>
-                <td>${request.price}</td>
+                <td>${request.TotalReturnPrice}</td>
                 <td>
                     ${request.returnable ? '<button onclick="requestReturn()">Process Return</button>' : ''}
                 </td>
             `;
-            tableBody.appendChild(row); */
+            tableBody.appendChild(row);
         });
     };
 
@@ -55,7 +112,7 @@
     };
 
     function requestReturn(request) {
-        
+
     }
 
     // Call fetchRequests function when the page loads to fetch requests from the backend
@@ -79,10 +136,10 @@
         {#each requests as request}
             <tr>
                 <td>{request.returnedProductId}</td>
-                <td>{request.userId}</td>
+                <td>{request.email}</td>
                 <td>{request.title}</td>
                 <td>{request.returnedDate}</td>
-                <td>{request.price}</td>
+                <td>{request.TotalReturnedPrice}</td>
                 <td>
                     {#if request.returnable}
                         <button on:click={() => requestReturn(request)}>Process Return</button>

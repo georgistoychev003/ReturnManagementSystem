@@ -73,6 +73,7 @@
 
     // Function to handle creating a new user, we need to implement it in accordance to the backend
     const createUser = () => {
+        navigateTo("/createUser");
 
         console.log('Create user');
     };
@@ -84,7 +85,7 @@
 
 <div class="admin-users">
     <h1>USERS</h1>
-    <button class="create-user-button" on:click={createUser}>Create User</button>
+    <a href="/registerUser"><button class="create-user-button" on:click={createUser}>Create User</button> </a>
     <table>
         <thead>
         <tr>

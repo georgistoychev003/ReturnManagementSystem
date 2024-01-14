@@ -72,9 +72,9 @@
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
                     const customer = await fetchCustomerOfRMA(request.RMAId);
-                    request.customer = customer;
-                    request.totalPrice = totalPrice;
-                    request.status = status
+                    request.email = customer;
+                    request.totalReturnPrice = totalPrice;
+                    request.statusRMA = status
                 }
                 returnRequests = requests;
                 console.log(returnRequests)
@@ -105,11 +105,11 @@
         {#each returnRequests as request}
             <tr>
                 <td>{request.RMAId}</td>
-                <td>{request.customer}</td>
+                <td>{request.email}</td>
                 <td>{request.description}</td>
-                <td>{request.totalPrice}</td>
+                <td>{request.totalReturnedPrice}</td>
                 <td>{request.returnedDate}</td>
-                <td class="status">{request.status}</td>
+                <td class="status">{request.statusRMA}</td>
                 <td>
                     <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                 </td>
