@@ -6,7 +6,6 @@
 	import Header from "./components/Header.svelte";
 	import Login from "./pages/Login.svelte";
 	import CollectorDashboard from "./pages/CollectorDashboard.svelte";
-	import ControllerDashboard from "./pages/ControllerDashboard.svelte";
 	import ControllerReturns from "./pages/ControllerReturns.svelte";
 	import ControllerReturnsDetails from "./pages/ControllerReturnDetails.svelte";
 	import ControllerStock from "./pages/ControllerStock.svelte";
@@ -25,6 +24,7 @@
 	import MyReturns from "./pages/client/ClientRequestedReturns.svelte"
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 	import ResetPassword from "./pages/ResetPassword.svelte";
+	import RMAProducts from "./pages/client/RMAProducts.svelte";
 
 	let page;
 	let params;
@@ -39,7 +39,7 @@
 		currentRoute = ctx.pathname;
 	});
 
-	router('/admin/dashboard', (ctx) => {
+	router('/admin', (ctx) => {
 		page = AdminDashboard;
 		currentRoute = ctx.pathname;
 	});
@@ -55,11 +55,6 @@
 	});
 
 	router('/controller', (ctx) => {
-		page = ControllerDashboard;
-		currentRoute = ctx.pathname;
-	});
-
-	router('/controller/return-requests', (ctx) => {
 		page = ControllerReturns;
 		currentRoute = ctx.pathname;
 	});
@@ -134,7 +129,16 @@
 		page = ResetPassword;
 		currentRoute = ctx.pathname;
 	});
+	router('/RMAProducts', (ctx) => {
+		page = RMAProducts;
+		currentRoute = ctx.pathname;
+	});
 
+	router('/userDetails/:userID', (ctx) => {
+		page = UserDetails;
+		params = ctx.params;
+		currentRoute = ctx.pathname;
+	});
 
 	router.start();
 </script>

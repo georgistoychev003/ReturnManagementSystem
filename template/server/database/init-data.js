@@ -1,30 +1,35 @@
 export const usersData =[
     {
         userId: 1,
+        userName : "Pablo",
         email: "customer@email.com",
         password: "password",
         userRole: "customer",
     },
     {
         userId: 2,
+        userName : "Georgi",
         email: "collector@email.com",
         password: "password",
         userRole: "collector",
     },
     {
         userId: 3,
+        userName: "Desmond",
         email: "controller@email.com",
         password: "password",
         userRole: "controller",
     },
     {
         userId: 4,
+        userName : "Badr",
         email: "admin@email.com",
         password: "admin",
         userRole: "admin",
     },
     {
         userId: 5,
+        userName: "TestAccount",
         email: "mitkopetrovich2021@gmail.com",
         password: "password",
         userRole: "customer",
@@ -139,6 +144,16 @@ export const returnedProduct = [
     {
         returnedProductId: 1,
         orderedProductId: 1,
+        RMAId: 1,
+        returnedDate: "2023-01-01",
+        description: "Defective item",
+        weight: 1.2,
+        statusProduct: "Returned",
+        quantity: "2"
+    },
+    {
+        returnedProductId: 3,
+        orderedProductId: 2,
         RMAId: 1,
         returnedDate: "2023-01-01",
         description: "Defective item",

@@ -6,6 +6,9 @@ import * as rmaController from '../controllers/rma-controller.js';
 
 router.get('/', rmaController.getListOfRmas);
 
+router.get('/count', rmaController.getCountOfRMA);
+
+
 router.get('/returns/Products', rmaController.getListOfReturns);
 
 router.get('/:barcode', rmaController.getRmaByBarcode);
@@ -19,6 +22,8 @@ router.get('/:rmaId/status', rmaController.getRmaStatus);
 router.get('/:rmaId/customer', rmaController.getRmaCustomer);
 
 router.get('/:rmaId/products', rmaController.getRmaProducts);
+
+router.get('/:rmaId/quantity', rmaController.getRmaQuantity);
 
 router.patch('/:rmaId', rmaController.patchRma);
 

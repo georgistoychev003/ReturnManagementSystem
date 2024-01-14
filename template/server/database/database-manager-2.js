@@ -35,7 +35,7 @@ function insertUsers(){
     if(countResult && countResult['count(email)'] === 0){
         const insert = db.prepare(queries.createUser);
         for(const user of initData.usersData){
-            insert.run(user.userId, user.email, user.password, user.userRole);
+            insert.run(user.userId, user.userName, user.email, user.password, user.userRole);
         }
     }
 }
@@ -102,7 +102,7 @@ export function insertRMA(){
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
     insert.run(
-        user.userId, user.email, user.password, user.userRole, user.isAdmin
+        user.userId, user.name, user.email, user.password, user.userRole, user.isAdmin
     );
 }
 
@@ -203,6 +203,10 @@ export function getOrderedProductsByOrderId(orderId){
     return db.prepare(queries.selectOrderedProducts).all(orderId);
 }
 //TODO check once the design in corrected
+export function getNumberOfRMA() {
+    return db.prepare(queries.countReturns).get();
+}
+
 export function deleteRmaById(returnId) {
     return db.prepare(queries.deleteRmaById).run(returnId);
 }
@@ -241,7 +245,6 @@ export function getTotalPriceOfRMA(RMAId) {
         WHERE r.RMAId = ?
         GROUP BY r.RMAId;
     `;
-    console.log(query)
     return db.prepare(query).get(RMAId);
 }
 
@@ -251,8 +254,11 @@ export function getCustomerEmailByRMAId(RMAId) {
 }
 
 export function getProductByRMAId(RMAId) {
-    const statement = db.prepare(queries.selectProductDescriptionsByRMAId);
-    return statement.get(RMAId);
+    return db.prepare(queries.selectProductDescriptionsByRMAId).all(RMAId);
+}
+
+export function getQunatityByRMAId(RMAId) {
+    return db.prepare(queries.selectReturnedProductQuantityByRMAId).all(RMAId);
 }
 
 
@@ -264,4 +270,15 @@ export function updateUserPasswordById(userId, newPassword) {
 
 export function getAllReturnsByUserId(userId){
     return db.prepare(queries.selectAllRMAByUserId).all(userId);
+}
+
+export function getProductPriceByName(productName) {
+    return db.prepare('SELECT price FROM product WHERE name = ?').get(productName);
+}
+
+export function increaseProductStockByName(productName, quantity) {
+    const currentStock = db.prepare('SELECT inventoryStock FROM product WHERE name = ?').get(productName).inventoryStock;
+    const newStock = currentStock + quantity;
+    const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
+    return update.run(newStock, productName);
 }

@@ -17,6 +17,7 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/total-price`);
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 return data.TotalReturnPrice || 0;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -64,16 +65,17 @@
 
     async function fetchReturnRequests() {
         try {
-                const response = await fetch(`http://localhost:3000/rma/returns/products`);
+            const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
                 const requests = await response.json();
+                console.log(requests)
                 for (const request of requests) {
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
                     const customer = await fetchCustomerOfRMA(request.RMAId);
-                    request.customer = customer;
-                    request.totalPrice = totalPrice;
-                    request.status = status
+                    request.email = customer;
+                    request.totalReturnPrice = totalPrice;
+                    request.statusRMA = status
                 }
                 returnRequests = requests;
                 console.log(returnRequests)
@@ -104,11 +106,11 @@
         {#each returnRequests as request}
             <tr>
                 <td>{request.RMAId}</td>
-                <td>{request.customer}</td>
+                <td>{request.email}</td>
                 <td>{request.description}</td>
-                <td>{request.totalPrice}</td>
+                <td>{request.totalReturnPrice}</td>
                 <td>{request.returnedDate}</td>
-                <td class="status">{request.status}</td>
+                <td class="status">{request.statusRMA}</td>
                 <td>
                     <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                 </td>

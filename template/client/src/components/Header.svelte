@@ -27,7 +27,7 @@
   console.log(userRole)
 
   if (userRole === 'controller') {
-   page('/controller/return-requests');
+   page('/controller');
   } else {
   }
  }
@@ -35,7 +35,7 @@
   page('/controller/stock');
  }
  function logout(){
-  page('/');
+  window.location.href='/';
   localStorage.removeItem('token');
  }
 </script>
@@ -89,7 +89,6 @@
    <ul class="nav-links">
 
     {#if userRole === 'controller'}
-     <li><a href="#">DASHBOARD &nbsp; |</a></li>
      <li><a href="javascript:void(0)" on:click={navigateToReturnRequests}>RETURN REQUESTS &nbsp; |</a></li>
      <li><a href="javascript:void(0)" on:click={navigateToControllerStock}>STOCK &nbsp; |</a></li>
     {:else if userRole === 'customer'}
@@ -97,7 +96,14 @@
      <li><a href="/client">Home &nbsp; |</a></li>
      <li><a href="/myOrders">My Orders &nbsp; |</a></li>
      <li><a href="/myReturns">Return Requests</a></li>
+    {:else if userRole === 'admin'}
+     <!-- Show links for customers -->
+     <li><a href="/admin">HOME &nbsp; |</a></li>
+     <li><a href="/users">USERS &nbsp; |</a></li>
+     <li><a href="/requests">RETURN REQUESTS &nbsp; |</a></li>
+
     {/if}
+
     <li><a href="#" on:click={logout}>LOGOUT</a></li>
    </ul>
   </div>

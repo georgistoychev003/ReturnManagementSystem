@@ -1,11 +1,18 @@
 <script>
     import {onMount} from "svelte";
+    import page from 'page';
 
     let RMAId;
 
     let selectedAction = null;
 
+    let products =[];
+
     let returnRequests = [];
+
+    let selectedProducts = new Map();
+
+    let email = '';
 
     const selectAction = (action) => {
         selectedAction = action;
@@ -25,6 +32,73 @@
         await fetchReturnRequests();
     });
 
+    async function handleConfirm() {
+        // Preparing payload for refund or damaged
+        console.log(selectedProducts.entries())
+        const productsForAction = Array.from(selectedProducts.entries())
+            .filter(([_, value]) => value.action === 'refund' || value.action === 'damaged')
+            .map(([productName, value]) => ({
+                name: productName,
+                action: value.action,
+                quantity: value.quantity
+            }));
+
+        // Check if there are any products selected
+        if (productsForAction.length === 0) {
+            alert("No products selected.");
+            return;
+        }
+
+        // Separate payloads for refund and damaged
+        const refundPayload = productsForAction.filter(product => product.action === 'refund');
+        const damagedPayload = productsForAction.filter(product => product.action === 'damaged');
+
+        // Process refund if any
+        if (refundPayload.length > 0) {
+            try {
+                await sendActionRequest('refund', refundPayload);
+                alert("Refund processed successfully.");
+            } catch (error) {
+                console.error('Error processing refund:', error);
+            }
+        }
+
+        // Process damaged if any
+        if (damagedPayload.length > 0) {
+            try {
+                await sendActionRequest('damaged', damagedPayload);
+                alert("Damaged items processed successfully.");
+            } catch (error) {
+                console.error('Error processing damaged items:', error);
+            }
+        }
+
+        // Redirect to the controller page
+        page(`/controller`);
+    }
+
+    // Helper function to send action request
+    async function sendActionRequest(actionType, payload) {
+        const url = `http://localhost:3000/users/${actionType}`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, products: payload })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to process ${actionType}`);
+        }
+        return await response.json();
+    }
+
+
+    const handleRadioChange = (productName, action) => {
+        const currentInfo = selectedProducts.get(productName) || {};
+        selectedProducts.set(productName, { ...currentInfo, action: action });
+    };
+
+
     async function fetchReturnRequests() {
         try {
             const response = await fetch(`http://localhost:3000/rma/${RMAId}`);
@@ -32,11 +106,20 @@
                 returnRequests = await response.json();
                 const status = await fetchStatusOfRMA(returnRequests.RMAId);
                 const customer = await fetchCustomerOfRMA(returnRequests.RMAId);
-                const products = await fetchProductsOfRMA(returnRequests.RMAId);
+                const productsResponse = await fetchProductsOfRMA(RMAId);
+                products = productsResponse.map(product => ({
+                    name: product.name,
+                    quantity: returnRequests.quantity // Assuming this is how you get the quantity
+                }));
+                $: if (products.length > 0 && selectedProducts.size === 0) {
+                    products.forEach(product => {
+                        selectedProducts.set(product.name, { action: null, quantity: 0, maxQuantity: product.quantity });
+                    });
+                }
                 returnRequests.customer = customer;
+                email=customer;
                 returnRequests.status = status
-                returnRequests.products = products
-                console.log(returnRequests)
+                console.log(products)
             } else {
                 console.error('Failed to fetch return requests');
             }
@@ -44,6 +127,28 @@
             console.error('Error:', error);
         }
     }
+
+    let productQuantities = {};
+
+    $: {
+        productQuantities = products.reduce((acc, product) => {
+            acc[product.name] = selectedProducts.get(product.name)?.quantity || 0;
+            return acc;
+        }, {});
+    }
+
+    const handleQuantityChange = (productName, newQuantity) => {
+        const productInfo = selectedProducts.get(productName) || { action: null, quantity: 0 };
+        const maxQuantity = products.find(product => product.name === productName).quantity;
+        const clampedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
+
+        selectedProducts.set(productName, { ...productInfo, quantity: clampedQuantity });
+        productQuantities[productName] = clampedQuantity; // Ensure this updates the reactive variable
+    };
+
+
+
+
 
     async function fetchStatusOfRMA(RMAId) {
         try {
@@ -81,8 +186,8 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/products`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
-                return data.description;
+                products = data.map(product => ({name: product.name}));
+                return data;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
                 return 0;
@@ -94,6 +199,8 @@
     }
 </script>
 
+
+
 <div class="request-card">
     <div class="request-header">
         REQUEST {RMAId}
@@ -101,10 +208,37 @@
     <div class="details-section">
         <div class="details">
             <h2>DETAILS:</h2>
-            <p>PRODUCTS: {returnRequests.products}</p>
+            <div class="product-header">
+                <span>Product</span>
+                <span>Quantity</span>
+                <span>Refund</span>
+                <span>Damaged</span>
+            </div>
+            {#each products as product}
+                <div class="product-row">
+                    <span>{product.name}</span>
+                    <span>
+                <input type="number" min="0" max={product.quantity}
+                       value={productQuantities[product.name] || 0}
+                       on:input={(e) => handleQuantityChange(product.name, +e.target.value)} />
+
+
+            </span>
+                    <span>
+                    <input type="radio" id={`refund-${product.name}`} name={`action-${product.name}`}
+                           on:change={() => handleRadioChange(product.name, 'refund')} />
+                    <label for={`refund-${product.name}`}>Refund</label>
+                </span>
+                    <span>
+                    <input type="radio" id={`damaged-${product.name}`} name={`action-${product.name}`}
+                           on:change={() => handleRadioChange(product.name, 'damaged')} />
+                    <label for={`damaged-${product.name}`}>Damaged</label>
+                </span>
+                </div>
+            {/each}
             <p>DATE: {returnRequests.returnedDate}</p>
             <p>CUSTOMER NAME: {returnRequests.customer}</p>
-            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>
+<!--            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>-->
             <div class="label">
                 <img src="barcode.png" alt="Barcode" />
             </div>
@@ -127,7 +261,7 @@
                     PRODUCT DAMAGED, NOTIFY CUSTOMER
                 </button>
             </div>
-            <button class="confirm-btn">CONFIRM</button>
+            <button class="confirm-btn" on:click={handleConfirm}>CONFIRM</button>
         </div>
     </div>
 </div>
@@ -140,6 +274,12 @@
         margin: 20px;
         padding: 20px;
         border: 1px solid #ccc;
+    }
+    .confirm-btn {
+        /* Adjust padding and margins as needed */
+        padding: 0.5rem 1rem;
+        margin-top: 1rem; /* Space between buttons and the rest of the form */
+        width: auto; /* Adjust width as needed */
     }
     .request-header {
         font-size: 20px;
@@ -189,5 +329,22 @@
         color: white;
         border: none;
         cursor: pointer;
+    }
+    .product-header, .product-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem;
+        align-items: center;
+    }
+    .product-header {
+        background-color: #f0f0f0; /* A light grey header to distinguish it */
+        font-weight: bold;
+    }
+    .product-row {
+        border-bottom: 1px solid #ccc; /* Separate product rows */
+    }
+    .product-row span {
+        flex: 1; /* Distribute space equally */
+        text-align: center; /* Align text in the center */
     }
 </style>

@@ -19,5 +19,7 @@ router.patch('/:emailOrUserId', userController.updateUserInformation);
 router.delete('/:emailOrUserId', userController.deleteUser);
 router.post('/forgot-password', userController.forgotPassword);
 router.post('/reset-password', userController.resetPassword);
+router.post('/refund', userController.refundMail);
+router.post('/damaged', userController.damagedMail);
 
 export default router;
