@@ -8,7 +8,6 @@ import userRouter from "./routers/user-router.js";
 import productRouter from "./routers/product-router.js";
 import tokenRouter from "./routers/token-router.js";
 import orderRouter from "./routers/order-router.js";
-import rmaRouter from "./routers/rma-router.js";
 import barcodeRouter from "./routers/barcode-router.js";
 import rmaRouter from "./routers/rma-router.js";
 
