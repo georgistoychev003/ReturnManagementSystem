@@ -1,6 +1,8 @@
 <script>
     // once the authorization with a token is donee, this will be replaced to obtain the username of the user
     // from the payload of the token stored in a tokenstore here on the client side
+    import Header from "../../components/Header.svelte";
+
     let userName = "Mr Zanoni";
 
 
@@ -13,6 +15,7 @@
 
     };
 </script>
+
 
 <div class="client-home-page">
     <div class="greeting">
@@ -28,9 +31,6 @@
         </div>
     </div>
 
-    <div class="discover">
-        <h2>Discover our newest products, <a href="#" on:click|preventDefault={shopOnline}>shop online here</a>.</h2>
-    </div>
 </div>
 
 <style>

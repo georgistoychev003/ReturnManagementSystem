@@ -5,9 +5,10 @@
     let isLoading = true;
     let errorMessage = '';
 
+
     const fetchReturnRequests = async () => {
         try {
-            const response = await fetch('http://localhost:3000/returns');
+            const response = await fetch('http://localhost:3000/rma/returns/1');
             if (!response.ok) {
                 throw new Error('Failed to fetch return requests');
             }
@@ -44,21 +45,22 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
-                <th>OVERVIEW</th>
-                <th>PRICE</th>
+                <th>RETURN ID</th>
+                <th>ORDER ID</th>
                 <th>DATE</th>
                 <th>STATUS</th>
+                <th>CREDIT</th>
                 <th></th> <!-- Details column -->
             </tr>
             </thead>
             <tbody>
             {#each returnRequests as request}
                 <tr>
-                    <td>{request.id}</td>
-                    <td>{request.overview}</td>
-                    <td>{request.price}</td>
-                    <td>{request.date}</td>
+                    <td></td>
+                    <td>{request.returnedProductId}</td>
+                    <td>{request.orderedProductId}</td>
+                    <td>{request.returnedDate}</td>
+                    <td>{request.statusProduct}</td>
                     <td class="status">{request.status}</td>
                     <td>
                         <button on:click={() => viewDetails(request.id)} class="details-btn">Details</button>

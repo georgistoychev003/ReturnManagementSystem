@@ -1,5 +1,14 @@
 <script>
     import page from 'page';
+    import {onMount} from "svelte";
+
+    onMount(() => {
+        clearToken();
+    });
+
+    function clearToken() {
+        localStorage.removeItem('token');
+    }
 
     let username = '';
     let password = '';
@@ -34,16 +43,16 @@
         switch(role) {
             case 'customer':
                 console.log("switched")
-                page('/client');
+                window.location.href='/client';
                 break;
             case 'admin':
-                page('/admin');
+                window.location.href='/admin';
                 break;
             case 'collector':
-                page('/collector');
+                window.location.href='/collector';
                 break;
             case 'controller':
-                page('/controller');
+                window.location.href='/controller';
                 break;
             default:
                 page('/');

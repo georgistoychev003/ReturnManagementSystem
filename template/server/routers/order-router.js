@@ -7,7 +7,9 @@ import * as orderController from '../controllers/order-controller.js';
 // Order routes
 router.get('/', orderController.getListOfOrders);
 
-router.get('/:orderId', orderController.getOrder);
+router.get('/:orderId', orderController.getOrderById);
+
+router.get('/MyOrders/:userId', orderController.getOrderForUserId)
 
 router.patch('/:orderId', orderController.patchOrder);
 
@@ -16,7 +18,8 @@ router.delete('/:orderId', orderController.deleteOrder);
 // Order details routes
 router.get('/details', orderController.getOrdersDetails);
 
-router.get('/details/:orderDetailId', orderController.getOrderDetails);
+router.get('/details/:orderId', orderController.getProductDetailsByOrderId);
+
 
 router.patch('/details/:orderDetailId', orderController.patchOrderDetails);
 

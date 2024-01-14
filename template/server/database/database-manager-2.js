@@ -1,8 +1,9 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
+import {selectAllRMAByUserId} from "../database/database-queries.js";
 
-
+import {selectStatusById} from "../database/database-queries.js";
 
 
 let db;
@@ -17,20 +18,24 @@ try{
 db.prepare(queries.createProductTable).run();
 db.prepare(queries.createUserTable).run();
 db.prepare(queries.createOrderTable).run();
-db.prepare(queries.createOrderDetailsTable).run();
-//db.prepare(queries.createRma).run();
+db.prepare(queries.createOrderedProductTable).run();
+db.prepare(queries.createReturnTable).run();
+db.prepare(queries.createReturnedProductTable).run();
+
 
 insertUsers();
 insertProducts();
 insertOrders();
 insertOrderDetails();
+insertRMA();
+insertReturned();
 
 function insertUsers(){
     const countResult = db.prepare(queries.countUsers).get();
     if(countResult && countResult['count(email)'] === 0){
         const insert = db.prepare(queries.createUser);
         for(const user of initData.usersData){
-            insert.run(user.userId, user.email, user.password, user.userRole, user.isAdmin);
+            insert.run(user.userId, user.userName, user.email, user.password, user.userRole);
         }
     }
 }
@@ -40,7 +45,7 @@ function insertProducts(){
     if(countResult['count(productId)'] === 0 ){
         const insert = db.prepare(queries.createProduct);
         for(const product of initData.productsData){
-            insert.run(product.type, product.price, product.description, product.imageURL, product.productWeight, product.inventoryStock);
+            insert.run(product.type, product.price, product.name, product.imageURL, product.productWeight, product.inventoryStock);
         }
     }
 }
@@ -60,22 +65,54 @@ function insertOrderDetails(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrderDetails);
         for(const order of initData.orderDetailsData){
-            insert.run(order.orderDetailId, order.orderId, order.productId, order.quantity);
+            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice);
+        }
+    }
+}
+
+export function insertReturned(){
+    const countResult = db.prepare(queries.countReturnedProducts).get();
+    if(countResult['count(returnedProductId)'] === 0) {
+        const insert = db.prepare(queries.createReturnedProduct);
+        for (const returnedProductData of initData.returnedProduct) {
+            insert.run(
+                returnedProductData.returnedProductId,
+                returnedProductData.orderedProductId,
+                returnedProductData.RMAId,
+                returnedProductData.quantityToReturn,
+                returnedProductData.returnedDate,
+                returnedProductData.description,
+                returnedProductData.weight,
+                returnedProductData.statusProduct,
+                returnedProductData.quantity);
+        }
+    }
+}
+
+export function insertRMA(){
+    const countResult = db.prepare(queries.countReturns).get();
+    if(countResult['count(RMAId)'] === 0) {
+        const insert = db.prepare(queries.createRma);
+        for (const rma of initData.rmaData) {
+            insert.run(rma.barcode, rma.statusRma);
         }
     }
 }
 
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
-
     insert.run(
-        user.userId, user.email, user.password, user.userRole, user.isAdmin
+        user.userId, user.name, user.email, user.password, user.userRole, user.isAdmin
     );
 }
 
 export function getAllUsers() {
     return db.prepare(queries.selectAllUsers).all();
 }
+export function getNumberOfUsers() {
+    return db.prepare(queries.countUsers).get();
+}
+
 
 export function getUserByEmail(email) {
     return db.prepare(queries.selectUserByEmail).get(email);
@@ -116,15 +153,18 @@ export function deleteProductById(productId) {
 }
 
 export function updateProductById(productId, productData) {
-    const { type, price, description, imageURL, productWeight, inventoryStock } = productData;
-    return db.prepare(queries.updateProductById).run(type, price, description, imageURL, productWeight, inventoryStock, productId);
+    const { type, price, name, imageURL, productWeight, inventoryStock } = productData;
+    return db.prepare(queries.updateProductById).run(type, price, name, imageURL, productWeight, inventoryStock, productId);
 }
 
 export function getAllOrders() {
     return db.prepare(queries.selectAllOrders).all();
 }
 
-export function getOrderById(orderId) {
+export function getOrderByOrderId(orderId) {
+    return db.prepare(queries.selectOrderById).get(orderId);
+}
+export function getOrderByUserId(orderId) {
     return db.prepare(queries.selectOrderByUserId).get(orderId);
 }
 
@@ -138,10 +178,14 @@ export function updateOrderByOrderId(orderId, orderData) {
     return db.prepare(queries.updateOrderByOrderId).run(userId, orderDate, totalPrice, orderId);
 }
 
-export function getOrderDetailById(orderDetailId) {
-    return db.prepare(queries.selectOrderDetailById).get(orderDetailId);
+export function getOrderDetailById(orderId) {
+    return db.prepare(queries.selectOrderDetailById).all(orderId);
 }
 
+export async function updateProductStock(productId, inventoryStock) {
+    const updateStatement = db.prepare(queries.updateProductStockById);
+    return updateStatement.run(inventoryStock, productId);
+}
 export function updateOrderDetailById(orderDetailId, orderDetailData) {
     const { orderId, productId, quantity } = orderDetailData;
     return db.prepare(queries.updateOrderDetailById).run(orderId, productId, quantity, orderDetailId);
@@ -154,17 +198,26 @@ export function deleteOrderDetailById(orderDetailId) {
 export function getAllOrderDetails() {
     return db.prepare(queries.selectAllOrderDetails).all();
 }
+
+export function getOrderedProductsByOrderId(orderId){
+    return db.prepare(queries.selectOrderedProducts).all(orderId);
+}
 //TODO check once the design in corrected
+export function getNumberOfRMA() {
+    return db.prepare(queries.countReturns).get();
+}
+
 export function deleteRmaById(returnId) {
     return db.prepare(queries.deleteRmaById).run(returnId);
 }
 
 export function getAllRma() {
+
     return db.prepare(queries.selectAllRma).all();
 }
 
-export function getAllRmaById() {
-    return db.prepare(queries.selectAllReturnedProductById).all();
+export function getAllRmaById(Id) {
+    return db.prepare(queries.selectAllReturnedProductById).get(Id);
 }
 
 export function getALlReturnedProducts(){
@@ -175,6 +228,57 @@ export function getALlReturnedProductsByRMAId(){
     return db.prepare(queries.selectAllReturnedProducts).get(RMAId);
 }
 
-export function deleteRMAById(orderId) {
-    return db.prepare(queries.deleteOrderByOrderId).run(RMAI);
+export function deleteRMAOrderById(orderId) {
+    return db.prepare(queries.deleteOrderByOrderId).run(orderId);
+}
+
+export function getStatusById(RMAId) {
+    return db.prepare(queries.selectStatusById).get(RMAId);
+}
+
+export function getTotalPriceOfRMA(RMAId) {
+    const query = `
+        SELECT r.RMAId, SUM(op.unitPrice * rp.quantity) AS TotalReturnPrice
+        FROM returnedProduct rp
+        JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
+        JOIN returntable r ON rp.RMAId = r.RMAId
+        WHERE r.RMAId = ?
+        GROUP BY r.RMAId;
+    `;
+    return db.prepare(query).get(RMAId);
+}
+
+export function getCustomerEmailByRMAId(RMAId) {
+    const statement = db.prepare(queries.selectCustomerEmailByRMAId);
+    return statement.get(RMAId);
+}
+
+export function getProductByRMAId(RMAId) {
+    return db.prepare(queries.selectProductDescriptionsByRMAId).all(RMAId);
+}
+
+export function getQunatityByRMAId(RMAId) {
+    return db.prepare(queries.selectReturnedProductQuantityByRMAId).all(RMAId);
+}
+
+
+export function updateUserPasswordById(userId, newPassword) {
+    const update = db.prepare(queries.updateUserPasswordById);
+    return update.run(newPassword, userId);
+}
+
+
+export function getAllReturnsByUserId(userId){
+    return db.prepare(queries.selectAllRMAByUserId).all(userId);
+}
+
+export function getProductPriceByName(productName) {
+    return db.prepare('SELECT price FROM product WHERE name = ?').get(productName);
+}
+
+export function increaseProductStockByName(productName, quantity) {
+    const currentStock = db.prepare('SELECT inventoryStock FROM product WHERE name = ?').get(productName).inventoryStock;
+    const newStock = currentStock + quantity;
+    const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
+    return update.run(newStock, productName);
 }
