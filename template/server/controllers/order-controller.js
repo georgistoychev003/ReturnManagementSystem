@@ -21,7 +21,7 @@ export async function deleteOrderDetails(req, res){
     const { orderDetailId } = req.params;
     try {
         const deleteResult = deleteOrderDetailById(orderDetailId);
-        if (deleteResult.changes > 0) {
+        if (deleteResult > 0) {
             res.status(StatusCodes.OK).json({ message: "Order details deleted successfully." });
         } else {
             res.status(StatusCodes.NOT_FOUND).json({ error: "Order details not found." });
@@ -57,7 +57,7 @@ export async function deleteOrder(req, res) {
     const { orderId } = req.params;
     try {
         const deleteResult = await deleteOrderById(orderId);
-        if (deleteResult.changes > 0) {
+        if (deleteResult > 0) {
             res.status(StatusCodes.OK).json({ message: "Order deleted successfully." });
         } else {
             res.status(StatusCodes.NOT_FOUND).json({ error: "Order not found." });

@@ -14,16 +14,18 @@ This section provides an overview of the RMA (Return Merchandise Authorization) 
 - To design and develop a prototype RMA system for MyShop, enabling customers to return items easily and efficiently through a web-based application.   
 
 ### Scope
-- In-Scope: Development of the RMA application, testing environment, and related documentation along with any external systems needed for the application to work, for example a mailing system or barcode scanner in this case.
+- In-Scope: Development of the RMA application, the testing environment and related documentation along with any external systems needed for the application to work, for example, 
+a mailing system or barcode scanner in this case.
 
 ## Data Handling and Version Control
 
-- For Data Handling and Version Control, we will use GitLab, this will allow us to create branches that each team member will work on, and after working, the team member can merge to the main after testing. This allows us to make sure there we can safely experiment and test our code before pushing directly into the main, ensuring that the new code remains safely contained.
+- For Data Handling and Version Control, we will use GitLab, this will allow us to create branches that each team member will work on, and after working, the team member can merge 
+to the main after testing. This allows us to make sure there we can safely experiment and test our code before pushing directly into the main, ensuring that the new code remains safely contained.
 
 ## Team Structure and Communication
 
 ### Team Roles and Responsibilities
-- For this project, we will have 4 Scrum Masters, one for each new sprint. Sprint 0 is Pablo, 1 is Frankie, 2 is Georgi and 3 is Badr. 
+- For this project, we will have 4 Scrum Masters, one for each new sprint. Sprint 0 is Pablo, 1 is Frankie, 2 is Georgi, and 3 is Badr. 
 - Each will also have a note taker, for Sprint 0 is Brice, Sprint 1 is Badr, Sprint 2 is Desmond, Sprint 3 is Frankie.
 - We also have a Project Manager who will make sure we stay on track as a whole, this will be Desmond.
 
@@ -58,18 +60,19 @@ This section provides an overview of the RMA (Return Merchandise Authorization) 
 
 ### Risk Management
 
-- Regular progress reviews and stand up sessions to handle potential delays or complexities with a team mebers task.
+- Regular progress reviews and stand-up sessions to handle potential delays or complexities with a team members task.
 
 ### Group Agreements
-- Our Code of Conduct can be found in this documentation folder which outlines our homework and what happens in the case that a member is not doing his fair share or aren't attending the meetings.
+- Our Code of Conduct can be found in this documentation folder which outlines our homework and what happens in the case that a member is not doing his fair share or is not attending the meetings.
 
 
 ### Definition of Done
 
 - User Stories: A user story is done when it has been tested according to the steps by someone who did not partake in writing the user story.
-If the test is passed and all of the outcomes reflect what the user sees, then the user story is complete.
+If the test is passed and all the outcomes reflect what the user sees, then the user story is complete.
 
-- Project tasks: A project task is done when IntelliJ is able to run the code without giving an error and another member of the team has had a look at the code to make sure it is complete, at this point after testing they can merge the task to the main branch.
+- Project tasks: A project task is done when IntelliJ is able to run the code without giving an error, and another member of the team has had a look at the code to make sure it is complete, at this point
+after testing they can merge the task to the main branch.
 
 ## Conclusion
 

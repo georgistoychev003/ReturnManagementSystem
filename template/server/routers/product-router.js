@@ -11,6 +11,8 @@ router.get('/:productId', productRouter.getProduct);
 
 router.patch('/:productId', productRouter.patchProduct);
 
+router.post('/uploadImage', productRouter.uploadImage);
+
 router.delete('/:productId', productRouter.deleteProduct);
 
 

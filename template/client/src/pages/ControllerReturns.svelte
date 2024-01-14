@@ -17,6 +17,7 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/total-price`);
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 return data.TotalReturnPrice || 0;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -107,7 +108,7 @@
                 <td>{request.RMAId}</td>
                 <td>{request.email}</td>
                 <td>{request.description}</td>
-                <td>{request.totalReturnedPrice}</td>
+                <td>{request.totalReturnPrice}</td>
                 <td>{request.returnedDate}</td>
                 <td class="status">{request.statusRMA}</td>
                 <td>
