@@ -272,6 +272,7 @@ export function getAllReturnsByUserId(userId){
     return db.prepare(queries.selectAllRMAByUserId).all(userId);
 }
 
+
 export function getProductPriceByName(productName) {
     return db.prepare('SELECT price FROM product WHERE name = ?').get(productName);
 }

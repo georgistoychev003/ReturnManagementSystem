@@ -123,6 +123,9 @@ JOIN user u ON o.userId = u.userId
 WHERE u.userId = ?`
 export const selectAllRma = `SELECT * FROM returntable`;
 
+export const selectProductByBarcode = `SELECT * FROM product WHERE barcode = ?`;
+
+
 export const selectCustomerEmailByRMAId = `
     SELECT u.email
     FROM user u
