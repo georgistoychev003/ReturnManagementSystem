@@ -71,8 +71,22 @@
     };
 
     // Function to delete the user, to be implemented
-    const deleteUser = () => {
-        console.log(`Delete user: ${selectedUser.username}`);
+    const deleteUser = async (userID) => {
+        try {
+            const response = await fetch(`http://localhost:3000/users/${userID}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                // User was deleted successfully
+                console.log('User deleted successfully');
+                // Optional: refresh the user list or navigate away
+            } else {
+                console.error('Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
     };
 
     onMount(() => {
@@ -100,7 +114,7 @@
         </div>
 
         <button class="assign-role-button" on:click={assignRole}>Assign Role</button>
-        <button class="delete-user-button" on:click={deleteUser}>Delete User</button>
+        <button class="delete-user-button" on:click={() => deleteUser(selectedUser.userID)}>Delete User</button>
     </div>
     <div class="details">
         <p><strong>Name:</strong> {selectedUser.name}</p>

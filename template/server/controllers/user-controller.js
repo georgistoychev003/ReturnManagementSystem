@@ -70,22 +70,28 @@ export async function updateUserInformation(req, res) {
 
 export async function deleteUser(req, res) {
     const { emailOrUserId } = req.params;
+
     try {
-        let deleteResult;
-        if (typeof emailOrUserId === 'string') {
-            deleteResult = db.deleteUserByEmail(emailOrUserId);
-        } else if (typeof emailOrUserId === 'number') {
-            deleteResult = db.deleteUserById(emailOrUserId);
+        const userExists = db.getUserById(emailOrUserId);
+
+        if (!userExists) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
         }
-        if(db.getUserById(emailOrUserId)){
+        db.deleteUserById(emailOrUserId);
+        console.log('User deleted with ID:', emailOrUserId);
+
+        const userStillExists = db.getUserById(emailOrUserId);
+        if (!userStillExists) {
             res.status(StatusCodes.OK).json({ message: "User deleted successfully." });
         } else {
-            res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to delete user." });
         }
     } catch (error) {
+        console.error('Error while deleting user:', error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to delete user." });
     }
 }
+
 
 export async function getListOfUsers(req, res){
     try {
