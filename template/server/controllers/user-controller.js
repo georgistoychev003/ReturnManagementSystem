@@ -38,8 +38,8 @@ export async  function postUser(req, res) {
 
     // Generate a UUID for the new user
     const userId = uuidv4();
-    user.userId = userId;
-    console.log(user.userId)
+    user.userID = userId;
+    console.log(user.userID)
     try {
         db.insertUser(user);
 

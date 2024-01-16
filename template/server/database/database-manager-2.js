@@ -102,7 +102,7 @@ export function insertRMA(){
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
     insert.run(
-        user.userId, user.name, user.email, user.password, user.userRole, user.isAdmin
+        user.userID, user.userName, user.email, user.password, user.userRole
     );
 }
 
