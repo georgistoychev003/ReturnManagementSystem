@@ -210,11 +210,12 @@
             options: {
                 plugins: {
                     legend: {
-                        display: false
+                        display: true
                     },
                     title: {
                         display: true,
-                        text: 'Most Returned Products'
+                        text: 'Most Returned Products',
+                        color: 'white'
                     }
                 }
             },
