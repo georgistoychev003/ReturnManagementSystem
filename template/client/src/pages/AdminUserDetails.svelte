@@ -2,7 +2,9 @@
     //fetch and select the user
     import UserRoleDropdown from '../components/UserRoleDropdown.svelte';
     import {onMount} from "svelte";
+    import page from "page";
     export let params;
+    let selectedUserRole; // This will store the selected role from the dropdown
 
     const fetchUserDetails = async (userID) => {
         try {
@@ -10,6 +12,10 @@
 
             if (response.ok) {
                 selectedUser = await response.json();
+
+                // Ensure requests is an array
+                selectedUser.requests = selectedUser.requests || [];
+
                 renderUserDetails(); // Call the function to render user details after fetching data
             } else {
                 console.error('Failed to fetch user details');
@@ -18,6 +24,7 @@
             console.error('Error fetching user details:', error);
         }
     };
+
 
     // Placeholder for the selected user's details, we neeed to replace with actual database data
     let selectedUser = {
@@ -65,12 +72,42 @@
         });
     };
 
-    // Function to assign a new role to the user, to be implemented
-    const assignRole = () => {
-        console.log(`Assign new role to user: ${selectedUser.username}`);
+    // Function to assign a new role to the user
+    const assignRole = async (newRole) => {
+        // Make sure `newRole` is the role you want to assign
+        if (!newRole) return;  // Return if the newRole is not provided
+
+        try {
+            const response = await fetch(`http://localhost:3000/users/${selectedUser.userID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userRole: newRole }) // Send only the userRole field
+            });
+
+            if (response.ok) {
+                // Re-fetch user details to update the UI reactively
+                await fetchUserDetails(selectedUser.userID);
+            } else {
+                const error = await response.json();
+                console.error('Failed to update user role:', error);
+            }
+        } catch (error) {
+            console.error('Error updating user role:', error);
+        }
     };
 
-    // Function to delete the user, to be implemented
+    // This function is called when the "Assign Role" button is clicked
+    const confirmRoleAssignment = async () => {
+        if (!selectedUserRole) {
+            console.error('No role selected');
+            return;
+        }
+
+        await assignRole(selectedUserRole);
+    };
+
     const deleteUser = async (userID) => {
         try {
             const response = await fetch(`http://localhost:3000/users/${userID}`, {
@@ -80,7 +117,7 @@
             if (response.ok) {
                 // User was deleted successfully
                 console.log('User deleted successfully');
-                // Optional: refresh the user list or navigate away
+                page('/users');
             } else {
                 console.error('Failed to delete user');
             }
@@ -110,10 +147,10 @@
         <h2>{selectedUser.username}</h2>
 
         <div class="role-dropdown">
-            <UserRoleDropdown />
+            <UserRoleDropdown on:roleSelected={(event) => selectedUserRole = event.detail} />
         </div>
 
-        <button class="assign-role-button" on:click={assignRole}>Assign Role</button>
+        <button class="assign-role-button" on:click={confirmRoleAssignment}>Assign Role</button>
         <button class="delete-user-button" on:click={() => deleteUser(selectedUser.userID)}>Delete User</button>
     </div>
     <div class="details">

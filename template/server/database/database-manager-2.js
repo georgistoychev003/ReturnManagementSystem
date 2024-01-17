@@ -135,9 +135,9 @@ export function updateUserByEmail(email, userData) {
     return db.prepare(queries.updateUserByEmail).run(userId, updatedEmail, password, userRole, isAdmin);
 }
 
-export function updateUserById(userId, userData) {
-    const { email, password, userRole, isAdmin } = userData;
-    return db.prepare(queries.updateUserById).run(userId, email, password, userRole, isAdmin);
+export function updateUserRoleById(userId, userData) {
+    const { userRole } = userData;
+    return db.prepare(queries.updateUserRoleById).run(userRole, userId);
 }
 
 export function getAllProducts() {
