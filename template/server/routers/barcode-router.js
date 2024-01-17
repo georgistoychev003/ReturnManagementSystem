@@ -1,9 +1,9 @@
 import express from 'express';
-import {generateBarcode, scanBarcode} from '../controllers/barcode-controller.js';
+import {generateBarcode, generateBarcode2, scanBarcode} from '../controllers/barcode-controller.js';
 
 const router = express.Router();
 
-router.post('/generateBarcode', generateBarcode);
+router.get('/generateBarcode/:username/:orderId', generateBarcode2);
 router.post('/scanBarcode', scanBarcode);
 
 export default router;

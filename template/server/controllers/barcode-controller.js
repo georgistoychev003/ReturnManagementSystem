@@ -1,5 +1,6 @@
 import { createCanvas } from 'canvas';
 import barcode from 'jsbarcode';
+import QRCode from 'qrcode';
 import Database from 'better-sqlite3';
 import * as queries from '../database/database-queries.js';
 import { StatusCodes } from 'http-status-codes';
@@ -7,7 +8,8 @@ import { StatusCodes } from 'http-status-codes';
 const db = new Database('my-shop-database');
 
 export const generateBarcode = (req, res) => {
-    const { customerName, address } = req.body;
+    const customerName = req.params.username;
+    const address = req.params.orderId;
 
     if (!customerName || !address) {
         return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Customer name and address are required' });
@@ -44,6 +46,25 @@ export const generateBarcode = (req, res) => {
         } else {
             console.log('lastInsertRowId does not exist on the result object');
         }
+    }
+};
+
+export const generateBarcode2 = async (req, res) => {
+    const customerName = req.params.username;
+    const address = req.params.orderId;
+
+    // Generate barcode as PNG image
+    try {
+        // Generate QR code as SVG
+        const qrCodeSVG = await QRCode.toString(customerName, address, {type: 'svg'});
+
+        // Send the SVG response
+        res.type('svg');
+        res.status(200).send(qrCodeSVG);
+    } catch (error) {
+        // Handle error
+        console.error(error);
+        res.status(500).send('Internal Server Error');
     }
 };
 
