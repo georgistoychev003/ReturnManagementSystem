@@ -8,6 +8,13 @@
     let selectedInterval = 'week'; // Default interval
     let chart;
     let pieChart;
+    let chartTitle = `Number of requests per: ${selectedInterval}`;
+    const monthNames = [
+        'January', 'February', 'March', 'April',
+        'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'December'
+    ];
+
 
 
     let mostReturnedProducts = [
@@ -51,27 +58,71 @@
 
     function processRMAData(rmaData) {
         let processedData = rmaData.reduce((acc, rma) => {
-            // Simplified example: Extract the week number from the date
-            const week = new Date(rma.returnedDate).getWeekNumber();
-            acc[week] = (acc[week] || 0) + 1;
+            // Adjusted example: Extract the week, month, or year from the date based on selected interval
+            const intervalValue = selectedInterval === 'week' ? new Date(rma.returnedDate).getWeekNumber() :
+                selectedInterval === 'month' ? new Date(rma.returnedDate).getMonth() + 1 :
+                    new Date(rma.returnedDate).getFullYear();
+
+            acc[intervalValue] = (acc[intervalValue] || 0) + 1;
             return acc;
         }, {});
 
         // Convert the object into an array suitable for the chart
-        let chartData = Object.entries(processedData).map(([week, count]) => {
-            return { label: `Week ${week}`, count };
+        let chartData = Object.entries(processedData).map(([interval, count]) => {
+            const label = selectedInterval === 'week' ? `Week ${interval}` :
+                selectedInterval === 'month' ? `Month ${interval}` :
+                    selectedInterval === 'year' ? monthNames[interval - 1] :
+                        `Year ${interval}`;
+
+            return { label, count };
         });
 
         updateChart(chartData);
     }
 
+
     function updateChart(chartData) {
+        if (!Array.isArray(chartData)) {
+            if (chartData && typeof chartData === 'object') {
+                chartData = Object.entries(chartData).map(([interval, count]) => ({
+                    label: selectedInterval === 'week' ? `Week ${interval}` :
+                        selectedInterval === 'month' ? `Month ${interval}` :
+                            selectedInterval === 'year' ? monthNames[interval - 1] : // Assuming monthNames is an array of month names
+                                `Year ${interval}`,
+                    count
+                }));
+            } else {
+                console.error('Invalid chart data format:', chartData);
+                return;
+            }
+        }
+
         if (chart) {
             chart.data.labels = chartData.map(item => item.label);
             chart.data.datasets[0].data = chartData.map(item => item.count);
+
+            // Update x-axis configuration for 'year' interval
+            if (selectedInterval === 'year') {
+                chart.options.scales.x.type = 'category';
+                chart.options.scales.x.labels = monthNames;
+
+                // Clear existing data labels
+                chart.data.labels = [];
+
+                // Populate data labels with month names
+                monthNames.forEach(month => {
+                    chart.data.labels.push(month);
+                });
+            } else {
+                chart.options.scales.x.type = 'linear';
+            }
+
+            chart.options.plugins.title.text = `Number of requests per: ${selectedInterval}`;
             chart.update();
         }
     }
+
+
 
     function updatePieChart() {
         if (pieChart) {
@@ -85,6 +136,7 @@
     onMount(() => {
         Chart.register(...registerables);
         const ctx = document.getElementById('rmaChart');
+
         chart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -101,17 +153,28 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: `Number of requests per: ${selectedInterval}`
+                        text: chartTitle,
+                        color: 'white',
+
                     }
                 },
                 scales: {
                     x: {
-                        type: 'linear',
+                        type: selectedInterval === 'year' ? 'category' : 'linear', // Set x-axis type
                         position: 'bottom',
                         title: {
                             display: true,
                             text: 'Time'
-                        }
+                        },
+                        grid: {
+                            color: 'black' // Set the color of the x-axis grid lines (keep them black)
+                        },
+                        ticks: {
+                            color: 'white' // Set the color of the x-axis grid lines
+                        },
+                        labels: selectedInterval === 'year' ?
+                            ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] :
+                            undefined // Set labels for months if interval is 'year'
                     },
                     y: {
                         type: 'linear',
@@ -119,6 +182,13 @@
                         title: {
                             display: true,
                             text: 'Number of RMA'
+                        },
+                        grid: {
+                            color: 'black' // Set the color of the x-axis grid lines (keep them black)
+                        },
+                        ticks: {
+                            color: 'white' // Set the color of the x-axis grid lines
+
                         }
                     }
                 }
@@ -170,6 +240,11 @@
         }
     });
 
+    $: {
+        // This reactive statement will trigger whenever selectedInterval changes
+        console.log('Selected Interval Changed:', selectedInterval);
+    }
+
     function updateInterval(interval) {
         selectedInterval = interval;
     }
@@ -185,8 +260,8 @@
             <div class="big-number">{numberOfUsers}</div>
         </div>
         <div class="red-box">
-            <div>Most returned products</div>
-            <img src="https://i.ibb.co/GRHPDCV/chart2.png" alt="pieChart">
+           <!-- <div>Most returned products</div> -->
+
             <canvas id="pieChart" ></canvas>
         </div>
         <div class="red-box">
@@ -248,7 +323,7 @@
 
     .big-red-rectangle {
         position: relative; /* Set relative positioning */
-        height: 25vw; /* Adjust as needed */
+        height: 45vw; /* Adjust as needed */
         background-color: red;
         margin-bottom: 2vw;
     }
@@ -256,17 +331,18 @@
     #rmaChart {
         width: calc(100% - 4vw); /* Adjust the chart width */
         height: 20vw; /* Adjust the chart height */
-       background-color: darkred; /* Set background color for the chart */
+
         margin-bottom: 2vw; /* Adjust margin-bottom as needed */
     }
 
     #pieChart {
         width: calc(50% - 2vw); /* Adjust the chart width */
-        width :0;
-        height: 0vw; /* Adjust the chart height */
-        background-color: darkred; /* Set background color for the chart */
+        height: 15vw; /* Adjust the chart height */
+        background-color: red;
         margin-bottom: 2vw; /* Adjust margin-bottom as needed */
     }
+
+
      img {
         max-width: 100%;
         height: auto;
