@@ -1,8 +1,6 @@
 <script>
-    // Sample data for the users, we need to replace this with data fetching from the backend
     import page from "page";
     import { writable } from 'svelte/store';
-
 
     // im creating a writable store to hold the selected user details so i can afterwards be able to navigate to details page for that user
     export const selectedUser = writable(null);
