@@ -2,10 +2,11 @@
     //fetch and select the user
     import UserRoleDropdown from '../components/UserRoleDropdown.svelte';
     import {onMount} from "svelte";
+    export let params;
 
-    const fetchUserDetails = async (userId) => {
+    const fetchUserDetails = async (userID) => {
         try {
-            const response = await fetch(`http://localhost:3000/users/${userId}`);
+            const response = await fetch(`http://localhost:3000/users/${userID}`);
 
             if (response.ok) {
                 selectedUser = await response.json();
@@ -42,9 +43,9 @@
         const addressElement = document.querySelector('.details p:nth-of-type(4)');
         const tableBody = document.querySelector('.requests tbody');
 
-        usernameElement.textContent = selectedUser.username;
-        nameElement.textContent = `Name: ${selectedUser.name}`;
-        roleElement.textContent = `Role: ${selectedUser.role}`;
+        usernameElement.textContent = selectedUser.userID;
+        nameElement.textContent = `Name: ${selectedUser.userName}`;
+        roleElement.textContent = `Role: ${selectedUser.userRole}`;
         emailElement.textContent = `Email: ${selectedUser.email}`;
         addressElement.textContent = `Address: ${selectedUser.address}`;
 
@@ -70,18 +71,27 @@
     };
 
     // Function to delete the user, to be implemented
-    const deleteUser = () => {
-        console.log(`Delete user: ${selectedUser.username}`);
+    const deleteUser = async (userID) => {
+        try {
+            const response = await fetch(`http://localhost:3000/users/${userID}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                // User was deleted successfully
+                console.log('User deleted successfully');
+                // Optional: refresh the user list or navigate away
+            } else {
+                console.error('Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
     };
 
     onMount(() => {
-        // Get the userId from the URL params
-        const params = new URLSearchParams(window.location.search);
-        const userId = params.get('userId');
-
-        if (userId) {
-            // Fetch user details based on userId
-            fetchUserDetails(userId);
+        if (params && params.userID) {
+            fetchUserDetails(params.userID);
         } else {
             console.error('User ID not provided in the URL params.');
         }
@@ -89,8 +99,8 @@
 
 // for now hard coded
     //todo : database should be done for full functionality
-    const userId = '1';
-    fetchUserDetails(userId);
+    const userID = '1';
+    fetchUserDetails(userID);
 
 </script>
 
@@ -104,7 +114,7 @@
         </div>
 
         <button class="assign-role-button" on:click={assignRole}>Assign Role</button>
-        <button class="delete-user-button" on:click={deleteUser}>Delete User</button>
+        <button class="delete-user-button" on:click={() => deleteUser(selectedUser.userID)}>Delete User</button>
     </div>
     <div class="details">
         <p><strong>Name:</strong> {selectedUser.name}</p>

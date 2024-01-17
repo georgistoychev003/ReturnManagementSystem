@@ -1,7 +1,7 @@
 <script>
 
 
-    let username = '';
+    let userName = '';
     let email = '';
     let password = '';
     let repeatPassword = '';
@@ -46,7 +46,7 @@
         }
 
         // Escape HTML characters
-        username = escapeHTML(username);
+        userName = escapeHTML(userName);
         email = escapeHTML(email);
         address = escapeHTML(address);
         userRole = 'client';
@@ -57,7 +57,7 @@
 
         // Create user object
      //   const user = { username, email, password, address };
-        const user = {  email, password, userRole, isAdmin };
+        const user = {  email, userName, password, userRole, isAdmin };
         console.log('Creating user:', user);
 
         // Send request to backend to create the user
@@ -91,7 +91,7 @@
 
 <div class="registration-form">
     <h2>USER REGISTRATION</h2>
-    <input type="text" bind:value={username} placeholder="Username" required>
+    <input type="text" bind:value={userName} placeholder="Username" required>
     <input type="email" bind:value={email} placeholder="Email" required>
     <input type="password" bind:value={password} placeholder="Password" required>
     <input type="password" bind:value={repeatPassword} placeholder="Repeat Password" required>

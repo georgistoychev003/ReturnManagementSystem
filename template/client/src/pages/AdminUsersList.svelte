@@ -97,17 +97,7 @@
         </tr>
         </thead>
         <tbody>
-        <!--{#each users as user}-->
-        <!--    <tr>-->
-        <!--        <td>{user.userID}</td>-->
-        <!--        <td>{user.name}</td>-->
-        <!--        <td>{user.email}</td>-->
-        <!--        <td>{user.userRole}</td>-->
-        <!--        <td>-->
-        <!--            <button on:click={() => showUserDetails(user)}>Details</button>-->
-        <!--        </td>-->
-        <!--    </tr>-->
-        <!--{/each}-->
+
         </tbody>
     </table>
     <div class="more-button">
