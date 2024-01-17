@@ -5,7 +5,7 @@
 
     let numberOfRMA = 0;
     let numberOfUsers = 0;
-    let selectedInterval = 'year'; // Default interval
+    let selectedInterval = 'week'; // Default interval
     let chart;
     let pieChart;
 
@@ -47,11 +47,28 @@
         }
     }
 
-    function updateChart(data) {
+
+
+    function processRMAData(rmaData) {
+        let processedData = rmaData.reduce((acc, rma) => {
+            // Simplified example: Extract the week number from the date
+            const week = new Date(rma.returnedDate).getWeekNumber();
+            acc[week] = (acc[week] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Convert the object into an array suitable for the chart
+        let chartData = Object.entries(processedData).map(([week, count]) => {
+            return { label: `Week ${week}`, count };
+        });
+
+        updateChart(chartData);
+    }
+
+    function updateChart(chartData) {
         if (chart) {
-            chart.data.labels = data.labels;
-            chart.data.datasets[0].data = data.values;
-            chart.options.plugins.title.text = `Number of requests per: ${selectedInterval}`;
+            chart.data.labels = chartData.map(item => item.label);
+            chart.data.datasets[0].data = chartData.map(item => item.count);
             chart.update();
         }
     }
@@ -66,6 +83,7 @@
     }
 
     onMount(() => {
+        Chart.register(...registerables);
         const ctx = document.getElementById('rmaChart');
         chart = new Chart(ctx, {
             type: 'line',
@@ -154,9 +172,38 @@
 
     function updateInterval(interval) {
         selectedInterval = interval;
-        fetchNumberOfRMA();
     }
 </script>
+
+<div class="container">
+    <div class="greeting">Hello Admin!</div>
+    <div class="line"></div>
+
+    <div class="red-boxes">
+        <div class="red-box">
+            <div>Number of users</div>
+            <div class="big-number">{numberOfUsers}</div>
+        </div>
+        <div class="red-box">
+            <div>Most returned products</div>
+            <img src="https://i.ibb.co/GRHPDCV/chart2.png" alt="pieChart">
+            <canvas id="pieChart" ></canvas>
+        </div>
+        <div class="red-box">
+            <div>Number of RMA</div>
+            <div class="big-number">{numberOfRMA < 10 ? `0${numberOfRMA}` : numberOfRMA}</div>
+        </div>
+    </div>
+
+    <div class="big-red-rectangle">
+        <canvas id="rmaChart"></canvas>
+        <div class="controls">
+            <button on:click={() => updateInterval('week')}>Per Week</button>
+            <button on:click={() => updateInterval('month')}>Per Month</button>
+            <button on:click={() => updateInterval('year')}>Per Year</button>
+        </div>
+    </div>
+</div>
 
 <style>
     .container {
@@ -234,34 +281,3 @@
         z-index: 1; /* Ensure buttons are above the chart */
     }
 </style>
-
-<div class="container">
-    <div class="greeting">Hello Admin!</div>
-    <div class="line"></div>
-
-    <div class="red-boxes">
-        <div class="red-box">
-            <div>Number of users</div>
-            <div class="big-number">{numberOfUsers}</div>
-        </div>
-        <div class="red-box">
-            <div>Most returned products</div>
-            <img src="https://i.ibb.co/GRHPDCV/chart2.png" alt="pieChart">
-            <canvas id="pieChart" ></canvas>
-        </div>
-        <div class="red-box">
-            <div>Number of RMA</div>
-            <div class="big-number">{numberOfRMA < 10 ? `0${numberOfRMA}` : numberOfRMA}</div>
-        </div>
-    </div>
-
-    <div class="big-red-rectangle">
-        <canvas id="rmaChart" ></canvas>
-
-        <div class="controls">
-            <button on:click={() => updateInterval('week')}>Per Week</button>
-            <button on:click={() => updateInterval('month')}>Per Month</button>
-            <button on:click={() => updateInterval('year')}>Per Year</button>
-        </div>
-    </div>
-</div>
