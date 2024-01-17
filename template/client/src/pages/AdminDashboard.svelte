@@ -258,7 +258,7 @@
     <div class="red-boxes">
         <div class="red-box">
             <div>Number of users</div>
-            <div class="big-number">{numberOfUsers}</div>
+            <div class="big-number">{numberOfUsers < 10 ? `0${numberOfUsers}` : numberOfRMA}</div>
         </div>
         <div class="red-box">
            <!-- <div>Most returned products</div> -->
