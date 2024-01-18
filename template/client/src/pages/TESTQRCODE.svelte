@@ -8,7 +8,11 @@
 <div id="qrcode-container">
     <!-- The QR code will be displayed here -->
 </div>
+<div id="barcode-container">
+    <!-- The barcode will be displayed here -->
+</div>
 <button onclick="generateQRCode()">Generate QR Code</button>
+<button onclick="barCode()">Generate Barcode</button>
 <script src="https://cdn.jsdelivr.net/qrcode/1.4.4/qrcode.min.js"></script>
 <script>
     // Function to fetch QR code from the server and display it
@@ -22,9 +26,22 @@
         container.innerHTML = qrCodeSVG;
     }
 
+    async function displayBarcode() {
+        const response = await fetch(`http://localhost:3000/barcode/generateBarcode1/user/1`);
+        const barcodeSVG = await response.text();
+
+        // Display the QR code in the specified container
+        const container = document.getElementById('barcode-container');
+        container.innerHTML = barcodeSVG;
+    }
+
     // Function to be called when the button is clicked
     function generateQRCode() {
         displayQRCode();
+    }
+
+    function barCode() {
+        displayBarcode();
     }
 </script>
 </body>
