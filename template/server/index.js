@@ -16,6 +16,7 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+app.set('view engine', 'ejs');
 
 app.use(cors({
     origin: '*', // Allow requests from any origin

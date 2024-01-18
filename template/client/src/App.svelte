@@ -25,6 +25,7 @@
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 	import ResetPassword from "./pages/ResetPassword.svelte";
 	import RMAProducts from "./pages/client/RMAProducts.svelte";
+	import TESTQRCODE from "./pages/TESTQRCODE.svelte";
 
 	let page;
 	let params;
@@ -139,6 +140,11 @@
 		params = ctx.params;
 		currentRoute = ctx.pathname;
 	});
+
+	router('/barcode', (ctx) => {
+		page = TESTQRCODE;
+		currentRoute = ctx.pathname;
+	})
 
 	router.start();
 </script>
