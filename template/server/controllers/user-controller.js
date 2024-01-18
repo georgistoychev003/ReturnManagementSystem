@@ -38,8 +38,8 @@ export async  function postUser(req, res) {
 
     // Generate a UUID for the new user
     const userId = uuidv4();
-    user.userId = userId;
-    console.log(user.userId)
+    user.userID = userId;
+    console.log(user.userID)
     try {
         db.insertUser(user);
 
@@ -50,19 +50,18 @@ export async  function postUser(req, res) {
     }
 }
 
-
 export async function updateUserInformation(req, res) {
-    const { emailOrUserId } = req.params;
-    const userData = req.body;
-    try {
-        let updateResult;
-        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrUserId)) { // Check if emailOrUserId is an email
-            db.updateUserByEmail(emailOrUserId, userData);
-        } else {
-            db.updateUserById(emailOrUserId, userData);
-        }
-        res.status(StatusCodes.OK).json({ message: "User updated successfully." });
+    const { userId } = req.params;
+    const { userRole } = req.body;
 
+    try {
+        const updateResult = db.updateUserRoleById(userId, { userRole });
+
+        if (updateResult.changes > 0) {
+            res.status(StatusCodes.OK).json({ message: "User updated successfully." });
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ message: "No user found with the provided ID." });
+        }
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to update user." });
     }
@@ -70,22 +69,28 @@ export async function updateUserInformation(req, res) {
 
 export async function deleteUser(req, res) {
     const { emailOrUserId } = req.params;
+
     try {
-        let deleteResult;
-        if (typeof emailOrUserId === 'string') {
-            deleteResult = db.deleteUserByEmail(emailOrUserId);
-        } else if (typeof emailOrUserId === 'number') {
-            deleteResult = db.deleteUserById(emailOrUserId);
+        const userExists = db.getUserById(emailOrUserId);
+
+        if (!userExists) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
         }
-        if(db.getUserById(emailOrUserId)){
+        db.deleteUserById(emailOrUserId);
+        console.log('User deleted with ID:', emailOrUserId);
+
+        const userStillExists = db.getUserById(emailOrUserId);
+        if (!userStillExists) {
             res.status(StatusCodes.OK).json({ message: "User deleted successfully." });
         } else {
-            res.status(StatusCodes.NOT_FOUND).json({ error: "User not found." });
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to delete user." });
         }
     } catch (error) {
+        console.error('Error while deleting user:', error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to delete user." });
     }
 }
+
 
 export async function getListOfUsers(req, res){
     try {

@@ -2,13 +2,20 @@
     //fetch and select the user
     import UserRoleDropdown from '../components/UserRoleDropdown.svelte';
     import {onMount} from "svelte";
+    import page from "page";
+    export let params;
+    let selectedUserRole; // This will store the selected role from the dropdown
 
-    const fetchUserDetails = async (userId) => {
+    const fetchUserDetails = async (userID) => {
         try {
-            const response = await fetch(`http://localhost:3000/users/${userId}`);
+            const response = await fetch(`http://localhost:3000/users/${userID}`);
 
             if (response.ok) {
                 selectedUser = await response.json();
+
+                // Ensure requests is an array
+                selectedUser.requests = selectedUser.requests || [];
+
                 renderUserDetails(); // Call the function to render user details after fetching data
             } else {
                 console.error('Failed to fetch user details');
@@ -17,6 +24,7 @@
             console.error('Error fetching user details:', error);
         }
     };
+
 
     // Placeholder for the selected user's details, we neeed to replace with actual database data
     let selectedUser = {
@@ -42,9 +50,9 @@
         const addressElement = document.querySelector('.details p:nth-of-type(4)');
         const tableBody = document.querySelector('.requests tbody');
 
-        usernameElement.textContent = selectedUser.username;
-        nameElement.textContent = `Name: ${selectedUser.name}`;
-        roleElement.textContent = `Role: ${selectedUser.role}`;
+        usernameElement.textContent = selectedUser.userID;
+        nameElement.textContent = `Name: ${selectedUser.userName}`;
+        roleElement.textContent = `Role: ${selectedUser.userRole}`;
         emailElement.textContent = `Email: ${selectedUser.email}`;
         addressElement.textContent = `Address: ${selectedUser.address}`;
 
@@ -64,24 +72,63 @@
         });
     };
 
-    // Function to assign a new role to the user, to be implemented
-    const assignRole = () => {
-        console.log(`Assign new role to user: ${selectedUser.username}`);
+    // Function to assign a new role to the user
+    const assignRole = async (newRole) => {
+        // Make sure `newRole` is the role you want to assign
+        if (!newRole) return;  // Return if the newRole is not provided
+
+        try {
+            const response = await fetch(`http://localhost:3000/users/${selectedUser.userID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userRole: newRole }) // Send only the userRole field
+            });
+
+            if (response.ok) {
+                // Re-fetch user details to update the UI reactively
+                await fetchUserDetails(selectedUser.userID);
+            } else {
+                const error = await response.json();
+                console.error('Failed to update user role:', error);
+            }
+        } catch (error) {
+            console.error('Error updating user role:', error);
+        }
     };
 
-    // Function to delete the user, to be implemented
-    const deleteUser = () => {
-        console.log(`Delete user: ${selectedUser.username}`);
+    // This function is called when the "Assign Role" button is clicked
+    const confirmRoleAssignment = async () => {
+        if (!selectedUserRole) {
+            console.error('No role selected');
+            return;
+        }
+
+        await assignRole(selectedUserRole);
+    };
+
+    const deleteUser = async (userID) => {
+        try {
+            const response = await fetch(`http://localhost:3000/users/${userID}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                // User was deleted successfully
+                console.log('User deleted successfully');
+                page('/users');
+            } else {
+                console.error('Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
     };
 
     onMount(() => {
-        // Get the userId from the URL params
-        const params = new URLSearchParams(window.location.search);
-        const userId = params.get('userId');
-
-        if (userId) {
-            // Fetch user details based on userId
-            fetchUserDetails(userId);
+        if (params && params.userID) {
+            fetchUserDetails(params.userID);
         } else {
             console.error('User ID not provided in the URL params.');
         }
@@ -89,8 +136,8 @@
 
 // for now hard coded
     //todo : database should be done for full functionality
-    const userId = '1';
-    fetchUserDetails(userId);
+    const userID = '1';
+    fetchUserDetails(userID);
 
 </script>
 
@@ -100,11 +147,11 @@
         <h2>{selectedUser.username}</h2>
 
         <div class="role-dropdown">
-            <UserRoleDropdown />
+            <UserRoleDropdown on:roleSelected={(event) => selectedUserRole = event.detail} />
         </div>
 
-        <button class="assign-role-button" on:click={assignRole}>Assign Role</button>
-        <button class="delete-user-button" on:click={deleteUser}>Delete User</button>
+        <button class="assign-role-button" on:click={confirmRoleAssignment}>Assign Role</button>
+        <button class="delete-user-button" on:click={() => deleteUser(selectedUser.userID)}>Delete User</button>
     </div>
     <div class="details">
         <p><strong>Name:</strong> {selectedUser.name}</p>
