@@ -5,7 +5,7 @@
 
     let numberOfRMA = 0;
     let numberOfUsers = 0;
-    let selectedInterval = 'week'; // Default interval
+    let selectedInterval = 'year'; // Default interval
     let chart;
     let pieChart;
     let chartTitle = `Number of requests per: ${selectedInterval}`;
@@ -45,7 +45,6 @@
             if (response.ok) {
                 const data = await response.json();
                 numberOfRMA = data['count(RMAId)'] || 0;
-                updateChart(data);
             } else {
                 console.error('Failed to fetch RMA data');
             }
@@ -53,12 +52,35 @@
             console.error('Error fetching RMA data:', error);
         }
     }
+    async function fetchMonthlyRMA() {
+        try {
+            const response = await fetch('http://localhost:3000/rma/monthly');
+            if (response.ok) {
+                const data = await response.json();
+                processRMAData(data);
+                updateChart(data);
 
+            } else {
+                console.error('Failed to fetch monthly RMA data');
+            }
+        } catch (error) {
+            console.error('Error fetching monthly RMA data:', error);
+        }
+    }
 
+    onMount(fetchMonthlyRMA);
 
     function processRMAData(rmaData) {
+        // Extract all unique months from the RMA data
+        const uniqueMonths = [...new Set(rmaData.map(rma => new Date(rma.returnedDate).getMonth() + 1))];
+
+        // Create an array containing all months or weeks depending on the selected interval
+        const allIntervals = selectedInterval === 'week' ? Array.from({ length: 52 }, (_, i) => i + 1) :
+            selectedInterval === 'month' ? uniqueMonths :
+                Array.from({ length: 12 }, (_, i) => i + 1);
+
         let processedData = rmaData.reduce((acc, rma) => {
-            // Adjusted example: Extract the week, month, or year from the date based on selected interval
+            // Extract the week, month, or year from the date based on selected interval
             const intervalValue = selectedInterval === 'week' ? new Date(rma.returnedDate).getWeekNumber() :
                 selectedInterval === 'month' ? new Date(rma.returnedDate).getMonth() + 1 :
                     new Date(rma.returnedDate).getFullYear();
@@ -68,7 +90,8 @@
         }, {});
 
         // Convert the object into an array suitable for the chart
-        let chartData = Object.entries(processedData).map(([interval, count]) => {
+        let chartData = allIntervals.map(interval => {
+            const count = processedData[interval] || 0;
             const label = selectedInterval === 'week' ? `Week ${interval}` :
                 selectedInterval === 'month' ? `Month ${interval}` :
                     selectedInterval === 'year' ? monthNames[interval - 1] :
@@ -81,46 +104,60 @@
     }
 
 
+
+
     function updateChart(chartData) {
-        if (!Array.isArray(chartData)) {
-            if (chartData && typeof chartData === 'object') {
-                chartData = Object.entries(chartData).map(([interval, count]) => ({
-                    label: selectedInterval === 'week' ? `Week ${interval}` :
-                        selectedInterval === 'month' ? `Month ${interval}` :
-                            selectedInterval === 'year' ? monthNames[interval - 1] : // Assuming monthNames is an array of month names
-                                `Year ${interval}`,
-                    count
-                }));
-            } else {
-                console.error('Invalid chart data format:', chartData);
-                return;
+        // Assuming chartData is an array of objects with monthYear and RMACount properties
+        chart.data.labels = chartData.map(item => item.monthYear);
+        chart.data.datasets[0].data = chartData.map(item => item.RMACount);
+
+        const maxDataValue = Math.max(...chartData.map(item => item.RMACount) );
+        console.log(maxDataValue)
+
+
+        chart.options.scales.y = {
+            type: 'linear',
+            position: 'left',
+            title: {
+                display: true,
+                text: 'Number of RMA',
+                color : 'white',
+            },
+            grid: {
+                color: 'black' // Set the color of the x-axis grid lines (keep them black)
+            },
+            ticks: {
+                color: 'white',
+                precision: 0, // Round tick values to integers
+               suggestedMax: maxDataValue + 2, // Set suggested max value
+                min: 0,
+                beginAtZero: true
             }
+        };
+
+
+        // Update x-axis configuration for 'year' interval
+        if (selectedInterval === 'year') {
+            chart.options.scales.x.type = 'category';
+            chart.options.scales.x.labels = monthNames;
+
+            chart.options.scales.x.ticks = {
+                color: 'white',
+                min: monthNames[0],
+                max: monthNames[11]
+            };
+
+
+        } else {
+            chart.options.scales.x.type = 'linear';
         }
 
-        if (chart) {
-            chart.data.labels = chartData.map(item => item.label);
-            chart.data.datasets[0].data = chartData.map(item => item.count);
 
-            // Update x-axis configuration for 'year' interval
-            if (selectedInterval === 'year') {
-                chart.options.scales.x.type = 'category';
-                chart.options.scales.x.labels = monthNames;
 
-                // Clear existing data labels
-                chart.data.labels = [];
-
-                // Populate data labels with month names
-                monthNames.forEach(month => {
-                    chart.data.labels.push(month);
-                });
-            } else {
-                chart.options.scales.x.type = 'linear';
-            }
-
-            chart.options.plugins.title.text = `Number of requests per: ${selectedInterval}`;
-            chart.update();
-        }
+        chart.options.plugins.title.text = `Number of requests per: ${selectedInterval}`;
+        chart.update();
     }
+
 
 
 
@@ -144,7 +181,7 @@
                 datasets: [{
                     label: 'Number of RMA',
                     data: [],
-                    borderColor: 'red',
+                    borderColor: 'white',
                     tension: 0.4,
                     fill: false
                 }]
@@ -160,17 +197,17 @@
                 },
                 scales: {
                     x: {
-                        type: selectedInterval === 'year' ? 'category' : 'linear', // Set x-axis type
+                        type: selectedInterval === 'year' ? 'category' : 'linear',
                         position: 'bottom',
                         title: {
                             display: true,
                             text: 'Time'
                         },
                         grid: {
-                            color: 'black' // Set the color of the x-axis grid lines (keep them black)
+                            color: 'black'
                         },
                         ticks: {
-                            color: 'white' // Set the color of the x-axis grid lines
+                            color: 'white'
                         },
                         labels: selectedInterval === 'year' ?
                             ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] :
@@ -187,7 +224,7 @@
                             color: 'black' // Set the color of the x-axis grid lines (keep them black)
                         },
                         ticks: {
-                            color: 'white' // Set the color of the x-axis grid lines
+                            color: 'white', // Set the color of the x-axis grid lines
 
                         }
                     }
@@ -204,7 +241,8 @@
                 labels: mostReturnedProducts.map(product => ''),
                 datasets: [{
                     data: mostReturnedProducts.map(product => product.count),
-                    backgroundColor: mostReturnedProducts.map(product => product.color)
+                    backgroundColor: mostReturnedProducts.map(product => product.color),
+                    text: mostReturnedProducts.map(product => product.name)
                 }]
             },
             options: {
@@ -229,6 +267,8 @@
 
     afterUpdate(() => {
         fetchNumberOfRMA();
+        fetchMonthlyRMA();
+
     });
 
     onDestroy(() => {

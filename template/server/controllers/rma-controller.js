@@ -11,9 +11,10 @@ import {
     getStatusById,
     getCustomerEmailByRMAId,
     getProductByRMAId,
-    getQunatityByRMAId
+    getQunatityByRMAId, returnAllRmaDetails, returnRMAaandDates, returnRMAPerMonth
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
+import {getAllRmaDetails} from "../database/database-queries.js";
 
 export function deleteRma(req, res) {
     const { rmaId } = req.params;
@@ -171,3 +172,36 @@ export function getReturnsByUserId(req, res){
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve User Returns." });
     }
 }
+
+export function getAllRmasDetails(req, res) {
+    try {
+        const rmas = returnAllRmaDetails;
+        res.status(StatusCodes.OK).json(rmas);
+    } catch (error) {
+        console.log("hey");
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+}
+
+
+export  function getRMAandDates(req, res) {
+    try {
+        const rmawithDate = returnRMAaandDates();
+        res.status(StatusCodes.OK).json(rmawithDate);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+
+}
+
+export  function getRMAPerMonths(req, res) {
+    try {
+        const rmawithDate = returnRMAPerMonth();
+        res.status(StatusCodes.OK).json(rmawithDate);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+
+}
+
+

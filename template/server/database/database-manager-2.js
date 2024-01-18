@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
-import {selectAllRMAByUserId} from "../database/database-queries.js";
+import {getRMAandDATE, selectAllRMAByUserId} from "../database/database-queries.js";
 
 import {selectStatusById} from "../database/database-queries.js";
 
@@ -283,3 +283,33 @@ export function increaseProductStockByName(productName, quantity) {
     const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
     return update.run(newStock, productName);
 }
+
+export function returnAllRmaDetails() {
+    return db.prepare(queries.getAllRmaDetails).all();
+}
+
+
+export function returnRMAaandDates() {
+    try {
+        console.log("Before executing the query");
+        const result = db.prepare(queries.getRMAandDATE).all();
+        console.log("After executing the query");
+        console.log(result); // Log the result to the console
+        return result;
+    } catch (error) {
+        console.error("Error executing the query:", error.message); // Log the error message
+        throw error; // Rethrow the error to propagate it
+    }
+}
+
+export function returnRMAPerMonth() {
+    try {
+        return db.prepare(queries.getRMACountByMonth).all();
+    } catch (error) {
+        console.error("Error executing the query:", error.message); // Log the error message
+        throw error;
+    }
+}
+
+
+

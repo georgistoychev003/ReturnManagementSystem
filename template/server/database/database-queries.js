@@ -152,4 +152,36 @@ export const updateProductStockById = `UPDATE product SET inventoryStock = ? WHE
 export const updateUserPasswordById = `UPDATE user SET password = ? WHERE userID = ?`;
 
 
+export const getAllRmaDetails = `SELECT
+r.RMAId,
+    r.barcode,
+    r.statusRma,
+    GROUP_CONCAT(p.name) AS productNames,
+    GROUP_CONCAT(rp.quantityToReturn) AS quantities,
+    SUM(rp.quantityToReturn * product.price) AS totalReturnPrice
+FROM
+returntable r
+JOIN
+returnedProduct rp ON r.RMAId = rp.RMAId
+JOIN
+orderedProduct op ON rp.orderedProductId = op.orderedProductId
+JOIN
+product p ON op.productId = p.productId
+GROUP BY
+r.RMAId, r.barcode, r.statusRma`;
 
+
+
+export const getRMAandDATE = `SELECT DISTINCT RMAId, returnedDate FROM returnedProduct`;
+
+export const getRMACountByMonth = `
+    SELECT
+        strftime('%Y-%m', returnedDate) AS monthYear,
+        COUNT(DISTINCT RMAId) AS RMACount
+    FROM
+        returnedProduct
+    GROUP BY
+        monthYear
+    ORDER BY
+        monthYear;
+`;

@@ -137,6 +137,11 @@ export const rmaData = [
         "RMAId": 2,
         "barcode": "barcode",
         "statusRma": "Returned"
+    },
+    {
+        "RMAId": 3,
+        "barcode": "barcode",
+        "statusRma": "Returned"
     }
 ];
 
@@ -171,5 +176,15 @@ export const returnedProduct = [
         statusProduct: "Returned",
         quantity: "3"
     },
+    {
+        returnedProductId: 4,
+        orderedProductId: 1,
+        RMAId: 3,
+        returnedDate: "2023-03-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    }
 ];
 
