@@ -1,9 +1,8 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
-import {getRMAandDATE, selectAllRMAByUserId} from "../database/database-queries.js";
 
-import {selectStatusById} from "../database/database-queries.js";
+import {assignRmaToControllerQuery, getRmaDetailsQuery, selectStatusById} from "../database/database-queries.js";
 
 
 let db;
@@ -282,6 +281,28 @@ export function increaseProductStockByName(productName, quantity) {
     const newStock = currentStock + quantity;
     const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
     return update.run(newStock, productName);
+}
+export async function assignRmaToControllerDb(RMAId, controllerId) {
+    const rmaDetails = db.prepare(getRmaDetailsQuery).get(RMAId);
+
+    // Check if the RMA is locked.
+    if (rmaDetails && rmaDetails.controllerId) {
+        // Check if the lock is still valid.
+        if (new Date() - new Date(rmaDetails.lockTimestamp) < 2 * 60 * 60 * 1000) {
+            // Check if it's the current user.
+            if (rmaDetails.controllerId === controllerId) {
+                // Current user has the lock, so grant access.
+                return { alreadyLockedByThisController: true };
+            } else {
+                // Another user has the lock.
+                return { locked: true };
+            }
+        }
+    }
+
+    const timestamp = new Date().toISOString();
+    const updateResult = await db.prepare(assignRmaToControllerQuery).run(controllerId, timestamp, RMAId);
+    return updateResult;
 }
 
 export function returnAllRmaDetails() {

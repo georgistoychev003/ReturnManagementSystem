@@ -39,7 +39,10 @@ export const createOrderedProductTable = `CREATE TABLE IF NOT EXISTS orderedProd
 export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
     RMAId INTEGER NOT NULL PRIMARY KEY,
     barcode TEXT NOT NULL,
-    statusRma TEXT NOT NULL
+    statusRma TEXT NOT NULL,
+    controllerId INT,
+    lockTimestamp DATETIME,
+    FOREIGN KEY (controllerId) REFERENCES "user"(userID)                                 
     )`
 
 export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedProduct(
@@ -210,3 +213,7 @@ export const getRMACountByMonth = `
     ORDER BY
         monthYear;
 `;
+
+export const assignRmaToControllerQuery = `UPDATE returntable SET controllerId = ?, lockTimestamp = ? WHERE RMAId = ?`;
+
+export const getRmaDetailsQuery = `SELECT * FROM returntable WHERE RMAId = ?`;

@@ -4,13 +4,21 @@
 
     let returnRequests = [];
 
-    const viewDetails = (requestId) => {
-        page(`/controller/return-requests-details/${requestId}`);
-    };
+    // const viewDetails = (requestId) => {
+    //     page(`/controller/return-requests-details/${requestId}`);
+    // };
 
     onMount(async () => {
         await fetchReturnRequests();
     });
+
+    function getUserIdFromToken() {
+        const token = localStorage.getItem('token');
+        if (!token) return null;
+
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.id;
+    }
 
     async function fetchTotalPriceOfRMA(RMAId) {
         try {
@@ -100,6 +108,40 @@
 
         return aggregated;
     }
+
+    const viewDetails = async (requestId) => {
+        const controllerId = getUserIdFromToken();
+
+        if (!controllerId) {
+            console.error("Controller ID not found");
+            return;
+        }
+
+        console.log("Locking RMA ID:", requestId, "with Controller ID:", controllerId);
+
+        try {
+            const lockResponse = await fetch(`http://localhost:3000/rma/assign/${requestId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ controllerId })
+            });
+
+            if (lockResponse.ok) {
+                page(`/controller/return-requests-details/${requestId}`);
+            } else {
+                const errorMessage = await lockResponse.json();
+                console.error('Error response:', errorMessage);
+                alert(`Error: ${errorMessage.message}`);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('An error occurred while locking the RMA.');
+        }
+    };
+
 </script>
 
 <div class="customer-returns">

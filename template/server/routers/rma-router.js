@@ -5,6 +5,7 @@ const router = express.Router();
 import * as rmaController from '../controllers/rma-controller.js';
 import {getAllRmasDetails, getRMAandDates} from "../controllers/rma-controller.js";
 
+
 router.get('/', rmaController.getListOfRmas);
 
 router.get('/count', rmaController.getCountOfRMA);
@@ -46,6 +47,6 @@ router.get('/returns/:userId', rmaController.getReturnsByUserId);
 //router.get('/withDates', rmaController.getRMAandDates());
 
 
-
+router.post('/assign/:RMAId', rmaController.assignRmaToController);
 
 export default router;
