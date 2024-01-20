@@ -129,7 +129,7 @@
             ticks: {
                 color: 'white',
                 precision: 0, // Round tick values to integers
-               suggestedMax: maxDataValue + 2, // Set suggested max value
+               max: maxDataValue + 2, // Set suggested max value
                 min: 0,
                 beginAtZero: true
             }
@@ -225,6 +225,9 @@
                         },
                         ticks: {
                             color: 'white', // Set the color of the x-axis grid lines
+                            min : 0,
+                            beginAtZero: true,
+
 
                         }
                     }

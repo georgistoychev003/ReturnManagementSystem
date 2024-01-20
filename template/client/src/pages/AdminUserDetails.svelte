@@ -6,6 +6,22 @@
     export let params;
     let selectedUserRole; // This will store the selected role from the dropdown
 
+
+    const fetchReturns = async (userID) => {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/returns/${userID}`);
+
+            if (response.ok) {
+                const returns = await response.json();
+                selectedUser.requests = returns; // Update selectedUser.requests with the returns data
+                renderUserDetails(); // Call the function to render user details after fetching returns data
+            } else {
+                console.error('Failed to fetch returns');
+            }
+        } catch (error) {
+            console.error('Error fetching returns:', error);
+        }
+    };
     const fetchUserDetails = async (userID) => {
         try {
             const response = await fetch(`http://localhost:3000/users/${userID}`);
@@ -15,6 +31,7 @@
 
                 // Ensure requests is an array
                 selectedUser.requests = selectedUser.requests || [];
+                await fetchReturns(userID);
 
                 renderUserDetails(); // Call the function to render user details after fetching data
             } else {
@@ -34,7 +51,7 @@
         email: 'XXXXXXXXXXXXXXXX',
         address: 'XXXXXXXXXXXXXXXX',
         requests: [
-            { id: 'XX', products: 'XXXXXX', date: 'XXXX', price: 'XXX' },
+            { id: 'XX', products: 'XXXXXX', returnedDate: 'XXXX', price: 'XXX' },
 
         ]
     };
@@ -63,10 +80,10 @@
         selectedUser.requests.forEach(request => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${request.id}</td>
-                <td>${request.products}</td>
-                <td>${request.date}</td>
-                <td>${request.price}</td>
+                <td>${request.returnedProductId}</td>
+                <td>${request.description}</td>
+                <td>${request.returnedDate}</td>
+                <td>${request.statusProduct}</td>
             `;
             tableBody.appendChild(row);
         });
@@ -173,9 +190,9 @@
             <tbody>
             {#each selectedUser.requests as request}
                 <tr>
-                    <td>{request.id}</td>
+                    <td>{request.RMAId}</td>
                     <td>{request.products}</td>
-                    <td>{request.date}</td>
+                    <td>{request.returnedDate}</td>
                     <td>{request.price}</td>
                 </tr>
             {/each}
