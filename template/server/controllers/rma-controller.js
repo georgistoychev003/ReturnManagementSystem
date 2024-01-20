@@ -11,7 +11,7 @@ import {
     getStatusById,
     getCustomerEmailByRMAId,
     getProductByRMAId,
-    getQunatityByRMAId, returnAllRmaDetails, returnRMAaandDates, returnRMAPerMonth
+    getQunatityByRMAId, returnAllRmaDetails, returnRMAaandDates, returnRMAPerMonth, updateReturnedProductQuantity
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import {getAllRmaDetails} from "../database/database-queries.js";
@@ -51,7 +51,6 @@ export function getRmaPrice(req, res) {
     try {
 
         const total = getTotalPriceOfRMA(rmaId);
-        console.log(total)
         res.status(StatusCodes.OK).json(total);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA price." });
@@ -84,7 +83,10 @@ export function getRmaProducts(req, res) {
     const { rmaId } = req.params;
     try {
         const products = getProductByRMAId(rmaId);
-        res.status(StatusCodes.OK).json(products);
+        res.status(StatusCodes.OK).json(products.map(p => ({
+            orderedProductId: p.orderedProductId,
+            name: p.name
+        })));
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA products." });
     }
@@ -101,11 +103,13 @@ export function getRmaQuantity(req, res) {
 }
 
 export function getRma(req, res) {
+    console.log("helldfdgd")
     const { rmaId } = req.params;
     try {
         let rmaResult;
         if (rmaId) {
             rmaResult = getAllRmaById(rmaId)
+            console.log(rmaResult)
         }
         if (rmaResult) {
             res.status(StatusCodes.OK).json(rmaResult);
@@ -146,7 +150,6 @@ export function getListOfRmas(req, res) {
 
 export function getListOfReturns(req, res) {
     try {
-        console.log("hello")
         const returns = getALlReturnedProducts();
         res.status(StatusCodes.OK).json(returns);
     } catch (error) {
@@ -178,7 +181,6 @@ export function getAllRmasDetails(req, res) {
         const rmas = returnAllRmaDetails;
         res.status(StatusCodes.OK).json(rmas);
     } catch (error) {
-        console.log("hey");
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
     }
 }
@@ -200,6 +202,18 @@ export  function getRMAPerMonths(req, res) {
         res.status(StatusCodes.OK).json(rmawithDate);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+
+}
+
+export  function updateQuantities(req, res) {
+    const { productName, quantity, RMAId } = req.body;
+    try {
+        updateReturnedProductQuantity(productName, quantity, RMAId);
+        res.status(200).json({ message: 'Returned product quantity updated successfully' });
+    } catch (error) {
+        console.error('Error updating returned product quantity:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 
 }

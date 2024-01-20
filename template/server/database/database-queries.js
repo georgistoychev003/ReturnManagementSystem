@@ -51,7 +51,7 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     description TEXT,
     weight DOUBLE,
     statusProduct TEXT,
-    quantity INT NOT NULL,
+    quantity INT,
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -138,7 +138,7 @@ export const selectCustomerEmailByRMAId = `
 `;
 
 export const selectProductDescriptionsByRMAId = `
-    SELECT p.name
+    SELECT *
     FROM returnedProduct rp
     JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
     JOIN product p ON op.productId = p.productId

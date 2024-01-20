@@ -217,7 +217,7 @@ export function getAllRma() {
 }
 
 export function getAllRmaById(Id) {
-    return db.prepare(queries.selectAllReturnedProductById).get(Id);
+    return db.prepare(queries.selectAllReturnedProductById).all(Id);
 }
 
 export function getALlReturnedProducts(){
@@ -312,4 +312,23 @@ export function returnRMAPerMonth() {
 }
 
 
+export function updateReturnedProductQuantity(productName, deductionQuantity, RMAId) {
+    // Query to select the specific returned product based on productName and RMAId
+    const select = db.prepare(`
+        SELECT rp.quantity, rp.returnedProductId
+        FROM returnedProduct rp
+        JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
+        JOIN product p ON op.productId = p.productId
+        JOIN returntable r ON rp.RMAId = r.RMAId
+        WHERE p.name = ? AND r.RMAId = ?;
+    `);
+    const returnedProduct = select.get(productName, RMAId);
 
+    if (returnedProduct) {
+        const newQuantity = Math.max(0, returnedProduct.quantity - deductionQuantity);
+        const update = db.prepare('UPDATE returnedProduct SET quantity = ? WHERE returnedProductId = ?');
+        return update.run(newQuantity, returnedProduct.returnedProductId);
+    } else {
+        throw new Error('Returned product not found');
+    }
+}

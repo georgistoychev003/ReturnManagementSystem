@@ -22,7 +22,7 @@ router.get('/:barcode', rmaController.getRmaByBarcode);
 
 
 router.get('/:rmaId', rmaController.getRma);
-//router.get('/rma/:rmaId', rmaController.getRma);
+// router.get('/rma/:rmaId', rmaController.getRma);
 
 router.get('/:rmaId/total-price', rmaController.getRmaPrice);
 
@@ -35,6 +35,8 @@ router.get('/:rmaId/products', rmaController.getRmaProducts);
 router.get('/:rmaId/quantity', rmaController.getRmaQuantity);
 
 router.patch('/:rmaId', rmaController.patchRma);
+
+router.post('/update-returned-product-quantity', rmaController.updateQuantities);
 
 router.delete('/:rmaId', rmaController.deleteRma);
 

@@ -17,7 +17,6 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/total-price`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 return data.TotalReturnPrice || 0;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -34,7 +33,6 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 return data.statusRma;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -51,7 +49,6 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 return data.email;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -68,7 +65,6 @@
             const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
                 const requests = await response.json();
-                console.log(requests)
                 for (const request of requests) {
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
@@ -77,14 +73,32 @@
                     request.totalReturnPrice = totalPrice;
                     request.statusRMA = status
                 }
-                returnRequests = requests;
-                console.log(returnRequests)
+                const aggregatedRequests = aggregateRequestsByRMA(requests);
+
+                returnRequests = Object.values(aggregatedRequests);
+
+                returnRequests = Object.values(aggregatedRequests)
+                    .filter(request => request.totalReturnPrice > 0);
+
+                console.log(returnRequests);
             } else {
                 console.error('Failed to fetch return requests');
             }
         } catch (error) {
             console.error('Error:', error);
         }
+    }
+    function aggregateRequestsByRMA(requests) {
+        const aggregated = {};
+
+        for (const request of requests) {
+            if (!aggregated[request.RMAId]) {
+                aggregated[request.RMAId] = { ...request, products: [] };
+            }
+            aggregated[request.RMAId].products.push(request.product); // Assuming 'product' field exists
+        }
+
+        return aggregated;
     }
 </script>
 
