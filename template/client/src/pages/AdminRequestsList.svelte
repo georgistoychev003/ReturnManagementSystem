@@ -145,7 +145,7 @@
 </script>
 
 <div class="customer-returns">
-    <h1>Customer Requests</h1>
+    <h1>Return Requests</h1>
     <table>
         <thead>
         <tr>
