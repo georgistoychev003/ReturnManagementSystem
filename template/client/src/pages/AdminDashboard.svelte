@@ -359,73 +359,88 @@
 </div>
 
 <style>
+    /* General Base Styles */
+    :root {
+        --color-blue: #3498db;
+        --color-red: #e74c3c;
+        --color-purple: #9b59b6;
+        --color-light-blue: #95a5a6;
+        --text-light: #ecf0f1;
+        --text-dark: #2c3e50;
+        --background-color: #ecf0f1;
+        --box-shadow-color: rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-dark);
+        line-height: 1.6;
+    }
+
+    /* Container Styles */
     .container {
-        max-width: 90%;
-        margin: 0 auto;
-        padding: 2%;
-        position: relative; /* Added for positioning child elements */
+        max-width: 95%;
+        margin: 1rem auto;
+        padding: 1rem;
     }
 
     .greeting {
-        font-size: 2vw; /* Adjust as needed */
-        margin-bottom: 2vw;
+        font-size: 2rem; /* Responsive font size */
+        margin-bottom: 1rem;
+        color: var(--text-dark);
+        text-align: center;
     }
 
     .line {
-        width: 80%;
-        margin: 0 auto;
-        border-top: 0.2vw solid lightblue; /* Adjust as needed */
-        margin-bottom: 2vw;
+        width: 100%;
+        height: 4px;
+        background-color: var(--color-red);
+        margin-bottom: 2rem;
     }
 
     .red-boxes {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
-        margin-bottom: 2vw;
-        max-height: 50vh;
-
-
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
 
     .red-box {
         flex: 1;
+        min-width: 250px; /* Minimum width for small screens */
         text-align: center;
-        background-color: red;
-        padding: 2vw;
-        color: white;
-        margin: 0 2vw  ; /* Space between red boxes */
+        background-color: var(--color-purple);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px var(--box-shadow-color);
+        color: var(--text-light);
     }
 
     .big-number {
-        font-size: 3vw; /* Adjust as needed */
-        margin-bottom: 1vw;
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 1rem 0;
     }
 
+    /* Chart Styles */
     .big-red-rectangle {
-        position: relative; /* Set relative positioning */
-        height: 45vw; /* Adjust as needed */
-        background-color: red;
-        margin-bottom: 2vw;
+        position: relative;
+        background-color: var(--color-blue);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px var(--box-shadow-color);
+        margin-bottom: 2rem;
     }
 
-    #rmaChart {
-        width: calc(100% - 4vw); /* Adjust the chart width */
-        height: 20vw; /* Adjust the chart height */
-
-        margin-bottom: 2vw; /* Adjust margin-bottom as needed */
-    }
-
-    #pieChart {
-        width: calc(50% - 2vw); /* Adjust the chart width */
-        height: 15vw; /* Adjust the chart height */
-        background-color: red;
-        margin-bottom: 2vw; /* Adjust margin-bottom as needed */
-    }
-
-
-     img {
+    #rmaChart, #pieChart {
         max-width: 100%;
-        height: auto;
+        max-height: 400px; /* Set a maximum height for the chart */
     }
 
     .controls {
@@ -434,11 +449,45 @@
         right: 10px;
         display: flex;
         gap: 10px;
-        z-index: 1; /* Ensure buttons are above the chart */
-
+        z-index: 10;
     }
-    .controls button:hover {
 
-        transform: scale(1.1);
+    .controls button {
+        background-color: var(--color-light-blue);
+        border: none;
+        border-radius: 0.3rem;
+        color: var(--text-dark);
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .controls button:hover {
+        background-color: var(--color-red);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .red-boxes {
+            flex-direction: column;
+        }
+
+        .big-number {
+            font-size: 3rem;
+        }
+
+        .controls button {
+            padding: 0.3rem 0.6rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .greeting {
+            font-size: 1.5rem;
+        }
+
+        .big-number {
+            font-size: 2.5rem;
+        }
     }
 </style>
