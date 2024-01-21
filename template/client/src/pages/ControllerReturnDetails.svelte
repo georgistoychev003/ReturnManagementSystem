@@ -296,20 +296,20 @@
         <div class="status-section">
             <p>STATUS: {returnRequests.status}</p>
             <div class="image-placeholder"></div>
-            <p>DESCRIPTION: {returnedDate}</p>
+            <p>DESCRIPTION: {returnDescription}</p>
             <div class="actions">
-                <button
-                        class="action-btn"
-                        class:selected={selectedAction === 'refund'}
-                        on:click={() => selectAction('refund')}>
-                    REFUND CUSTOMER, SEND TO STOCK
-                </button>
-                <button
-                        class="action-btn"
-                        class:selected={selectedAction === 'damage'}
-                        on:click={() => selectAction('damage')}>
-                    PRODUCT DAMAGED, NOTIFY CUSTOMER
-                </button>
+<!--                <button-->
+<!--                        class="action-btn"-->
+<!--                        class:selected={selectedAction === 'refund'}-->
+<!--                        on:click={() => selectAction('refund')}>-->
+<!--                    REFUND CUSTOMER, SEND TO STOCK-->
+<!--                </button>-->
+<!--                <button-->
+<!--                        class="action-btn"-->
+<!--                        class:selected={selectedAction === 'damage'}-->
+<!--                        on:click={() => selectAction('damage')}>-->
+<!--                    PRODUCT DAMAGED, NOTIFY CUSTOMER-->
+<!--                </button>-->
             </div>
             <button class="confirm-btn" on:click={handleConfirm}>CONFIRM</button>
         </div>
