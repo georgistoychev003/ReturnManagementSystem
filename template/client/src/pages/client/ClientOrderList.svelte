@@ -2,15 +2,23 @@
     import { onMount } from 'svelte';
     import About from "../About.svelte";
     import { writable } from 'svelte/store';
+    import { userIdStore } from '../../Store.js';
+
 
     let orders = [];
     let isLoading = true;
     let errorMessage = '';
-    export const orderId = writable(null);
+    let currentUserId;
+
+    userIdStore.subscribe(value => {
+        currentUserId = value;
+        console.log(userIdStore)
+    });
+
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch('http://localhost:3000/orders');
+            const response = await fetch(`http://localhost:3000/orders/MyOrders/${currentUserId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
@@ -31,10 +39,6 @@
         }
     });
 
-    const requestReturn = (order) => {
-        console.log(`Return requested for order: ${order.product}`);
-        // Implement return logic here
-    };
 </script>
 
 {#if isLoading}
@@ -69,10 +73,10 @@
                         {/if}
                     </td>
                     <td>
-                        {#if order.returnStatus === null}
+                        {#if order.statusRMA === null}
                             -
                         {:else}
-                            {order.returnStatus}
+                            {order.statusRMA}
                         {/if}
                     </td>
                     <td>

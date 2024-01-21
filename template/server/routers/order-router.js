@@ -9,7 +9,7 @@ router.get('/', orderController.getListOfOrders);
 
 router.get('/:orderId', orderController.getOrderById);
 
-router.get('/MyOrders/:userId', orderController.getOrderForUserId)
+router.get('/MyOrders/:userId', orderController.getOrderDetailsPage)
 
 router.patch('/:orderId', orderController.patchOrder);
 

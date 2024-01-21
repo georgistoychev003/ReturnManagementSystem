@@ -102,28 +102,33 @@ export const orderDetailsData = [
         "orderId": 1,
         "productId": 1,
         "quantity": 2,
-        "unitPrice": 5
+        "unitPrice": 5,
+        "priceAtTimeOfSale": 99.99
     },
     {
         "orderedProductId": 2,
         "orderId": 1,
         "productId": 3,
         "quantity": 1,
-        "unitPrice": 8
+        "unitPrice": 8,
+        "priceAtTimeOfSale": 99.99
     },
     {
         "orderedProductId": 3,
         "orderId": 1,
         "productId": 2,
         "quantity": 3,
-        "unitPrice": 2
+        "unitPrice": 2,
+        "priceAtTimeOfSale": 99.99
+
     },
     {
         "orderedProductId": 4,
         "orderId": 1,
         "productId": 4,
         "quantity": 1,
-        "unitPrice": 4
+        "unitPrice": 4,
+        "priceAtTimeOfSale": 99.99
     }
 ];
 
@@ -131,47 +136,56 @@ export const rmaData = [
     {
         "RMAId": 1,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 2,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 3,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 4,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 5,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 6,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 7,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 8,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     },
     {
         "RMAId": 9,
         "barcode": "barcode",
-        "statusRma": "Returned"
+        "statusRma": "Returned",
+        "credit": 100
     }
 
 ];

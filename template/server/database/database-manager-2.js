@@ -64,7 +64,7 @@ function insertOrderDetails(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrderDetails);
         for(const order of initData.orderDetailsData){
-            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice);
+            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice, order.priceAtTimeOfSale);
         }
     }
 }
@@ -93,7 +93,7 @@ export function insertRMA(){
     if(countResult['count(RMAId)'] === 0) {
         const insert = db.prepare(queries.createRma);
         for (const rma of initData.rmaData) {
-            insert.run(rma.barcode, rma.statusRma);
+            insert.run(rma.barcode, rma.statusRma, rma.credit);
         }
     }
 }
@@ -164,7 +164,7 @@ export function getOrderByOrderId(orderId) {
     return db.prepare(queries.selectOrderById).get(orderId);
 }
 export function getOrderByUserId(orderId) {
-    return db.prepare(queries.selectOrderByUserId).get(orderId);
+    return db.prepare(queries.selectOrderByUserId).all(orderId);
 }
 
 export function deleteOrderById(orderId) {
@@ -353,3 +353,7 @@ export function updateReturnedProductQuantity(productName, deductionQuantity, RM
         throw new Error('Returned product not found');
     }
 }
+export function getOrderDetails2(userId){
+    return db.prepare(queries.getUserOrdersWithReturn).all(userId);
+}
+

@@ -30,6 +30,7 @@ export const createOrderedProductTable = `CREATE TABLE IF NOT EXISTS orderedProd
     productId INT NOT NULL,
     quantity INT NOT NULL,
     unitPrice INT NOT NULL,
+    priceAtTimeOfOrder DOUBLE NOT NULL,
     FOREIGN KEY (orderId) REFERENCES "order"(orderId), 
     FOREIGN KEY (productId) REFERENCES product(productId)
 --     unitPrice DOUBLE NOT NULL
@@ -40,6 +41,7 @@ export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
     RMAId INTEGER NOT NULL PRIMARY KEY,
     barcode TEXT NOT NULL,
     statusRma TEXT NOT NULL,
+    credit DOUBLE NOT NULL,
     controllerId INT,
     lockTimestamp DATETIME,
     FOREIGN KEY (controllerId) REFERENCES "user"(userID)                                 
@@ -69,11 +71,11 @@ export const countReturns = `SELECT count(RMAId) FROM returntable`
 export const countReturnedProducts = `SELECT count(returnedProductId) FROM returnedProduct`
 
 export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
-export const createRma = `INSERT INTO returntable (barcode, statusRma) VALUES (?, ?)`;
+export const createRma = `INSERT INTO returntable (barcode, statusRma, credit) VALUES (?, ?, ?)`;
 export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, quantityToReturn,  returnedDate, description, weight, statusProduct, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
-export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice) VALUES (?, ?, ?, ?, ?)`
+export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice, priceAtTimeOfOrder) VALUES (?, ?, ?, ?, ?, ?)`
 
 export const deleteUserByEmail = `DELETE FROM user WHERE email = ?`;
 export const deleteUserById = `DELETE FROM user WHERE userID = ?`;
@@ -115,7 +117,7 @@ export const selectReturnedProductQuantityByRMAId = `
 `;
 //TODO check once the design in corrected
 
-export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderedProduct.productId, orderedProduct.quantity, product.name, product.price, product.type FROM "order" 
+export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderedProduct.productId, orderedProduct.quantity, orderedProduct.priceAtTimeOfOrder, product.name, product.price, product.type FROM "order" 
            INNER JOIN orderedProduct ON "order".orderId = orderedProduct.orderId 
            INNER JOIN product ON orderedProduct.productId = product.productId
                      WHERE "order".orderId = ?;`;
@@ -213,6 +215,22 @@ export const getRMACountByMonth = `
     ORDER BY
         monthYear;
 `;
+
+export const getUserOrdersWithReturn = `
+    SELECT
+        o.orderId,
+        o.totalPrice,
+        o.orderDate,
+        rt.statusRMA,
+        rt.credit
+    FROM
+        "order" o
+            INNER JOIN orderedProduct op ON o.orderId = op.orderId
+            INNER JOIN returnedProduct rp ON op.orderedProductId = rp.orderedProductId
+            INNER JOIN returntable rt ON rp.RMAId = rt.RMAId
+    WHERE
+        o.userId = ?
+`
 
 export const assignRmaToControllerQuery = `UPDATE returntable SET controllerId = ?, lockTimestamp = ? WHERE RMAId = ?`;
 

@@ -2,7 +2,7 @@ import {
     deleteOrderById,
     deleteOrderDetailById, getAllOrderDetails,
     getAllOrders,
-    getOrderByOrderId, getOrderByUserId, getOrderDetailById, getOrderedProductsByOrderId,
+    getOrderByOrderId, getOrderByUserId, getOrderDetailById, getOrderDetails2, getOrderedProductsByOrderId,
     updateOrderByOrderId, updateOrderDetailById
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
@@ -117,4 +117,12 @@ export async function getProductDetailsByOrderId(req, res){
 
         res.status(StatusCodes.OK).json(productDetails);
 
+}
+
+export async function getOrderDetailsPage(req, res){
+    const {userId} = req.params;
+
+    const orderDetails = await  getOrderDetails2(userId);
+
+    res.status(StatusCodes.OK).json(orderDetails);
 }
