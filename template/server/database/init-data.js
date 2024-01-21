@@ -49,7 +49,7 @@ export const productsData = [
     {
         "productId": 2,
         "type": "Clothing",
-        "price": 39.99,
+        "price": 40,
         "name": "T-shirt",
         "imageURL": "https://example.com/image2.jpg",
         "productWeight": 0.3,
@@ -72,6 +72,24 @@ export const productsData = [
         "imageURL": "https://example.com/image4.jpg",
         "productWeight": 0.8,
         "inventoryStock": 30
+    },
+    {
+        "productId": 5,
+        "type": "Electronics",
+        "price": 35,
+        "name": "Keyboard",
+        "imageURL": "https://example.com/image4.jpg",
+        "productWeight": 1,
+        "inventoryStock": 20
+    },
+    {
+        "productId": 6,
+        "type": "Game",
+        "price": 80,
+        "name": "Call of Duty",
+        "imageURL": "https://example.com/image4.jpg",
+        "productWeight": 1,
+        "inventoryStock": 10
     }
 ];
 
@@ -80,19 +98,19 @@ export const ordersData = [
         "orderId": 1,
         "userId": 1,
         "orderDate": "2023-12-01",
-        "totalPrice": 99.99
+        "totalPrice": 209.99
     },
     {
         "orderId": 2,
         "userId": 1,
         "orderDate": "2023-12-03",
-        "totalPrice": 149.50
+        "totalPrice": 80
     },
     {
         "orderId": 3,
         "userId": 1,
         "orderDate": "2023-12-05",
-        "totalPrice": 249.75
+        "totalPrice": 944.98
     }
 ];
 
@@ -100,35 +118,67 @@ export const orderDetailsData = [
     {
         "orderedProductId": 1,
         "orderId": 1,
-        "productId": 1,
+        "productId": 2,
         "quantity": 2,
         "unitPrice": 5,
-        "priceAtTimeOfSale": 99.99
+        "priceAtTimeOfSale": 40
     },
     {
         "orderedProductId": 2,
         "orderId": 1,
-        "productId": 3,
+        "productId": 4,
         "quantity": 1,
         "unitPrice": 8,
-        "priceAtTimeOfSale": 99.99
+        "priceAtTimeOfSale": 24.99
     },
     {
         "orderedProductId": 3,
         "orderId": 1,
-        "productId": 2,
+        "productId": 5,
         "quantity": 3,
         "unitPrice": 2,
-        "priceAtTimeOfSale": 99.99
-
+        "priceAtTimeOfSale": 35
     },
+
     {
         "orderedProductId": 4,
-        "orderId": 1,
-        "productId": 4,
+        "orderId": 2,
+        "productId": 6,
         "quantity": 1,
-        "unitPrice": 4,
-        "priceAtTimeOfSale": 99.99
+        "unitPrice": 5,
+        "priceAtTimeOfSale": 80
+    },
+    {
+        "orderedProductId": 5,
+        "orderId": 3,
+        "productId": 1,
+        "quantity": 2,
+        "unitPrice": 8,
+        "priceAtTimeOfSale": 599.99
+    },
+    {
+        "orderedProductId": 6,
+        "orderId": 3,
+        "productId": 6,
+        "quantity": 2,
+        "unitPrice": 2,
+        "priceAtTimeOfSale": 80,
+    },
+    {
+        "orderedProductId": 7,
+        "orderId": 3,
+        "productId": 2,
+        "quantity": 2,
+        "unitPrice": 2,
+        "priceAtTimeOfSale": 80,
+    },
+    {
+        "orderedProductId": 7,
+        "orderId": 3,
+        "productId": 4,
+        "quantity": 2,
+        "unitPrice": 2,
+        "priceAtTimeOfSale": 24.99,
     }
 ];
 
@@ -137,55 +187,7 @@ export const rmaData = [
         "RMAId": 1,
         "barcode": "barcode",
         "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 2,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 3,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 4,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 5,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 6,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 7,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 8,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
-    },
-    {
-        "RMAId": 9,
-        "barcode": "barcode",
-        "statusRma": "Returned",
-        "credit": 100
+        "credit": 80
     }
 
 ];
@@ -199,97 +201,7 @@ export const returnedProduct = [
         description: "Defective item",
         weight: 1.2,
         statusProduct: "Returned",
-        quantity: "2"
-    },
-    {
-        returnedProductId: 3,
-        orderedProductId: 2,
-        RMAId: 1,
-        returnedDate: "2023-01-01",
-        description: "Defective item",
-        weight: 1.2,
-        statusProduct: "Returned",
-        quantity: "2"
-    },
-    {
-        returnedProductId: 2,
-        orderedProductId: 2,
-        RMAId: 2,
-        returnedDate: "2023-01-02",
-        description: "Defective item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
-    },
-    {
-        returnedProductId: 4,
-        orderedProductId: 1,
-        RMAId: 3,
-        returnedDate: "2023-03-02",
-        description: "good state item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
-    },
-    {
-        returnedProductId: 5,
-        orderedProductId: 1,
-        RMAId: 4,
-        returnedDate: "2023-04-02",
-        description: "good state item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
-    },
-    {
-        returnedProductId: 6,
-        orderedProductId: 1,
-        RMAId: 5,
-        returnedDate: "2023-06-02",
-        description: "good state item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
-    },
-    {
-        returnedProductId: 7,
-        orderedProductId: 2,
-        RMAId: 6,
-        returnedDate: "2023-06-02",
-        description: "good state item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
-    },
-    {
-        returnedProductId: 8,
-        orderedProductId: 2,
-        RMAId: 7,
-        returnedDate: "2023-08-02",
-        description: "good state item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
-    },
-    {
-        returnedProductId: 9,
-        orderedProductId: 2,
-        RMAId: 8,
-        returnedDate: "2023-08-02",
-        description: "good state item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
-    },
-    {
-        returnedProductId: 10,
-        orderedProductId: 2,
-        RMAId: 9,
-        returnedDate: "2023-08-02",
-        description: "good state item",
-        weight: 1.4,
-        statusProduct: "Returned",
-        quantity: "3"
+        quantityToReturn: "2"
     }
 ];
 

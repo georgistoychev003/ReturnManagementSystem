@@ -9,6 +9,17 @@
     let errorMessage = '';
     let orderId = 1;
     let isClicked = false;
+    let OrderId;
+
+    function getOrderIdFromUrl() {
+        const path = window.location.pathname;
+        const parts = path.split('/');
+        return parts[parts.length - 1];
+    }
+
+    $: {
+        OrderId = getOrderIdFromUrl();
+    }
 
     function handleSelection(orderProducts) {
         const selectedItems = orderProducts.filter(product => product.selected);
@@ -17,7 +28,7 @@
 
     onMount(async () => {
         try {
-            const response = await fetch(`http://localhost:3000/orders/details/1`);
+            const response = await fetch(`http://localhost:3000/orders/details/${OrderId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
@@ -40,6 +51,11 @@
         // Implement return logic here
     };
 
+    function toggleButtonColor(button) {
+        button.isClicked = !button.isClicked;
+    }
+
+
 
 </script>
 
@@ -58,10 +74,6 @@
                 <th>QUANTITY</th>
                 <th>PRODUCT NAME</th>
                 <th>PRICE</th>
-                <th>RETURN STATUS</th>
-                <th>RETURN DATE</th>
-                <th>RETURN REASON</th>
-                <th>CREDIT</th>
                 <th>QUANTITY TO RETURN</th>
                 <th>RETURN (CHECK IF YES)</th>
                 <th></th>
@@ -73,16 +85,6 @@
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
                     <td>{orderProducts.price}</td>
-                    <td>{orderProducts.returnDate}</td>
-                    <td>{orderProducts.returnStatus}</td>
-                    <td>{orderProducts.returnReason}</td>
-                    <td>
-                        {#if orderProducts.credit === null}
-                            -
-                        {:else}
-                            {orderProducts.credit}
-                        {/if}
-                    </td>
                     {#if orderProducts.type !== "Food"}
                         {#if orderProducts.quantity !== 1}
                             <td>
@@ -91,14 +93,14 @@
                         {:else}
                             <td></td>
                         {/if}
-
-
-
                     {/if}
                     {#if orderProducts.type === "Food"}
                         <p>** Food Items Cannot Be Returned</p>
                     {/if}
+                    <input type="checkbox"
+                          >
                 </tr>
+
             {/each}
             </tbody>
         </table>
@@ -158,7 +160,7 @@
     tbody tr:hover {
         background-color: #f2f2f2;
     }
-    .button {
+    button {
         padding: 10px 20px;
         border: none;
         border-radius: 5px;

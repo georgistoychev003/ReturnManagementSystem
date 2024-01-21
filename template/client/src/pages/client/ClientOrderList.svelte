@@ -62,7 +62,6 @@
             <thead>
             <tr>
                 <th>ORDER ID</th>
-                <th>TOTAL PRODUCTS ORDERED</th>
                 <th>PRICE</th>
                 <th>ORDER DATE</th>
                 <th>CREDIT</th>
@@ -76,7 +75,6 @@
                 {#each orders as order}
                     <tr>
                         <td>{order.orderId}</td>
-                        <td>{order.productCount}</td>
                         <td>{order.totalPrice}</td>
                         <td>{order.orderDate}</td>
                         <td>
@@ -186,16 +184,4 @@
         transform: translateY(-2px);
     }
 
-    .help-popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
 </style>
