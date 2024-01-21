@@ -1,5 +1,6 @@
 <script>
     import {onMount} from "svelte";
+    import BarcodeReader  from 'barcode-reader';
     import page from 'page';
 
 
@@ -20,6 +21,14 @@
                 videoElement.setAttribute('autoplay', '');
                 document.body.appendChild(videoElement);
                 videoElementCreated = true; // Set the flag to true after creating the video element
+
+                const barcodeReader = new BarcodeReader(videoElement);
+                barcode = await barcodeReader.scan();
+
+                // Fetch RMA details only if barcode is found
+                if (barcode) {
+                    await fetchUserDetails();
+                }
             }
         } catch (err) {
             console.error('Error accessing the camera: ', err);
@@ -42,16 +51,21 @@
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                const response = await fetch(`http://localhost:3000/rma/${barcode}`, {
+                // Update the API endpoint based on the   barcode-router.js
+                const response = await fetch(`http://localhost:3000/barcode/scanBarcode`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
-                    }
+                    },
+                    body: JSON.stringify({ barcode }),
                 });
 
                 if (response.ok) {
                     const data = await response.json();
                     name = data.barcode;
                     barcode = data.barcode;
+
+                    // Redirect to the page showing the items for the RMA barcode
+                    page(`/RMAProducts/${barcode}`);
                 } else {
                     console.error('Failed to fetch user details');
                 }
