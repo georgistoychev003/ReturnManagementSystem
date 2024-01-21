@@ -73,9 +73,9 @@
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
                     <td>{orderProducts.price}</td>
-                    <td>{orderProducts.returnDate}</td>
-                    <td>{orderProducts.returnStatus}</td>
-                    <td>{orderProducts.returnReason}</td>
+                    <td>{orderProducts.returnedDate}</td>
+                    <td>{orderProducts.statusProduct}</td>
+                    <td>{orderProducts.description}</td>
                     <td>
                         {#if orderProducts.credit === null}
                             -
@@ -91,8 +91,6 @@
                         {:else}
                             <td></td>
                         {/if}
-
-
 
                     {/if}
                     {#if orderProducts.type === "Food"}
