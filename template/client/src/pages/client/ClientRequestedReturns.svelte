@@ -15,7 +15,7 @@
     const fetchReturnRequests = async () => {
         try {
             console.log(userEmail)
-            const response = await fetch(`http://localhost:3000/rma/email/${userEmail}`);
+            const response = await fetch(`http://localhost:3000/rma/email/customer@email.com`);
             if (!response.ok) {
                 throw new Error('Failed to fetch return requests');
             }
