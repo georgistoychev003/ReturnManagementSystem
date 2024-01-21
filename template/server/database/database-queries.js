@@ -33,8 +33,6 @@ export const createOrderedProductTable = `CREATE TABLE IF NOT EXISTS orderedProd
     priceAtTimeOfOrder DOUBLE NOT NULL,
     FOREIGN KEY (orderId) REFERENCES "order"(orderId), 
     FOREIGN KEY (productId) REFERENCES product(productId)
---     unitPrice DOUBLE NOT NULL
---     ^^ Is this value the combined value for the quantity?
 )`
 
 export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
@@ -51,12 +49,11 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     returnedProductId INTEGER PRIMARY KEY AUTOINCREMENT,
     orderedProductId INT NOT NULL,
     RMAId INT,
-    quantityToReturn INT,
     returnedDate DATE,
     description TEXT,
     weight DOUBLE,
     statusProduct TEXT,
-    quantity INT,
+    quantityToReturn INT,
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -72,7 +69,7 @@ export const countReturnedProducts = `SELECT count(returnedProductId) FROM retur
 
 export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma, credit) VALUES (?, ?, ?)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, quantityToReturn,  returnedDate, description, weight, statusProduct, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )`
+export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?, ? )`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice, priceAtTimeOfOrder) VALUES (?, ?, ?, ?, ?, ?)`
@@ -117,8 +114,9 @@ export const selectReturnedProductQuantityByRMAId = `
 `;
 //TODO check once the design in corrected
 
-export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderedProduct.productId, orderedProduct.quantity, orderedProduct.priceAtTimeOfOrder, product.name, product.price, product.type FROM "order" 
+export const selectOrderedProducts = `SELECT * FROM "order" 
            INNER JOIN orderedProduct ON "order".orderId = orderedProduct.orderId 
+           INNER JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId 
            INNER JOIN product ON orderedProduct.productId = product.productId
                      WHERE "order".orderId = ?;`;
 

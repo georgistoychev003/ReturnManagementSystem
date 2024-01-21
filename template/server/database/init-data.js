@@ -201,7 +201,7 @@ export const returnedProduct = [
         description: "Defective item",
         weight: 1.2,
         statusProduct: "Returned",
-        quantity: "2"
+        quantityToReturn: "2"
     }
 ];
 

@@ -55,6 +55,8 @@
         button.isClicked = !button.isClicked;
     }
 
+
+
 </script>
 
 {#if isLoading}
@@ -95,7 +97,8 @@
                     {#if orderProducts.type === "Food"}
                         <p>** Food Items Cannot Be Returned</p>
                     {/if}
-                    <td><button onclick={() => toggleButtonColor(this.button)}>Select Products</button></td>
+                    <input type="checkbox"
+                          >
                 </tr>
 
             {/each}

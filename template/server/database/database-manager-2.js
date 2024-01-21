@@ -78,12 +78,11 @@ export function insertReturned(){
                 returnedProductData.returnedProductId,
                 returnedProductData.orderedProductId,
                 returnedProductData.RMAId,
-                returnedProductData.quantityToReturn,
                 returnedProductData.returnedDate,
                 returnedProductData.description,
                 returnedProductData.weight,
                 returnedProductData.statusProduct,
-                returnedProductData.quantity);
+                returnedProductData.quantityToReturn);
         }
     }
 }
