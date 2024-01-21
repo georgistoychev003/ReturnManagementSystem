@@ -5,15 +5,19 @@
 
     let numberOfRMA = 0;
     let numberOfUsers = 0;
-    let selectedInterval = 'year'; // Default interval
+    let selectedInterval = 'month'; // Default interval
     let chart;
     let pieChart;
     let chartTitle = `Number of requests per: ${selectedInterval}`;
+
     const monthNames = [
         'January', 'February', 'March', 'April',
         'May', 'June', 'July', 'August',
         'September', 'October', 'November', 'December'
     ];
+    const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday',
+        'Friday', 'Saturday', 'Sunday'];
+    const years = ['2023', '2024', '2025', '2026', '2027' ];
 
 
 
@@ -71,45 +75,54 @@
     onMount(fetchMonthlyRMA);
 
     function processRMAData(rmaData) {
-        // Extract all unique months from the RMA data
-        const uniqueMonths = [...new Set(rmaData.map(rma => new Date(rma.returnedDate).getMonth() + 1))];
+        const currentYear = new Date().getFullYear();
+        const yearsToShow = 3;
 
-        // Create an array containing all months or weeks depending on the selected interval
-        const allIntervals = selectedInterval === 'week' ? Array.from({ length: 52 }, (_, i) => i + 1) :
-            selectedInterval === 'month' ? uniqueMonths :
-                Array.from({ length: 12 }, (_, i) => i + 1);
+        // Extract all unique years and months from the RMA data
+        const uniqueYears = [...new Set(rmaData.map(rma => new Date(rma.monthYear).getFullYear()))];
+        const uniqueMonths = [...new Set(rmaData.map(rma => new Date(rma.monthYear).getMonth() + 1))];
+
+        console.log('these are :' + uniqueMonths);
+        console.log('these are unique years : ' + uniqueYears);
+
+        // Create an array containing all years to be displayed
+        const allYears = Array.from(
+            { length: yearsToShow * 2 + 1 },
+            (_, i) => currentYear - yearsToShow + i
+        );
 
         let processedData = rmaData.reduce((acc, rma) => {
-            // Extract the week, month, or year from the date based on selected interval
-            const intervalValue = selectedInterval === 'week' ? new Date(rma.returnedDate).getWeekNumber() :
-                selectedInterval === 'month' ? new Date(rma.returnedDate).getMonth() + 1 :
-                    new Date(rma.returnedDate).getFullYear();
+            const year = new Date(rma.monthYear).getFullYear();
+            const month = new Date(rma.monthYear).getMonth() + 1;
 
-            acc[intervalValue] = (acc[intervalValue] || 0) + 1;
+            console.log('this is shown month' + month);
+            // Include the year or month in the processed data based on the selected interval
+            const intervalValue = selectedInterval === 'month' ? month : year;
+            acc[intervalValue] = (acc[intervalValue] || 0) + rma.RMACount;
+
             return acc;
         }, {});
 
         // Convert the object into an array suitable for the chart
-        let chartData = allIntervals.map(interval => {
-            const count = processedData[interval] || 0;
-            const label = selectedInterval === 'week' ? `Week ${interval}` :
-                selectedInterval === 'month' ? `Month ${interval}` :
-                    selectedInterval === 'year' ? monthNames[interval - 1] :
-                        `Year ${interval}`;
-
-            return { label, count };
-        });
+        let chartData = selectedInterval === 'month' ?
+            uniqueMonths.map(month => {
+                const count = processedData[month] || 0;
+                return { label: monthNames[month - 1], count };
+            }) :
+            allYears.map(year => {
+                const count = processedData[year] || 0;
+                return { label: year.toString(), count };
+            });
 
         updateChart(chartData);
     }
-
-
 
 
     function updateChart(chartData) {
         // Assuming chartData is an array of objects with monthYear and RMACount properties
         chart.data.labels = chartData.map(item => item.monthYear);
         chart.data.datasets[0].data = chartData.map(item => item.RMACount);
+        console.log('this is some data : ' + chartData.map(item => item.RMACount));
 
         const maxDataValue = Math.max(...chartData.map(item => item.RMACount) );
         console.log(maxDataValue)
@@ -137,7 +150,7 @@
 
 
         // Update x-axis configuration for 'year' interval
-        if (selectedInterval === 'year') {
+        if (selectedInterval === 'month') {
             chart.options.scales.x.type = 'category';
             chart.options.scales.x.labels = monthNames;
 
@@ -148,7 +161,28 @@
             };
 
 
-        } else {
+        } else if (selectedInterval === 'week') {
+            chart.options.scales.x.type = 'category';
+            chart.options.scales.x.labels = weekDays;
+
+            chart.options.scales.x.ticks = {
+                color: 'white',
+                min: weekDays[0],
+                max: weekDays[6]
+            };
+        }else if (selectedInterval === 'year') {
+            chart.options.scales.x.type = 'category';
+            chart.options.scales.x.labels = years;
+
+            chart.options.scales.x.ticks = {
+                color: 'white',
+                min: weekDays[0],
+                max: weekDays[weekDays.length-1]
+            };
+        }
+
+
+        else {
             chart.options.scales.x.type = 'linear';
         }
 
@@ -197,7 +231,7 @@
                 },
                 scales: {
                     x: {
-                        type: selectedInterval === 'year' ? 'category' : 'linear',
+                        type: selectedInterval === 'month' ? 'category' : 'linear',
                         position: 'bottom',
                         title: {
                             display: true,
@@ -209,7 +243,7 @@
                         ticks: {
                             color: 'white'
                         },
-                        labels: selectedInterval === 'year' ?
+                        labels: selectedInterval === 'month' ?
                             ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] :
                             undefined // Set labels for months if interval is 'year'
                     },
@@ -349,6 +383,8 @@
         justify-content: space-between;
         margin-bottom: 2vw;
         max-height: 50vh;
+
+
     }
 
     .red-box {
@@ -357,7 +393,7 @@
         background-color: red;
         padding: 2vw;
         color: white;
-        margin: 0 2vw; /* Space between red boxes */
+        margin: 0 2vw  ; /* Space between red boxes */
     }
 
     .big-number {
@@ -399,5 +435,10 @@
         display: flex;
         gap: 10px;
         z-index: 1; /* Ensure buttons are above the chart */
+
+    }
+    .controls button:hover {
+
+        transform: scale(1.1);
     }
 </style>
