@@ -210,7 +210,7 @@ export async function refundMail(req, res) {
 
         let mailOptions = {
             from: 'mitkopetrovich2021@gmail.com',
-            to: 'frankie.walsh4@outlook.com',    //Change to email    ////////////////////////////
+            to: email,
             subject: 'RMA Refund',
             text: 'Please follow the link to reset your password.',
             html: `
@@ -257,7 +257,7 @@ export async function damagedMail(req, res) {
 
         let mailOptions = {
             from: 'mitkopetrovich2021@gmail.com',
-            to: 'frankie.walsh4@outlook.com',    //Change to email //////////////////
+            to: email,
             subject: 'Damaged Returned product',
             text: 'Please follow the link to reset your password.',
             html: `<p>Dear customer,</p>
