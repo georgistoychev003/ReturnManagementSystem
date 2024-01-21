@@ -24,6 +24,7 @@ import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/databa
 export function getAllRMAOfCustomerByEmail(req, res) {
     const { email } = req.params;
     try {
+        console.log(email.json)
         const RMAbyEmail = getRMAByClientEmail(email)
         res.status(StatusCodes.OK).json(RMAbyEmail);
     } catch (error) {

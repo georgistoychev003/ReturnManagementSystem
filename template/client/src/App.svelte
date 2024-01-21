@@ -119,6 +119,7 @@
 
 	router('/myReturns', (ctx) =>{
 		page = MyReturns;
+		params = ctx.params;
 		currentRoute = ctx.pathname;
 	});
 

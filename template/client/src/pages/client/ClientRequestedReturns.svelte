@@ -15,7 +15,7 @@
     const fetchReturnRequests = async () => {
         try {
             console.log(userEmail)
-            const response = await fetch(`http://localhost:3000/rma/:mitkopetrovich2021@gmail.com`);
+            const response = await fetch(`http://localhost:3000/rma/email/${userEmail}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch return requests');
             }
@@ -37,10 +37,10 @@
     });
 
     //TODO PABLO
-    const viewDetails = (requestId) => {
-        console.log(`View details for request ID: ${requestId}`);
-        // Here we should most likely  redirect the user to a details page or open a modal with more information
-        page("/requestReturnDetail")
+    const viewDetails = (RMAId) => {
+        console.log(`View details for request ID: ${RMAId}`);
+        //Here we should most likely  redirect the user to a details page or open a modal with more information
+        page(`/requestReturnDetail/:${RMAId}`)
     };
 </script>
 
@@ -70,7 +70,7 @@
                     <td>{request.statusProduct}</td>
                     <td class="status">{request.status}</td>
                     <td>
-                        <button on:click={() => viewDetails(request.id)} class="details-btn">Details</button>
+                        <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                     </td>
                 </tr>
             {/each}

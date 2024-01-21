@@ -36,7 +36,8 @@
             localStorage.setItem('token', data.token);
             const payload = JSON.parse(atob(data.token.split('.')[1]));
             userId = payload.id; // Extract the user ID from the token payload
-            console.log(payload)
+            username = payload.email;
+            //userEmail.set(username);
             redirectToRolePage(payload.role);
         } else {
             console.error(data.error);
@@ -49,7 +50,6 @@
             case 'customer':
                 console.log("switched")
                 window.location.href='/client';
-                userEmail.set(username);
                 break;
             case 'admin':
                 window.location.href='/admin';

@@ -116,7 +116,9 @@ export const selectAllRMAbyCustomersEmail = `SELECT * FROM user
                                                 JOIN orderedProduct ON o.orderId = orderedProduct.orderId
                                                 JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId
                                                 JOIN returntable ON returnedProduct.RMAId = returntable.RMAId
-                                                WHERE email = ?`
+                                                WHERE email = ? AND returntable.RMAId >= 0
+                                                GROUP BY returntable.RMAId;
+                                                `;
 export const selectReturnedProductQuantityByRMAId = `
     SELECT rp.quantityToReturn
     FROM returnedProduct rp

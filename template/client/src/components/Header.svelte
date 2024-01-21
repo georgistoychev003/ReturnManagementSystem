@@ -1,4 +1,5 @@
 <script>
+ import {userEmail} from "../Store.js";
  export let active;
  import router from 'page';
  import { onMount } from 'svelte';
@@ -6,6 +7,7 @@
  let token = '';
  let userRole = '';
  let isLoggedIn = false;
+ let email = '';
 
  onMount(() => {
   const token = localStorage.getItem('token');
@@ -15,6 +17,8 @@
    console.log(token)
    console.log(userRole)
    userRole = payload.role;
+   email = payload.email;
+   userEmail.set(email)
   }
  });
 
