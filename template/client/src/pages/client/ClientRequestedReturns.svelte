@@ -7,15 +7,19 @@
     let returnRequests = [];
     let isLoading = true;
     let errorMessage = '';
+    let currentUserEmail;
 
 
-
+    userEmail.subscribe(value => {
+        console.log(value)
+        currentUserEmail = value;
+    });
 
 
     const fetchReturnRequests = async () => {
         try {
             console.log(userEmail)
-            const response = await fetch(`http://localhost:3000/rma/email/customer@email.com`);
+            const response = await fetch(`http://localhost:3000/rma/email/${currentUserEmail}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch return requests');
             }
