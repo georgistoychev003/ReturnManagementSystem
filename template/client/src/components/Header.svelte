@@ -1,5 +1,6 @@
 <script>
  export let active;
+ export let showHeader = true;
  import router from 'page';
  import { onMount } from 'svelte';
  import page from 'page';
@@ -82,32 +83,36 @@
  }
 </style>
 
-<div class="header">
- <img class="logo" src="https://myshop.s3-external-3.amazonaws.com/shop6116500.images.logo-myshop.webp" alt="Logo">
- {#if isLoggedIn} <!-- Only show navigation links if the user is logged in -->
-  <div>
-   <ul class="nav-links">
+{#if showHeader}
+ <div class="header">
+  <img class="logo" src="https://myshop.s3-external-3.amazonaws.com/shop6116500.images.logo-myshop.webp" alt="Logo">
 
-    {#if userRole === 'controller'}
-     <li><a href="javascript:void(0)" on:click={navigateToReturnRequests}>RETURN REQUESTS &nbsp; |</a></li>
-     <li><a href="javascript:void(0)" on:click={navigateToControllerStock}>STOCK &nbsp; |</a></li>
-    {:else if userRole === 'customer'}
-     <!-- Show links for customers -->
-     <li><a href="/client">Home &nbsp; |</a></li>
-     <li><a href="/myOrders">My Orders &nbsp; |</a></li>
-     <li><a href="/myReturns">Return Requests</a></li>
-    {:else if userRole === 'admin'}
-     <!-- Show links for customers -->
-     <li><a href="/admin">HOME &nbsp; |</a></li>
-     <li><a href="/users">USERS &nbsp; |</a></li>
-     <li><a href="/requests">RETURN REQUESTS &nbsp; |</a></li>
+  {#if isLoggedIn}
+   <!-- Only show navigation links if the user is logged in -->
+   <div>
+    <ul class="nav-links">
+     {#if userRole === 'controller'}
+      <li><a href="javascript:void(0)" on:click={navigateToReturnRequests}>RETURN REQUESTS &nbsp; |</a></li>
+      <li><a href="javascript:void(0)" on:click={navigateToControllerStock}>STOCK &nbsp; |</a></li>
+     {:else if userRole === 'customer'}
+      <!-- Show links for customers -->
+      <li><a href="/client">Home &nbsp; |</a></li>
+      <li><a href="/myOrders">My Orders &nbsp; |</a></li>
+      <li><a href="/myReturns">Return Requests</a></li>
+     {:else if userRole === 'admin'}
+      <!-- Show links for admin -->
+      <li><a href="/admin">HOME &nbsp; |</a></li>
+      <li><a href="/users">USERS &nbsp; |</a></li>
+      <li><a href="/requests">RETURN REQUESTS &nbsp; |</a></li>
+     {/if}
+     <li><a href="#" on:click={logout}>LOGOUT</a></li>
+    </ul>
+   </div>
+  {/if}
 
-    {/if}
+  <img class="user-image" src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="User Image">
+ </div>
+{/if}
 
-    <li><a href="#" on:click={logout}>LOGOUT</a></li>
-   </ul>
-  </div>
- {/if}
- <img class="user-image" src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="User Image">
-</div>
+
 

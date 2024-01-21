@@ -1,31 +1,37 @@
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Example</title>
-</head>
-<body>
-<div id="qrcode-container">
-    <!-- The QR code will be displayed here -->
-</div>
-<button onclick="generateQRCode()">Generate QR Code</button>
-<script src="https://cdn.jsdelivr.net/qrcode/1.4.4/qrcode.min.js"></script>
 <script>
-    // Function to fetch QR code from the server and display it
-    async function displayQRCode() {
-        const data = 'yourData'; // Replace with the actual data you want in the QR code
-        const response = await fetch(`http://localhost:3000/barcode/generateBarcode/user/1`);
-        const qrCodeSVG = await response.text();
+import { onMount } from 'svelte';
 
-        // Display the QR code in the specified container
-        const container = document.getElementById('qrcode-container');
-        container.innerHTML = qrCodeSVG;
-    }
+let qrCodeData = 'yourData'; // Replace with the actual data you want in the QR code
+let qrCodeSVG = ''; // Variable to store the generated QR code SVG
 
-    // Function to be called when the button is clicked
-    function generateQRCode() {
-        displayQRCode();
-    }
+async function displayQRCode() {
+    const response = await fetch(`http://localhost:3000/barcode/generateBarcode/user/1`);
+    qrCodeSVG = await response.text();
+}
+
+function generateQRCode() {
+    displayQRCode();
+}
+
+// Call displayQRCode when the component is mounted
+onMount(() => {
+    displayQRCode();
+});
+
+function openQRCodeInNewTab() {
+    const qrCodeWindow = window.open('', '_blank');
+    qrCodeWindow.document.write(qrCodeSVG);
+}
 </script>
-</body>
 
+<div id="qrcode-container">
+    <!-- Display the QR code here -->
+    {@html qrCodeSVG}
+</div>
+
+<button on:click={generateQRCode}>Generate QR Code</button>
+<button on:click={openQRCodeInNewTab}>Open QR Code in New Tab</button>
+
+<style>
+    /* Add your CSS styles here */
+</style>
