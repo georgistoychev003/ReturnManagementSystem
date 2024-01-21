@@ -34,6 +34,7 @@
 
     onMount(async () => {
         await fetchReturnRequests();
+        await displayQRCode();
     });
 
     async function handleConfirm() {
@@ -116,6 +117,18 @@
         if (!response.ok) {
             throw new Error(`Failed to update returned product quantity for ${productName}`);
         }
+    }
+
+    async function displayQRCode() {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:3000/barcode/generateBarcode/${token}/${RMAId}`);
+        if (response.ok) {
+            const qrCodeSVG = await response.text();
+            document.getElementById('qrCodeContainer').innerHTML = qrCodeSVG;
+        } else {
+            console.error('Failed to fetch QR code');
+        }
+
     }
 
 
@@ -276,8 +289,8 @@
             <p>DATE: {returnedDate}</p>
             <p>CUSTOMER NAME: {returnRequests.customer}</p>
 <!--            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>-->
-            <div class="label">
-                <img src="barcode.png" alt="Barcode" />
+            <div class="qr-code-section">
+                <div id="qrCodeContainer"></div>
             </div>
         </div>
         <div class="status-section">
@@ -383,5 +396,18 @@
     .product-row span {
         flex: 1; /* Distribute space equally */
         text-align: center; /* Align text in the center */
+    }
+    .qr-code-section {
+        text-align: right; /* Center align the QR code */
+        padding: 10px;
+    }
+    #qrCodeContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        width: 250px;
+        height: 250px;
+        text-align: right;
     }
 </style>
