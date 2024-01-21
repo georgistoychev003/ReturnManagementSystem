@@ -177,52 +177,131 @@
 </div>
 
 <style>
+    :root {
+        --primary-color: #0056b3;
+        --hover-primary-color: #003d82;
+        --hover-secondary-color: #a503f6;
+        --text-color: #333;
+        --border-color: #ccc;
+        --background-color: #f4f4f4;
+        --success-color: #28a745;
+        --warning-color: #ffc107;
+        --error-color: #dc3545;
+        --info-color: #17a2b8;
+        --light-gray: #eaeaea;
+        --dark-gray: #555;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
     .customer-returns {
-        max-width: 960px;
+        max-width: 90%;
         margin: 2rem auto;
         padding: 1rem;
-        font-size: 1rem;
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow-x: auto; /* Allow horizontal scrolling */
     }
 
     h1 {
-        text-align: left;
-        margin-bottom: 1rem;
-        font-size: 2rem;
-        color: #333;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2.25rem;
+        color: var(--dark-gray);
     }
 
+    /* Table Styles */
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 1rem;
+        table-layout: fixed;
     }
 
     th, td {
         text-align: left;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #ccc;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
     }
 
     th {
-        color: #555;
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    td {
+        font-size: 1rem;
+        word-break: break-word; /* Ensure the text wraps in cells */
     }
 
     .status {
-        color: #007BFF;
+        font-weight: bold;
+        color: var(--info-color);
     }
 
+    /* Button Styles */
     .details-btn {
         padding: 0.5rem 1rem;
-        background-color: #007BFF;
+        background-color: var(--primary-color);
         color: white;
         border: none;
-        border-radius: 4px;
+        border-radius: 0.25rem;
         cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
+        transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     .details-btn:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
+        background-color: var(--hover-secondary-color);
+        transform: scale(0.98);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .customer-returns {
+            margin: 1rem;
+            padding: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        th, td {
+            padding: 0.5rem; /* Smaller padding for smaller screens */
+            font-size: 0.9rem;
+        }
+
+        .details-btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        th, td {
+            padding: 0.4rem; /* Even smaller padding for mobile screens */
+            font-size: 0.8rem;
+        }
+
+        .details-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+        }
     }
 </style>

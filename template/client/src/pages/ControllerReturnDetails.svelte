@@ -317,97 +317,151 @@
 </div>
 
 <style>
+    :root {
+        --primary-color: #0056b3;
+        --secondary-color: #ff9500;
+        --success-color: #4CAF50;
+        --error-color: #FF3B30;
+        --background-color: #f4f4f4;
+        --text-color: #333;
+        --border-color: #ccc;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
     .request-card {
+        max-width: 90%;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-size: 1rem; /* Default font size */
         display: flex;
         flex-direction: column;
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        padding: 20px;
-        border: 1px solid #ccc;
+        overflow: hidden; /* i make sure nothing spills out */
     }
-    .confirm-btn {
-        /* Adjust padding and margins as needed */
-        padding: 0.5rem 1rem;
-        margin-top: 1rem; /* Space between buttons and the rest of the form */
-        width: auto; /* Adjust width as needed */
-    }
+
+    /* Header Styles */
     .request-header {
-        font-size: 20px;
+        font-size: 1.5rem; /* Larger font for headers */
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-bottom: 2rem;
+        text-align: center;
     }
+
+    /* Details Section */
     .details-section {
         display: flex;
+        flex-wrap: wrap; /* Wrap the child elements on smaller screens */
+        gap: 2rem; /* Spacing between sections */
     }
-    .details {
-        flex: 1;
+
+    .details, .status-section {
+        flex: 1 1 50%; /* Take up half of the container, but also can shrink and grow */
+        min-width: 300px; /* Minimum width before wrapping */
     }
-    .status-section {
-        flex: 1;
-        padding-left: 20px;
-        border-left: 1px solid #ccc;
-    }
-    .image-placeholder {
-        width: 100px;
-        height: 100px;
-        background-color: #eee;
-        margin: 10px 0;
-    }
-    .label img {
-        width: 100%;
-    }
-    .actions {
-        display: flex;
-        flex-direction: column;
-    }
-    .action-btn {
-        margin-bottom: 10px;
-        padding: 10px;
-        background-color: #f5f5f5;
-        border: 1px solid #ddd;
+
+    /* Button Styles */
+    .action-btn, .confirm-btn {
+        padding: 1rem 1.5rem;
+        border: none;
+        border-radius: 0.3rem;
+        font-weight: bold;
         cursor: pointer;
         transition: background-color 0.3s, transform 0.3s;
+        margin-bottom: 1rem; /* Space between buttons */
     }
+
+    .action-btn {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
     .action-btn.selected {
-        background-color: #007BFF;
-        color: white;
-        transform: scale(1.05);
+        background-color: var(--primary-color);
+        transform: scale(1.02);
     }
+
     .confirm-btn {
-        padding: 10px;
-        background-color: #4CAF50;
+        background-color: var(--success-color);
         color: white;
-        border: none;
-        cursor: pointer;
     }
+
+    /* Input and Label Styles */
     .product-header, .product-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* Four equal columns */
+        gap: 1rem; /* Space between grid items */
         align-items: center;
+        padding: 1rem 0; /* Padding on top and bottom */
     }
+
     .product-header {
-        background-color: #f0f0f0; /* A light grey header to distinguish it */
+        background-color: #e7e7e7; /* Distinguish headers with a different color */
         font-weight: bold;
     }
+
     .product-row {
-        border-bottom: 1px solid #ccc; /* Separate product rows */
+        border-bottom: 1px solid var(--border-color);
     }
-    .product-row span {
-        flex: 1; /* Distribute space equally */
-        text-align: center; /* Align text in the center */
+
+    .product-row span, .product-row input, .product-row label {
+        text-align: center;
     }
+
+    /* QR Code Styles */
     .qr-code-section {
-        text-align: right; /* Center align the QR code */
-        padding: 10px;
+        text-align: center; /* Center the QR code */
+        padding: 1rem;
+        margin-top: 2rem; /* Add some space above the QR code */
     }
+
     #qrCodeContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-        width: 250px;
-        height: 250px;
-        text-align: right;
+        max-width: 200px; /* Set a maximum width for the QR code */
+        max-height: 200px; /* Set a maximum height for the QR code */
+        margin: 0 auto; /* Center the QR code in the container */
+        overflow: hidden;
+    }
+
+    /* Adjust QR code size on smaller screens */
+    @media (max-width: 768px) {
+        #qrCodeContainer {
+            max-width: 150px; /* Smaller QR code on medium screens */
+            max-height: 150px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #qrCodeContainer {
+            max-width: 100px; /* Even smaller QR code on small screens */
+            max-height: 100px;
+        }
+    }
+
+    /* Media Queries for Responsiveness */
+    @media (max-width: 768px) {
+        .details, .status-section {
+            flex-basis: 100%;
+        }
+
+        .request-header {
+            font-size: 1.25rem; /* Slightly smaller font for headers */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .action-btn, .confirm-btn {
+            padding: 0.75rem; /* Smaller padding for smaller screens */
+        }
     }
 </style>
