@@ -150,5 +150,28 @@ export const updateProductStockById = `UPDATE product SET inventoryStock = ? WHE
 
 export const updateUserPasswordById = `UPDATE user SET password = ? WHERE userID = ?`;
 
-
-
+export const listOfRMAWithStaffInfo = `
+SELECT
+    r.RMAId,
+    r.barcode,
+    r.statusRma,
+    rp.returnedProductId,
+    rp.orderedProductId,
+    rp.quantityToReturn,
+    rp.returnedDate,
+    rp.description,
+    rp.weight,
+    rp.statusProduct,
+    rp.quantity,
+    u.userName AS staffName,
+    u.email AS staffEmail
+FROM
+    returntable r
+JOIN
+    returnedProduct rp ON r.RMAId = rp.RMAId
+JOIN
+    orderedProduct op ON rp.orderedProductId = op.orderedProductId
+JOIN
+    "order" o ON op.orderId = o.orderId
+JOIN
+    user u ON o.userId = u.userId`;

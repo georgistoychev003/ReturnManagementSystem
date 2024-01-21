@@ -25,10 +25,13 @@
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 	import ResetPassword from "./pages/ResetPassword.svelte";
 	import RMAProducts from "./pages/client/RMAProducts.svelte";
+	import TESTQRCODE from "./pages/TESTQRCODE.svelte";
+	import PrintingLabelPage from "./pages/client/PrintingLabelPage.svelte";
 
 	let page;
 	let params;
 	let currentRoute;
+	let showHeader = true;
 
 	router('/', (ctx) => {
 		page = Login;
@@ -140,6 +143,17 @@
 		currentRoute = ctx.pathname;
 	});
 
+	router('/barcode', (ctx) => {
+		page = TESTQRCODE;
+		currentRoute = ctx.pathname;
+	});
+
+	router('/printingLabel', (ctx) => {
+		page = PrintingLabelPage;
+		currentRoute = ctx.pathname;
+		showHeader = false;
+	})
+
 	router.start();
 </script>
 
@@ -148,7 +162,7 @@
 </svelte:head>
 
 <main>
-	<Header active={currentRoute} />
+	<Header active={currentRoute} {showHeader} />
 	<div class="content">
 		<svelte:component this={page} {params} />
 	</div>
