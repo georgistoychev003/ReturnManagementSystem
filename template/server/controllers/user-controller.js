@@ -237,7 +237,7 @@ export async function damagedMail(req, res) {
 
     let productListHtml = '';
     for (const productName of products) {
-        const product = getProductPriceByName(productName);
+        const product = getProductPriceByName(productName.name);
         productListHtml += `<li>${productName} - $${product.price.toFixed(2)}</li>`;
     }
 
