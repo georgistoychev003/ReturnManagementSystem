@@ -4,20 +4,27 @@
 
     let returnRequests = [];
 
-    const viewDetails = (requestId) => {
-        page(`/controller/return-requests-details/${requestId}`);
-    };
+    // const viewDetails = (requestId) => {
+    //     page(`/controller/return-requests-details/${requestId}`);
+    // };
 
     onMount(async () => {
         await fetchReturnRequests();
     });
+
+    function getUserIdFromToken() {
+        const token = localStorage.getItem('token');
+        if (!token) return null;
+
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.id;
+    }
 
     async function fetchTotalPriceOfRMA(RMAId) {
         try {
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/total-price`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 return data.TotalReturnPrice || 0;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -34,7 +41,6 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 return data.statusRma;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -51,7 +57,6 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 return data.email;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -68,7 +73,6 @@
             const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
                 const requests = await response.json();
-                console.log(requests)
                 for (const request of requests) {
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
@@ -77,8 +81,14 @@
                     request.totalReturnPrice = totalPrice;
                     request.statusRMA = status
                 }
-                returnRequests = requests;
-                console.log(returnRequests)
+                const aggregatedRequests = aggregateRequestsByRMA(requests);
+
+                returnRequests = Object.values(aggregatedRequests);
+
+                returnRequests = Object.values(aggregatedRequests)
+                    .filter(request => request.totalReturnPrice > 0);
+
+                console.log(returnRequests);
             } else {
                 console.error('Failed to fetch return requests');
             }
@@ -86,6 +96,52 @@
             console.error('Error:', error);
         }
     }
+    function aggregateRequestsByRMA(requests) {
+        const aggregated = {};
+
+        for (const request of requests) {
+            if (!aggregated[request.RMAId]) {
+                aggregated[request.RMAId] = { ...request, products: [] };
+            }
+            aggregated[request.RMAId].products.push(request.product); // Assuming 'product' field exists
+        }
+
+        return aggregated;
+    }
+
+    const viewDetails = async (requestId) => {
+        const controllerId = getUserIdFromToken();
+
+        if (!controllerId) {
+            console.error("Controller ID not found");
+            return;
+        }
+
+        console.log("Locking RMA ID:", requestId, "with Controller ID:", controllerId);
+
+        try {
+            const lockResponse = await fetch(`http://localhost:3000/rma/assign/${requestId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ controllerId })
+            });
+
+            if (lockResponse.ok) {
+                page(`/controller/return-requests-details/${requestId}`);
+            } else {
+                const errorMessage = await lockResponse.json();
+                console.error('Error response:', errorMessage);
+                alert(`Error: ${errorMessage.message}`);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('An error occurred while locking the RMA.');
+        }
+    };
+
 </script>
 
 <div class="customer-returns">

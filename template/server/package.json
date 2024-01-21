@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.8",
     "nodemailer-smtp-transport": "^2.4.2",
+    "qrcode": "^1.5.3",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

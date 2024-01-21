@@ -2,14 +2,37 @@
     //fetch and select the user
     import UserRoleDropdown from '../components/UserRoleDropdown.svelte';
     import {onMount} from "svelte";
+    import page from "page";
     export let params;
+    let selectedUserRole; // This will store the selected role from the dropdown
 
+
+    const fetchReturns = async (userID) => {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/returns/${userID}`);
+
+            if (response.ok) {
+                const returns = await response.json();
+                selectedUser.requests = returns; // Update selectedUser.requests with the returns data
+                renderUserDetails(); // Call the function to render user details after fetching returns data
+            } else {
+                console.error('Failed to fetch returns');
+            }
+        } catch (error) {
+            console.error('Error fetching returns:', error);
+        }
+    };
     const fetchUserDetails = async (userID) => {
         try {
             const response = await fetch(`http://localhost:3000/users/${userID}`);
 
             if (response.ok) {
                 selectedUser = await response.json();
+
+                // Ensure requests is an array
+                selectedUser.requests = selectedUser.requests || [];
+                await fetchReturns(userID);
+
                 renderUserDetails(); // Call the function to render user details after fetching data
             } else {
                 console.error('Failed to fetch user details');
@@ -19,6 +42,7 @@
         }
     };
 
+
     // Placeholder for the selected user's details, we neeed to replace with actual database data
     let selectedUser = {
         username: 'USERXX',
@@ -27,7 +51,7 @@
         email: 'XXXXXXXXXXXXXXXX',
         address: 'XXXXXXXXXXXXXXXX',
         requests: [
-            { id: 'XX', products: 'XXXXXX', date: 'XXXX', price: 'XXX' },
+            { id: 'XX', products: 'XXXXXX', returnedDate: 'XXXX', price: 'XXX' },
 
         ]
     };
@@ -56,21 +80,51 @@
         selectedUser.requests.forEach(request => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${request.id}</td>
-                <td>${request.products}</td>
-                <td>${request.date}</td>
-                <td>${request.price}</td>
+                <td>${request.returnedProductId}</td>
+                <td>${request.description}</td>
+                <td>${request.returnedDate}</td>
+                <td>${request.statusProduct}</td>
             `;
             tableBody.appendChild(row);
         });
     };
 
-    // Function to assign a new role to the user, to be implemented
-    const assignRole = () => {
-        console.log(`Assign new role to user: ${selectedUser.username}`);
+    // Function to assign a new role to the user
+    const assignRole = async (newRole) => {
+        // Make sure `newRole` is the role you want to assign
+        if (!newRole) return;  // Return if the newRole is not provided
+
+        try {
+            const response = await fetch(`http://localhost:3000/users/${selectedUser.userID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userRole: newRole }) // Send only the userRole field
+            });
+
+            if (response.ok) {
+                // Re-fetch user details to update the UI reactively
+                await fetchUserDetails(selectedUser.userID);
+            } else {
+                const error = await response.json();
+                console.error('Failed to update user role:', error);
+            }
+        } catch (error) {
+            console.error('Error updating user role:', error);
+        }
     };
 
-    // Function to delete the user, to be implemented
+    // This function is called when the "Assign Role" button is clicked
+    const confirmRoleAssignment = async () => {
+        if (!selectedUserRole) {
+            console.error('No role selected');
+            return;
+        }
+
+        await assignRole(selectedUserRole);
+    };
+
     const deleteUser = async (userID) => {
         try {
             const response = await fetch(`http://localhost:3000/users/${userID}`, {
@@ -80,7 +134,7 @@
             if (response.ok) {
                 // User was deleted successfully
                 console.log('User deleted successfully');
-                // Optional: refresh the user list or navigate away
+                page('/users');
             } else {
                 console.error('Failed to delete user');
             }
@@ -110,10 +164,10 @@
         <h2>{selectedUser.username}</h2>
 
         <div class="role-dropdown">
-            <UserRoleDropdown />
+            <UserRoleDropdown on:roleSelected={(event) => selectedUserRole = event.detail} />
         </div>
 
-        <button class="assign-role-button" on:click={assignRole}>Assign Role</button>
+        <button class="assign-role-button" on:click={confirmRoleAssignment}>Assign Role</button>
         <button class="delete-user-button" on:click={() => deleteUser(selectedUser.userID)}>Delete User</button>
     </div>
     <div class="details">
@@ -136,9 +190,9 @@
             <tbody>
             {#each selectedUser.requests as request}
                 <tr>
-                    <td>{request.id}</td>
+                    <td>{request.RMAId}</td>
                     <td>{request.products}</td>
-                    <td>{request.date}</td>
+                    <td>{request.returnedDate}</td>
                     <td>{request.price}</td>
                 </tr>
             {/each}

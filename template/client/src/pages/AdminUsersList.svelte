@@ -1,68 +1,34 @@
 <script>
-    // Sample data for the users, we need to replace this with data fetching from the backend
-    import router from "page";
+    import page from "page";
+    import { writable } from 'svelte/store';
 
+    // im creating a writable store to hold the selected user details so i can afterwards be able to navigate to details page for that user
+    export const selectedUser = writable(null);
+    let users = [];
 
-    let users = [
-        // { username: 'USER001', name: 'John Doe', email: 'john@example.com', role: 'Admin' },
-        // { username: 'USER002', name: 'Michael Jackson', email: 'michael@example.com', role: 'Controller' },
-        // { username: 'USER003', name: 'Jony Joe', email: 'johny@example.com', role: 'Collector' },
-
-    ];
     const navigateTo = (route) => {
         router.push(route);
     };
 
-    // Function to handle user detail view, we need to implement it in accordance to the backend
-     const showUserDetails = (user) => {
-        const route = `/userDetails/${user.userID}`;
-        navigateTo(route);
-    };
+
+    function showUserDetails(user) {
+        selectedUser.set(user); // Update the store with the selected user
+        page(`/userDetails/${user.userID}`); // Navigate to the details page
+    }
 
 
-    const getUsers = async () => {
+    async function getUsers() {
         try {
-            const response = await fetch('http://localhost:3000/users'); // Make a GET request to your backend API
-
+            const response = await fetch('http://localhost:3000/users');
             if (response.ok) {
-                const fetchedUsers = await response.json(); // Assuming the response contains the list of users in JSON format
-
-                fetchedUsers.forEach(user => {
-                    users.push(user); // Append each fetched user to the existing users array
-                });
-
-                renderUsers(); // Call the function to render users after fetching data
+                users = await response.json(); //i fill the users array directly
             } else {
                 console.error('Failed to fetch users');
             }
         } catch (error) {
             console.error('Error fetching users:', error);
         }
-    };
-
-    const renderUsers = () => {
-        const tableBody = document.querySelector('tbody');
-
-        // Clear existing rows
-        tableBody.innerHTML = '';
-
-        // Populate the table with fetched user data
-        users.forEach(user => {
-            console.log(user.email);
-            users.push(user);
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>USER00 ${user.userID}</td>
-                <td>${user.userName}</td>
-                <td>${user.email}</td>
-                <td>${user.userRole}</td>
-                <td>
-                    <button onclick="showUserDetails(${JSON.stringify(user)})">Details</button>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    };
+    }
 
 
     // Function to handle more users loading, we need to implement it in accordance to the backend
@@ -85,7 +51,7 @@
 
 <div class="admin-users">
     <h1>USERS</h1>
-    <a href="/registerUser"><button class="create-user-button" on:click={createUser}>Create User</button> </a>
+    <a href="/registerUser"><button class="create-user-button">Create User</button></a>
     <table>
         <thead>
         <tr>
@@ -97,7 +63,17 @@
         </tr>
         </thead>
         <tbody>
-
+        {#each users as user}
+            <tr>
+                <td>USER00 {user.userID}</td>
+                <td>{user.userName}</td>
+                <td>{user.email}</td>
+                <td>{user.userRole}</td>
+                <td>
+                    <button on:click={() => showUserDetails(user)}>Details</button>
+                </td>
+            </tr>
+        {/each}
         </tbody>
     </table>
     <div class="more-button">

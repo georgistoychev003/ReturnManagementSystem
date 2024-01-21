@@ -12,6 +12,7 @@
 
     let username = '';
     let password = '';
+    let userId = '';
 
     const login = async () => {
         const response = await fetch('http://localhost:3000/token', {
@@ -31,6 +32,7 @@
             console.log(data.token)
             localStorage.setItem('token', data.token);
             const payload = JSON.parse(atob(data.token.split('.')[1]));
+            userId = payload.id; // Extract the user ID from the token payload
             console.log(payload)
             redirectToRolePage(payload.role);
         } else {

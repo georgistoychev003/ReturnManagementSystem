@@ -1,9 +1,8 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
-import {selectAllRMAByUserId} from "../database/database-queries.js";
 
-import {selectStatusById} from "../database/database-queries.js";
+import {assignRmaToControllerQuery, getRmaDetailsQuery, selectStatusById} from "../database/database-queries.js";
 
 
 let db;
@@ -135,9 +134,9 @@ export function updateUserByEmail(email, userData) {
     return db.prepare(queries.updateUserByEmail).run(userId, updatedEmail, password, userRole, isAdmin);
 }
 
-export function updateUserById(userId, userData) {
-    const { email, password, userRole, isAdmin } = userData;
-    return db.prepare(queries.updateUserById).run(userId, email, password, userRole, isAdmin);
+export function updateUserRoleById(userId, userData) {
+    const { userRole } = userData;
+    return db.prepare(queries.updateUserRoleById).run(userRole, userId);
 }
 
 export function getAllProducts() {
@@ -217,7 +216,7 @@ export function getAllRma() {
 }
 
 export function getAllRmaById(Id) {
-    return db.prepare(queries.selectAllReturnedProductById).get(Id);
+    return db.prepare(queries.selectAllReturnedProductById).all(Id);
 }
 
 export function getALlReturnedProducts(){
@@ -282,4 +281,75 @@ export function increaseProductStockByName(productName, quantity) {
     const newStock = currentStock + quantity;
     const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
     return update.run(newStock, productName);
+}
+export async function assignRmaToControllerDb(RMAId, controllerId) {
+    const rmaDetails = db.prepare(getRmaDetailsQuery).get(RMAId);
+
+    // Check if the RMA is locked.
+    if (rmaDetails && rmaDetails.controllerId) {
+        // Check if the lock is still valid.
+        if (new Date() - new Date(rmaDetails.lockTimestamp) < 2 * 60 * 60 * 1000) {
+            // Check if it's the current user.
+            if (rmaDetails.controllerId === controllerId) {
+                // Current user has the lock, so grant access.
+                return { alreadyLockedByThisController: true };
+            } else {
+                // Another user has the lock.
+                return { locked: true };
+            }
+        }
+    }
+
+    const timestamp = new Date().toISOString();
+    const updateResult = await db.prepare(assignRmaToControllerQuery).run(controllerId, timestamp, RMAId);
+    return updateResult;
+}
+
+export function returnAllRmaDetails() {
+    return db.prepare(queries.getAllRmaDetails).all();
+}
+
+
+export function returnRMAaandDates() {
+    try {
+        console.log("Before executing the query");
+        const result = db.prepare(queries.getRMAandDATE).all();
+        console.log("After executing the query");
+        console.log(result); // Log the result to the console
+        return result;
+    } catch (error) {
+        console.error("Error executing the query:", error.message); // Log the error message
+        throw error; // Rethrow the error to propagate it
+    }
+}
+
+export function returnRMAPerMonth() {
+    try {
+        return db.prepare(queries.getRMACountByMonth).all();
+    } catch (error) {
+        console.error("Error executing the query:", error.message); // Log the error message
+        throw error;
+    }
+}
+
+
+export function updateReturnedProductQuantity(productName, deductionQuantity, RMAId) {
+    // Query to select the specific returned product based on productName and RMAId
+    const select = db.prepare(`
+        SELECT rp.quantity, rp.returnedProductId
+        FROM returnedProduct rp
+        JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
+        JOIN product p ON op.productId = p.productId
+        JOIN returntable r ON rp.RMAId = r.RMAId
+        WHERE p.name = ? AND r.RMAId = ?;
+    `);
+    const returnedProduct = select.get(productName, RMAId);
+
+    if (returnedProduct) {
+        const newQuantity = Math.max(0, returnedProduct.quantity - deductionQuantity);
+        const update = db.prepare('UPDATE returnedProduct SET quantity = ? WHERE returnedProductId = ?');
+        return update.run(newQuantity, returnedProduct.returnedProductId);
+    } else {
+        throw new Error('Returned product not found');
+    }
 }

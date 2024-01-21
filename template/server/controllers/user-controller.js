@@ -50,19 +50,18 @@ export async  function postUser(req, res) {
     }
 }
 
-
 export async function updateUserInformation(req, res) {
-    const { emailOrUserId } = req.params;
-    const userData = req.body;
-    try {
-        let updateResult;
-        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrUserId)) { // Check if emailOrUserId is an email
-            db.updateUserByEmail(emailOrUserId, userData);
-        } else {
-            db.updateUserById(emailOrUserId, userData);
-        }
-        res.status(StatusCodes.OK).json({ message: "User updated successfully." });
+    const { userId } = req.params;
+    const { userRole } = req.body;
 
+    try {
+        const updateResult = db.updateUserRoleById(userId, { userRole });
+
+        if (updateResult.changes > 0) {
+            res.status(StatusCodes.OK).json({ message: "User updated successfully." });
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ message: "No user found with the provided ID." });
+        }
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to update user." });
     }

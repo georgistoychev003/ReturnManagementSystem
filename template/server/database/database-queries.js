@@ -39,7 +39,10 @@ export const createOrderedProductTable = `CREATE TABLE IF NOT EXISTS orderedProd
 export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
     RMAId INTEGER NOT NULL PRIMARY KEY,
     barcode TEXT NOT NULL,
-    statusRma TEXT NOT NULL
+    statusRma TEXT NOT NULL,
+    controllerId INT,
+    lockTimestamp DATETIME,
+    FOREIGN KEY (controllerId) REFERENCES "user"(userID)                                 
     )`
 
 export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedProduct(
@@ -51,7 +54,7 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     description TEXT,
     weight DOUBLE,
     statusProduct TEXT,
-    quantity INT NOT NULL,
+    quantity INT,
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -81,6 +84,7 @@ export const deleteRmaById = `DELETE FROM returntable WHERE RMAId = ?`;
 export const deleteReturnedProduct = `DELETE FROM returnedProduct WHERE RMAId = ? AND returnedProductId = ? AND orderedProductId = ?`;
 
 export const updateUserByEmail = `UPDATE user SET email = ?, password = ?, userRole = ?, isAdmin = ? WHERE email = ?`;
+export const updateUserRoleById = `UPDATE user SET userRole = ? WHERE userID = ?`;
 export const updateUserById = `UPDATE user SET email = ?, password = ?, userRole = ?, isAdmin = ? WHERE userID = ?`;
 export const updateProductById = `UPDATE product SET type = ?, price = ?, name = ?, imageURL = ?, productWeight = ?, inventoryStock = ? WHERE productId = ?`;
 export const updateOrderByOrderId = `UPDATE "order" SET userId = ?, orderDate = ?, totalPrice = ? WHERE orderId = ?`;
@@ -137,7 +141,7 @@ export const selectCustomerEmailByRMAId = `
 `;
 
 export const selectProductDescriptionsByRMAId = `
-    SELECT p.name
+    SELECT *
     FROM returnedProduct rp
     JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
     JOIN product p ON op.productId = p.productId
@@ -149,6 +153,26 @@ export const updateProductStockById = `UPDATE product SET inventoryStock = ? WHE
 
 
 export const updateUserPasswordById = `UPDATE user SET password = ? WHERE userID = ?`;
+
+
+export const getAllRmaDetails = `SELECT
+r.RMAId,
+    r.barcode,
+    r.statusRma,
+    GROUP_CONCAT(p.name) AS productNames,
+    GROUP_CONCAT(rp.quantityToReturn) AS quantities,
+    SUM(rp.quantityToReturn * product.price) AS totalReturnPrice
+FROM
+returntable r
+JOIN
+returnedProduct rp ON r.RMAId = rp.RMAId
+JOIN
+orderedProduct op ON rp.orderedProductId = op.orderedProductId
+JOIN
+product p ON op.productId = p.productId
+GROUP BY
+r.RMAId, r.barcode, r.statusRma`;
+
 
 export const listOfRMAWithStaffInfo = `
 SELECT
@@ -175,3 +199,21 @@ JOIN
     "order" o ON op.orderId = o.orderId
 JOIN
     user u ON o.userId = u.userId`;
+
+export const getRMAandDATE = `SELECT DISTINCT RMAId, returnedDate FROM returnedProduct`;
+
+export const getRMACountByMonth = `
+    SELECT
+        strftime('%Y-%m', returnedDate) AS monthYear,
+        COUNT(DISTINCT RMAId) AS RMACount
+    FROM
+        returnedProduct
+    GROUP BY
+        monthYear
+    ORDER BY
+        monthYear;
+`;
+
+export const assignRmaToControllerQuery = `UPDATE returntable SET controllerId = ?, lockTimestamp = ? WHERE RMAId = ?`;
+
+export const getRmaDetailsQuery = `SELECT * FROM returntable WHERE RMAId = ?`;

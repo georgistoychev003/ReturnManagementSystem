@@ -1,37 +1,48 @@
-<script>
-import { onMount } from 'svelte';
 
-let qrCodeData = 'yourData'; // Replace with the actual data you want in the QR code
-let qrCodeSVG = ''; // Variable to store the generated QR code SVG
-
-async function displayQRCode() {
-    const response = await fetch(`http://localhost:3000/barcode/generateBarcode/user/1`);
-    qrCodeSVG = await response.text();
-}
-
-function generateQRCode() {
-    displayQRCode();
-}
-
-// Call displayQRCode when the component is mounted
-onMount(() => {
-    displayQRCode();
-});
-
-function openQRCodeInNewTab() {
-    const qrCodeWindow = window.open('', '_blank');
-    qrCodeWindow.document.write(qrCodeSVG);
-}
-</script>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Example</title>
+</head>
+<body>
 <div id="qrcode-container">
-    <!-- Display the QR code here -->
-    {@html qrCodeSVG}
+    <!-- The QR code will be displayed here -->
 </div>
+<div id="barcode-container">
+    <!-- The barcode will be displayed here -->
+</div>
+<button onclick="generateQRCode()">Generate QR Code</button>
+<button onclick="barCode()">Generate Barcode</button>
+<script src="https://cdn.jsdelivr.net/qrcode/1.4.4/qrcode.min.js"></script>
+<script>
+    // Function to fetch QR code from the server and display it
+    async function displayQRCode() {
+        const data = 'yourData'; // Replace with the actual data you want in the QR code
+        const response = await fetch(`http://localhost:3000/barcode/generateBarcode/user/1`);
+        const qrCodeSVG = await response.text();
 
-<button on:click={generateQRCode}>Generate QR Code</button>
-<button on:click={openQRCodeInNewTab}>Open QR Code in New Tab</button>
+        // Display the QR code in the specified container
+        const container = document.getElementById('qrcode-container');
+        container.innerHTML = qrCodeSVG;
+    }
 
-<style>
-    /* Add your CSS styles here */
-</style>
+    async function displayBarcode() {
+        const response = await fetch(`http://localhost:3000/barcode/generateBarcode1/user/1`);
+        const barcodeSVG = await response.text();
+
+        // Display the QR code in the specified container
+        const container = document.getElementById('barcode-container');
+        container.innerHTML = barcodeSVG;
+    }
+
+    // Function to be called when the button is clicked
+    function generateQRCode() {
+        displayQRCode();
+    }
+
+    function barCode() {
+        displayBarcode();
+    }
+</script>
+</body>
+

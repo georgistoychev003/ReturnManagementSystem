@@ -15,6 +15,7 @@ export async function checkUserCredentials(req, res) {
 
     if (user && password===user.password) {
         const payload = {
+            id: user.userID,
             email: user.email,
             role: user.userRole
         };

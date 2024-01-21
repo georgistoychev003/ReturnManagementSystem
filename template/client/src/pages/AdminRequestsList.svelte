@@ -1,10 +1,24 @@
 <script>
-    // Sample data for RMA requests, we need to replace it with a fetching from the backend when database is ready
-    let requests = [
+    import { onMount } from "svelte";
+    import page from 'page';
 
+    let returnRequests = [];
 
-    ];
+    // const viewDetails = (requestId) => {
+    //     page(`/controller/return-requests-details/${requestId}`);
+    // };
 
+    onMount(async () => {
+        await fetchReturnRequests();
+    });
+
+    function getUserIdFromToken() {
+        const token = localStorage.getItem('token');
+        if (!token) return null;
+
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.id;
+    }
 
     async function fetchTotalPriceOfRMA(RMAId) {
         try {
@@ -27,10 +41,10 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
-                return data.statusRMA;
+                return data.statusRma;
             } else {
-
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
             }
         } catch (error) {
             console.error('Error:', error);
@@ -43,7 +57,6 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/customer`);
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
                 return data.email;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -55,110 +68,120 @@
         }
     }
 
-    const fetchRequests = async () => {
+    async function fetchReturnRequests() {
         try {
-            const response = await fetch('http://localhost:3000/rma/returns/products');
-
+            const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
-                const data = await response.json();
-                requests = [...requests, ...data]; // Merge the fetched data with existing requests
-
-                // Fetch additional details for each request
-                for (let i = 0; i < requests.length; i++) {
-                    const request = requests[i];
-                    request.TotalReturnPrice = await fetchTotalPriceOfRMA(request.returnedProductId);
-                    request.email = await fetchCustomerOfRMA(request.returnedProductId);
-                    request.statusRMA = await fetchStatusOfRMA(request.returnedProductId);
+                const requests = await response.json();
+                for (const request of requests) {
+                    const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
+                    const status = await fetchStatusOfRMA(request.RMAId);
+                    const customer = await fetchCustomerOfRMA(request.RMAId);
+                    request.email = customer;
+                    request.totalReturnPrice = totalPrice;
+                    request.statusRMA = status
                 }
-                renderRequests(); // Call the function to render requests after fetching data
+                const aggregatedRequests = aggregateRequestsByRMA(requests);
+
+                returnRequests = Object.values(aggregatedRequests);
+
+                returnRequests = Object.values(aggregatedRequests)
+                    .filter(request => request.totalReturnPrice > 0);
+
+                console.log(returnRequests);
             } else {
-                console.error('Failed to fetch requests');
+                console.error('Failed to fetch return requests');
             }
         } catch (error) {
-            console.error('Error fetching requests:', error);
+            console.error('Error:', error);
+        }
+    }
+    function aggregateRequestsByRMA(requests) {
+        const aggregated = {};
+
+        for (const request of requests) {
+            if (!aggregated[request.RMAId]) {
+                aggregated[request.RMAId] = { ...request, products: [] };
+            }
+            aggregated[request.RMAId].products.push(request.product); // Assuming 'product' field exists
+        }
+
+        return aggregated;
+    }
+
+    const viewDetails = async (requestId) => {
+        const controllerId = getUserIdFromToken();
+
+        if (!controllerId) {
+            console.error("Controller ID not found");
+            return;
+        }
+
+        console.log("Locking RMA ID:", requestId, "with Controller ID:", controllerId);
+
+        try {
+            const lockResponse = await fetch(`http://localhost:3000/rma/assign/${requestId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ controllerId })
+            });
+
+            if (lockResponse.ok) {
+                page(`/controller/return-requests-details/${requestId}`);
+            } else {
+                const errorMessage = await lockResponse.json();
+                console.error('Error response:', errorMessage);
+                alert(`Error: ${errorMessage.message}`);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('An error occurred while locking the RMA.');
         }
     };
 
-    const renderRequests = () => {
-        // Select the tbody element where requests will be rendered
-        const tableBody = document.querySelector('tbody');
-
-        // Clear existing rows
-        tableBody.innerHTML = '';
-
-        // Populate the table with fetched request data
-       requests.forEach(request => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${request.returnedProductId}</td>
-                <td>${request.email}</td>
-                <td>${request.title}</td>
-                <td>${request.returnedDate}</td>
-                <td>${request.TotalReturnPrice}</td>
-                <td>
-                    ${request.returnable ? '<button onclick="requestReturn()">Process Return</button>' : ''}
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    };
-
-
-
-
-    const handleMoreClick = () => {
-        // here we have to implement the logic to load more RMA requests
-        console.log('Load more requests');
-    };
-
-    function requestReturn(request) {
-
-    }
-
-    // Call fetchRequests function when the page loads to fetch requests from the backend
-    window.onload = fetchRequests;
 </script>
 
-<div class="admin-requests">
-    <h1>REQUESTS</h1>
+<div class="customer-returns">
+    <h1>Return Requests</h1>
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>USER</th>
-            <th>TITLE</th>
-            <th>DATE</th>
+            <th>CUSTOMER</th>
+            <th>OVERVIEW</th>
             <th>PRICE</th>
+            <th>DATE</th>
+            <th>STATUS</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        {#each requests as request}
+        {#each returnRequests as request}
             <tr>
-                <td>{request.returnedProductId}</td>
+                <td>{request.RMAId}</td>
                 <td>{request.email}</td>
-                <td>{request.title}</td>
+                <td>{request.description}</td>
+                <td>{request.totalReturnPrice}</td>
                 <td>{request.returnedDate}</td>
-                <td>{request.TotalReturnedPrice}</td>
+                <td class="status">{request.statusRMA}</td>
                 <td>
-                    {#if request.returnable}
-                        <button on:click={() => requestReturn(request)}>Process Return</button>
-                    {/if}
+                    <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                 </td>
             </tr>
         {/each}
         </tbody>
     </table>
-    <div class="more-button">
-        <button on:click={handleMoreClick}>More</button>
-    </div>
 </div>
 
 <style>
-    .admin-requests {
+    .customer-returns {
         max-width: 960px;
         margin: 2rem auto;
         padding: 1rem;
+        font-size: 1rem;
     }
 
     h1 {
@@ -182,19 +205,13 @@
 
     th {
         color: #555;
-        font-size: 1rem;
     }
 
-    tbody tr:hover {
-        background-color: #f2f2f2;
+    .status {
+        color: #007BFF;
     }
 
-    .more-button {
-        text-align: right;
-        margin-top: 1rem;
-    }
-
-    button {
+    .details-btn {
         padding: 0.5rem 1rem;
         background-color: #007BFF;
         color: white;
@@ -204,7 +221,7 @@
         transition: background-color 0.3s, transform 0.3s;
     }
 
-    button:hover {
+    .details-btn:hover {
         background-color: #0056b3;
         transform: translateY(-2px);
     }

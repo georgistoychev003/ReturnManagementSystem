@@ -137,7 +137,43 @@ export const rmaData = [
         "RMAId": 2,
         "barcode": "barcode",
         "statusRma": "Returned"
+    },
+    {
+        "RMAId": 3,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    },
+    {
+        "RMAId": 4,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    },
+    {
+        "RMAId": 5,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    },
+    {
+        "RMAId": 6,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    },
+    {
+        "RMAId": 7,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    },
+    {
+        "RMAId": 8,
+        "barcode": "barcode",
+        "statusRma": "Returned"
+    },
+    {
+        "RMAId": 9,
+        "barcode": "barcode",
+        "statusRma": "Returned"
     }
+
 ];
 
 export const returnedProduct = [
@@ -171,5 +207,75 @@ export const returnedProduct = [
         statusProduct: "Returned",
         quantity: "3"
     },
+    {
+        returnedProductId: 4,
+        orderedProductId: 1,
+        RMAId: 3,
+        returnedDate: "2023-03-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    },
+    {
+        returnedProductId: 5,
+        orderedProductId: 1,
+        RMAId: 4,
+        returnedDate: "2023-04-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    },
+    {
+        returnedProductId: 6,
+        orderedProductId: 1,
+        RMAId: 5,
+        returnedDate: "2023-06-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    },
+    {
+        returnedProductId: 7,
+        orderedProductId: 2,
+        RMAId: 6,
+        returnedDate: "2023-06-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    },
+    {
+        returnedProductId: 8,
+        orderedProductId: 2,
+        RMAId: 7,
+        returnedDate: "2023-08-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    },
+    {
+        returnedProductId: 9,
+        orderedProductId: 2,
+        RMAId: 8,
+        returnedDate: "2023-08-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    },
+    {
+        returnedProductId: 10,
+        orderedProductId: 2,
+        RMAId: 9,
+        returnedDate: "2023-08-02",
+        description: "good state item",
+        weight: 1.4,
+        statusProduct: "Returned",
+        quantity: "3"
+    }
 ];
 

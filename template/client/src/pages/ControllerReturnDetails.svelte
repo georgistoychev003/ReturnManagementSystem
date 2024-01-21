@@ -14,6 +14,10 @@
 
     let email = '';
 
+    let returnedDate = '';
+
+    let returnDescription = '';
+
     const selectAction = (action) => {
         selectedAction = action;
     };
@@ -57,6 +61,7 @@
         if (refundPayload.length > 0) {
             try {
                 await sendActionRequest('refund', refundPayload);
+                updateProductQuantities(refundPayload);
                 alert("Refund processed successfully.");
             } catch (error) {
                 console.error('Error processing refund:', error);
@@ -67,6 +72,7 @@
         if (damagedPayload.length > 0) {
             try {
                 await sendActionRequest('damaged', damagedPayload);
+                updateProductQuantities(damagedPayload);
                 alert("Damaged items processed successfully.");
             } catch (error) {
                 console.error('Error processing damaged items:', error);
@@ -92,6 +98,26 @@
         return await response.json();
     }
 
+    function updateProductQuantities(processedProducts) {
+        processedProducts.forEach(async productInfo => {
+            await updateReturnedProductQuantitiesInDB(productInfo.name, productInfo.quantity);
+        });
+    }
+
+    async function updateReturnedProductQuantitiesInDB(productName, newQuantity) {
+        console.log(productName+newQuantity)
+        const url = `http://localhost:3000/rma/update-returned-product-quantity`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productName, quantity: newQuantity, RMAId })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update returned product quantity for ${productName}`);
+        }
+    }
+
 
     const handleRadioChange = (productName, action) => {
         const currentInfo = selectedProducts.get(productName) || {};
@@ -104,13 +130,22 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}`);
             if (response.ok) {
                 returnRequests = await response.json();
-                const status = await fetchStatusOfRMA(returnRequests.RMAId);
-                const customer = await fetchCustomerOfRMA(returnRequests.RMAId);
+                if (returnRequests.length > 0) {
+                    returnedDate = returnRequests[0].returnedDate;
+                    returnDescription = returnRequests[0].description;
+                }
+                const status = await fetchStatusOfRMA(RMAId);
+                const customer = await fetchCustomerOfRMA(RMAId);
                 const productsResponse = await fetchProductsOfRMA(RMAId);
-                products = productsResponse.map(product => ({
-                    name: product.name,
-                    quantity: returnRequests.quantity // Assuming this is how you get the quantity
-                }));
+                console.log(productsResponse)
+                products = productsResponse.map(product => {
+                    const matchingReturnRequest = returnRequests.find(req => req.orderedProductId === product.orderedProductId);
+                    return {
+                        name: product.name,
+                        quantity: matchingReturnRequest ? matchingReturnRequest.quantity : 0,
+                        orderedProductId: product.orderedProductId // If you need to use this later
+                    };
+                }).filter(product => product.quantity > 0);
                 $: if (products.length > 0 && selectedProducts.size === 0) {
                     products.forEach(product => {
                         selectedProducts.set(product.name, { action: null, quantity: 0, maxQuantity: product.quantity });
@@ -153,8 +188,10 @@
     async function fetchStatusOfRMA(RMAId) {
         try {
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/status`);
+            console.log(response)
             if (response.ok) {
                 const data = await response.json();
+                console.log(data)
                 return data.statusRma;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);
@@ -236,7 +273,7 @@
                 </span>
                 </div>
             {/each}
-            <p>DATE: {returnRequests.returnedDate}</p>
+            <p>DATE: {returnedDate}</p>
             <p>CUSTOMER NAME: {returnRequests.customer}</p>
 <!--            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>-->
             <div class="label">
@@ -246,7 +283,7 @@
         <div class="status-section">
             <p>STATUS: {returnRequests.status}</p>
             <div class="image-placeholder"></div>
-            <p>DESCRIPTION: {returnRequests.description}</p>
+            <p>DESCRIPTION: {returnedDate}</p>
             <div class="actions">
                 <button
                         class="action-btn"
