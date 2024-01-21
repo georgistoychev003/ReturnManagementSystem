@@ -25,6 +25,7 @@
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 	import ResetPassword from "./pages/ResetPassword.svelte";
 	import RMAProducts from "./pages/client/RMAProducts.svelte";
+	import ReturnRequestDetail from "./pages/client/ReturnRequestDetail.svelte";
 	import TESTQRCODE from "./pages/TESTQRCODE.svelte";
 
 	let page;
@@ -140,6 +141,13 @@
 		params = ctx.params;
 		currentRoute = ctx.pathname;
 	});
+
+	//TODO PABLO
+	router('/requestReturnDetail', (ctx) => {
+		page = ReturnRequestDetail;
+		params = ctx.params;
+		currentRoute = ctx.pathname;
+	})
 
 	router('/barcode', (ctx) => {
 		page = TESTQRCODE;

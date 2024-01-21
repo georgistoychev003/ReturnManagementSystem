@@ -1,6 +1,9 @@
 <script>
     import page from 'page';
     import {onMount} from "svelte";
+    import {writable} from "svelte/store";
+    import {userEmail} from "../Store.js";
+
 
     onMount(() => {
         clearToken();
@@ -46,6 +49,7 @@
             case 'customer':
                 console.log("switched")
                 window.location.href='/client';
+                userEmail.set(username);
                 break;
             case 'admin':
                 window.location.href='/admin';

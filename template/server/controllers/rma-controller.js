@@ -16,10 +16,21 @@ import {
     returnRMAaandDates,
     returnRMAPerMonth,
     updateReturnedProductQuantity,
-    assignRmaToControllerDb
+    assignRmaToControllerDb, getRMAByClientEmail
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
-import {getAllRmaDetails} from "../database/database-queries.js";
+import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
+
+export function getAllRMAOfCustomerByEmail(req, res) {
+    const { email } = req.params;
+    try {
+        const RMAbyEmail = getRMAByClientEmail(email)
+        res.status(StatusCodes.OK).json(RMAbyEmail);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA for this customer with email: ${email}." });
+    }
+}
+
 
 export function deleteRma(req, res) {
     const { rmaId } = req.params;

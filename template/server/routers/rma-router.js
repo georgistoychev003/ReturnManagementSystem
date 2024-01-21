@@ -41,7 +41,9 @@ router.post('/update-returned-product-quantity', rmaController.updateQuantities)
 
 router.delete('/:rmaId', rmaController.deleteRma);
 
-router.get('/returns/:userId', rmaController.getReturnsByUserId);
+router.get('/:userId', rmaController.getReturnsByUserId);
+
+router.get('/:email', rmaController.getAllRMAOfCustomerByEmail);
 
 //router.get('/details', rmaController.getAllRmasDetails);
 //router.get('/withDates', rmaController.getRMAandDates());

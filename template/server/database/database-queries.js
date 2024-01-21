@@ -91,6 +91,7 @@ export const updateOrderByOrderId = `UPDATE "order" SET userId = ?, orderDate = 
 export const updateOrderDetailById = `UPDATE orderDetail SET orderId = ?, productId = ?, quantity = ? WHERE orderDetailId = ?`;
 export const updateRmaById = `UPDATE returntable SET RMAId = ?, returnedProductId = ?, barcode = ?, statusRma = ? WHERE RMAId = ?`;
 export const updateReturnedProduct = `UPDATE returnedProduct SET returnedProductId = ?, orderedProductId = ?, RMAId = ?, returnedDate = ?,description = ?, weight = ?, statusProduct = ? WHERE RMAId = ? AND returnedProductId = ? AND orderedProductId = ?`;
+//export const updateUserCreditLine = `UPDATE user SET creditLine = ? WHERE userID = ?`;
 
 export const selectAllUsers = `SELECT * FROM user`;
 export const selectUserByEmail = `SELECT * FROM user WHERE email = ?`;
@@ -106,7 +107,16 @@ export const selectAllOrderDetails = `SELECT * FROM orderProduct`;
 export const selectAllReturns =  `SELECT * FROM returntable`;
 export const selectStatusById =  `SELECT statusRma FROM returntable WHERE RMAId = ?`;
 export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
-export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ?`;
+export const selectAllReturnedProductById = `SELECT * FROM returnedProduct 
+                                            JOIN orderedProduct ON returnedProduct.orderedProductId = orderedProduct.orderedProductId
+                                            JOIN product ON orderedProduct.productId = product.productId
+                                            WHERE RMAId = ?`;
+export const selectAllRMAbyCustomersEmail = `SELECT * FROM user
+                                                JOIN order ON user.userId = order.userId
+                                                JOIN orderedProduct ON order.orderId = orderedProduct.orderId
+                                                JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId
+                                                JOIN returntable ON returnedProduct.RMAId = returntable.RMAId
+                                                WHERE email = ?`
 export const selectReturnedProductQuantityByRMAId = `
     SELECT rp.quantityToReturn
     FROM returnedProduct rp

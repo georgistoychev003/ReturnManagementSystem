@@ -1,6 +1,7 @@
 <script>
     import page from "page";
     import { writable } from 'svelte/store';
+    import router from "page";
 
     // im creating a writable store to hold the selected user details so i can afterwards be able to navigate to details page for that user
     export const selectedUser = writable(null);

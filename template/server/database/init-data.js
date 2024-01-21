@@ -42,7 +42,7 @@ export const productsData = [
     "type": "Electronics",
     "price": 599.99,
     "name": "Smartphone",
-    "imageURL": "https://example.com/image1.jpg",
+    "imageURL": "https://c8.alamy.com/comp/DH80YG/iphone-5-smartphone-DH80YG.jpg",
     "productWeight": 0.2,
     "inventoryStock": 50
     },
@@ -51,7 +51,7 @@ export const productsData = [
         "type": "Clothing",
         "price": 39.99,
         "name": "T-shirt",
-        "imageURL": "https://example.com/image2.jpg",
+        "imageURL": "https://media.idkids.fr/media/productstorage/images/okaidi/0702494/thumbs/0474699_500.jpg",
         "productWeight": 0.3,
         "inventoryStock": 100
     },
@@ -60,7 +60,7 @@ export const productsData = [
         "type": "Home & Kitchen",
         "price": 149.99,
         "name": "Coffee Machine",
-        "imageURL": "https://example.com/image3.jpg",
+        "imageURL": "https://www.ariete.net/media/images/product/main/1312-350e46c5447ef57cad7c33a460f37d2c.jpg",
         "productWeight": 2.5,
         "inventoryStock": 20
     },
@@ -69,7 +69,7 @@ export const productsData = [
         "type": "Food",
         "price": 24.99,
         "name": "Frikandelbroodje",
-        "imageURL": "https://example.com/image4.jpg",
+        "imageURL": "https://lekkerland.blob.core.windows.net/images/dejongkatwijk/product/frikandelbroodje_22b9cb_lg.jpg?v=a89615144377c6620a617b67950baa05",
         "productWeight": 0.8,
         "inventoryStock": 30
     }
@@ -200,7 +200,7 @@ export const returnedProduct = [
     {
         returnedProductId: 2,
         orderedProductId: 2,
-        RMAId: 2,
+        RMAId: 1,
         returnedDate: "2023-01-02",
         description: "Defective item",
         weight: 1.4,
