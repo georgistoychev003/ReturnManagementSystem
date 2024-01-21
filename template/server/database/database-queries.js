@@ -218,18 +218,24 @@ export const getRMACountByMonth = `
 
 export const getUserOrdersWithReturn = `
     SELECT
+        u.userID,
         o.orderId,
         o.totalPrice,
         o.orderDate,
-        rt.statusRMA,
+        COUNT(op.orderedProductId) AS productCount,
+        SUM(rp.quantity) AS totalReturnedQuantity,
+        rt.statusRma,
         rt.credit
     FROM
-        "order" o
-            INNER JOIN orderedProduct op ON o.orderId = op.orderId
-            INNER JOIN returnedProduct rp ON op.orderedProductId = rp.orderedProductId
-            INNER JOIN returntable rt ON rp.RMAId = rt.RMAId
+        "user" u
+            LEFT JOIN "order" o ON o.userId = u.userID
+            LEFT JOIN orderedProduct op ON o.orderId = op.orderId
+            LEFT JOIN returnedProduct rp ON op.orderedProductId = rp.orderedProductId
+            LEFT JOIN returntable rt ON rp.RMAId = rt.RMAId
     WHERE
-        o.userId = ?
+        u.userID = ?
+    GROUP BY
+        o.orderId
 `
 
 export const assignRmaToControllerQuery = `UPDATE returntable SET controllerId = ?, lockTimestamp = ? WHERE RMAId = ?`;

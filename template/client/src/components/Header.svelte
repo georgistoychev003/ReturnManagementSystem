@@ -1,4 +1,6 @@
 <script>
+ import {userIdStore} from "../Store.js";
+
  export let active;
  export let showHeader = true;
  import router from 'page';
@@ -6,6 +8,7 @@
  import page from 'page';
  let token = '';
  let userRole = '';
+ let userId = '';
  let isLoggedIn = false;
 
  onMount(() => {
@@ -13,9 +16,11 @@
   isLoggedIn = !!token;
   if (token) {
    const payload = JSON.parse(atob(token.split('.')[1]));
-   console.log(token)
-   console.log(userRole)
+   console.log(token);
    userRole = payload.role;
+   console.log(userRole)
+   userId = payload.id;
+   userIdStore.set(userId)
   }
  });
 

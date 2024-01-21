@@ -47,7 +47,10 @@
         switch(role) {
             case 'customer':
                 console.log("switched")
+                userIdStore.set(userId);
+                console.log(userId);
                 window.location.href='/client';
+
                 break;
             case 'admin':
                 window.location.href='/admin';

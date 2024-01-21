@@ -1,7 +1,6 @@
 <script>
     import { onMount } from 'svelte';
     import About from "../About.svelte";
-    import { writable } from 'svelte/store';
     import { userIdStore } from '../../Store.js';
 
 
@@ -11,8 +10,8 @@
     let currentUserId;
 
     userIdStore.subscribe(value => {
+        console.log(value)
         currentUserId = value;
-        console.log(userIdStore)
     });
 
 
@@ -39,6 +38,12 @@
         }
     });
 
+    import Help from "../../components/Help.svelte";
+
+    let helpPopupVisible = false;
+    let helpContent = 'This is some helpful information...';
+
+
 </script>
 
 {#if isLoading}
@@ -48,52 +53,92 @@
 {:else}
     <div class="client-return-order">
         <h1>My Orders</h1>
+        <Help
+                visible={helpPopupVisible}
+                content={helpContent}
+                closePopup={() => helpPopupVisible = false}
+        />
         <table>
             <thead>
             <tr>
                 <th>ORDER ID</th>
+                <th>TOTAL PRODUCTS ORDERED</th>
                 <th>PRICE</th>
                 <th>ORDER DATE</th>
                 <th>CREDIT</th>
                 <th>RETURN STATUS</th>
+                <th>QUANTITY RETURNED</th>
                 <th></th> <!-- Return column -->
             </tr>
             </thead>
             <tbody>
-            {#each orders as order}
+            {#if orders.length > 1}
+                {#each orders as order}
+                    <tr>
+                        <td>{order.orderId}</td>
+                        <td>{order.productCount}</td>
+                        <td>{order.totalPrice}</td>
+                        <td>{order.orderDate}</td>
+                        <td>
+                            {#if order.credit === null}
+                                -
+                            {:else}
+                                {order.credit}
+                            {/if}
+                        </td>
+
+                        <td>
+                            {#if order.statusRma === null}
+                                -
+                            {:else}
+                                {order.statusRma}
+                            {/if}
+                        </td>
+                        <td>{order.totalReturnedQuantity}</td>
+                        <td>
+                            <a href={`/orderDetails/${order.orderId}`}>
+                                <button>Order Details</button>
+                            </a>
+                        </td>
+                    </tr>
+                {/each}
+            {:else if orders.length === 1}
                 <tr>
-                    <td>{order.orderId}</td>
-                    <td>{order.totalPrice}</td>
-                    <td>{order.orderDate}</td>
+                    <td>{orders.orderId}</td>
+                    <td>{orders.totalPrice}</td>
+                    <td>{orders.orderDate}</td>
                     <td>
-                        {#if order.credit === null}
+                        {#if orders.credit === null}
                             -
                         {:else}
-                            {order.credit}
+                            {orders.credit}
                         {/if}
                     </td>
                     <td>
-                        {#if order.statusRMA === null}
+                        {#if orders.statusRMA === null}
                             -
                         {:else}
-                            {order.statusRMA}
+                            {orders.statusRMA}
                         {/if}
                     </td>
                     <td>
-                        <a href={`/orderDetails/${order.orderId}`}>
+                        <a href={`/orderDetails/${orders.orderId}`}>
                             <button>Order Details</button>
                         </a>
                     </td>
                 </tr>
-            {/each}
+            {:else}
+                <p>No orders found.</p>
+            {/if}
             </tbody>
         </table>
+        <button on:click={() => helpPopupVisible = true}>Help</button>
     </div>
 {/if}
 
 <style>
     .client-return-order {
-        max-width: 960px;
+        max-width: 90em;
         margin: 2rem auto;
         padding: 1rem;
     }
@@ -139,5 +184,18 @@
     button:hover {
         background-color: #0056b3;
         transform: translateY(-2px);
+    }
+
+    .help-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
     }
 </style>
