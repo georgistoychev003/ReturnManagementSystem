@@ -45,7 +45,7 @@
             .map(([productName, value]) => ({
                 name: productName,
                 action: value.action,
-                quantity: value.quantity
+                quantityToReturn: value.quantityToReturn
             }));
 
         // Check if there are any products selected
@@ -101,7 +101,7 @@
 
     function updateProductQuantities(processedProducts) {
         processedProducts.forEach(async productInfo => {
-            await updateReturnedProductQuantitiesInDB(productInfo.name, productInfo.quantity);
+            await updateReturnedProductQuantitiesInDB(productInfo.name, productInfo.quantityToReturn);
         });
     }
 
@@ -111,7 +111,7 @@
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ productName, quantity: newQuantity, RMAId })
+            body: JSON.stringify({ productName, quantityToReturn: newQuantity, RMAId })
         });
 
         if (!response.ok) {
@@ -155,13 +155,13 @@
                     const matchingReturnRequest = returnRequests.find(req => req.orderedProductId === product.orderedProductId);
                     return {
                         name: product.name,
-                        quantity: matchingReturnRequest ? matchingReturnRequest.quantity : 0,
+                        quantityToReturn: matchingReturnRequest ? matchingReturnRequest.quantityToReturn : 0,
                         orderedProductId: product.orderedProductId // If you need to use this later
                     };
-                }).filter(product => product.quantity > 0);
+                }).filter(product => product.quantityToReturn > 0);
                 $: if (products.length > 0 && selectedProducts.size === 0) {
                     products.forEach(product => {
-                        selectedProducts.set(product.name, { action: null, quantity: 0, maxQuantity: product.quantity });
+                        selectedProducts.set(product.name, { action: null, quantityToReturn: 0, maxQuantity: product.quantityToReturn });
                     });
                 }
                 returnRequests.customer = customer;
@@ -180,17 +180,17 @@
 
     $: {
         productQuantities = products.reduce((acc, product) => {
-            acc[product.name] = selectedProducts.get(product.name)?.quantity || 0;
+            acc[product.name] = selectedProducts.get(product.name)?.quantityToReturn || 0;
             return acc;
         }, {});
     }
 
     const handleQuantityChange = (productName, newQuantity) => {
-        const productInfo = selectedProducts.get(productName) || { action: null, quantity: 0 };
-        const maxQuantity = products.find(product => product.name === productName).quantity;
+        const productInfo = selectedProducts.get(productName) || { action: null, quantityToReturn: 0 };
+        const maxQuantity = products.find(product => product.name === productName).quantityToReturn;
         const clampedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
 
-        selectedProducts.set(productName, { ...productInfo, quantity: clampedQuantity });
+        selectedProducts.set(productName, { ...productInfo, quantityToReturn: clampedQuantity });
         productQuantities[productName] = clampedQuantity; // Ensure this updates the reactive variable
     };
 
@@ -268,7 +268,7 @@
                 <div class="product-row">
                     <span>{product.name}</span>
                     <span>
-                <input type="number" min="0" max={product.quantity}
+                <input type="number" min="0" max={product.quantityToReturn}
                        value={productQuantities[product.name] || 0}
                        on:input={(e) => handleQuantityChange(product.name, +e.target.value)} />
 
