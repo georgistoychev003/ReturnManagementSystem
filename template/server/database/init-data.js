@@ -173,7 +173,7 @@ export const orderDetailsData = [
         "priceAtTimeOfSale": 80,
     },
     {
-        "orderedProductId": 7,
+        "orderedProductId": 8,
         "orderId": 3,
         "productId": 4,
         "quantity": 2,
