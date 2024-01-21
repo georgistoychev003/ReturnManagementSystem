@@ -51,6 +51,9 @@
         // Implement return logic here
     };
 
+    function toggleButtonColor(button) {
+        button.isClicked = !button.isClicked;
+    }
 
 </script>
 
@@ -69,10 +72,6 @@
                 <th>QUANTITY</th>
                 <th>PRODUCT NAME</th>
                 <th>PRICE</th>
-                <th>RETURN STATUS</th>
-                <th>RETURN DATE</th>
-                <th>RETURN REASON</th>
-                <th>CREDIT</th>
                 <th>QUANTITY TO RETURN</th>
                 <th>RETURN (CHECK IF YES)</th>
                 <th></th>
@@ -84,16 +83,6 @@
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
                     <td>{orderProducts.price}</td>
-                    <td>{orderProducts.returnedDate}</td>
-                    <td>{orderProducts.statusProduct}</td>
-                    <td>{orderProducts.description}</td>
-                    <td>
-                        {#if orderProducts.credit === null}
-                            -
-                        {:else}
-                            {orderProducts.credit}
-                        {/if}
-                    </td>
                     {#if orderProducts.type !== "Food"}
                         {#if orderProducts.quantity !== 1}
                             <td>
@@ -102,12 +91,13 @@
                         {:else}
                             <td></td>
                         {/if}
-
                     {/if}
                     {#if orderProducts.type === "Food"}
                         <p>** Food Items Cannot Be Returned</p>
                     {/if}
+                    <td><button onclick={() => toggleButtonColor(this.button)}>Select Products</button></td>
                 </tr>
+
             {/each}
             </tbody>
         </table>
@@ -167,7 +157,7 @@
     tbody tr:hover {
         background-color: #f2f2f2;
     }
-    .button {
+    button {
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
