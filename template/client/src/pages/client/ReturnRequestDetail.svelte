@@ -27,7 +27,7 @@
 
     async function fetchReturnRequests() {
         try {
-            const response = await fetch(`http://localhost:3000/rma/${userEmail}`);
+            const response = await fetch(`http://localhost:3000/rma/email/${userEmail}`);
             if (response.ok) {
                 console.log(returnRequests)
                 return await response.json();
