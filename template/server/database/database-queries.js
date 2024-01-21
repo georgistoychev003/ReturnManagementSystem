@@ -114,11 +114,23 @@ export const selectReturnedProductQuantityByRMAId = `
 `;
 //TODO check once the design in corrected
 
-export const selectOrderedProducts = `SELECT * FROM "order" 
-           INNER JOIN orderedProduct ON "order".orderId = orderedProduct.orderId 
-           INNER JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId 
-           INNER JOIN product ON orderedProduct.productId = product.productId
-                     WHERE "order".orderId = ?;`;
+export const selectOrderedProducts = `SELECT
+                                          "order".orderId,
+                                          "order".orderDate,
+                                          orderedProduct.productId,
+                                          orderedProduct.quantity,
+                                          orderedProduct.priceAtTimeOfOrder,
+                                          product.name,
+                                          product.price,
+                                          product.type,
+                                          returnedProduct.quantityToReturn
+                                      FROM
+                                          "order"
+                                              LEFT JOIN orderedProduct ON "order".orderId = orderedProduct.orderId
+                                              LEFT JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId
+                                              JOIN product ON orderedProduct.productId = product.productId
+                                      WHERE
+                                          "order".orderId = ?`;
 
 export const selectAllRMAByUserId = `SELECT rp.returnedProductId, rp.orderedProductId, rp.RMAId, rp.returnedDate, rp.description, rp.weight, rp.statusProduct FROM returnedProduct rp
 JOIN orderedProduct op ON op.orderedProductId = rp.orderedProductId
