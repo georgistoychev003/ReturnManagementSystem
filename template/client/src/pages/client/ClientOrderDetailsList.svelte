@@ -9,6 +9,17 @@
     let errorMessage = '';
     let orderId = 1;
     let isClicked = false;
+    let OrderId;
+
+    function getOrderIdFromUrl() {
+        const path = window.location.pathname;
+        const parts = path.split('/');
+        return parts[parts.length - 1];
+    }
+
+    $: {
+        OrderId = getOrderIdFromUrl();
+    }
 
     function handleSelection(orderProducts) {
         const selectedItems = orderProducts.filter(product => product.selected);
@@ -17,7 +28,7 @@
 
     onMount(async () => {
         try {
-            const response = await fetch(`http://localhost:3000/orders/details/1`);
+            const response = await fetch(`http://localhost:3000/orders/details/${OrderId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }

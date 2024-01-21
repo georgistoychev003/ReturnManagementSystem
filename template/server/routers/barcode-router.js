@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/generateBarcode/:username/:orderId', generateBarcode2);
 router.get('/generateBarcode1/:username/:orderId', generateBarcode1);
-router.post('/scanBarcode', scanBarcode);
+router.get('/scanBarcode/:barcode', scanBarcode);
 
 export default router;
 
