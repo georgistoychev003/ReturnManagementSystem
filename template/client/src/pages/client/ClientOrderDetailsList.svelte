@@ -76,6 +76,16 @@
         // Implement return logic here
     };
 
+    function isReturnable(orderDate) {
+        const today = new Date();
+        const orderDateObject = new Date(orderDate);
+        const diffTime = Math.abs(today - orderDateObject);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        return diffDays <= 14;
+    }
+
+
 </script>
 
 <div class="rma-container">
@@ -86,9 +96,6 @@
 {:else}
     <div class="client-return-order">
         <h1>Ordered Products</h1>
-<!--        Store not working -->
-<!--        <p>Order Id: {order.orderId}</p>-->
-<!--        <p>Order Date: {order.orderDate}</p>-->
         <table>
             <thead>
             <tr>
@@ -109,8 +116,9 @@
                     <td>{orderProducts.price}</td>
                     <td>{orderProducts.quantityToReturn}</td>
                     <!-- Conditional rendering based on product type and quantity -->
-                    {#if orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}
-                        <td>
+<!--                    isReturnable(orderProducts.orderDate) &&-->
+                    {#if  orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}
+                    <td>
                             <input type="number" value="1"  min="1" max={orderProducts.quantity - orderProducts.quantityToReturn}
                                    on:change={(e) => handleQuantityChange(orderProducts.productId, parseInt(e.target.value, 10))} />
                         </td>
@@ -119,10 +127,14 @@
                                    on:change={(e) => updateSelectedProducts(orderProducts.productId, e.target.checked)}
                                    class="custom-checkbox" id="checkbox-{orderProducts.productId}">
                         </td>
+                    <!--{:else if !isReturnable(orderProducts.orderDate)}-->
+                    <!--    &lt;!&ndash; Non-returnable product due to 14 days limit &ndash;&gt;-->
+                    <!--    <td colspan="2">Cannot return after 14 days</td>-->
                     {:else}
-                        <td></td>
-                        <td>{orderProducts.type === "Food" ? 'Food items cannot be returned' : 'Max returns made'}</td>
-                    {/if}
+                        <td colspan="2">
+                            {orderProducts.type === "Food" ? 'Food items cannot be returned' : 'Max returns made'}
+                        </td>
+                        {/if}
                 </tr>
             {/each}
             <td>Total</td>
