@@ -170,6 +170,13 @@ export const selectCustomerEmailByRMAId = `
     WHERE r.RMAId = ?;
 `;
 
+export const selectControllerInfoByRMAId = `
+    SELECT u.userID, u.userName, u.email
+    FROM user u
+    JOIN returntable r ON u.userID = r.controllerId
+    WHERE r.RMAId = ?;
+`;
+
 export const selectProductDescriptionsByRMAId = `
     SELECT *
     FROM returnedProduct rp

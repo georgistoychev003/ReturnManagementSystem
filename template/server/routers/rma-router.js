@@ -4,11 +4,7 @@ import express from 'express';
 const router = express.Router();
 
 import * as rmaController from '../controllers/rma-controller.js';
-import {
-    getAllRmasDetails,
-    getRMAandDates,
-    updateImageDescriptionByCollector
-} from "../controllers/rma-controller.js";
+
 
 
 router.get('/', rmaController.getListOfRmas);
@@ -41,6 +37,7 @@ router.get('/:rmaId/status', rmaController.getRmaStatus);
 router.get('/:rmaId/refund', rmaController.getRmaRefund);
 
 router.get('/:rmaId/customer', rmaController.getRmaCustomer);
+router.get('/:rmaId/controller', rmaController.getRmaController);
 
 router.get('/:rmaId/products', rmaController.getRmaProducts);
 
@@ -59,7 +56,7 @@ router.get('/email/:email', rmaController.getAllRMAOfCustomerByEmail);
 
 //router.get('/details', rmaController.getAllRmasDetails);
 //router.get('/withDates', rmaController.getRMAandDates());
-
+// router.post('/assignCollector/:RMAId', authenticateToken, rmaController.assignRmaToCollector);
 
 router.post('/assign/:RMAId', rmaController.assignRmaToController);
 

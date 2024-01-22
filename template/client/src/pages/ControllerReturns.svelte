@@ -85,6 +85,27 @@
         }
     }
 
+    // This function fetches the controller's information for a specific RMA.
+    async function fetchControllerInfo(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/controller`);
+            if (response.ok) {
+                const data = await response.json();
+                return {
+                    controllerId: data.controllerId,
+                    controllerName: data.userName // Assuming the API returns a userName field
+                };
+            } else {
+                console.error('Failed to fetch controller info for RMA', RMAId);
+                return { controllerId: null, controllerName: 'nobody' }; // Default values
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return { controllerId: null, controllerName: 'Error' }; // Error values
+        }
+    }
+
+
     async function fetchReturnRequests() {
 
         try {
@@ -95,9 +116,12 @@
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
                     const customer = await fetchCustomerOfRMA(request.RMAId);
+                    const controllerInfo = await fetchControllerInfo(request.RMAId); // Fetch controller info for each RMA
                     request.totalRefund = await getTotalRefundAmount(request.RMAId);
                     request.email = customer;
                     request.totalReturnPrice = totalPrice;
+                    request.statusRMA = status
+                    request.controllerInfo = controllerInfo; // Add the controller info to the request object
                     request.statusRMA = request.totalReturnPrice === 0 ? 'Finished' : status;
                 }
                 const aggregatedRequests = aggregateRequestsByRMA(requests);
@@ -172,6 +196,7 @@
             <th>DATE</th>
             <th>REFUND</th>
             <th>STATUS</th>
+            <th>CONTROLLER</th>
             <th></th>
         </tr>
         </thead>
@@ -185,9 +210,15 @@
                 <td>{request.returnedDate}</td>
                 <td>${request.totalRefund.toFixed(2)}</td>
                 <td class="status">{request.statusRMA}</td>
+                <td class="controller-cell">
+                <span class="controller-label {request.controllerInfo.controllerName && request.controllerInfo.controllerName !== 'nobody' ? 'assigned' : 'not-assigned'}">
+                    Assigned to: {request.controllerInfo.controllerName || 'N/A'}
+                </span>
+
+                </td>
                 <td>
                     {#if request.statusRMA !== 'Finished'}
-                        <button on:click={() => viewDetails(request.RMAId)}>Details</button>
+                        <button class="details-btn" on:click={() => viewDetails(request.RMAId)}>Details</button>
                     {/if}
                 </td>
             </tr>
@@ -270,8 +301,28 @@
         font-weight: bold;
         color: var(--info-color);
     }
+    .controller-cell {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end; /* Aligns items to the right */
+        gap: 10px;
+    }
 
-    /* Button Styles */
+    .controller-label {
+        padding: 2px 8px;
+        border-radius: 5px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .assigned {
+        background-color: var(--error-color); /* Red label for assigned RMAs */
+    }
+
+    .not-assigned {
+        background-color: var(--success-color); /* Green label for unassigned RMAs */
+    }
+
     .details-btn {
         padding: 0.5rem 1rem;
         background-color: var(--primary-color);
@@ -286,7 +337,6 @@
         background-color: var(--hover-secondary-color);
         transform: scale(0.98);
     }
-
     /* Responsive Design */
     @media (max-width: 768px) {
         .customer-returns {

@@ -6,7 +6,7 @@ import {
     assignRmaToControllerQuery, createReturnedProduct,
     createRma, getLastRMA,
     getRmaDetailsQuery,
-    selectAllRMAbyCustomersEmail,
+    selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
     selectStatusById
 } from "../database/database-queries.js";
 
@@ -277,6 +277,10 @@ export function getTotalPriceOfRMA(RMAId) {
 
 export function getCustomerEmailByRMAId(RMAId) {
     const statement = db.prepare(queries.selectCustomerEmailByRMAId);
+    return statement.get(RMAId);
+}
+export function getControllerInfoByRMAId(RMAId) {
+    const statement = db.prepare(selectControllerInfoByRMAId);
     return statement.get(RMAId);
 }
 

@@ -17,7 +17,8 @@ import {
     returnRMAPerMonth,
     updateReturnedProductQuantity,
     updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma,
-    assignRmaToControllerDb, getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId,
+    assignRmaToControllerDb, getControllerInfoByRMAId,
+    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId,
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import * as queries from "../database/database-queries.js";
@@ -100,6 +101,22 @@ export function getRmaCustomer(req, res) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA customer." });
     }
 }
+export function getRmaController(req, res) {
+    const { rmaId } = req.params;
+    try {
+        const controllerInfo = getControllerInfoByRMAId(rmaId);
+
+        if (controllerInfo) {
+            res.status(StatusCodes.OK).json(controllerInfo);
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ error: "Controller information not found for the given RMA ID." });
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get controller information." });
+    }
+}
+
+
 
 export function getRmaProducts(req, res) {
     const { rmaId } = req.params;
