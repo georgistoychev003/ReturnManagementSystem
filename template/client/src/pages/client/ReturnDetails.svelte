@@ -1,12 +1,42 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
+    import {createEventDispatcher, onMount} from 'svelte';
     import page from "page";
     export let selectedProduct;
+
+    let videoElement;
+    let canvasElement;
+    let imageData; // This will hold the Blob data of the image
+    let snapshotSrc; // This will hold the image data URL for display purposes
+
 
     const dispatch = createEventDispatcher();
     let images = [];
     let description = '';
 
+    onMount(() => {
+        startCamera();
+    });
+
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            videoElement.srcObject = stream;
+        } catch (error) {
+            console.error('Error starting the camera:', error);
+        }
+    }
+
+    function takeSnapshot() {
+        const context = canvasElement.getContext('2d');
+        canvasElement.width = videoElement.videoWidth;
+        canvasElement.height = videoElement.videoHeight;
+        context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
+        snapshotSrc = canvasElement.toDataURL('image/png'); // For displaying the snapshot on the page
+        // Convert canvas to Blob and store in imageData
+        canvasElement.toBlob(blob => {
+            imageData = blob;
+        }, 'image/png');
+    }
     function handleImageUpload(event) {
         const file = event.target.files[0];
         if (file) {
@@ -15,6 +45,8 @@
         }
     }
 
+
+
     function closeDetails() {
         dispatch('close');
     }
@@ -22,10 +54,59 @@
     function submitDetails() {
         // Here we should handle the submission logic
         alert("You successfully processed this product and it will be forwarded to the controller!")
-        page('/collector');
+        page('/RMAProducts/' + selectedProduct.rmaId);
     }
-</script>
 
+    async function handleUpload() {
+        const formData = new FormData();
+        // Omit the image data since you're not sending an actual image file for now
+        // formData.append('image', 'hardcoded_image_string');
+        formData.append('collectorDescription', description);
+
+        try {
+            const response = await fetch(`http://localhost:3000/rma/collector/${selectedProduct.productId}`, {
+                method: 'PUT',
+                headers: {
+                    // If you're sending a JSON object now, you need to set the header accordingly
+                    'Content-Type': 'application/json'
+                },
+                // Convert your formData to a JSON string
+                body: JSON.stringify({
+                    collectorImage: 'hardcoded_image_string',
+                    collectorDescription: description
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert('Details updated successfully: ' + result.message);
+                page('/RMAProducts/' + selectedProduct.rmaId);
+                location.reload();
+
+            } else {
+                const errorResult = await response.json();
+                alert('Failed to update details: ' + errorResult.error);
+            }
+        } catch (error) {
+            console.error('Error updating details:', error);
+            alert('Error occurred while updating details');
+        }
+    }
+
+
+</script>
+<!-- Camera stream and snapshot section -->
+<div class="camera-container">
+    <video class="camera-stream" bind:this={videoElement} autoplay></video>
+    <canvas class="snapshot-canvas" bind:this={canvasElement} style="display: none;"></canvas>
+    <button on:click={takeSnapshot}>Take Snapshot</button>
+    {#if snapshotSrc}
+        <img class="snapshot-image" src={snapshotSrc} alt="Snapshot" />
+        <button on:click={handleUpload}>Upload Snapshot</button>
+    {/if}
+</div>
+
+<!-- Product details section -->
 <div class="product-detail-container">
     <button class="close-button" on:click={closeDetails}>Close</button>
     <h2>Product Return Details - {selectedProduct.type}</h2>
@@ -39,13 +120,14 @@
     <div class="image-upload-section">
         <label for="image-upload" class="image-upload-label">Upload Product Image</label>
         <input id="image-upload" type="file" on:change={handleImageUpload} />
-        {#each images as image, index}
+        {#each images as image, index (image)}
             <img class="uploaded-image" src={image} alt={`Uploaded ${index}`} />
         {/each}
     </div>
     <textarea class="description-input" bind:value={description} placeholder="Add a description for the return"></textarea>
     <button class="submit-button" on:click={submitDetails}>Submit Details</button>
 </div>
+
 
 <style>
     body {
@@ -134,6 +216,20 @@
 
     .image-upload-label:hover {
         background-color: #218838;
+    }
+
+    .camera-stream {
+        width: 50%; /* Set the width as desired */
+        display: none; /* Hide the video element by default */
+    }
+
+    .snapshot-canvas {
+        display: none; /* Hide the canvas element by default */
+    }
+
+    .snapshot-image {
+        width: 50%; /* Set the width as desired */
+        margin-top: 10px;
     }
 
     input[type="file"] {

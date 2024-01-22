@@ -4,6 +4,7 @@
     import {writable} from "svelte/store";
     import {userEmail} from "../Store.js";
 
+    import { userIdStore } from '../Store.js';
 
     onMount(() => {
         clearToken();
@@ -38,6 +39,8 @@
             userId = payload.id; // Extract the user ID from the token payload
             username = payload.email;
             //userEmail.set(username);
+            userIdStore.set(payload.id);
+            console.log(payload)
             redirectToRolePage(payload.role);
         } else {
             console.error(data.error);
@@ -49,7 +52,10 @@
         switch(role) {
             case 'customer':
                 console.log("switched")
+                userIdStore.set(userId);
+                console.log(userId);
                 window.location.href='/client';
+
                 break;
             case 'admin':
                 window.location.href='/admin';

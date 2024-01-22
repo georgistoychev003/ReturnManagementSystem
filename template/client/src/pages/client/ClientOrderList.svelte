@@ -1,16 +1,23 @@
 <script>
     import { onMount } from 'svelte';
     import About from "../About.svelte";
-    import { writable } from 'svelte/store';
+    import { userIdStore } from '../../Store.js';
+
 
     let orders = [];
     let isLoading = true;
     let errorMessage = '';
-    export const orderId = writable(null);
+    let currentUserId;
+
+    userIdStore.subscribe(value => {
+        console.log(value)
+        currentUserId = value;
+    });
+
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch('http://localhost:3000/orders');
+            const response = await fetch(`http://localhost:3000/orders/MyOrders/${currentUserId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
@@ -31,10 +38,12 @@
         }
     });
 
-    const requestReturn = (order) => {
-        console.log(`Return requested for order: ${order.product}`);
-        // Implement return logic here
-    };
+    import Help from "../../components/Help.svelte";
+
+    let helpPopupVisible = false;
+    let helpContent = 'This is some helpful information...';
+
+
 </script>
 
 {#if isLoading}
@@ -44,6 +53,11 @@
 {:else}
     <div class="client-return-order">
         <h1>My Orders</h1>
+        <Help
+                visible={helpPopupVisible}
+                content={helpContent}
+                closePopup={() => helpPopupVisible = false}
+        />
         <table>
             <thead>
             <tr>
@@ -52,44 +66,77 @@
                 <th>ORDER DATE</th>
                 <th>CREDIT</th>
                 <th>RETURN STATUS</th>
+                <th>QUANTITY RETURNED</th>
                 <th></th> <!-- Return column -->
             </tr>
             </thead>
             <tbody>
-            {#each orders as order}
+            {#if orders.length > 1}
+                {#each orders as order}
+                    <tr>
+                        <td>{order.orderId}</td>
+                        <td>{order.totalPrice}</td>
+                        <td>{order.orderDate}</td>
+                        <td>
+                            {#if order.credit === null}
+                                -
+                            {:else}
+                                {order.credit}
+                            {/if}
+                        </td>
+
+                        <td>
+                            {#if order.statusRma === null}
+                                -
+                            {:else}
+                                {order.statusRma}
+                            {/if}
+                        </td>
+                        <td>{order.totalReturnedQuantity}</td>
+                        <td>
+                            <a href={`/orderDetails/${order.orderId}`}>
+                                <button>Order Details</button>
+                            </a>
+                        </td>
+                    </tr>
+                {/each}
+            {:else if orders.length === 1}
                 <tr>
-                    <td>{order.orderId}</td>
-                    <td>{order.totalPrice}</td>
-                    <td>{order.orderDate}</td>
+                    <td>{orders.orderId}</td>
+                    <td>{orders.totalPrice}</td>
+                    <td>{orders.orderDate}</td>
                     <td>
-                        {#if order.credit === null}
+                        {#if orders.credit === null}
                             -
                         {:else}
-                            {order.credit}
+                            {orders.credit}
                         {/if}
                     </td>
                     <td>
-                        {#if order.returnStatus === null}
+                        {#if orders.statusRMA === null}
                             -
                         {:else}
-                            {order.returnStatus}
+                            {orders.statusRMA}
                         {/if}
                     </td>
                     <td>
-                        <a href={`/orderDetails/${order.orderId}`}>
+                        <a href={`/orderDetails/${orders.orderId}`}>
                             <button>Order Details</button>
                         </a>
                     </td>
                 </tr>
-            {/each}
+            {:else}
+                <p>No orders found.</p>
+            {/if}
             </tbody>
         </table>
+        <button on:click={() => helpPopupVisible = true}>Help</button>
     </div>
 {/if}
 
 <style>
     .client-return-order {
-        max-width: 960px;
+        max-width: 90em;
         margin: 2rem auto;
         padding: 1rem;
     }
@@ -136,4 +183,5 @@
         background-color: #0056b3;
         transform: translateY(-2px);
     }
+
 </style>

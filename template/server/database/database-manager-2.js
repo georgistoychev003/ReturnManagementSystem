@@ -69,7 +69,7 @@ function insertOrderDetails(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrderDetails);
         for(const order of initData.orderDetailsData){
-            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice);
+            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice, order.priceAtTimeOfSale);
         }
     }
 }
@@ -83,12 +83,11 @@ export function insertReturned(){
                 returnedProductData.returnedProductId,
                 returnedProductData.orderedProductId,
                 returnedProductData.RMAId,
-                returnedProductData.quantityToReturn,
                 returnedProductData.returnedDate,
                 returnedProductData.description,
                 returnedProductData.weight,
                 returnedProductData.statusProduct,
-                returnedProductData.quantity);
+                returnedProductData.quantityToReturn);
         }
     }
 }
@@ -98,7 +97,7 @@ export function insertRMA(){
     if(countResult['count(RMAId)'] === 0) {
         const insert = db.prepare(queries.createRma);
         for (const rma of initData.rmaData) {
-            insert.run(rma.barcode, rma.statusRma);
+            insert.run(rma.barcode, rma.statusRma, rma.credit);
         }
     }
 }
@@ -169,7 +168,7 @@ export function getOrderByOrderId(orderId) {
     return db.prepare(queries.selectOrderById).get(orderId);
 }
 export function getOrderByUserId(orderId) {
-    return db.prepare(queries.selectOrderByUserId).get(orderId);
+    return db.prepare(queries.selectOrderByUserId).all(orderId);
 }
 
 export function deleteOrderById(orderId) {
@@ -242,7 +241,7 @@ export function getStatusById(RMAId) {
 
 export function getTotalPriceOfRMA(RMAId) {
     const query = `
-        SELECT r.RMAId, SUM(op.unitPrice * rp.quantity) AS TotalReturnPrice
+        SELECT r.RMAId, SUM(op.unitPrice * rp.quantityToReturn) AS TotalReturnPrice
         FROM returnedProduct rp
         JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
         JOIN returntable r ON rp.RMAId = r.RMAId
@@ -362,3 +361,13 @@ export function updateReturnedProductQuantity(productName, deductionQuantity, RM
         throw new Error('Returned product not found');
     }
 }
+export function getOrderDetails2(userId){
+    return db.prepare(queries.getUserOrdersWithReturn).all(userId);
+}
+
+
+export function updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId) {
+    const update = db.prepare(queries.setImageDescriptionByController);
+    return update.run(collectorImage, collectorDescription,  returnedProductId);
+}
+

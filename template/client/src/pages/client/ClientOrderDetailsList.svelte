@@ -8,6 +8,18 @@
     let isLoading = true;
     let errorMessage = '';
     let orderId = 1;
+    let isClicked = false;
+    let OrderId;
+
+    function getOrderIdFromUrl() {
+        const path = window.location.pathname;
+        const parts = path.split('/');
+        return parts[parts.length - 1];
+    }
+
+    $: {
+        OrderId = getOrderIdFromUrl();
+    }
 
     function handleSelection(orderProducts) {
         const selectedItems = orderProducts.filter(product => product.selected);
@@ -16,27 +28,33 @@
 
     onMount(async () => {
         try {
-            const response = await fetch(`http://localhost:3000/orders/details/1`);
+            const response = await fetch(`http://localhost:3000/orders/details/${OrderId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch orders');
             }
             orders = await response.json();
 
-            orders.forEach(product => {
-                product.quantityToReturn = 0;
-                product.selected = false;
-            });
+
             console.log(orders);
         } catch (error) {
             errorMessage = error.message;
         } finally {
             isLoading = false;
+            orders.forEach(product => {
+                product.quantityToReturn = 0;
+                product.selected = false;
+            });
         }
     });
     const requestReturn = (order) => {
         console.log(`Return requested for order: ${order.product}`);
         // Implement return logic here
     };
+
+    function toggleButtonColor(button) {
+        button.isClicked = !button.isClicked;
+    }
+
 
 
 </script>
@@ -56,40 +74,33 @@
                 <th>QUANTITY</th>
                 <th>PRODUCT NAME</th>
                 <th>PRICE</th>
-                <th>RETURN STATUS</th>
-                <th>RETURN DATE</th>
-                <th>RETURN REASON</th>
-                <th>CREDIT</th>
                 <th>QUANTITY TO RETURN</th>
                 <th>RETURN (CHECK IF YES)</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            {#each orders as orderProducts}
+            {#each orders as orderProducts (orderProducts.productId)}
                 <tr>
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
                     <td>{orderProducts.price}</td>
-                    <td>{orderProducts.returnDate}</td>
-                    <td>{orderProducts.returnStatus}</td>
-                    <td>{orderProducts.returnReason}</td>
-                    <td>
-                        {#if orderProducts.credit === null}
-                            -
-                        {:else}
-                            {orderProducts.credit}
-                        {/if}
-                    </td>
                     {#if orderProducts.type !== "Food"}
-                        <td>
-                            <input type="number" min="0" max={orderProducts.quantity} bind:value={orderProducts.quantityToReturn} />
-                        </td>
-                    <td><input type="checkbox" bind:checked={orderProducts.selected}></td>
+                        {#if orderProducts.quantity !== 1}
+                            <td>
+                                <input type="number" min="1" max={orderProducts.quantity} />
+                            </td>
+                        {:else}
+                            <td></td>
+                        {/if}
                     {/if}
                     {#if orderProducts.type === "Food"}
                         <p>** Food Items Cannot Be Returned</p>
                     {/if}
+                    <input type="checkbox"
+                          >
+                </tr>
+
             {/each}
             </tbody>
         </table>
@@ -101,7 +112,7 @@
     </div>
 
 
-<!--    test purposes will delete when finished-->
+    <!--    test purposes will delete when finished-->
     <div class="selected-products">
         <p>below is for test purposes will delete when finished </p>
         <h2>Selected Products for Return</h2>
@@ -117,7 +128,7 @@
 
 <style>
     .client-return-order {
-        max-width: 960px;
+        max-width: 100em;
         margin: 2rem auto;
         padding: 1rem;
     }
@@ -149,19 +160,19 @@
     tbody tr:hover {
         background-color: #f2f2f2;
     }
-
     button {
-        padding: 0.5rem 1rem;
-        background-color: #007BFF;
-        color: white;
+        padding: 10px 20px;
         border: none;
-        border-radius: 4px;
+        border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
+        color: white;
     }
 
-    button:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
+    .normal {
+        background-color: blue;
+    }
+
+    .clicked {
+        background-color: red;
     }
 </style>

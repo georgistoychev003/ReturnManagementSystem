@@ -17,8 +17,11 @@ import {
     returnRMAPerMonth,
     updateReturnedProductQuantity,
     assignRmaToControllerDb, getRMAByClientEmail
+    assignRmaToControllerDb, updateImageDescriptionBycollector
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
+import {getAllRmaDetails} from "../database/database-queries.js";
+import * as queries from "../database/database-queries.js";
 import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
 
 export function getAllRMAOfCustomerByEmail(req, res) {
@@ -101,8 +104,16 @@ export function getRmaProducts(req, res) {
     try {
         const products = getProductByRMAId(rmaId);
         res.status(StatusCodes.OK).json(products.map(p => ({
-            orderedProductId: p.orderedProductId,
-            name: p.name
+            returnedProductId: p.returnedProductId,
+            name: p.name,
+            price: p.price,
+            type: p.type,
+            imageURL: p.imageURL,
+            quantityToReturn: p.quantityToReturn,
+            returnedDate : p.returnedDate
+
+
+
         })));
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA products." });
@@ -260,5 +271,24 @@ export  function updateQuantities(req, res) {
     }
 
 }
+
+export async function updateImageDescriptionByCollector(req, res) {
+    const { collectorDescription, collectorImage } = req.body; // Assuming you're now sending both as part of the JSON body
+    const { returnedProductId } = req.params;
+
+    try {
+        // Directly use the string for the image since you're not handling file uploads here
+        updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId);
+        res.status(200).json({ message: 'Returned product image and description updated successfully' });
+    } catch (error) {
+        console.error('Error updating returned product description and image:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+
+
 
 

@@ -1,6 +1,10 @@
 <script>
     import {onMount} from "svelte";
     import page from 'page';
+    import jsQR from 'jsqr';
+    let videoElement;
+    let canvasElement;
+    let canvasContext;
 
 
     let name = 'COLLECTOR NAME'; // You can set a default name here
@@ -10,19 +14,49 @@
         alert(`HELLO COLLECTOR NAME ${name}`);
     }
 
+    onMount(() => {
+        canvasElement = document.createElement('canvas');
+        canvasContext = canvasElement.getContext('2d');
+    });
+
     async function scanBarcode() {
-        try {
-            // Check if the video element is already created
-            if (!videoElementCreated) {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const videoElement = document.createElement('video');
+        if (!videoElement) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                videoElement = document.createElement('video');
                 videoElement.srcObject = stream;
                 videoElement.setAttribute('autoplay', '');
+                videoElement.setAttribute('playsinline', ''); // needed for iOS
+                videoElement.addEventListener('loadeddata', onCameraStreamReceived);
                 document.body.appendChild(videoElement);
-                videoElementCreated = true; // Set the flag to true after creating the video element
+            } catch (err) {
+                console.error('Error accessing the camera: ', err);
             }
-        } catch (err) {
-            console.error('Error accessing the camera: ', err);
+        }
+    }
+
+    function onCameraStreamReceived() {
+        canvasElement.width = videoElement.videoWidth;
+        canvasElement.height = videoElement.videoHeight;
+
+        scanQRCode();
+    }
+
+    function scanQRCode() {
+        requestAnimationFrame(scanQRCode);
+        canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+        let imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        let qrCodeData = jsQR(imageData.data, imageData.width, imageData.height);
+
+        if (qrCodeData) {
+            console.log('QR Code detected: ', qrCodeData.data);
+            // Stop the camera and further scanning
+            videoElement.srcObject.getTracks().forEach(track => track.stop());
+            videoElement.remove();
+            // Process the QR code data
+            barcode = qrCodeData.data;
+            // Continue with our application logic
+            page(`/RMAProducts/${barcode}`);
         }
     }
 
