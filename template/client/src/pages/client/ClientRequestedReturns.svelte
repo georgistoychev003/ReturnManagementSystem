@@ -3,7 +3,7 @@
     import page from 'page';
     import {writable} from "svelte/store";
     import {userEmail} from "../../Store.js";
-
+    import {RMAId as RMAIdFromStore} from "../../Store.js";
     let returnRequests = [];
     let isLoading = true;
     let errorMessage = '';
@@ -43,6 +43,7 @@
     //TODO PABLO
     const viewDetails = (RMAId) => {
         console.log(`View details for request ID: ${RMAId}`);
+        RMAIdFromStore.set(RMAId);
         //Here we should most likely  redirect the user to a details page or open a modal with more information
         page(`/requestReturnDetail/:${RMAId}`)
     };

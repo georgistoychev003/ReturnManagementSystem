@@ -2,24 +2,19 @@
     // Sample data
     import {onMount} from "svelte";
     import page from 'page';
-    import {userEmail} from "../../Store.js";
-
-    // let products = {
-    //     image: 'path/to/your/image.jpg',
-    //     quantity: 5,
-    //     price: 20.99,
-    //     date: '2024-01-15',
-    //     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    //     status: 'In Stock'
-    // };
+    import {RMAId as RMAIdFromStore, userEmail} from "../../Store.js";
 
     let products =[];
-
     let returnRequests = [];
-
     let errorMessage = '';
-
     let isLoading = true;
+    let RMAId;
+
+    RMAIdFromStore.subscribe(value => {
+        console.log(value)
+        RMAId = value;
+    });
+
 
     onMount(async () => {
         returnRequests = await fetchReturnRequests();
@@ -27,7 +22,7 @@
 
     async function fetchReturnRequests() {
         try {
-            const response = await fetch(`http://localhost:3000/rma/email/${userEmail}`);
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}`);
             if (response.ok) {
                 console.log(returnRequests)
                 return await response.json();

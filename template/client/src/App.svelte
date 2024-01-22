@@ -144,7 +144,7 @@
 	});
 
 	//TODO PABLO
-	router('/requestReturnDetail', (ctx) => {
+	router('/requestReturnDetail/:RMAId', (ctx) => {
 		page = ReturnRequestDetail;
 		params = ctx.params;
 		currentRoute = ctx.pathname;
