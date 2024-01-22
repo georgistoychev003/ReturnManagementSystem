@@ -3,7 +3,7 @@
  import { onDestroy } from 'svelte';
 
  import {userEmail} from "../Store.js";
- import {userIdStore} from "../Store.js";
+
 
  export let active;
  export let showHeader = true;

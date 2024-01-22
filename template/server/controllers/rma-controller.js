@@ -16,10 +16,8 @@ import {
     returnRMAaandDates,
     returnRMAPerMonth,
     updateReturnedProductQuantity,
-    assignRmaToControllerDb,
-    updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma
+    updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma,
     assignRmaToControllerDb, getRMAByClientEmail,
-    updateImageDescriptionBycollector
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import * as queries from "../database/database-queries.js";
