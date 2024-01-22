@@ -48,7 +48,7 @@
     }
 
 </script>
-
+<div class="rma-container">
 {#if isLoading}
     <p>Loading orders...</p>
 {:else if errorMessage}
@@ -136,8 +136,19 @@
         <button on:click={() => helpPopupVisible = true}>Help</button>
     </div>
 {/if}
+</div>
 
 <style>
+    .rma-container {
+        max-width: 70%;
+        margin: 40px auto;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
     .client-return-order {
         max-width: 90em;
         margin: 2rem auto;

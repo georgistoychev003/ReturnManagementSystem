@@ -72,6 +72,7 @@
 
 </script>
 
+<div class="rma-container">
 {#if isLoading}
     <p>Loading orders...</p>
 {:else if errorMessage}
@@ -135,11 +136,20 @@
         <p>All returns will be inspected to confirm no damage to the items, if the items are damaged by fault of the customer, they may not be refunded.</p>
 
     </div>
-
+</div>
 
 
 
 <style>
+    .rma-container {
+        max-width: 90%;
+        margin: 40px auto;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
     .client-return-order {
         max-width: 100em;
         margin: 2rem auto;

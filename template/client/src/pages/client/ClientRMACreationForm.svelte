@@ -50,7 +50,11 @@
     }
 
     export function handleSelection(){
-        window.open('/printingLabel');
+        window.open('/printingLabel', '_blank');
+        setTimeout(() => {
+            window.location.href = '/myOrders';
+        }, 100);
+
     }
 
 
