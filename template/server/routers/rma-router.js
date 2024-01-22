@@ -42,11 +42,9 @@ router.post('/update-returned-product-quantity', rmaController.updateQuantities)
 router.delete('/:rmaId', rmaController.deleteRma);
 
 router.get('/returns/:userId', rmaController.getReturnsByUserId);
-
 //router.get('/details', rmaController.getAllRmasDetails);
 //router.get('/withDates', rmaController.getRMAandDates());
-
-
 router.post('/assign/:RMAId', rmaController.assignRmaToController);
 
+router.post(`/returns/return-request`, rmaController.addNewRMARequest);
 export default router;

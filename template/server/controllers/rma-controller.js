@@ -249,4 +249,22 @@ export  function updateQuantities(req, res) {
 
 }
 
+export function addNewRMARequest(req, res){
+    console.log("Received JSON payload:", req.body);
+    try {
+        const products = req.body;
+        for (const product of products) {
+            const {id, name, quantityToReturn, description} = product;
+
+            // Insert data into the database
+            // This is a placeholder - replace with your actual database logic
+            insertProductIntoDatabase(id, name, quantityToReturn, description);
+        }
+        res.status(200).json({message: 'Data received successfully'});
+    }catch (error) {
+        console.error('Error processing request:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 

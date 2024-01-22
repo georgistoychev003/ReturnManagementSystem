@@ -1,143 +1,95 @@
 <script>
     import { selectedItemsStore } from '../../Store.js';
     import {onDestroy, onMount} from "svelte";
+    import { selectedProductsStore } from '../../Store.js';
 
-    // Subscribe to changes in the selectedItemsStore
-    let selectedItems = [];
-    let availableProducts = []; // This will be fetched from the backend
-    const unsubscribe = selectedItemsStore.subscribe(value => {
-        selectedItems = value;
-        console.log(selectedItems);
-
-    });
-
-    // Unsubscribe when the component is destroyed to prevent memory leaks
-    onDestroy(() => {
-        unsubscribe();
-    });
-
-    // Fetch available products on component mount with returnable status
-    // onMount(async () => {
-    //     try {
-    //         const response = await fetch('http://localhost:3000/products');
-    //         const products = await response.json();
-    //         availableProducts = products.map(product => ({
-    //             ...product,
-    //             isReturnable: checkReturnEligibility(product)
-    //         }));
-    //     } catch (error) {
-    //         console.error('Error fetching products:', error);
-    //     }
-    // });
-    //
     let selectedProducts = [];
     let comment = '';
-
-    const updateQuantity = (product, quantity) => {
-        product.quantity = parseInt(quantity);
-        selectedProducts = availableProducts.filter(p => p.quantity > 0);
-    };
-
-
     let counter = 10001;
+    let textInputs = {};
 
-    function generateId() {
-        return (counter++).toString();
-    }
-    const checkReturnEligibility = (product) => {
-        const purchaseDateLimit = new Date();
-        purchaseDateLimit.setDate(purchaseDateLimit.getDate() - 14);
+    $: selectedProducts = $selectedProductsStore;
 
-        return product.type !== 'food' &&
-            (product.type !== 'video games' || product.isSealed) &&
-            new Date(product.orderDate) >= purchaseDateLimit;
-    };
-
-    const createRMARequest = async () => {
-        const dataToSend = selectedItems.map(item => ({
-            returnedProductId: generateId(),
-            orderedProductId: item.orderedProductId,
-            RMAId: generateId(),
-            productName: item.productName,
-            quantity: item.quantity,
-            date: new Date().toISOString(),
-            description: 'Your Description Here'
+    function prepareAndSendProductDetails() {
+        // Update each product with its description
+        const productsWithDescriptions = selectedProducts.map(product => ({
+            ...product,
+            description: textInputs[product.id] || '' // Add description or default to an empty string
         }));
 
-        console.log(dataToSend);
+        sendProductDetails(productsWithDescriptions);
+    }
 
+    async function sendProductDetails(products) {
         try {
-            const response = await fetch('http://localhost:3000/returns', {
+            const response = await fetch('http://localhost:3000/rma/returns/return-request', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    //here we will need the bearer authorization header when the jwt is done
                 },
-                body: JSON.stringify(dataToSend)
+                body: JSON.stringify(products)
             });
-
             if (!response.ok) {
-                throw new Error(`Failed to create RMA request: ${response.statusText}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            const result = await response.json();
-            console.log('RMA request created', result);
-            // Handle success, maybe clear the form or redirect, we have to discuss with client how he wants us to handle this
+            const responseData = await response.json();
+            console.log('Success:', responseData);
         } catch (error) {
-            console.error('Error creating RMA request:', error);
-            throw error;
+            console.error('Error:', error);
         }
-    };
+    }
+
+
 </script>
 
 <div class="rma-container">
-    <h1>Create a RMA Request</h1>
+    <h1>Return Request Details</h1>
     <div class="form-container">
         <h2>Return Request ID: </h2>
         <h2>Order ID: </h2>
-
-
-        <div class="selected-products">
-            <h2>Selected Products</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <!-- Add more columns as needed -->
-                </tr>
-                </thead>
-                <tbody>
-                {#each selectedItems as item}
-                    <tr>
-                        <td>{item.productId}</td>
-                        <td>{item.name}</td>
-                        <td>{item.quantity}</td>
-                        <td>{item.price}</td>
-                        <!-- Render other item details in respective columns -->
-                    </tr>
-                {/each}
-                </tbody>
-            </table>
-        </div>
-        </div>
-
-    <div class="comment-section">
-        <textarea bind:value={comment} rows="4" placeholder="Add any relevant information here..."></textarea>
     </div>
-    <a href="/myReturns">
-    <button on:click={createRMARequest} class="create-request-btn">Create Request</button>
-    </a>
+    <div class="table-of-products">
+        <table>
+            <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity to Return</th>
+                <th>Price</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            {#each selectedProducts as product (product.id)}
+                <tr>
+                    <td>{product.name}</td>
+                    <td>{product.quantityToReturn}</td>
+                    <td>{product.price}</td>
+                    <td>
+                        <input type="text" bind:value={textInputs[product.id]} />
+                    </td>
+                </tr>
+            {/each}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="buttons">
+        <button on:click={prepareAndSendProductDetails} class="create-request-btn">Create Request</button>
+
     <a href="orderDetails/1">
-    <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
+        <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
     </a>
+    </div>
 </div>
+
+<h1>Return Information</h1>
+<p>All returns must be shipped back in their original box, if the packaging was destroyed the customer must use suitable packaging otherwise they may not be refunded.</p>
+<p>Games/DVDs can only be returned if the seal has not been broken. If the seal is broken the customer will not be refunded.</p>
+<p>All returns will be inspected to confirm no damage to the items, if the items are damaged by fault of the customer, they may not be refunded.</p>
 
 <style>
     .rma-container {
-        max-width: 800px;
+        max-width: 70%;
         margin: 40px auto;
         padding: 20px;
         border-radius: 8px;
@@ -153,24 +105,12 @@
         margin-bottom: 20px;
     }
 
-    .select-products {
-        display: grid;
-        gap: 15px;
-    }
-
     .product-entry input {
         width: 100%;
         padding: 10px;
         margin-bottom: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
-    }
-
-    .selected-products, .comment-section {
-        width: 100%;
-        background-color: #f7f7f7;
-        padding: 15px;
-        border-radius: 8px;
     }
 
     .selected-products h2, .comment-section textarea {
@@ -191,7 +131,7 @@
     }
 
     .comment-section textarea {
-        width: 100%;
+        width: 200%;
         padding: 10px;
         border: none;
         border-radius: 4px;
@@ -219,5 +159,8 @@
         background-color: #0056b3;
         box-shadow: 0 8px 15px rgba(0, 123, 255, 0.3);
         transform: translateY(-2px);
+    }
+    table{
+        width: 100%;
     }
 </style>

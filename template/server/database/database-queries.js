@@ -118,6 +118,7 @@ export const selectOrderedProducts = `SELECT
                                           "order".orderId,
                                           "order".orderDate,
                                           orderedProduct.productId,
+                                          orderedProduct.orderedProductId
                                           orderedProduct.quantity,
                                           orderedProduct.priceAtTimeOfOrder,
                                           product.name,
@@ -233,7 +234,7 @@ export const getUserOrdersWithReturn = `
         o.totalPrice,
         o.orderDate,
         COUNT(op.orderedProductId) AS productCount,
-        SUM(rp.quantity) AS totalReturnedQuantity,
+        SUM(rp.quantityToReturn) AS totalReturnedQuantity,
         rt.statusRma,
         rt.credit
     FROM

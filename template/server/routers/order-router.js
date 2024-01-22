@@ -18,8 +18,7 @@ router.delete('/:orderId', orderController.deleteOrder);
 // Order details routes
 router.get('/details', orderController.getOrdersDetails);
 
-router.get('/details/:orderId', orderController.getProductDetailsByOrderId);
-
+router.get('/orderDetails/:orderId', orderController.getProductDetailsByOrderId);
 
 router.patch('/details/:orderDetailId', orderController.patchOrderDetails);
 
