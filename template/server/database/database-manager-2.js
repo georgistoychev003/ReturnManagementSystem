@@ -286,6 +286,8 @@ export function getProductPriceByName(productName) {
 
 export function increaseProductStockByName(productName, quantity) {
     const currentStock = db.prepare('SELECT inventoryStock FROM product WHERE name = ?').get(productName).inventoryStock;
+    console.log(currentStock)
+    console.log(quantity)
     const newStock = currentStock + quantity;
     const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
     return update.run(newStock, productName);
@@ -344,7 +346,7 @@ export function returnRMAPerMonth() {
 export function updateReturnedProductQuantity(productName, deductionQuantity, RMAId) {
     // Query to select the specific returned product based on productName and RMAId
     const select = db.prepare(`
-        SELECT rp.quantity, rp.returnedProductId
+        SELECT rp.quantityToReturn, rp.returnedProductId
         FROM returnedProduct rp
         JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
         JOIN product p ON op.productId = p.productId
@@ -354,8 +356,8 @@ export function updateReturnedProductQuantity(productName, deductionQuantity, RM
     const returnedProduct = select.get(productName, RMAId);
 
     if (returnedProduct) {
-        const newQuantity = Math.max(0, returnedProduct.quantity - deductionQuantity);
-        const update = db.prepare('UPDATE returnedProduct SET quantity = ? WHERE returnedProductId = ?');
+        const newQuantity = Math.max(0, returnedProduct.quantityToReturn - deductionQuantity);
+        const update = db.prepare('UPDATE returnedProduct SET quantityToReturn = ? WHERE returnedProductId = ?');
         return update.run(newQuantity, returnedProduct.returnedProductId);
     } else {
         throw new Error('Returned product not found');
