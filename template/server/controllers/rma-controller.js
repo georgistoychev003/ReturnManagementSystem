@@ -16,10 +16,11 @@ import {
     returnRMAaandDates,
     returnRMAPerMonth,
     updateReturnedProductQuantity,
-    assignRmaToControllerDb
+    assignRmaToControllerDb, updateImageDescriptionBycollector
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import {getAllRmaDetails} from "../database/database-queries.js";
+import * as queries from "../database/database-queries.js";
 
 export function deleteRma(req, res) {
     const { rmaId } = req.params;
@@ -248,5 +249,23 @@ export  function updateQuantities(req, res) {
     }
 
 }
+
+export async function updateImageDescriptionByCollector(req, res) {
+    const { collectorImage, collectorDescription, returnedProductId } = req.body;
+    try {
+
+        updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId);
+        res.status(200).json({ message: 'Returned product image and description updated successfully' });
+    } catch (error) {
+        console.error('Error updating returned product description and image:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
+}
+
+
+
+
+
 
 
