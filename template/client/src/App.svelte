@@ -132,8 +132,9 @@
 		page = ResetPassword;
 		currentRoute = ctx.pathname;
 	});
-	router('/RMAProducts', (ctx) => {
+	router('/RMAProducts/:rmaId', (ctx) => {
 		page = RMAProducts;
+		params = ctx.params;
 		currentRoute = ctx.pathname;
 	});
 
