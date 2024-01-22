@@ -1,14 +1,22 @@
 <script>
-    import { selectedItemsStore } from '../../Store.js';
-    import {onDestroy, onMount} from "svelte";
-    import { selectedProductsStore } from '../../Store.js';
+    import {orderStore, selectedProductsStore} from '../../Store.js';
+    import { onDestroy, onMount } from "svelte";
+    import page from "page";
 
     let selectedProducts = [];
-    let comment = '';
-    let counter = 10001;
     let textInputs = {};
 
     $: selectedProducts = $selectedProductsStore;
+
+    // Initialize text inputs when selectedProducts changes
+    $: {
+        textInputs = selectedProducts.reduce((acc, product) => {
+            if (!(product.id in acc)) {
+                acc[product.id] = ''; // Initialize with empty string or existing value
+            }
+            return acc;
+        }, {...textInputs});
+    }
 
     function prepareAndSendProductDetails() {
         // Update each product with its description
@@ -18,6 +26,8 @@
         }));
 
         sendProductDetails(productsWithDescriptions);
+
+        handleSelection();
     }
 
     async function sendProductDetails(products) {
@@ -37,6 +47,19 @@
         } catch (error) {
             console.error('Error:', error);
         }
+    }
+
+    export function handleSelection(){
+        window.open('/printingLabel', '_blank');
+        setTimeout(() => {
+            window.location.href = '/myOrders';
+        }, 100);
+
+    }
+
+
+    function clearStore() {
+        selectedProductsStore.set([]);
     }
 
 
@@ -59,7 +82,7 @@
             </tr>
             </thead>
             <tbody>
-            {#each selectedProducts as product (product.id)}
+            {#each selectedProducts as product (product.productId)}
                 <tr>
                     <td>{product.name}</td>
                     <td>{product.quantityToReturn}</td>
@@ -76,7 +99,7 @@
     <div id="buttons">
         <button on:click={prepareAndSendProductDetails} class="create-request-btn">Create Request</button>
 
-    <a href="orderDetails/1">
+    <a href="/myOrders">
         <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
     </a>
     </div>

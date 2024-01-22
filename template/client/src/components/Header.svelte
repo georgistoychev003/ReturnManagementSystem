@@ -1,5 +1,7 @@
 <script>
- import {userIdStore} from "../Store.js";
+ import {selectedProductsStore, userIdStore} from "../Store.js";
+ import { onDestroy } from 'svelte';
+
 
  export let active;
  export let showHeader = true;
@@ -11,6 +13,9 @@
  let userId = '';
  let isLoggedIn = false;
 
+ onDestroy(() => {
+  selectedProductsStore.set([]);
+ });
  onMount(() => {
   const token = localStorage.getItem('token');
   isLoggedIn = !!token;
@@ -44,6 +49,8 @@
   window.location.href='/';
   localStorage.removeItem('token');
  }
+
+
 </script>
 
 <style>
@@ -101,9 +108,9 @@
       <li><a href="javascript:void(0)" on:click={navigateToControllerStock}>STOCK &nbsp; |</a></li>
      {:else if userRole === 'customer'}
       <!-- Show links for customers -->
-      <li><a href="/client">Home &nbsp; |</a></li>
-      <li><a href="/myOrders">My Orders &nbsp; |</a></li>
-      <li><a href="/myReturns">Return Requests</a></li>
+      <li><a href="/client"  on:click(onDestroy)>Home &nbsp; |</a></li>
+      <li><a href="/myOrders" on:click(onDestroy)>My Orders &nbsp; |</a></li>
+      <li><a href="/myReturns"  on:click(onDestroy)>Return Requests</a></li>
      {:else if userRole === 'admin'}
       <!-- Show links for admin -->
       <li><a href="/admin">HOME &nbsp; |</a></li>

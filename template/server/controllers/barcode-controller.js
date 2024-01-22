@@ -8,16 +8,15 @@ import JsBarcode from "jsbarcode";
 const db = new Database('my-shop-database');
 
 export const generateBarcode1 = async (req, res) => {
-    const customerName = req.params.username;
-    const orderId = req.params.orderId;
+    const rmaId = req.params.rmaId;
 
-    if (!customerName || !orderId) {
-        return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Customer name and order ID are required' });
+    if (!rmaId) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ error: 'RMA ID is required' });
     }
 
     // Generate barcode
     const barcodeCanvas = createCanvas();
-    JsBarcode(barcodeCanvas, `${customerName} ${orderId}`, {
+    JsBarcode(barcodeCanvas, ` ${rmaId}`, {
         format: 'CODE128',
         displayValue: false,
         fontSize: 10,
@@ -52,13 +51,12 @@ export const generateBarcode1 = async (req, res) => {
 };
 
 export const generateBarcode2 = async (req, res) => {
-    const customerName = req.params.username;
-    const address = req.params.orderId;
+    const rmaId = req.params.rmaId;
 
     // Generate barcode as PNG image
     try {
         // Generate QR code as SVG
-        const qrCodeSVG = await QRCode.toString(customerName, address, {type: 'svg', scale: 0});
+        const qrCodeSVG = await QRCode.toString(rmaId, {type: 'svg', scale: 0});
 
         // Send the SVG response
         res.type('svg');

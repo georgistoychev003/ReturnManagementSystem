@@ -2,10 +2,10 @@
 <script>
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
-    import { selectedProductsStore } from '../../Store.js';
+    import { selectedProductsStore, orderStore } from '../../Store.js';
     import page from 'page';
 
-
+    let order = $orderStore;
     let orders = [];
     let selectedQuantities = {};
     let isLoading = true;
@@ -72,6 +72,7 @@
 
 </script>
 
+<div class="rma-container">
 {#if isLoading}
     <p>Loading orders...</p>
 {:else if errorMessage}
@@ -79,14 +80,15 @@
 {:else}
     <div class="client-return-order">
         <h1>Ordered Products</h1>
-        <p>Order Id: {orders.orderId}</p>
-        <p>Order Date: {orders.orderDate}</p>
+        <p>Order Id: {order.orderId}</p>
+        <p>Order Date: {order.orderDate}</p>
         <table>
             <thead>
             <tr>
                 <th>QUANTITY</th>
                 <th>PRODUCT NAME</th>
                 <th>PRICE</th>
+                <th>PREVIOUSLY RETURNED</th>
                 <th>QUANTITY TO RETURN</th>
                 <th>RETURN (CHECK IF YES)</th>
             </tr>
@@ -98,6 +100,7 @@
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
                     <td>{orderProducts.price}</td>
+                    <td>{orderProducts.quantityToReturn}</td>
                     <!-- Conditional rendering based on product type and quantity -->
                     {#if orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}
                         <td>
@@ -115,6 +118,9 @@
                     {/if}
                 </tr>
             {/each}
+            <td>Total</td>
+            <td></td>
+            <td></td>
             </tbody>
         </table>
             <button on:click={() => handleSelection()}>Return Selected Products</button>
@@ -124,23 +130,26 @@
     <!--    test purposes will delete when finished-->
     <div class="selected-products">
 
-        <ul>
-            {#each $selectedProductsStore as product}
-                <li>{product.name} - Quantity to Return: {product.quantityToReturn}</li>
-            {/each}
-        </ul>
-
         <h1 class="return-info">Return Information</h1>
         <p>All returns must be shipped back in their original box, if the packaging was destroyed the customer must use suitable packaging otherwise they may not be refunded.</p>
         <p>Games/DVDs can only be returned if the seal has not been broken. If the seal is broken the customer will not be refunded.</p>
         <p>All returns will be inspected to confirm no damage to the items, if the items are damaged by fault of the customer, they may not be refunded.</p>
 
     </div>
-
+</div>
 
 
 
 <style>
+    .rma-container {
+        max-width: 90%;
+        margin: 40px auto;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
     .client-return-order {
         max-width: 100em;
         margin: 2rem auto;
@@ -164,7 +173,8 @@
     }
 
     th, td {
-        text-align: left;
+        text-align: center; /* Centers text horizontally */
+        vertical-align: middle;
         padding: 0.75rem 1rem;
         border-bottom: 1px solid #ccc;
     }
@@ -178,11 +188,18 @@
         background-color: #f2f2f2;
     }
     button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        padding: 0.5rem 1rem;
+        background-color: #007BFF;
         color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
     }
     .checkbox-container {
         display: inline-block;
