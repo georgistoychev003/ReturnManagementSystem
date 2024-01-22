@@ -81,6 +81,7 @@ export function insertReturned(){
         const insert = db.prepare(queries.createReturnedProduct);
         for (const returnedProductData of initData.returnedProduct) {
             insert.run(
+                returnedProductData.returnedProductId,
                 returnedProductData.orderedProductId,
                 returnedProductData.RMAId,
                 returnedProductData.returnedDate,
@@ -377,9 +378,13 @@ export function updateReturnedProductQuantity(productName, deductionQuantity, RM
         WHERE p.name = ? AND r.RMAId = ?;
     `);
     const returnedProduct = select.get(productName, RMAId);
+    console.log(returnedProduct)
+    console.log(deductionQuantity)
+    console.log("1")
 
     if (returnedProduct) {
         const newQuantity = Math.max(0, returnedProduct.quantityToReturn - deductionQuantity);
+        console.log(newQuantity)
         const update = db.prepare('UPDATE returnedProduct SET quantityToReturn = ? WHERE returnedProductId = ?');
         return update.run(newQuantity, returnedProduct.returnedProductId);
     } else {

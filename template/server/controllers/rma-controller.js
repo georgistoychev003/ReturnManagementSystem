@@ -266,9 +266,9 @@ export async function assignRmaToController(req, res) {
 
 
 export  function updateQuantities(req, res) {
-    const { productName, quantity, RMAId } = req.body;
+    const { productName, quantityToReturn, RMAId } = req.body;
     try {
-        updateReturnedProductQuantity(productName, quantity, RMAId);
+        updateReturnedProductQuantity(productName, quantityToReturn, RMAId);
         res.status(200).json({ message: 'Returned product quantity updated successfully' });
     } catch (error) {
         console.error('Error updating returned product quantity:', error);

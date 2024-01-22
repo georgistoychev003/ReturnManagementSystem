@@ -159,7 +159,7 @@
                         quantityToReturn: matchingReturnRequest ? matchingReturnRequest.quantityToReturn : 0,
                         orderedProductId: product.orderedProductId // If you need to use this later
                     };
-                }).filter(product => product.quantityToReturn > 0);
+                })
                 $: if (products.length > 0 && selectedProducts.size === 0) {
                     products.forEach(product => {
                         selectedProducts.set(product.name, { action: null, quantityToReturn: 0, maxQuantity: product.quantityToReturn });
