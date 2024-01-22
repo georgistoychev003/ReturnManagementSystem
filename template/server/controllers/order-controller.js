@@ -113,10 +113,13 @@ export async function getOrderForUserId(req, res) {
 export async function getProductDetailsByOrderId(req, res){
     const {orderId} = req.params;
 
+    try {
         const productDetails = await getOrderedProductsByOrderId(orderId);
-
         res.status(StatusCodes.OK).json(productDetails);
-
+    } catch (error) {
+        // Handle error, e.g., send a 500 Internal Server Error
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    }
 }
 
 export async function getOrderDetailsPage(req, res){

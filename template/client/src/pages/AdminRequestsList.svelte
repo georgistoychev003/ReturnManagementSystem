@@ -111,35 +111,9 @@
 
     const viewDetails = async (requestId) => {
         const controllerId = getUserIdFromToken();
+        page(`/controller/return-requests-details/${requestId}`);
 
-        if (!controllerId) {
-            console.error("Controller ID not found");
-            return;
-        }
 
-        console.log("Locking RMA ID:", requestId, "with Controller ID:", controllerId);
-
-        try {
-            const lockResponse = await fetch(`http://localhost:3000/rma/assign/${requestId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({ controllerId })
-            });
-
-            if (lockResponse.ok) {
-                page(`/controller/return-requests-details/${requestId}`);
-            } else {
-                const errorMessage = await lockResponse.json();
-                console.error('Error response:', errorMessage);
-                alert(`Error: ${errorMessage.message}`);
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-            alert('An error occurred while locking the RMA.');
-        }
     };
 
 </script>

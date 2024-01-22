@@ -3,8 +3,8 @@ import { generateBarcode1, generateBarcode2, scanBarcode} from '../controllers/b
 
 const router = express.Router();
 
-router.get('/generateBarcode/:username/:orderId', generateBarcode2);
-router.get('/generateBarcode1/:username/:orderId', generateBarcode1);
+router.get('/generateBarcode/rmaId/:rmaId', generateBarcode2);
+// router.get('/generateBarcode1/:rmaId', generateBarcode1);
 router.get('/scanBarcode/:barcode', scanBarcode);
 
 export default router;

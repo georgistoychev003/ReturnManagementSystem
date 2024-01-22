@@ -2,13 +2,44 @@
     export let shippingInfo;
 
     import { onMount } from 'svelte';
+    import {userIdStore} from "../Store.js";import html2pdf from 'html2pdf.js';
 
-    let qrCodeData = 'yourData'; // Replace with the actual data you want in the QR code
-    let qrCodeSVG = ''; // Variable to store the generated QR code SVG
+    let contentElement;
+    let qrCodeData = 'yourData';
+    let qrCodeSVG = '';
+    let userId = $userIdStore;
+
+
+    function downloadPDF() {
+        html2pdf()
+            .from(contentElement)
+            .toPdf()
+            .save('download.pdf');
+    }
 
     async function displayQRCode() {
-        const response = await fetch(`http://localhost:3000/barcode/generateBarcode/user/1`);
-        qrCodeSVG = await response.text();
+        try {
+            // Fetch the last RMA ID
+            const response = await fetch(`http://localhost:3000/rma/returns/last/rma`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const rmaId = data.RMAId; // It fetches quicker than the post from the prviouse page; // Extract rmaId from response
+
+            console.log("RMA ID:", rmaId);
+
+            // Fetch the QR code using the RMA ID
+            const response2 = await fetch(`http://localhost:3000/barcode/generateBarcode/rmaId/${rmaId}`);
+            if (!response2.ok) {
+                throw new Error(`HTTP error! Status: ${response2.status}`);
+            }
+
+            qrCodeSVG = await response2.text();
+        } catch (error) {
+            console.error('Error fetching RMA ID:', error);
+        }
     }
 
     function generateQRCode() {
@@ -33,7 +64,7 @@
 
 
 
-
+<div bind:this={contentElement}>
 <div class="shipping-label">
     <div class="label-image" style="background-color: white;">
         <div id="qrcode-container">
@@ -49,55 +80,49 @@
         <p>{shippingInfo.recipientCity}, {shippingInfo.recipientState} {shippingInfo.recipientZip}</p>
     </div>
 
-    <div class="sender-info">
-        <p class="label">Sender:</p>
-        <p>{shippingInfo.senderName}</p>
-        <p>{shippingInfo.senderAddress}</p>
-        <p>{shippingInfo.senderCity}, {shippingInfo.senderState} {shippingInfo.senderZip}</p>
-    </div>
 </div>
 <h2>Please print and attach the label to the package</h2>
-
+</div>
 
 <button class="print-button" on:click={printLabel}>Print Label</button>
+<button class="print-button" on:click={downloadPDF}>Download as PDF</button>
 
 <style>
     .shipping-label {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin: 10px;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 30em;
-        width: 90em;
+        flex-direction: column;
+        align-items: center; /* Center align items for better presentation */
+        max-width: 30em; /* Adjust as needed */
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc; /* Optional: for visual structure */
+        border-radius: 10px; /* Optional: for rounded corners */
+        background-color: #f9f9f9; /* Light background */
     }
 
     .label-image {
-        flex: 1; /* Make the barcode section expand to fill available space */
-        margin-left: 2em;
-
-
+        background-color: white;
+        padding: 10px; /* Add some padding around QR code */
+        margin-bottom: 20px; /* Space between QR code and recipient info */
     }
 
-    #qrcode-container{
-        width: 30em;
+    .recipient-info {
+        text-align: left; /* Align text to the left */
+        font-size: 25px;
     }
 
-    .label-image img {
-        max-width: 100%;
-        height: 100%;
-        object-fit: cover; /* Ensure the image shrinks to fit within the container's height */
-    }
-    .recipient-info,
-    .sender-info {
-        margin: 5em;
-        font-size: larger;
+    .recipient-info p {
+        margin: 5px 0; /* Spacing between lines */
     }
 
     .label {
-        font-weight: bold;
+        font-weight: bold; /* Make label text bold */
     }
+
+    #qrcode-container{
+        width: 20em;
+    }
+
 
     .print-button {
         padding: 10px 15px;

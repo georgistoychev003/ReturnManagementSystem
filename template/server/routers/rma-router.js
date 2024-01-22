@@ -19,6 +19,8 @@ router.put('/collector/:returnedProductId', rmaController.updateImageDescription
 //
 // router.put('/collector/:returnedProductId', upload.single('image'), rmaController.updateImageDescriptionByCollector);
 
+router.get(`/returns/last/rma`, rmaController.getLastRmaFrom);
+
 router.get('/returns/Products', rmaController.getListOfReturns);
 
 router.get('/:barcode', rmaController.getRmaByBarcode);
@@ -44,8 +46,7 @@ router.post('/update-returned-product-quantity', rmaController.updateQuantities)
 
 router.delete('/:rmaId', rmaController.deleteRma);
 
-router.get('/:userId', rmaController.getReturnsByUserId);
-
+router.get('/returns/:userId', rmaController.getReturnsByUserId);
 router.get('/email/:email', rmaController.getAllRMAOfCustomerByEmail);
 
 //router.get('/details', rmaController.getAllRmasDetails);
@@ -54,4 +55,6 @@ router.get('/email/:email', rmaController.getAllRMAOfCustomerByEmail);
 
 router.post('/assign/:RMAId', rmaController.assignRmaToController);
 
+
+router.post(`/returns/return-request`, rmaController.addNewRMARequest);
 export default router;

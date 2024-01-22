@@ -3,7 +3,8 @@ import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
 
 import {
-    assignRmaToControllerQuery,
+    assignRmaToControllerQuery, createReturnedProduct,
+    createRma, getLastRMA,
     getRmaDetailsQuery,
     selectAllRMAbyCustomersEmail,
     selectStatusById
@@ -108,7 +109,23 @@ export function insertUser(user){
         user.userID, user.userName, user.email, user.password, user.userRole
     );
 }
+export function insertRma(barcode, statusRma, credit) {
+    const statement = db.prepare(queries.createRma);
+    const result = statement.run(barcode, statusRma, credit);
+    const rmaId = result.lastInsertRowid; // This is SQLite-specific; adjust for your DB
+    return rmaId;
+}
 
+export function getLastRma() {
+    const statement = db.prepare(getLastRMA);
+    return statement.get(); // Ensure this returns data
+}
+
+export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn){
+    const statement = db.prepare(queries.createReturnedProduct);
+    statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn);
+
+}
 export function getAllUsers() {
     return db.prepare(queries.selectAllUsers).all();
 }
@@ -203,7 +220,13 @@ export function getAllOrderDetails() {
 }
 
 export function getOrderedProductsByOrderId(orderId){
-    return db.prepare(queries.selectOrderedProducts).all(orderId);
+    try {
+        return db.prepare(queries.selectOrderedProducts).all(orderId);
+    } catch (error) {
+        // Handle or throw the error
+        console.error("Error in getOrderedProductsByOrderId:", error);
+        throw error;
+    }
 }
 //TODO check once the design in corrected
 export function getNumberOfRMA() {

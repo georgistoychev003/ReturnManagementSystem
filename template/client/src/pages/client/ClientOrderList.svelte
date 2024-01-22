@@ -1,9 +1,12 @@
 <script>
     import { onMount } from 'svelte';
     import About from "../About.svelte";
-    import { userIdStore } from '../../Store.js';
+    import {orderStore, userIdStore} from '../../Store.js';
+    import Help from "../../components/Help.svelte";
+    import page from "page";
 
-
+    let helpPopupVisible = false;
+    let helpContent = 'Something, Something, Something....';
     let orders = [];
     let isLoading = true;
     let errorMessage = '';
@@ -38,14 +41,14 @@
         }
     });
 
-    import Help from "../../components/Help.svelte";
 
-    let helpPopupVisible = false;
-    let helpContent = 'This is some helpful information...';
-
+    export function handleSelection(orderId, orderDate){
+        orderStore.set({orderId: orderId, orderDate:orderDate});
+        page(`/orderDetails/${orderId}`);
+    }
 
 </script>
-
+<div class="rma-container">
 {#if isLoading}
     <p>Loading orders...</p>
 {:else if errorMessage}
@@ -66,7 +69,7 @@
                 <th>ORDER DATE</th>
                 <th>CREDIT</th>
                 <th>RETURN STATUS</th>
-                <th>QUANTITY RETURNED</th>
+                <th>ITEMS RETURNED</th>
                 <th></th> <!-- Return column -->
             </tr>
             </thead>
@@ -120,9 +123,9 @@
                         {/if}
                     </td>
                     <td>
-                        <a href={`/orderDetails/${orders.orderId}`}>
-                            <button>Order Details</button>
-                        </a>
+
+                            <button on:click={handleSelection(orders.orderId, orders.orderDate)}>Order Details</button>
+
                     </td>
                 </tr>
             {:else}
@@ -133,8 +136,19 @@
         <button on:click={() => helpPopupVisible = true}>Help</button>
     </div>
 {/if}
+</div>
 
 <style>
+    .rma-container {
+        max-width: 70%;
+        margin: 40px auto;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
     .client-return-order {
         max-width: 90em;
         margin: 2rem auto;
