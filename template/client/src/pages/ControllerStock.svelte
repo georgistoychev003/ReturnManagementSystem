@@ -86,48 +86,119 @@
 </div>
 
 <style>
+
+    :root {
+        --primary-color: #0056b3;
+        --hover-color: #003d82;
+        --text-color: #333;
+        --border-color: #ddd;
+        --background-color: #f4f4f4;
+        --container-bg-color: #ffffff;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+
+    /* Container */
     .stock {
-        max-width: 960px;
+        max-width: 96%;
         margin: 2rem auto;
         padding: 1rem;
-        font-size: 1rem;
+        background: var(--container-bg-color);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+        overflow-x: auto; /* Allow horizontal scrolling */
     }
 
     h1 {
-        text-align: left;
-        margin-bottom: 1rem;
+        text-align: center;
+        margin-bottom: 2rem;
         font-size: 2rem;
-        color: #333;
+        color: var(--text-color);
+        font-weight: 300;
     }
 
+    /* Table Styles */
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 1rem;
+        table-layout: fixed;
     }
 
     th, td {
         text-align: left;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #ccc;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+        word-break: break-word; /* Allow text to wrap within cells */
     }
 
     th {
-        color: #555;
+        background-color: var(--primary-color);
+        color: white;
     }
 
+    /* Buttons */
     .update-btn {
         padding: 0.5rem 1rem;
-        background-color: #007BFF;
+        background-color: var(--primary-color);
         color: white;
         border: none;
-        border-radius: 4px;
+        border-radius: 0.25rem;
         cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        white-space: nowrap; /* Prevent button text from wrapping */
     }
 
     .update-btn:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
+        background-color: var(--hover-color);
+        transform: scale(0.98);
     }
+
+    /* Responsive Design */
+    @media only screen and (max-width: 768px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        /* Smaller padding and font size within table cells for smaller screens */
+        th, td {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Smaller buttons on smaller screens */
+        .update-btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    @media only screen and (max-width: 480px) {
+        h1 {
+            font-size: 1.2rem;
+        }
+
+        /* Even smaller padding and font size within table cells for mobile screens */
+        th, td {
+            padding: 0.4rem;
+            font-size: 0.8rem;
+        }
+
+        /* Adjust button sizes for mobile screens */
+        .update-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+        }
+    }
+
 </style>

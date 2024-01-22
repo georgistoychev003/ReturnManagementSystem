@@ -54,6 +54,8 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     weight DOUBLE,
     statusProduct TEXT,
     quantityToReturn INT,
+    collectorImage TEXT, 
+    collectorDescription TEXT, 
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -252,3 +254,11 @@ export const getUserOrdersWithReturn = `
 export const assignRmaToControllerQuery = `UPDATE returntable SET controllerId = ?, lockTimestamp = ? WHERE RMAId = ?`;
 
 export const getRmaDetailsQuery = `SELECT * FROM returntable WHERE RMAId = ?`;
+
+
+export const setImageDescriptionByController = `UPDATE returnedProduct
+SET collectorImage = ?,
+    collectorDescription = ?
+        WHERE returnedProductId = ?`;
+
+

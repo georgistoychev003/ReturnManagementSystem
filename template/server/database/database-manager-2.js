@@ -236,7 +236,7 @@ export function getStatusById(RMAId) {
 
 export function getTotalPriceOfRMA(RMAId) {
     const query = `
-        SELECT r.RMAId, SUM(op.unitPrice * rp.quantity) AS TotalReturnPrice
+        SELECT r.RMAId, SUM(op.unitPrice * rp.quantityToReturn) AS TotalReturnPrice
         FROM returnedProduct rp
         JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
         JOIN returntable r ON rp.RMAId = r.RMAId
@@ -354,5 +354,11 @@ export function updateReturnedProductQuantity(productName, deductionQuantity, RM
 }
 export function getOrderDetails2(userId){
     return db.prepare(queries.getUserOrdersWithReturn).all(userId);
+}
+
+
+export function updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId) {
+    const update = db.prepare(queries.setImageDescriptionByController);
+    return update.run(collectorImage, collectorDescription,  returnedProductId);
 }
 
