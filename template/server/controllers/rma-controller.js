@@ -16,11 +16,10 @@ import {
     returnRMAaandDates,
     returnRMAPerMonth,
     updateReturnedProductQuantity,
-    assignRmaToControllerDb, getRMAByClientEmail
-    assignRmaToControllerDb, updateImageDescriptionBycollector
+    assignRmaToControllerDb, getRMAByClientEmail,
+    updateImageDescriptionBycollector
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
-import {getAllRmaDetails} from "../database/database-queries.js";
 import * as queries from "../database/database-queries.js";
 import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
 
