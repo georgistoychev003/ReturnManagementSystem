@@ -15,7 +15,7 @@ router.get('/withDates', rmaController.getRMAandDates );
 router.get('/monthly', rmaController.getRMAPerMonths );
 router.put('/collector/:orderProductId', rmaController.updateImageDescriptionByCollector);
 
-
+router.get(`/returns/last/rma`, rmaController.getLastRmaFrom);
 
 router.get('/returns/Products', rmaController.getListOfReturns);
 
@@ -46,6 +46,7 @@ router.get('/returns/:userId', rmaController.getReturnsByUserId);
 //router.get('/details', rmaController.getAllRmasDetails);
 //router.get('/withDates', rmaController.getRMAandDates());
 router.post('/assign/:RMAId', rmaController.assignRmaToController);
+
 
 router.post(`/returns/return-request`, rmaController.addNewRMARequest);
 export default router;

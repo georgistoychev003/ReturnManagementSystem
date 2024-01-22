@@ -17,11 +17,12 @@ import {
     returnRMAPerMonth,
     updateReturnedProductQuantity,
     assignRmaToControllerDb,
-    updateImageDescriptionBycollector
+    updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
-import {getAllRmaDetails} from "../database/database-queries.js";
-import * as queries from "../database/database-queries.js";
+
+import res from "express/lib/response.js";
+
 
 export function deleteRma(req, res) {
     const { rmaId } = req.params;
@@ -263,23 +264,47 @@ export async function updateImageDescriptionByCollector(req, res) {
     }
 
 }
-
-export function addNewRMARequest(req, res){
-    console.log("Received JSON payload:", req.body);
+export async function getLastRmaFrom(req, res) {
     try {
-        const products = req.body;
-        for (const product of products) {
-            const {id, name, quantityToReturn, description} = product;
-
-            // Insert data into the database
-            // This is a placeholder - replace with your actual database logic
-            insertProductIntoDatabase(id, name, quantityToReturn, description);
-        }
-        res.status(200).json({message: 'Data received successfully'});
-    }catch (error) {
-        console.error('Error processing request:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        const rma = getLastRma(); // Call the function
+        res.status(StatusCodes.OK).json(rma);
+    } catch (error) {
+        console.error("Error fetching last RMA:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
     }
 }
+
+
+
+export async function addNewRMARequest(req, res) {
+    try {
+        // Log received payload for debugging
+        console.log("Received JSON payload:", req.body);
+
+        // Normalize products to always be an array
+        let products = req.body;
+        if (!Array.isArray(products)) {
+            products = [products];
+        }
+
+        // Create RMA and retrieve ID (assuming insertRma is async)
+        const rmaId = await insertRma("barcodeX", "pending", 0);
+
+        // Get today's date in YYYY-MM-DD format
+        const formattedDate = new Date().toISOString().split('T')[0];
+
+        // Process each product
+        for (const product of products) {
+            await insertReturnedProduct(product.orderedProductId, rmaId, formattedDate, product.description, product.productWeight, "pending", product.quantityToReturn);
+        }
+
+        // Send a successful response back
+        res.status(200).json({ message: "RMA request added successfully" });
+    } catch (error) {
+        console.error("Error in addNewRMARequest:", error);
+        res.status(500).send("An error occurred while processing your request.");
+    }
+}
+
 
 

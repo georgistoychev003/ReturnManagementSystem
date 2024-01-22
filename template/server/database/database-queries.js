@@ -10,7 +10,7 @@ export const createProductTable = `CREATE TABLE IF NOT EXISTS product(
 )`
 
 export const createUserTable = `CREATE TABLE IF NOT EXISTS user(
-    userID INT PRIMARY KEY,
+    userID INTEGER PRIMARY KEY AUTOINCREMENT,
     userName TEXT NOT NULL, 
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
@@ -36,7 +36,7 @@ export const createOrderedProductTable = `CREATE TABLE IF NOT EXISTS orderedProd
 )`
 
 export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
-    RMAId INTEGER NOT NULL PRIMARY KEY,
+    RMAId INTEGER PRIMARY KEY,
     barcode TEXT NOT NULL,
     statusRma TEXT NOT NULL,
     credit DOUBLE NOT NULL,
@@ -46,7 +46,7 @@ export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
     )`
 
 export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedProduct(
-    returnedProductId INTEGER PRIMARY KEY AUTOINCREMENT,
+    returnedProductId INTEGER PRIMARY KEY ,
     orderedProductId INT NOT NULL,
     RMAId INT,
     returnedDate DATE,
@@ -71,7 +71,7 @@ export const countReturnedProducts = `SELECT count(returnedProductId) FROM retur
 
 export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma, credit) VALUES (?, ?, ?)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?, ? )`
+export const createReturnedProduct = `INSERT INTO returnedProduct (orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ? )`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice, priceAtTimeOfOrder) VALUES (?, ?, ?, ?, ?, ?)`
@@ -115,17 +115,18 @@ export const selectReturnedProductQuantityByRMAId = `
     WHERE r.RMAId = ?;
 `;
 //TODO check once the design in corrected
-
+export const getLastRMA = `SELECT RMAId FROM returntable ORDER BY RMAId DESC LIMIT 1`;
 export const selectOrderedProducts = `SELECT
                                           "order".orderId,
                                           "order".orderDate,
                                           orderedProduct.productId,
-                                          orderedProduct.orderedProductId
+                                          orderedProduct.orderedProductId, 
                                           orderedProduct.quantity,
                                           orderedProduct.priceAtTimeOfOrder,
                                           product.name,
                                           product.price,
                                           product.type,
+                                          product.productWeight,
                                           returnedProduct.quantityToReturn
                                       FROM
                                           "order"
@@ -134,6 +135,7 @@ export const selectOrderedProducts = `SELECT
                                               JOIN product ON orderedProduct.productId = product.productId
                                       WHERE
                                           "order".orderId = ?`;
+
 
 export const selectAllRMAByUserId = `SELECT rp.returnedProductId, rp.orderedProductId, rp.RMAId, rp.returnedDate, rp.description, rp.weight, rp.statusProduct FROM returnedProduct rp
 JOIN orderedProduct op ON op.orderedProductId = rp.orderedProductId
