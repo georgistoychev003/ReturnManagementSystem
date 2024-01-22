@@ -152,9 +152,9 @@
     });
 
 // for now hard coded
-    //todo : database should be done for full functionality
-    const userID = '1';
-    fetchUserDetails(userID);
+//     //todo : database should be done for full functionality
+//     const userID = '1';
+//     fetchUserDetails(userID);
 
 </script>
 

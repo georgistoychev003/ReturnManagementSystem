@@ -1,30 +1,61 @@
 <script>
     import ReturnDetails from "./ReturnDetails.svelte";
+    import { onMount } from "svelte";
     let selectedProduct = null;
+    let products = [];
+    let user = {};
+    let rmaId;
+    export let params; // This is set by the parent component or the router
 
-    let user = {
-        name: 'Michel Bravo',
-        comments: 'My items are in perfectly working state and shape. I hope my refund will be processed soon',
-    };
+    onMount(() => {
+        if (params && params.rmaId) {
+            rmaId = params.rmaId;
+            fetchRMAProducts(rmaId);
+            fetchRMAUser(rmaId);
+        } else {
+            console.error('RMA ID not provided in the URL params.');
+        }
+    });
 
-    let returns = [
-        {
-            productId: '12',
-            quantity: 2,
-            price: 19.99,
-            date: '2024-01-01',
-            productImage: 'https://imgs.search.brave.com/4RYd4IYiG7_5kosmmEdxPSWYMifrKS79FjdMcpdsBCE/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxSll1MDYrRTNM/LmpwZw',
-            type: 'Electronics',
-        },
-        {
-            productId: '8',
-            quantity: 1,
-            price: 89.99,
-            date: '2024-01-01',
-            productImage: 'https://imgs.search.brave.com/tfCqGefF_xetZESOOBIjRJlm358SRqlNxevCDCUDAss/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9zdG9y/ZS5zdG9yZWltYWdl/cy5jZG4tYXBwbGUu/Y29tLzQ5ODIvYXMt/aW1hZ2VzLmFwcGxl/LmNvbS9pcy9NVDVO/M3JlZj93aWQ9NTMy/JmhlaT01ODImZm10/PXBuZy1hbHBoYSYu/dj0xNjkyODk5NDIx/MzI3.jpeg',
-            type: 'Accessory',
-        },
-    ];
+    async function fetchRMAProducts(rmaId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${rmaId}/products`);
+            if (response.ok) {
+                let data = await response.json();
+                products = data.map(product => ({
+                    productId: product.returnedProductId,
+                    type: product.type,
+                    price: product.price,
+                    quantity: product.quantityToReturn,
+                    productImage: product.imageURL,
+                    date: product.returnedDate,
+                    rmaId: rmaId
+                }));
+            } else {
+                console.error(`Failed to fetch products for RMA ID: ${rmaId}`);
+            }
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
+
+    async function fetchRMAUser(rmaId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${rmaId}/customer`);
+            if (response.ok) {
+                user = await response.json();
+            } else {
+                console.error(`Failed to fetch user for RMA ID: ${rmaId}`);
+            }
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return isNaN(date) ? 'Invalid date' : date.toLocaleDateString();
+    }
 </script>
 
 {#if selectedProduct}
@@ -32,11 +63,13 @@
 {:else}
     <div class="return-container">
         <div class="return-header">
-            <h2>Return Request for {user.name}</h2>
-            <span>Date: {new Date(returns[0].date).toLocaleDateString()}</span>
+            <h2>Return Request for {user.userName}</h2>
+            {#if products.length > 0 && products[0].date}
+                <span>Date: {formatDate(products[0].date)}</span>
+            {/if}
         </div>
-        {#each returns as product}
-            <div class="product-card" on:click={() => selectedProduct = product}>
+        {#each products as product}
+            <div class="product-card" on:click={() => (selectedProduct = product)}>
                 <img class="product-image" src={product.productImage} alt={`Product ${product.productId}`} />
                 <div class="product-info">
                     <h3>{product.type}</h3>

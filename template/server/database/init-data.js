@@ -42,7 +42,7 @@ export const productsData = [
     "type": "Electronics",
     "price": 599.99,
     "name": "Smartphone",
-    "imageURL": "https://example.com/image1.jpg",
+    "imageURL": "https://imgs.search.brave.com/HfHdg4xKrN2opp8RF_lwcK53vRMwOv6Nolq99CBN97A/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NzFITjRQLXBkNUwu/anBn",
     "productWeight": 0.2,
     "inventoryStock": 50
     },
@@ -51,7 +51,7 @@ export const productsData = [
         "type": "Clothing",
         "price": 40,
         "name": "T-shirt",
-        "imageURL": "https://example.com/image2.jpg",
+        "imageURL": "https://imgs.search.brave.com/X48KgKtboT8YVYVUognRUeBfCoH5dqhNU7co-qgY-SA/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE1/NzY1NjY1ODgwMjgt/NDE0N2YzODQyZjI3/P3E9ODAmdz0xMDAw/JmF1dG89Zm9ybWF0/JmZpdD1jcm9wJml4/bGliPXJiLTQuMC4z/Jml4aWQ9TTN3eE1q/QTNmREI4TUh4elpX/RnlZMmg4TVRCOGZI/UWxNakJ6YUdseWRI/eGxibnd3Zkh3d2ZI/eDhNQT09.jpeg",
         "productWeight": 0.3,
         "inventoryStock": 100
     },
@@ -60,7 +60,7 @@ export const productsData = [
         "type": "Home & Kitchen",
         "price": 149.99,
         "name": "Coffee Machine",
-        "imageURL": "https://example.com/image3.jpg",
+        "imageURL": "https://imgs.search.brave.com/43JyYAwxk0CIxeeuDetc9lM2azyLU_ROtdaxazAVYmc/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE5/NDY1OTg1Mi9waG90/by9jb2ZmZWUtbWFj/aGluZS5qcGc_cz02/MTJ4NjEyJnc9MCZr/PTIwJmM9YlJvRXJo/cldJZllzS1QxT2RY/eHJZaFZseE5jeW5O/RUFFTWpTQU80VGg3/OD0",
         "productWeight": 2.5,
         "inventoryStock": 20
     },
@@ -69,7 +69,7 @@ export const productsData = [
         "type": "Food",
         "price": 24.99,
         "name": "Frikandelbroodje",
-        "imageURL": "https://example.com/image4.jpg",
+        "imageURL": "https://imgs.search.brave.com/ETRmuPJnpKX18EKaYbEj-ebMDxhPQsjJgzF9wX1ABao/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9kdXRj/aHJldmlldy5jb20v/d3AtY29udGVudC91/cGxvYWRzL2ZyaWth/bmRlbC1waG90by5q/cGc",
         "productWeight": 0.8,
         "inventoryStock": 30
     },
@@ -78,7 +78,7 @@ export const productsData = [
         "type": "Electronics",
         "price": 35,
         "name": "Keyboard",
-        "imageURL": "https://example.com/image4.jpg",
+        "imageURL": "https://imgs.search.brave.com/fir_6Ow1ZPL2GBjMsUxYy8rXFxLXsY3sRL5WNOjInsU/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9yZXNv/dXJjZS5sb2dpdGVj/aGcuY29tL3dfMzg2/LGFyXzEuMCxjX2xp/bWl0LGZfYXV0byxx/X2F1dG8sZHByXzIu/MC9kX3RyYW5zcGFy/ZW50LmdpZi9jb250/ZW50L2RhbS9nYW1p/bmcvZW4vcHJvZHVj/dHMvcHJvLWtleWJv/YXJkL3Byby1rZXli/b2FyZC1nYWxsZXJ5/L3VrLXByby1nYW1p/bmcta2V5Ym9hcmQt/Z2FsbGVyeS10b3Bk/b3duLnBuZz92PTE",
         "productWeight": 1,
         "inventoryStock": 20
     },
@@ -87,7 +87,7 @@ export const productsData = [
         "type": "Game",
         "price": 80,
         "name": "Call of Duty",
-        "imageURL": "https://example.com/image4.jpg",
+        "imageURL": "https://imgs.search.brave.com/7Y8ZhlmEigbROMyJI8I_gLmUry-hdl5B43dJjODpdYA/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvNDU4/Njc2MDM3L3Bob3Rv/L2NhbGwtb2YtZHV0/eS5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9Q0xnT0E1WTNw/a2ZobnFQOWdfN3Np/cHBDQ1BKQ1M4R0NQ/djBSUTRpVU9kND0",
         "productWeight": 1,
         "inventoryStock": 10
     }

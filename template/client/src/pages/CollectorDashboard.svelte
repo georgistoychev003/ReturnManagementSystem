@@ -56,6 +56,7 @@
             // Process the QR code data
             barcode = qrCodeData.data;
             // Continue with our application logic
+            page(`/RMAProducts/${barcode}`);
         }
     }
 
