@@ -95,7 +95,12 @@
                                 {order.statusRma}
                             {/if}
                         </td>
-                        <td>{order.totalReturnedQuantity}</td>
+                        <td> {#if order.totalReturnedQuantity === null}
+                            -
+                        {:else}
+                            {order.totalReturnedQuantity}
+                        {/if}
+                    </td>
                         <td>
                             <a href={`/orderDetails/${order.orderId}`}>
                                 <button>Order Details</button>
