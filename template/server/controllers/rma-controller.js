@@ -91,15 +91,16 @@ export function getRmaProducts(req, res) {
     const { rmaId } = req.params;
     try {
         const products = getProductByRMAId(rmaId);
+        console.log(products)
         res.status(StatusCodes.OK).json(products.map(p => ({
             returnedProductId: p.returnedProductId,
+            orderedProductId: p.orderedProductId,
             name: p.name,
             price: p.price,
             type: p.type,
             imageURL: p.imageURL,
             quantityToReturn: p.quantityToReturn,
             returnedDate : p.returnedDate
-
 
 
         })));
