@@ -200,7 +200,6 @@ SELECT
     rp.description,
     rp.weight,
     rp.statusProduct,
-    rp.quantity,
     u.userName AS staffName,
     u.email AS staffEmail
 FROM
@@ -235,7 +234,7 @@ export const getUserOrdersWithReturn = `
         o.totalPrice,
         o.orderDate,
         COUNT(op.orderedProductId) AS productCount,
-        SUM(rp.quantity) AS totalReturnedQuantity,
+        SUM(rp.quantityToReturn) AS totalReturnedQuantity,
         rt.statusRma,
         rt.credit
     FROM
