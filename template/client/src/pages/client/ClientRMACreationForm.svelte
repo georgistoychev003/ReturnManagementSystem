@@ -103,6 +103,8 @@
         <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
     </a>
     </div>
+    <h5>Verify the items you want to return and enter a reason for the return. Once finished, click 'Create Request'</h5>
+    <h5>** On 'Create Request' the order can no longer be cancelled</h5>
 </div>
 
 <h1>Return Information</h1>
