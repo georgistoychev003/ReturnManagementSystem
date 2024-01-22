@@ -56,11 +56,6 @@
 {:else}
     <div class="client-return-order">
         <h1>My Orders</h1>
-<!--        <Help-->
-<!--                visible={helpPopupVisible}-->
-<!--                content={helpContent}-->
-<!--                closePopup={() => helpPopupVisible = false}-->
-<!--        />-->
         <table>
             <thead>
             <tr>
@@ -138,12 +133,11 @@
             {/if}
             </tbody>
         </table>
-<!--        <button on:click={() => helpPopupVisible = true}>Help</button>-->
     </div>
 {/if}
 
-    <p>To start a return, select the Order you wish to return to view the products of the order.</p>
-    <p>The page will navigate to show a list of products where you can select a quantity and the item you wish to return.</p>
+    <h5>To start a return, select the Order you wish to return to view the products of the order.</h5>
+    <h5>The page will navigate to show a list of products where you can select a quantity and the item you wish to return.</h5>
 </div>
 
 <style>
