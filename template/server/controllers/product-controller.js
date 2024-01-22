@@ -1,7 +1,7 @@
 import {
     deleteProductById,
     getAllProducts,
-    getProductById,
+    getProductById, getProductPriceByOrderedProductId,
     updateProductById,
     updateProductStock
 } from "../database/database-manager-2.js";
@@ -19,6 +19,24 @@ export async function getProduct(req, res) {
         }
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve product." });
+    }
+}
+
+export async function getProductPrice(req, res) {
+    console.log(req.params)
+    const orderedProductId = req.params.productId;
+    try {
+        console.log(orderedProductId)
+        const priceData = getProductPriceByOrderedProductId(orderedProductId);
+        console.log(priceData)
+        if (priceData) {
+            res.json(priceData);
+        } else {
+            res.status(404).send('Product not found');
+        }
+    } catch (error) {
+        console.error('Error fetching product price:', error);
+        res.status(500).send('Internal server error');
     }
 }
 

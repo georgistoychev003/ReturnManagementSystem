@@ -51,6 +51,23 @@
             return 0;
         }
     }
+    async function getTotalRefundAmount(RMAId) {
+        try {
+            console.log(RMAId)
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/refund`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                return data.totalRefundAmount;
+            } else {
+                console.error('Failed to fetch total price for RMA', RMAId);
+                return 0;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            return 0;
+        }
+    }
 
     async function fetchCustomerOfRMA(RMAId) {
         try {
@@ -69,6 +86,7 @@
     }
 
     async function fetchReturnRequests() {
+
         try {
             const response = await fetch(`http://localhost:3000/rma/returns/products`);
             if (response.ok) {
@@ -77,16 +95,14 @@
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
                     const customer = await fetchCustomerOfRMA(request.RMAId);
+                    request.totalRefund = await getTotalRefundAmount(request.RMAId);
                     request.email = customer;
                     request.totalReturnPrice = totalPrice;
-                    request.statusRMA = status
+                    request.statusRMA = request.totalReturnPrice === 0 ? 'Finished' : status;
                 }
                 const aggregatedRequests = aggregateRequestsByRMA(requests);
 
                 returnRequests = Object.values(aggregatedRequests);
-
-                returnRequests = Object.values(aggregatedRequests)
-                    .filter(request => request.totalReturnPrice > 0);
 
                 console.log(returnRequests);
             } else {
@@ -154,6 +170,7 @@
             <th>OVERVIEW</th>
             <th>PRICE</th>
             <th>DATE</th>
+            <th>REFUND</th>
             <th>STATUS</th>
             <th></th>
         </tr>
@@ -166,9 +183,12 @@
                 <td>{request.description}</td>
                 <td>{request.totalReturnPrice}</td>
                 <td>{request.returnedDate}</td>
+                <td>${request.totalRefund.toFixed(2)}</td>
                 <td class="status">{request.statusRMA}</td>
                 <td>
-                    <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
+                    {#if request.statusRMA !== 'Finished'}
+                        <button on:click={() => viewDetails(request.RMAId)}>Details</button>
+                    {/if}
                 </td>
             </tr>
         {/each}

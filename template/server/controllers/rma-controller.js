@@ -17,7 +17,7 @@ import {
     returnRMAPerMonth,
     updateReturnedProductQuantity,
     updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma,
-    assignRmaToControllerDb, getRMAByClientEmail,
+    assignRmaToControllerDb, getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId,
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import * as queries from "../database/database-queries.js";
@@ -83,7 +83,6 @@ export function getRmaPrice(req, res) {
 export function getRmaStatus(req, res) {
     const { rmaId } = req.params;
     try {
-
         const status = getStatusById(rmaId);
         res.status(StatusCodes.OK).json(status);
     } catch (error) {
@@ -106,7 +105,6 @@ export function getRmaProducts(req, res) {
     const { rmaId } = req.params;
     try {
         const products = getProductByRMAId(rmaId);
-        console.log(products)
         res.status(StatusCodes.OK).json(products.map(p => ({
             returnedProductId: p.returnedProductId,
             orderedProductId: p.orderedProductId,
@@ -142,7 +140,6 @@ export function getRma(req, res) {
         let rmaResult;
         if (rmaId) {
             rmaResult = getAllRmaById(rmaId)
-            console.log(rmaResult)
         }
         if (rmaResult) {
             res.status(StatusCodes.OK).json(rmaResult);
@@ -297,6 +294,38 @@ export async function getLastRmaFrom(req, res) {
     } catch (error) {
         console.error("Error fetching last RMA:", error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+}
+
+export async function updateTotalRefund(req, res) {
+    const { RMAId } = req.params;
+    const { totalRefundAmount } = req.body;
+
+    try {
+        const result = updateTotalRefundAmount(RMAId, totalRefundAmount);
+        console.log(result)
+        if (result.changes > 0) {
+            res.status(StatusCodes.OK).json({ message: 'Total refund amount updated successfully.' });
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ message: 'RMA not found.' });
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to update total refund amount.' });
+    }
+}
+
+export async function getRmaRefund(req, res) {
+    const { rmaId } = req.params;
+    try {
+        const result = getTotalRefundByRMAId(rmaId);
+        if (result) {
+            res.json({ totalRefundAmount: result.totalRefundAmount });
+        } else {
+            res.status(404).json({ error: 'RMA not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 

@@ -283,6 +283,11 @@ export function getCustomerEmailByRMAId(RMAId) {
 export function getProductByRMAId(RMAId) {
     return db.prepare(queries.selectProductDescriptionsByRMAId).all(RMAId);
 }
+export function getTotalRefundByRMAId(RMAId) {
+    const statement = db.prepare('SELECT totalRefundAmount FROM returntable WHERE RMAId = ?');
+    return statement.get(RMAId); // This will return the row with the totalRefundAmount
+}
+
 
 export function getQunatityByRMAId(RMAId) {
     return db.prepare(queries.selectReturnedProductQuantityByRMAId).all(RMAId);
@@ -391,6 +396,18 @@ export function updateReturnedProductQuantity(productName, deductionQuantity, RM
         throw new Error('Returned product not found');
     }
 }
+
+export function updateTotalRefundAmount(RMAId, totalRefundAmount) {
+    console.log("here")
+    const update = db.prepare('UPDATE returntable SET totalRefundAmount = ? WHERE RMAId = ?');
+    return update.run(totalRefundAmount, RMAId);
+}
+
+export function updateRMAStatusToFinished(RMAId) {
+    const update = db.prepare('UPDATE returntable SET statusRma = "Finished" WHERE RMAId = ? AND ...');
+    return update.run(RMAId);
+}
+
 export function getOrderDetails2(userId){
     return db.prepare(queries.getUserOrdersWithReturn).all(userId);
 }
@@ -399,5 +416,10 @@ export function getOrderDetails2(userId){
 export function updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId) {
     const update = db.prepare(queries.setImageDescriptionByController);
     return update.run(collectorImage, collectorDescription,  returnedProductId);
+}
+
+export function getProductPriceByOrderedProductId(orderedProductId) {
+    const query = `SELECT unitPrice FROM orderedProduct WHERE orderedProductId = ?`;
+    return db.prepare(query).get(orderedProductId);
 }
 

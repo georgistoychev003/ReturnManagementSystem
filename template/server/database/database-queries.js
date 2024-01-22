@@ -42,6 +42,7 @@ export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
     credit DOUBLE NOT NULL,
     controllerId INT,
     lockTimestamp DATETIME,
+    totalRefundAmount INT,
     FOREIGN KEY (controllerId) REFERENCES "user"(userID)                                 
     )`
 
@@ -70,7 +71,7 @@ export const countReturns = `SELECT count(RMAId) FROM returntable`
 export const countReturnedProducts = `SELECT count(returnedProductId) FROM returnedProduct`
 
 export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
-export const createRma = `INSERT INTO returntable (barcode, statusRma, credit) VALUES (?, ?, ?)`;
+export const createRma = `INSERT INTO returntable (barcode, statusRma, credit, totalRefundAmount) VALUES (?, ?, ?, 0)`;
 export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`

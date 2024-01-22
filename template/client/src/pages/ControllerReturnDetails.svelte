@@ -4,7 +4,6 @@
 
     let RMAId;
 
-    let selectedAction = null;
 
     let products =[];
 
@@ -18,10 +17,6 @@
 
     let returnDescription = '';
 
-    const selectAction = (action) => {
-        selectedAction = action;
-    };
-
     function getRMAIdFromUrl() {
         const path = window.location.pathname;
         const parts = path.split('/');
@@ -30,6 +25,7 @@
 
     $: {
         RMAId = getRMAIdFromUrl();
+
     }
 
     onMount(async () => {
@@ -38,6 +34,7 @@
     });
 
     async function handleConfirm() {
+        let totalRefundAmount = 0;
         // Preparing payload for refund or damaged
         console.log(selectedProducts.entries())
         const productsForAction = Array.from(selectedProducts.entries())
@@ -57,6 +54,25 @@
         // Separate payloads for refund and damaged
         const refundPayload = productsForAction.filter(product => product.action === 'refund');
         const damagedPayload = productsForAction.filter(product => product.action === 'damaged');
+        console.log(refundPayload)
+
+        for (const product of productsForAction) {
+            const productInfo = products.find(p => p.name === product.name);
+            if (productInfo) {
+                try {
+                    const unitPriceResponse = await fetch(`http://localhost:3000/product/${productInfo.orderedProductId}/price`);
+                    if (unitPriceResponse.ok) {
+                        const unitPriceData = await unitPriceResponse.json();
+                        console.log(unitPriceData)
+                        totalRefundAmount += unitPriceData.unitPrice * product.quantityToReturn;
+                    } else {
+                        console.error(`Failed to fetch price for product: ${product.name}`);
+                    }
+                } catch (error) {
+                    console.error(`Error fetching price for product: ${product.name}`, error);
+                }
+            }
+        }
 
         // Process refund if any
         if (refundPayload.length > 0) {
@@ -80,8 +96,22 @@
             }
         }
 
+        if (totalRefundAmount > 0) {
+            console.log("refund time")
+            await updateTotalRefundAmount(RMAId, totalRefundAmount);
+        }
+
         // Redirect to the controller page
         page(`/controller`);
+    }
+
+    async function updateTotalRefundAmount(RMAId, amount) {
+        const url = `http://localhost:3000/rma/update-total-refund/${RMAId}`;
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ totalRefundAmount: amount })
+        });
     }
 
     // Helper function to send action request
@@ -237,7 +267,8 @@
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/products`);
             if (response.ok) {
                 const data = await response.json();
-                products = data.map(product => ({name: product.name}));
+                products = data.map(product => ({name: product.name,
+                    unitPrice: product.unitPrice}));
                 return data;
             } else {
                 console.error('Failed to fetch total price for RMA', RMAId);

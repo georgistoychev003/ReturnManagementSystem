@@ -4,7 +4,11 @@ import express from 'express';
 const router = express.Router();
 
 import * as rmaController from '../controllers/rma-controller.js';
-import {getAllRmasDetails, getRMAandDates, updateImageDescriptionByCollector} from "../controllers/rma-controller.js";
+import {
+    getAllRmasDetails,
+    getRMAandDates,
+    updateImageDescriptionByCollector
+} from "../controllers/rma-controller.js";
 
 
 router.get('/', rmaController.getListOfRmas);
@@ -34,11 +38,15 @@ router.get('/:rmaId/total-price', rmaController.getRmaPrice);
 
 router.get('/:rmaId/status', rmaController.getRmaStatus);
 
+router.get('/:rmaId/refund', rmaController.getRmaRefund);
+
 router.get('/:rmaId/customer', rmaController.getRmaCustomer);
 
 router.get('/:rmaId/products', rmaController.getRmaProducts);
 
 router.get('/:rmaId/quantity', rmaController.getRmaQuantity);
+
+router.post('/update-total-refund/:RMAId', rmaController.updateTotalRefund);
 
 router.patch('/:rmaId', rmaController.patchRma);
 
