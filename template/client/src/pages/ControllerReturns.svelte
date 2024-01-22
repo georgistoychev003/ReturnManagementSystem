@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import page from 'page';
+    import {writable} from "svelte/store";
 
     let returnRequests = [];
 
@@ -126,6 +127,8 @@
                 }
                 const aggregatedRequests = aggregateRequestsByRMA(requests);
 
+                rawReturnRequests = Object.values(aggregatedRequests);
+
                 returnRequests = Object.values(aggregatedRequests);
 
                 console.log(returnRequests);
@@ -181,11 +184,25 @@
             alert('An error occurred while locking the RMA.');
         }
     };
+    const showFinished = writable(false);
+    function toggleShowFinished() {
+        showFinished.update(value => !value);
+    }
+
+    let rawReturnRequests = [];
+
+    $: returnRequests = $showFinished
+        ? rawReturnRequests
+        : rawReturnRequests.filter(req => req.statusRMA !== 'Finished');
+
 
 </script>
 
 <div class="customer-returns">
     <h1>Customer Requests</h1>
+    <button class="toggle-btn" on:click={toggleShowFinished}>Toggle Finished RMAs</button>
+
+
     <table>
         <thead>
         <tr>
@@ -372,6 +389,43 @@
         .details-btn {
             padding: 0.25rem 0.5rem;
             font-size: 0.7rem;
+        }
+    }
+
+    .toggle-btn {
+        padding: 0.5rem 1rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        margin-bottom: 1rem; /* Space below the button */
+    }
+
+    .toggle-btn:hover {
+        background-color: var(--hover-primary-color);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .toggle-btn:active {
+        background-color: var(--hover-secondary-color);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design for Button */
+    @media (max-width: 768px) {
+        .toggle-btn {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .toggle-btn {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
         }
     }
 </style>
