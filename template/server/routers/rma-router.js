@@ -1,4 +1,5 @@
 import express from 'express';
+// import multer from 'multer';
 
 const router = express.Router();
 
@@ -13,9 +14,10 @@ router.get('/count', rmaController.getCountOfRMA);
 //router.get('/details', rmaController.getAllRmasDetails);
 router.get('/withDates', rmaController.getRMAandDates );
 router.get('/monthly', rmaController.getRMAPerMonths );
-router.put('/collector/:orderProductId', rmaController.updateImageDescriptionByCollector);
-
-
+router.put('/collector/:returnedProductId', rmaController.updateImageDescriptionByCollector);
+// const upload = multer({ storage: multer.memoryStorage() });
+//
+// router.put('/collector/:returnedProductId', upload.single('image'), rmaController.updateImageDescriptionByCollector);
 
 router.get('/returns/Products', rmaController.getListOfReturns);
 

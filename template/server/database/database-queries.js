@@ -54,7 +54,7 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     weight DOUBLE,
     statusProduct TEXT,
     quantityToReturn INT,
-    collectorImage TEXT, 
+    collectorImage TEXT,
     collectorDescription TEXT, 
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
@@ -146,7 +146,7 @@ export const selectProductByBarcode = `SELECT * FROM product WHERE barcode = ?`;
 
 
 export const selectCustomerEmailByRMAId = `
-    SELECT u.email
+    SELECT u.email, u.userID, u.userName
     FROM user u
     JOIN "order" o ON u.userID = o.userId
     JOIN orderedProduct op ON o.orderId = op.orderId
