@@ -8,13 +8,14 @@
     let qrCodeData = 'yourData';
     let qrCodeSVG = '';
     let userId = $userIdStore;
+    let showPrintMessage = true;
 
 
     function downloadPDF() {
         html2pdf()
             .from(contentElement)
             .toPdf()
-            .save('download.pdf');
+            .save('My_shopRMA-label.pdf');
     }
 
     async function displayQRCode() {
@@ -57,8 +58,9 @@
     }
 
     function printLabel() {
-        // Use the browser's print functionality to print the shipping label
+        showPrintMessage = false; // Hide the message before printing
         window.print();
+        showPrintMessage = true;
     }
 </script>
 
@@ -79,13 +81,13 @@
         <p>{shippingInfo.recipientAddress}</p>
         <p>{shippingInfo.recipientCity}, {shippingInfo.recipientState} {shippingInfo.recipientZip}</p>
     </div>
-
 </div>
-<h2>Please print and attach the label to the package</h2>
 </div>
 
 <button class="print-button" on:click={printLabel}>Print Label</button>
 <button class="print-button" on:click={downloadPDF}>Download as PDF</button>
+
+<h2 class="message">Please print and attach the label to the package</h2>
 
 <style>
     .shipping-label {
@@ -134,8 +136,15 @@
 
     /* Hide the button when printing */
     @media print {
-        .print-button {
+        .print-button  {
             display: none;
         }
     }
+    /* Hide the button when printing */
+    @media print {
+        .message  {
+            display: none;
+        }
+    }
+
 </style>
