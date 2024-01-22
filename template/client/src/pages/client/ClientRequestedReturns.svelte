@@ -73,7 +73,6 @@
                     <td>{request.orderedProductId}</td>
                     <td>{request.returnedDate}</td>
                     <td>{request.statusProduct}</td>
-                    <td class="status">{request.status}</td>
                     <td>
                         <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                     </td>
