@@ -356,3 +356,9 @@ export function getOrderDetails2(userId){
     return db.prepare(queries.getUserOrdersWithReturn).all(userId);
 }
 
+
+export function updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId) {
+    const update = db.prepare(queries.setImageDescriptionByController);
+    return update.run(collectorImage, collectorDescription,  returnedProductId);
+}
+

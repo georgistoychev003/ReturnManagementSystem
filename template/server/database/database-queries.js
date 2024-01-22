@@ -241,3 +241,11 @@ export const getUserOrdersWithReturn = `
 export const assignRmaToControllerQuery = `UPDATE returntable SET controllerId = ?, lockTimestamp = ? WHERE RMAId = ?`;
 
 export const getRmaDetailsQuery = `SELECT * FROM returntable WHERE RMAId = ?`;
+
+
+export const setImageDescriptionByController = `UPDATE returnedProduct
+SET collectorImage = ?,
+    collectorDescription = ?
+        WHERE returnedProductId = ?`;
+
+
