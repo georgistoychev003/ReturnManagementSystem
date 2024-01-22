@@ -50,8 +50,14 @@
     }
 
     export function handleSelection(){
-        page(`/printingLabel`);
+        window.open('/printingLabel');
     }
+
+
+    function clearStore() {
+        selectedProductsStore.set([]);
+    }
+
 
 </script>
 
@@ -89,7 +95,7 @@
     <div id="buttons">
         <button on:click={prepareAndSendProductDetails} class="create-request-btn">Create Request</button>
 
-    <a href="orderDetails/1">
+    <a href="/myOrders">
         <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
     </a>
     </div>

@@ -178,11 +178,18 @@
         background-color: #f2f2f2;
     }
     button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        padding: 0.5rem 1rem;
+        background-color: #007BFF;
         color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
     }
     .checkbox-container {
         display: inline-block;

@@ -17,23 +17,6 @@
             .save('download.pdf');
     }
 
-    async function fetchLastRmaId() {
-        try {
-            const response = await fetch(`http://localhost:3000/rma/returns/last/rma`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const rmaId = data.rmaId; // Assuming the JSON structure has { rmaId: ... }
-
-            console.log("RMA ID:", rmaId);
-            return rmaId; // Use rmaId as needed
-        } catch (error) {
-            console.error('Error fetching RMA ID:', error);
-        }
-    }
-
     async function displayQRCode() {
         try {
             // Fetch the last RMA ID
@@ -43,7 +26,7 @@
             }
 
             const data = await response.json();
-            const rmaId = data.RMAId; // Extract rmaId from response
+            const rmaId = data.RMAId; // It fetches quicker than the post from the prviouse page; // Extract rmaId from response
 
             console.log("RMA ID:", rmaId);
 
