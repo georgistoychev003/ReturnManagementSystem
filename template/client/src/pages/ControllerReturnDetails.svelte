@@ -153,6 +153,7 @@
                 console.log(productsResponse)
                 products = productsResponse.map(product => {
                     const matchingReturnRequest = returnRequests.find(req => req.orderedProductId === product.orderedProductId);
+                    console.log(matchingReturnRequest)
                     return {
                         name: product.name,
                         quantityToReturn: matchingReturnRequest ? matchingReturnRequest.quantityToReturn : 0,

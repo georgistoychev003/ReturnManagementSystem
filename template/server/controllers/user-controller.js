@@ -188,10 +188,10 @@ export async function refundMail(req, res) {
     let productListHtml = '';
     for (const productInfo of products) {
         const product = getProductPriceByName(productInfo.name);
-        const productTotal = product.price * productInfo.quantity;
+        const productTotal = product.price * productInfo.quantityToReturn;
         totalPriceRefunded += productTotal;
-        productListHtml += `<li>${productInfo.name} (Quantity: ${productInfo.quantity}) - $${productTotal.toFixed(2)}</li>`;
-        increaseProductStockByName(productInfo.name, productInfo.quantity);
+        productListHtml += `<li>${productInfo.name} (Quantity: ${productInfo.quantityToReturn}) - $${productTotal.toFixed(2)}</li>`;
+        increaseProductStockByName(productInfo.name, productInfo.quantityToReturn);
     }
 
     try {
