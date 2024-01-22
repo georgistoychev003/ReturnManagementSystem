@@ -43,8 +43,14 @@
         selectedQuantities[productId] = quantity;
     }
 
-    export function handleSelection(){
-        page(`/rmaClientForm`);
+    let showNoItemsPopup = false;
+
+    function handleSelection() {
+        $selectedProductsStore.length === 0 ? showNoItemsPopup = true : page(`/rmaClientForm`);
+    }
+
+    function closePopup() {
+        showNoItemsPopup = false;
     }
 
 
@@ -80,8 +86,9 @@
 {:else}
     <div class="client-return-order">
         <h1>Ordered Products</h1>
-        <p>Order Id: {order.orderId}</p>
-        <p>Order Date: {order.orderDate}</p>
+<!--        Store not working -->
+<!--        <p>Order Id: {order.orderId}</p>-->
+<!--        <p>Order Date: {order.orderDate}</p>-->
         <table>
             <thead>
             <tr>
@@ -123,6 +130,13 @@
             <td></td>
             </tbody>
         </table>
+
+        {#if showNoItemsPopup}
+            <div class="popup">
+                <p>No items selected.</p>
+                <button on:click={closePopup}>Close</button>
+            </div>
+        {/if}
             <button on:click={() => handleSelection()}>Return Selected Products</button>
     </div>
 
@@ -130,25 +144,51 @@
     <!--    test purposes will delete when finished-->
     <div class="selected-products">
 
-        <h1 class="return-info">Return Information</h1>
-        <p>All returns must be shipped back in their original box, if the packaging was destroyed the customer must use suitable packaging otherwise they may not be refunded.</p>
-        <p>Games/DVDs can only be returned if the seal has not been broken. If the seal is broken the customer will not be refunded.</p>
-        <p>All returns will be inspected to confirm no damage to the items, if the items are damaged by fault of the customer, they may not be refunded.</p>
+        <h5> To start a return, select the quantity and select the checkbox. Once you have decided on all items, click the 'Return Selected Products' button</h5>
 
     </div>
 </div>
-
-
+<h1 class="return-info">Return Information</h1>
+<p> - All returns must be shipped back in their original box, if the packaging was destroyed the customer must use suitable packaging otherwise they may not be refunded.</p>
+<p> - Games/DVDs can only be returned if the seal has not been broken. If the seal is broken the customer will not be refunded.</p>
+<p> - All returns will be inspected to confirm no damage to the items, if the items are damaged by fault of the customer, they may not be refunded.</p>
 
 <style>
+
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000; /* Ensure it's above other content */
+    }
+    :root {
+        --primary-color: #0056b3;
+        --hover-primary-color: #003d82;
+        --hover-secondary-color: #a503f6;
+        --text-color: #333;
+        --border-color: #ccc;
+        --background-color: #f4f4f4;
+        --success-color: #28a745;
+        --warning-color: #ffc107;
+        --error-color: #dc3545;
+        --info-color: #17a2b8;
+        --light-gray: #eaeaea;
+        --dark-gray: #555;
+    }
     .rma-container {
         max-width: 90%;
-        margin: 40px auto;
-        padding: 20px;
-        border-radius: 8px;
-        background-color: #fff;
+        margin: 2rem auto;
+        padding: 1rem;
+        background: white;
+        border-radius: 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        text-align: center;
+        overflow-x: auto; /* Allow horizontal scrolling */
     }
     .client-return-order {
         max-width: 100em;
@@ -160,28 +200,34 @@
         text-align: left;
         margin-bottom: 1rem;
         font-size: 2rem;
-        color: #333;
+        color: #555;
     }
     .return-info{
         text-align: center;
     }
 
+    /* Table Styles */
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 1rem;
+        table-layout: fixed;
     }
 
     th, td {
-        text-align: center; /* Centers text horizontally */
-        vertical-align: middle;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #ccc;
+        text-align: left;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
     }
 
     th {
-        color: #555;
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    td {
         font-size: 1rem;
+        word-break: break-word; /* Ensure the text wraps in cells */
     }
 
     tbody tr:hover {

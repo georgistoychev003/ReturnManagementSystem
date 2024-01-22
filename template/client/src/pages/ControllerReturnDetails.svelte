@@ -121,7 +121,7 @@
 
     async function displayQRCode() {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:3000/barcode/generateBarcode/${token}/${RMAId}`);
+        const response = await fetch(`http://localhost:3000/barcode/generateBarcode/rmaId/${RMAId}`);
         if (response.ok) {
             const qrCodeSVG = await response.text();
             document.getElementById('qrCodeContainer').innerHTML = qrCodeSVG;

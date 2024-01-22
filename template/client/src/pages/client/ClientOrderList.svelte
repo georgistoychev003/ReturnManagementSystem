@@ -6,7 +6,7 @@
     import page from "page";
 
     let helpPopupVisible = false;
-    let helpContent = 'Something, Something, Something....';
+    let helpContent = 'Select an Order to view the items inside ';
     let orders = [];
     let isLoading = true;
     let errorMessage = '';
@@ -56,11 +56,11 @@
 {:else}
     <div class="client-return-order">
         <h1>My Orders</h1>
-        <Help
-                visible={helpPopupVisible}
-                content={helpContent}
-                closePopup={() => helpPopupVisible = false}
-        />
+<!--        <Help-->
+<!--                visible={helpPopupVisible}-->
+<!--                content={helpContent}-->
+<!--                closePopup={() => helpPopupVisible = false}-->
+<!--        />-->
         <table>
             <thead>
             <tr>
@@ -124,7 +124,7 @@
                     </td>
                     <td>
 
-                            <button on:click={handleSelection(orders.orderId, orders.orderDate)}>Order Details</button>
+                            <button on:click={handleSelection(orders.orderId)}>Order Details</button>
 
                     </td>
                 </tr>
@@ -133,14 +133,17 @@
             {/if}
             </tbody>
         </table>
-        <button on:click={() => helpPopupVisible = true}>Help</button>
+<!--        <button on:click={() => helpPopupVisible = true}>Help</button>-->
     </div>
 {/if}
+
+    <p>To start a return, select the Order you wish to return to view the products of the order.</p>
+    <p>The page will navigate to show a list of products where you can select a quantity and the item you wish to return.</p>
 </div>
 
 <style>
     .rma-container {
-        max-width: 70%;
+        max-width: 90%;
         margin: 40px auto;
         padding: 20px;
         border-radius: 8px;
@@ -155,28 +158,39 @@
         padding: 1rem;
     }
 
+
     h1 {
         text-align: left;
         margin-bottom: 1rem;
         font-size: 2rem;
-        color: #333;
+        color: #555;
+    }
+    .return-info{
+        text-align: center;
     }
 
+    /* Table Styles */
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 1rem;
+        table-layout: fixed;
     }
 
     th, td {
         text-align: left;
-        padding: 0.75rem 1rem;
-        border-bottom: 1px solid #ccc;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
     }
 
     th {
-        color: #555;
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    td {
         font-size: 1rem;
+        word-break: break-word; /* Ensure the text wraps in cells */
     }
 
     tbody tr:hover {
