@@ -74,6 +74,20 @@
             }
         }
 
+        if (refundPayload.length > 0) {
+            const confirmRefund = confirm(`Are you sure you want to refund $${totalRefundAmount.toFixed(2)}?`);
+            if (!confirmRefund) {
+                return;
+            }
+        }
+
+        if (damagedPayload.length > 0) {
+            const confirmDamaged = confirm(`Are you sure you want to confirm the product as damaged?`);
+            if (!confirmDamaged) {
+                return;
+            }
+        }
+
         // Process refund if any
         if (refundPayload.length > 0) {
             try {
@@ -317,6 +331,10 @@
                     <label for={`damaged-${product.name}`}>Damaged</label>
                 </span>
                 </div>
+                <br>
+                <span>Controller Description: {product.collectorDescription || 'No description'}</span>
+                <br>
+                <br>
             {/each}
             <p>DATE: {returnedDate}</p>
             <p>CUSTOMER NAME: {returnRequests.customer}</p>
@@ -328,20 +346,7 @@
         <div class="status-section">
             <p>STATUS: {returnRequests.status}</p>
             <div class="image-placeholder"></div>
-            <p>DESCRIPTION: {returnDescription}</p>
             <div class="actions">
-<!--                <button-->
-<!--                        class="action-btn"-->
-<!--                        class:selected={selectedAction === 'refund'}-->
-<!--                        on:click={() => selectAction('refund')}>-->
-<!--                    REFUND CUSTOMER, SEND TO STOCK-->
-<!--                </button>-->
-<!--                <button-->
-<!--                        class="action-btn"-->
-<!--                        class:selected={selectedAction === 'damage'}-->
-<!--                        on:click={() => selectAction('damage')}>-->
-<!--                    PRODUCT DAMAGED, NOTIFY CUSTOMER-->
-<!--                </button>-->
             </div>
             <button class="confirm-btn" on:click={handleConfirm}>CONFIRM</button>
         </div>
