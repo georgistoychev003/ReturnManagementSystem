@@ -9,20 +9,20 @@
     $: selectedProducts = $selectedProductsStore;
 
     // Initialize text inputs when selectedProducts changes
-    $: {
+    $: if (selectedProducts) {
         textInputs = selectedProducts.reduce((acc, product) => {
-            if (!(product.id in acc)) {
-                acc[product.id] = ''; // Initialize with empty string or existing value
+            if (!(product.productId in acc)) {
+                acc[product.productId] = ''; // Initialize with empty string if not already set
             }
             return acc;
-        }, {...textInputs});
+        }, textInputs);
     }
 
     function prepareAndSendProductDetails() {
         // Update each product with its description
         const productsWithDescriptions = selectedProducts.map(product => ({
             ...product,
-            description: textInputs[product.id] || '' // Add description or default to an empty string
+            description: textInputs[product.productId] || '' // Add description or default to an empty string
         }));
 
         sendProductDetails(productsWithDescriptions);
@@ -88,7 +88,7 @@
                     <td>{product.quantityToReturn}</td>
                     <td>{product.price}</td>
                     <td>
-                        <input type="text" bind:value={textInputs[product.id]} />
+                        <input type="text" bind:value={textInputs[product.productId]} />
                     </td>
                 </tr>
             {/each}
@@ -99,9 +99,9 @@
     <div id="buttons">
         <button on:click={prepareAndSendProductDetails} class="create-request-btn">Create Request</button>
 
-    <a href="/myOrders">
-        <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
-    </a>
+        <a href="/myOrders">
+            <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
+        </a>
     </div>
     <h5>Verify the items you want to return and enter a reason for the return. Once finished, click 'Create Request'</h5>
     <h5>** On 'Create Request' the order can no longer be cancelled</h5>
