@@ -1,0 +1,65 @@
+## Retrieve Information related to orders
+
+### Get all orders
+GET http://localhost:3000/orders
+Content-Type: application/json
+Accept: application/json
+
+
+### Get orders by ID
+GET http://localhost:3000/orders/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Get orders for a user by its ID
+GET http://localhost:3000/orders/MyOrders/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Get order details
+GET http://localhost:3000/orders/details
+Content-Type: application/json
+Accept: application/json
+
+
+### Get product detail by order ID
+GET http://localhost:3000/orders/details/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Update order by ID
+PATCH http://localhost:3000/orders/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": 1,
+  "orderDate": "2023-12-01",
+  "totalPrice": 299.99
+}
+
+
+### Update order detail by ID(*)
+PATCH http://localhost:3000/orders/details/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "quantity": 3,
+  "unitPrice": 18
+}
+
+
+### Delete order details by ID(*)
+DELETE http://localhost:3000/orders/details/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Delete order by ID(*)
+DELETE http://localhost:3000/orders/1
+Content-Type: application/json
+Accept: application/json

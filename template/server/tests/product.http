@@ -1,0 +1,38 @@
+## Retreive info related to product
+
+### Get all products
+GET http://localhost:3000/product
+Content-Type: application/json
+Accept: application/json
+
+### Get product by ID
+GET http://localhost:3000/product/3
+Content-Type: application/json
+Accept: application/json
+
+
+### Update product by ID
+PATCH http://localhost:3000/product/1
+Content-Type: application/json
+Accept: application/json
+
+ {
+    "type": "Electronics",
+    "price": 999.98,
+    "name": "Smartphone",
+    "imageURL": "https://example.com/image1.jpg",
+    "productWeight": 0.56,
+    "inventoryStock": 574
+ }
+
+
+### Add product image (**)
+POST http://localhost:3000/product/uploadImage
+Content-Type:
+Accept: application/json
+
+
+### Delete product by ID (**)
+DELETE http://localhost:3000/product/1
+Content-Type: application/json
+Accept: application/json

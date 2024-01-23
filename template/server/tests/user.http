@@ -1,0 +1,109 @@
+## Retreive info related to users
+
+### Get all users
+GET http://localhost:3000/users
+Content-Type: application/json
+Accept: application/json
+
+
+### Count all users
+GET http://localhost:3000/users/count
+Content-Type: application/json
+Accept: application/json
+
+
+### Get user by email
+GET http://localhost:3000/users/controller@email.com
+Content-Type: application/json
+Accept: application/json
+
+
+### Get user by ID
+GET http://localhost:3000/users/3
+Content-Type: application/json
+Accept: application/json
+
+
+### Create new user(*)
+POST http://localhost:3000/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": 6,
+  "userName" : "Brice",
+  "email": "newuser@email.com",
+  "password": "password",
+  "userRole": "customer"
+}
+
+
+### Update user information
+PATCH http://localhost:3000/users/3
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userRole": "admin"
+}
+
+
+### Delete user by email(*)
+DELETE http://localhost:3000/users/controller@email.com
+Content-Type: application/json
+Accept: application/json
+
+
+### Delete user by ID(*)
+DELETE http://localhost:3000/users/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Send forgot password email
+POST http://localhost:3000/users/forgot-password
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "newuser@email.com"
+}
+
+
+### Reset password(*)
+POST http://localhost:3000/users/reset-password
+Content-Type: application/json
+Accept: application/json
+
+{
+  "token": "ShhhhhItsASecret",
+  "newPassword": "newpassword"
+}
+
+
+### Send refund email(*)
+POST http://localhost:3000/users/refund
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "newuser@email.com",
+  "products": [
+    {
+      "name": "Product1",
+      "quantity": 1
+    }
+  ]
+}
+
+
+### Send damaged product email(*)
+POST http://localhost:3000/users/damaged
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "newuser@email.com",
+  "products": "Smartphone"
+}
+

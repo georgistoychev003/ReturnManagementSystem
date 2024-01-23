@@ -1,0 +1,117 @@
+## Retrieve information related to RMA
+
+### Get list of RMA
+GET http://localhost:3000/rma
+Content-Type: application/json
+Accept: application/json
+
+
+### Get count of RMA
+GET http://localhost:3000/rma/count
+Content-Type: application/json
+Accept: application/json
+
+
+### Get RMAs with date
+GET http://localhost:3000/rma/withDates
+Content-Type: application/json
+Accept: application/json
+
+
+### Get RMAs per month
+GET http://localhost:3000/rma/monthly
+Content-Type: application/json
+Accept: application/json
+
+
+### Get list of return products
+GET http://localhost:3000/rma/returns/Products
+Content-Type: application/json
+Accept: application/json
+
+
+### Get RMA by ID
+GET http://localhost:3000/rma/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Get RMA by barcode
+GET http://localhost:3000/rma/barcode
+Content-Type: application/json
+Accept: application/json
+
+
+### Get total price of an RMA
+GET http://localhost:3000/rma/2/total-price
+Content-Type: application/json
+Accept: application/json
+
+
+### Get status of an RMA
+GET http://localhost:3000/rma/3/status
+Content-Type: application/json
+Accept: application/json
+
+
+### Get customer of an RMA
+GET http://localhost:3000/rma/5/customer
+Content-Type: application/json
+Accept: application/json
+
+
+### Get products of an RMA
+GET http://localhost:3000/rma/8/products
+Content-Type: application/json
+Accept: application/json
+
+
+### Get quantity of an RMA
+GET http://localhost:3000/rma/14/quantity
+Content-Type: application/json
+Accept: application/json
+
+
+### Get returns by user ID
+GET http://localhost:3000/rma/returns/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Delete an RMA(*)
+DELETE http://localhost:3000/rma/1
+Content-Type: application/json
+Accept: application/json
+
+
+### Update an RMA(*)
+PATCH http://localhost:3000/rma/1
+Content-Type: application/json
+Accept: application/json
+
+{
+
+
+}
+
+
+### Update returned product quantity(*)
+POST http://localhost:3000/rma/update-returned-product-quantity
+Content-Type: application/json
+Accept: application/json
+
+{
+
+}
+
+
+### Assign RMA to controller(*)
+POST http://localhost:3000/rma/assign/2
+Content-Type: application/json
+Accept: application/json
+
+{
+
+
+}
+
