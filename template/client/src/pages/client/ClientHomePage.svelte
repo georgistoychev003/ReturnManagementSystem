@@ -1,19 +1,21 @@
 <script>
-    // once the authorization with a token is donee, this will be replaced to obtain the username of the user
-    // from the payload of the token stored in a tokenstore here on the client side
-    import Header from "../../components/Header.svelte";
+    import { onMount } from 'svelte';
 
-    let userName = "Mr Zanoni";
+    let userName = "Mr Zanoni"; // Temporary placeholder
 
-
-    const seeMore = () => {
-        // here the logic to show more inbox messages will be put
-    };
-
-    // Function to handle the discover items action
-    const shopOnline = () => {
-
-    };
+    onMount(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1])); // Decoding from Base64URL
+                userName = payload.userName;
+            } catch (e) {
+                console.error('Error parsing the token', e);
+            }
+        } else {
+            userName = "Guest"; // Fallback if there is no token or it's invalid
+        }
+    });
 </script>
 
 
@@ -30,7 +32,6 @@
             <li>Select the order you want to return by clicking on Order Details.</li>
             <li>Select quantity, click on "Return Selected Products".</li>
             <li>Add a comment regarding the return.</li>
-            <li>Add a comment regarding the return.</li>
             <li>Print and attach the label to your package</li>
         </ol>
     </div>
@@ -42,10 +43,12 @@
         margin: 2rem auto;
         padding: 1rem;
         text-align: center;
+        box-sizing: border-box; /* Ensure padding is included in the width */
     }
 
     .greeting h1 {
         margin-bottom: 1rem;
+        font-size: 2rem; /* Larger text by default */
     }
 
     hr {
@@ -60,6 +63,7 @@
         counter-reset: step;
         text-align: left;
         padding-left: 0;
+        margin-left: 0; /* Reset default margin */
     }
 
     ol li {
@@ -92,5 +96,22 @@
     ol li:hover {
         transform: scale(1.05);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 600px) {
+        .greeting h1 {
+            font-size: 1.5rem; /* Smaller text for small screens */
+        }
+
+        ol li {
+            padding: 0.75rem; /* Smaller padding for small screens */
+        }
+
+        ol li::before {
+            left: -25px; /* Position the counter closer to the edge */
+            width: 25px;
+            height: 25px;
+            font-size: 0.75rem; /* Smaller font size for the counter */
+        }
     }
 </style>
