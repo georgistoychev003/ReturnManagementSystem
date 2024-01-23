@@ -5,13 +5,33 @@
 
     let returnRequests = [];
 
+    const requestsPerPage = 5;
+    let currentPage = 1;
+    let totalPages;
+
     // const viewDetails = (requestId) => {
     //     page(`/controller/return-requests-details/${requestId}`);
     // };
 
     onMount(async () => {
         await fetchReturnRequests();
+        calculateTotalPages();
     });
+
+    function calculateTotalPages() {
+        totalPages = Math.ceil(rawReturnRequests.length / requestsPerPage);
+    }
+
+    function changePage(newPage) {
+        currentPage = Math.max(1, Math.min(newPage, totalPages)); // Ensure new page is within valid range
+        updatePaginatedRequests();
+    }
+
+    function updatePaginatedRequests() {
+        const startIndex = (currentPage - 1) * requestsPerPage;
+        const endIndex = startIndex + requestsPerPage;
+        returnRequests = rawReturnRequests.slice(startIndex, endIndex);
+    }
 
     function getUserIdFromToken() {
         const token = localStorage.getItem('token');
@@ -190,6 +210,7 @@
     }
 
     let rawReturnRequests = [];
+    $: updatePaginatedRequests();
 
     $: returnRequests = $showFinished
         ? rawReturnRequests
@@ -242,6 +263,13 @@
         {/each}
         </tbody>
     </table>
+    <div class="pagination-controls">
+        <button on:click={() => changePage(1)}>First</button>
+        <button on:click={() => changePage(currentPage - 1)}>Previous</button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <button on:click={() => changePage(currentPage + 1)}>Next</button>
+        <button on:click={() => changePage(totalPages)}>Last</button>
+    </div>
 </div>
 
 <style>
@@ -427,5 +455,35 @@
             padding: 0.3rem 0.6rem;
             font-size: 0.8rem;
         }
+    }
+
+    .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .pagination-controls button {
+        padding: 0.5rem 1rem;
+        margin: 0 5px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+
+    .pagination-controls button:hover {
+        background-color: var(--hover-primary-color);
+    }
+
+    .pagination-controls button:disabled {
+        background-color: var(--light-gray);
+        cursor: default;
+    }
+
+    .pagination-controls span {
+        margin: 0 10px;
     }
 </style>
