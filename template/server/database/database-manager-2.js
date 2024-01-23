@@ -81,7 +81,6 @@ export function insertReturned(){
         const insert = db.prepare(queries.createReturnedProduct);
         for (const returnedProductData of initData.returnedProduct) {
             insert.run(
-                returnedProductData.returnedProductId,
                 returnedProductData.orderedProductId,
                 returnedProductData.RMAId,
                 returnedProductData.returnedDate,
