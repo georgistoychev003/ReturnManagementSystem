@@ -23,14 +23,17 @@
         <hr>
     </div>
 
-    <div class="inbox">
-        <h2>Inbox:</h2>
-        <div class="message-preview">
-            Congratulations! Your return is successful. You will get...
-            <button on:click={seeMore}>See More</button>
-        </div>
+    <div class="rma-steps">
+        <h2>Return Process:</h2>
+        <ol>
+            <li>Navigate to "My Orders" page.</li>
+            <li>Select the order you want to return by clicking on Order Details.</li>
+            <li>Select quantity, click on "Return Selected Products".</li>
+            <li>Add a comment regarding the return.</li>
+            <li>Add a comment regarding the return.</li>
+            <li>Print and attach the label to your package</li>
+        </ol>
     </div>
-
 </div>
 
 <style>
@@ -49,37 +52,45 @@
         margin-bottom: 2rem;
     }
 
-    .inbox h2, .discover h2 {
+    .rma-steps h2 {
         margin-bottom: 1rem;
     }
 
-    .message-preview {
+    ol {
+        counter-reset: step;
+        text-align: left;
+        padding-left: 0;
+    }
+
+    ol li {
         background-color: #f0f0f0;
+        counter-increment: step;
         padding: 1rem;
         margin-bottom: 1rem;
         border-radius: 8px;
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    button {
+    ol li::before {
+        content: counter(step);
+        position: absolute;
+        left: -30px;
+        top: 50%;
+        transform: translateY(-50%);
         background-color: #007BFF;
         color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-left: 1rem;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    button:hover {
-        background-color: #0056b3;
-    }
-
-    .discover a {
-        color: #007BFF;
-        text-decoration: none;
-    }
-
-    .discover a:hover {
-        text-decoration: underline;
+    ol li:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 </style>
