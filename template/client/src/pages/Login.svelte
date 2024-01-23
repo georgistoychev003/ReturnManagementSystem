@@ -25,7 +25,7 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: username, // Change to 'username' if your backend expects a username
+                email: username,
                 password: password,
             }),
         });
