@@ -105,9 +105,12 @@ export function insertRMA(){
 
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
+    console.log( user.userID +  user.userName +  user.email +  user.password +  user.userRole);
     insert.run(
         user.userID, user.userName, user.email, user.password, user.userRole
+
     );
+
 }
 export function insertRma(barcode, statusRma, credit) {
     const statement = db.prepare(queries.createRma);
