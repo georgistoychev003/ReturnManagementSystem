@@ -2,7 +2,8 @@
     import {orderStore, selectedProductsStore} from '../../Store.js';
     import { onDestroy, onMount } from "svelte";
     import page from "page";
-
+    import ProgressBar from "../../components/ProgressBar.svelte";
+    let currentStep = 4;
     let selectedProducts = [];
     let textInputs = {};
 
@@ -64,6 +65,8 @@
 
 
 </script>
+
+<ProgressBar {currentStep} />
 
 <div class="rma-container">
     <h1>Return Request Details</h1>
