@@ -4,7 +4,8 @@
     import {orderStore, userIdStore} from '../../Store.js';
     import Help from "../../components/Help.svelte";
     import page from "page";
-
+    import ProgressBar from "../../components/ProgressBar.svelte";
+    let currentStep = 2;
     let helpPopupVisible = false;
     let helpContent = 'Select an Order to view the items inside ';
     let orders = [];
@@ -48,6 +49,9 @@
     }
 
 </script>
+
+<ProgressBar {currentStep} />
+
 <div class="rma-container">
 {#if isLoading}
     <p>Loading orders...</p>

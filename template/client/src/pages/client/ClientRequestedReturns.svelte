@@ -4,6 +4,8 @@
     import {writable} from "svelte/store";
     import {userEmail} from "../../Store.js";
     import {RMAId as RMAIdFromStore} from "../../Store.js";
+    import ProgressBar from "../../components/ProgressBar.svelte";
+    let currentStep = 4;
     let returnRequests = [];
     let isLoading = true;
     let errorMessage = '';
@@ -48,6 +50,8 @@
         page(`/requestReturnDetail/:${RMAId}`)
     };
 </script>
+
+<ProgressBar {currentStep} />
 
 {#if isLoading}
     <p>Loading return requests...</p>

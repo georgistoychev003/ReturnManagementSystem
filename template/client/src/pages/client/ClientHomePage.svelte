@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
-
+    import ProgressBar from "../../components/ProgressBar.svelte";
+    let currentStep = 1;
     let userName = "Mr Zanoni"; // Temporary placeholder
 
     onMount(() => {
@@ -18,6 +19,7 @@
     });
 </script>
 
+<ProgressBar {currentStep} />
 
 <div class="client-home-page">
     <div class="greeting">

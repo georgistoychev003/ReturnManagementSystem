@@ -4,6 +4,8 @@
     import { writable } from 'svelte/store';
     import { selectedProductsStore, orderStore } from '../../Store.js';
     import page from 'page';
+    import ProgressBar from "../../components/ProgressBar.svelte";
+    let currentStep = 3;
 
     let order = $orderStore;
     let orders = [];
@@ -87,6 +89,8 @@
 
 
 </script>
+
+<ProgressBar {currentStep} />
 
 <div class="rma-container">
 {#if isLoading}
