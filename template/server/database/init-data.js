@@ -49,7 +49,7 @@ export const productsData = [
     {
         "productId": 2,
         "type": "Clothing",
-        "price": 39.99,
+        "price": 40,
         "name": "T-shirt",
         "imageURL": "https://media.idkids.fr/media/productstorage/images/okaidi/0702494/thumbs/0474699_500.jpg",
         "productWeight": 0.3,
@@ -103,15 +103,37 @@ export const ordersData = [
     {
         "orderId": 2,
         "userId": 1,
-        "orderDate": "2024-22-03",
+        "orderDate": "2024-01-22",
         "totalPrice": 80
     },
     {
         "orderId": 3,
         "userId": 1,
-        "orderDate": "2024-22-05",
+        "orderDate": "2024-01-22",
         "totalPrice": 944.98
-    }
+    },
+    {
+        "orderId": 4,
+        "userId": 1,
+        "orderDate": "2023-12-22",
+        "totalPrice": 944.98
+    },
+    {'orderId': 101, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 80.00},
+    {'orderId': 102, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 24.99},
+    {'orderId': 103, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 24.99},
+    {'orderId': 104, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 24.99},
+    {'orderId': 105, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 240.00},
+    {'orderId': 106, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 599.99},
+    {'orderId': 107, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 35.00},
+    {'orderId': 108, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 35.00},
+    {'orderId': 109, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 35.00},
+    {'orderId': 110, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 160.00},
+    {'orderId': 111, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 70.00},
+    {'orderId': 112, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 40.00},
+    {'orderId': 113, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 40.00},
+    {'orderId': 114, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 80.00},
+    {'orderId': 115, 'userId': 5, 'orderDate': '2024-01-20', 'totalPrice': 40.00}
+
 ];
 
 export const orderDetailsData = [
@@ -179,7 +201,27 @@ export const orderDetailsData = [
         "quantity": 2,
         "unitPrice": 2,
         "priceAtTimeOfSale": 24.99,
-    }
+    },
+    {"orderedProductId": 9, "orderId": 4, "productId": 4, "quantity": 2, "unitPrice": 2, "priceAtTimeOfSale": 24.99},
+    {"orderedProductId": 10, "orderId": 4, "productId": 2, "quantity": 2, "unitPrice": 2, "priceAtTimeOfSale": 80},
+    {"orderedProductId": 11, "orderId": 4, "productId": 6, "quantity": 2, "unitPrice": 2, "priceAtTimeOfSale": 80},
+    {"orderedProductId": 12, "orderId": 4, "productId": 1, "quantity": 2, "unitPrice": 2, "priceAtTimeOfSale": 599.99},
+
+    {"orderedProductId": 101, "orderId": 101, "productId": 6, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 80.00},
+    {"orderedProductId": 102, "orderId": 102, "productId": 4, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 24.99},
+    {"orderedProductId": 103, "orderId": 103, "productId": 4, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 24.99},
+    {"orderedProductId": 104, "orderId": 104, "productId": 4, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 24.99},
+    {"orderedProductId": 105, "orderId": 105, "productId": 2, "quantity": 6, "unitPrice": 2, "priceAtTimeOfSale": 240.00},
+    {"orderedProductId": 106, "orderId": 106, "productId": 1, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 599.99},
+    {"orderedProductId": 107, "orderId": 107, "productId": 5, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 35.00},
+    {"orderedProductId": 108, "orderId": 108, "productId": 5, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 35.00},
+    {"orderedProductId": 109, "orderId": 109, "productId": 5, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 35.00},
+    {"orderedProductId": 110, "orderId": 110, "productId": 2, "quantity": 4, "unitPrice": 2, "priceAtTimeOfSale": 40.00},
+    {"orderedProductId": 111, "orderId": 111, "productId": 5, "quantity": 2, "unitPrice": 2, "priceAtTimeOfSale": 35.00},
+    {"orderedProductId": 112, "orderId": 112, "productId": 5, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 35.00},
+    {"orderedProductId": 113, "orderId": 113, "productId": 2, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 40.00},
+    {"orderedProductId": 114, "orderId": 114, "productId": 2, "quantity": 2, "unitPrice": 2, "priceAtTimeOfSale": 40.00},
+    {"orderedProductId": 115, "orderId": 115, "productId": 2, "quantity": 1, "unitPrice": 2, "priceAtTimeOfSale": 40.00}
 ];
 
 export const rmaData = [
@@ -188,20 +230,49 @@ export const rmaData = [
         "barcode": "barcode",
         "statusRma": "Returned",
         "credit": 80
-    }
+    },
+    {"RMAId": 101, "barcode": "barcode101", "statusRma": "Returned", "credit": 29.02},
+    {"RMAId": 102, "barcode": "barcode102", "statusRma": "Returned", "credit": 85.76},
+    {"RMAId": 103, "barcode": "barcode103", "statusRma": "Returned", "credit": 91.36},
+    {"RMAId": 104, "barcode": "barcode104", "statusRma": "Returned", "credit": 25.47},
+    {"RMAId": 105, "barcode": "barcode105", "statusRma": "Returned", "credit": 40.04},
+    {"RMAId": 106, "barcode": "barcode106", "statusRma": "Returned", "credit": 90.66},
+    {"RMAId": 107, "barcode": "barcode107", "statusRma": "Returned", "credit": 21.46},
+    {"RMAId": 108, "barcode": "barcode108", "statusRma": "Returned", "credit": 91.04},
+    {"RMAId": 109, "barcode": "barcode109", "statusRma": "Returned", "credit": 36.43},
+    {"RMAId": 110, "barcode": "barcode110", "statusRma": "Returned", "credit": 59.34},
+    {"RMAId": 111, "barcode": "barcode111", "statusRma": "Returned", "credit": 74.20},
+    {"RMAId": 112, "barcode": "barcode112", "statusRma": "Returned", "credit": 69.67},
+    {"RMAId": 113, "barcode": "barcode113", "statusRma": "Returned", "credit": 25.46},
+    {"RMAId": 114, "barcode": "barcode114", "statusRma": "Returned", "credit": 95.81},
+    {"RMAId": 115, "barcode": "barcode115", "statusRma": "Returned", "credit": 24.32}
 
 ];
 
 export const returnedProduct = [
     {
-        returnedProductId: 1,
-        orderedProductId: 1,
-        RMAId: 1,
-        returnedDate: "2023-01-01",
-        description: "Defective item",
-        weight: 1.2,
-        statusProduct: "Returned",
-        quantityToReturn: "2"
-    }
+        "returnedProductId": 1,
+        "orderedProductId": 1,
+        "RMAId": 1,
+        "returnedDate": "2023-01-01",
+        "description": "Defective item",
+        "weight": 1.2,
+        "statusProduct": "Returned",
+        "quantityToReturn": "2"
+    },
+    {"returnedProductId": 101, "orderedProductId": 101, "RMAId": 2, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 0.84, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 102, "orderedProductId": 102, "RMAId": 3, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 3.32, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 103, "orderedProductId": 103, "RMAId": 4, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 2.68, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 104, "orderedProductId": 104, "RMAId": 5, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 2.68, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 105, "orderedProductId": 105, "RMAId": 6, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 4.75, "statusProduct": "Returned", "quantityToReturn": 6},
+    {"returnedProductId": 106, "orderedProductId": 106, "RMAId": 7, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 1.71, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 107, "orderedProductId": 107, "RMAId": 8, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 4.75, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 108, "orderedProductId": 108, "RMAId": 9, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 3.51, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 109, "orderedProductId": 109, "RMAId": 10, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 3.21, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 110, "orderedProductId": 110, "RMAId": 11, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 1.48, "statusProduct": "Returned", "quantityToReturn": 4},
+    {"returnedProductId": 111, "orderedProductId": 111, "RMAId": 12, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 4.97, "statusProduct": "Returned", "quantityToReturn": 2},
+    {"returnedProductId": 112, "orderedProductId": 112, "RMAId": 13, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 2.27, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 113, "orderedProductId": 113, "RMAId": 14, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 2.92, "statusProduct": "Returned", "quantityToReturn": 1},
+    {"returnedProductId": 114, "orderedProductId": 114, "RMAId": 15, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 1.57, "statusProduct": "Returned", "quantityToReturn": 2},
+    {"returnedProductId": 115, "orderedProductId": 115, "RMAId": 16, "returnedDate": "2024-01-20", "description": "Defective item", "weight": 1.57, "statusProduct": "Returned", "quantityToReturn": 1}
 ];
-

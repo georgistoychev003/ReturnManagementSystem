@@ -74,7 +74,7 @@
 
 <div class="auth-container">
     <div class="logo">
-        <img class="logo" src="https://myshop.s3-external-3.amazonaws.com/shop6116500.images.logo-myshop.webp" alt="Logo">
+        <img class="logo" src="public/images/myshop-logo.png" alt="Logo">
     </div>
     <h2>LOGIN</h2>
     <form on:submit|preventDefault={login}>

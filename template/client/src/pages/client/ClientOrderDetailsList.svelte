@@ -114,7 +114,11 @@
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
                     <td>{orderProducts.price}</td>
+                    {#if orderProducts.quantityToReturn == null}
+                        <td>-</td>
+                        {:else}
                     <td>{orderProducts.quantityToReturn}</td>
+                        {/if}
                     <!-- Conditional rendering based on product type and quantity -->
 <!--                    isReturnable(orderProducts.orderDate) &&-->
                     {#if  orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}

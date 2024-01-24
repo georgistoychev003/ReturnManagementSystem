@@ -9,6 +9,7 @@ import {
     selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
     selectStatusById
 } from "../database/database-queries.js";
+import {returnedProduct} from "../database/init-data.js";
 
 
 let db;
@@ -75,6 +76,16 @@ function insertOrderDetails(){
     }
 }
 
+export function insertRMA(){
+    const countResult = db.prepare(queries.countReturns).get();
+    if(countResult['count(RMAId)'] === 0) {
+        const insert = db.prepare(queries.createRma);
+        for (const rma of initData.rmaData) {
+            insert.run(rma.barcode, rma.statusRma, rma.credit);
+        }
+    }
+}
+
 export function insertReturned(){
     const countResult = db.prepare(queries.countReturnedProducts).get();
     if(countResult['count(returnedProductId)'] === 0) {
@@ -87,18 +98,8 @@ export function insertReturned(){
                 returnedProductData.description,
                 returnedProductData.weight,
                 returnedProductData.statusProduct,
-                returnedProductData.quantityToReturn,
+                returnedProductData.quantityToReturn
             );
-        }
-    }
-}
-
-export function insertRMA(){
-    const countResult = db.prepare(queries.countReturns).get();
-    if(countResult['count(RMAId)'] === 0) {
-        const insert = db.prepare(queries.createRma);
-        for (const rma of initData.rmaData) {
-            insert.run(rma.barcode, rma.statusRma, rma.credit);
         }
     }
 }
@@ -122,7 +123,7 @@ export function getLastRma() {
 }
 
 export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn){
-    const statement = db.prepare(queries.createReturnedProduct);
+    const statement = db.prepare(queries.createReturnedProduct2);
     statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn);
 
 }
