@@ -27,14 +27,14 @@
         }
     }
 
-    function takeSnapshot() {
-        const context = canvasElement.getContext('2d');
-        canvasElement.width = videoElement.videoWidth;
-        canvasElement.height = videoElement.videoHeight;
-        context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
-        snapshotSrc = canvasElement.toDataURL('image/png');
-        handleProductInteraction({ product: selectedProduct, imageData: snapshotSrc });
-    }
+    // function takeSnapshot() {
+    //     const context = canvasElement.getContext('2d');
+    //     canvasElement.width = videoElement.videoWidth;
+    //     canvasElement.height = videoElement.videoHeight;
+    //     context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
+    //     snapshotSrc = canvasElement.toDataURL('image/png');
+    //     handleProductInteraction({ product: selectedProduct, imageData: snapshotSrc });
+    // }
 
     function handleProductInteraction({ product, imageData }) {
         const existingIndex = productImageDataList.findIndex(item => item.product.productId === product.productId);
@@ -118,9 +118,9 @@
     <!-- Ensure these elements exist in your markup with the correct classes or IDs -->
     <video class="camera-stream" bind:this={videoElement} autoplay></video>
     <canvas class="snapshot-canvas" bind:this={canvasElement}></canvas>
-    <button on:click={takeSnapshot}>Take Snapshot</button>
+<!--    <button on:click={takeSnapshot}>Take Snapshot</button>-->
     {#if snapshotSrc}
-        <img class="snapshot-image" src={snapshotSrc} alt="Snapshot" />
+<!--        <img class="snapshot-image" src={snapshotSrc} alt="Snapshot" />-->
     {/if}
 </div>
 
@@ -189,6 +189,55 @@
 
     .close-button:hover {
         background-color: #c82333;
+    }
+    /* Image upload styles */
+    input[type="file"] {
+        width: 100%;
+        padding: 0.5em;
+        margin-top: 1em;
+        border: 1px solid #ced4da;
+        border-radius: 0.3em;
+        font-size: 1em;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    /* Image display styles */
+    .snapshot-image, .product-image {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+    /* Responsive design adjustments */
+    @media (max-width: 768px) {
+        .product-detail-container {
+            margin: 20px;
+            padding: 10px;
+        }
+
+        .product-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .product-image {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .description-input, .submit-button {
+            width: calc(100% - 20px);
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .product-item {
+            flex-basis: 100%; /* Full width on small screens */
+        }
     }
 
 

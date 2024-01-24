@@ -9,16 +9,29 @@
     let isCameraModalOpen = false;
 
 
-    let name = 'COLLECTOR NAME'; // You can set a default name here
+
     let videoElementCreated = false; // Flag to track whether the video element is created
     let barcode;
     function greet() {
-        alert(`HELLO COLLECTOR NAME ${name}`);
+        alert(`HELLO COLLECTOR NAME ${userName}`);
     }
+    let userName = "Mr Zanoni"; // Temporary placeholder
+
 
     onMount(() => {
         canvasElement = document.createElement('canvas');
         canvasContext = canvasElement.getContext('2d');
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1])); // Decoding from Base64URL
+                userName = payload.userName;
+            } catch (e) {
+                console.error('Error parsing the token', e);
+            }
+        } else {
+            userName = "Guest"; // Fallback if there is no token or it's invalid
+        }
     });
 
     async function scanBarcode() {
@@ -109,19 +122,25 @@
 
         }
     }
+    function toggleMenu() {
+        var menu = document.getElementById('instructionsMenu');
+        if (menu.style.opacity === "0") {
+            menu.style.opacity = "1";
+            menu.style.visibility = "visible";
+            menu.style.transform = "translateY(0)";
+        } else {
+            menu.style.opacity = "0";
+            menu.style.visibility = "hidden";
+            menu.style.transform = "translateY(100%)";
+        }
+    }
 </script>
 
 <div>
-    <h1>HELLO {name}</h1>
+    <h1> {userName}, welcome to your collector's dashboard</h1>
     <div class="separator"></div>
     <div class="buttons-container">
         <button class="button" on:click={scanBarcode}>Scan Barcode</button>
-
-        <!-- Replace the "Fill in returnId" button with an input field and a submit button -->
-        <div class="returnId-container">
-            <input type="text" id="returnIdInput" placeholder="Enter Return ID">
-            <button class="button submit-button" on:click={submitReturnId}>Submit</button>
-        </div>
     </div>
 
     <p class="text-below-button">PLEASE HOLD THE CAMERA 2 CM AWAY FROM BARCODE</p>
@@ -135,6 +154,16 @@
             </div>
         </div>
     {/if}
+    <button class="menu-toggle" on:click={toggleMenu}>Handling Instructions</button>
+    <div class="menu" id="instructionsMenu">
+        <div class="menu-header">Handling Instructions</div>
+        <ul class="menu-list">
+            <li>Scan Barcode</li>
+            <li>Click on a product from the fetched RMA</li>
+            <li>Upload an image of the product and a description of its state</li>
+            <li>Press the Submit Details button</li>
+        </ul>
+    </div>
 </div>
 
 <style>
@@ -168,6 +197,78 @@
         align-items: center;
         margin-top: 3vh;
     }
+    .menu-toggle {
+        background-color: #ff6f61;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: all 0.3s;
+        font-weight: bold;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+    }
+
+    .menu-toggle:hover {
+        background-color: #e85a50;
+    }
+
+    .menu {
+        position: fixed;
+        right: 20px;
+        bottom: 70px;
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        width: 300px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .menu-header {
+        background: #ff6f61;
+        color: white;
+        padding: 10px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        font-weight: bold;
+    }
+
+    .menu-list {
+        list-style: none;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .menu-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .menu-list li:last-child {
+        border: none;
+    }
+
+    /* Responsive design adjustments */
+    @media only screen and (max-width: 600px) {
+        /* ... existing styles ... */
+        .menu-toggle {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .menu {
+            width: 90%;
+            right: 5%;
+            bottom: 60px;
+        }
+    }
+
 
     .button {
         margin: 1vh;

@@ -1,14 +1,15 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
-import * as initData from '../database/init-data.js'
-
 import {
-    assignRmaToControllerQuery, createReturnedProduct,
-    createRma, getLastRMA,
+    assignRmaToControllerQuery,
+    getLastRMA,
     getRmaDetailsQuery,
+    selectControllerInfoByRMAId,
     selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
     selectStatusById
-} from "../database/database-queries.js";
+} from '../database/database-queries.js'
+import * as initData from '../database/init-data.js'
+
 import {returnedProduct} from "../database/init-data.js";
 
 
@@ -76,16 +77,6 @@ function insertOrderDetails(){
     }
 }
 
-export function insertRMA(){
-    const countResult = db.prepare(queries.countReturns).get();
-    if(countResult['count(RMAId)'] === 0) {
-        const insert = db.prepare(queries.createRma);
-        for (const rma of initData.rmaData) {
-            insert.run(rma.barcode, rma.statusRma, rma.credit);
-        }
-    }
-}
-
 export function insertReturned(){
     const countResult = db.prepare(queries.countReturnedProducts).get();
     if(countResult['count(returnedProductId)'] === 0) {
@@ -104,8 +95,19 @@ export function insertReturned(){
     }
 }
 
+export function insertRMA(){
+    const countResult = db.prepare(queries.countReturns).get();
+    if(countResult['count(RMAId)'] === 0) {
+        const insert = db.prepare(queries.createRma);
+        for (const rma of initData.rmaData) {
+            insert.run(rma.barcode, rma.statusRma, rma.credit);
+        }
+    }
+}
+
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
+    console.log( user.userID +  user.userName +  user.email +  user.password +  user.userRole);
     insert.run(
         user.userID, user.userName, user.email, user.password, user.userRole
     );
@@ -407,10 +409,6 @@ export function updateTotalRefundAmount(RMAId, totalRefundAmount) {
     return update.run(totalRefundAmount, RMAId);
 }
 
-export function updateRMAStatusToFinished(RMAId) {
-    const update = db.prepare('UPDATE returntable SET statusRma = "Finished" WHERE RMAId = ? AND ...');
-    return update.run(RMAId);
-}
 
 export function getOrderDetails2(userId){
     return db.prepare(queries.getUserOrdersWithReturn).all(userId);
@@ -430,4 +428,9 @@ export function getProductPriceByOrderedProductId(orderedProductId) {
 export function getCollectorImageAndDescriptionById(returnedProductId) {
     const statement = db.prepare(queries.selectCollectorImageAndDescriptionById);
     return statement.get(returnedProductId);
+}
+
+export function updateRMAStatus(RMAId, statusRma){
+    const update = db.prepare('UPDATE returntable SET statusRma = ? WHERE RMAId = ?');
+    return update.run(statusRma, RMAId);
 }

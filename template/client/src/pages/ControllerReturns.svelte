@@ -143,7 +143,10 @@
                     request.totalReturnPrice = totalPrice;
                     request.statusRMA = status
                     request.controllerInfo = controllerInfo; // Add the controller info to the request object
-                    request.statusRMA = request.totalReturnPrice === 0 ? 'Finished' : status;
+                    if (totalPrice === 0 && status !== 'Finished') {
+                        await updateRMAStatusToFinished(request.RMAId);
+                        request.statusRMA = 'Finished'; // Update the status in the current client state
+                    }
                 }
                 const aggregatedRequests = aggregateRequestsByRMA(requests);
 
@@ -157,6 +160,25 @@
             }
         } catch (error) {
             console.error('Error:', error);
+        }
+    }
+    async function updateRMAStatusToFinished(RMAId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/${RMAId}/update-status`, {
+                method: 'PATCH', // or 'PUT' depending on your backend
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: 'Finished' })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update RMA status');
+            }
+
+            console.log(`RMA ID ${RMAId} status updated to Finished.`);
+        } catch (error) {
+            console.error('Error updating RMA status:', error);
         }
     }
     function aggregateRequestsByRMA(requests) {
