@@ -4,9 +4,12 @@ import {
     assignRmaToControllerQuery,
     getLastRMA,
     getRmaDetailsQuery,
-    selectControllerInfoByRMAId
+    selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
+    selectStatusById
 } from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
+
+import {returnedProduct} from "../database/init-data.js";
 
 
 let db;
@@ -85,7 +88,7 @@ export function insertReturned(){
                 returnedProductData.description,
                 returnedProductData.weight,
                 returnedProductData.statusProduct,
-                returnedProductData.quantityToReturn,
+                returnedProductData.quantityToReturn
             );
         }
     }
@@ -106,9 +109,7 @@ export function insertUser(user){
     console.log( user.userID +  user.userName +  user.email +  user.password +  user.userRole);
     insert.run(
         user.userID, user.userName, user.email, user.password, user.userRole
-
     );
-
 }
 export function insertRma(barcode, statusRma, credit) {
     const statement = db.prepare(queries.createRma);

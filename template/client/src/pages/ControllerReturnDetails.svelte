@@ -201,15 +201,14 @@
                 const customer = await fetchCustomerOfRMA(RMAId);
                 const productsResponse = await fetchProductsOfRMA(RMAId);
                 console.log(productsResponse)
-                products = productsResponse.map(product => {
-                    const matchingReturnRequest = returnRequests.find(req => req.orderedProductId === product.orderedProductId);
-                    console.log(matchingReturnRequest)
-                    return {
-                        name: product.name,
-                        quantityToReturn: matchingReturnRequest ? matchingReturnRequest.quantityToReturn : 0,
-                        orderedProductId: product.orderedProductId // If you need to use this later
-                    };
-                })
+                products = productsResponse.map(product => ({
+                    name: product.name,
+                    quantityToReturn: product.quantityToReturn,
+                    orderedProductId: product.orderedProductId, // If you need to use this later
+                    showDetails: false, // Add this line
+                    collectorImageSrc: 'data:image/png;base64,' + product.collectorImage, // Assuming you have the image as base64
+                    collectorDescription: product.collectorDescription // Assuming you have the description
+                }));
                 $: if (products.length > 0 && selectedProducts.size === 0) {
                     products.forEach(product => {
                         selectedProducts.set(product.name, { action: null, quantityToReturn: 0, maxQuantity: product.quantityToReturn });
@@ -318,6 +317,12 @@
         }
     }
 
+    function toggleDetails(index) {
+        console.log(products)
+        products[index].showDetails = !products[index].showDetails;
+        products = products; // Reassign to trigger reactivity
+    }
+
 </script>
 
 
@@ -336,8 +341,8 @@
                 <span>Refund</span>
                 <span>Damaged</span>
             </div>
-            {#each products as product}
-                <div class="product-row">
+            {#each products as product, index}
+                <div class="product-row" on:click={() => toggleDetails(index)}>
                     <span>{product.name}</span>
                     <span>
                 <input type="number" min="0" max={product.quantityToReturn}
@@ -356,6 +361,16 @@
                            on:change={() => handleRadioChange(product.name, 'damaged')} />
                     <label for={`damaged-${product.name}`}>Damaged</label>
                 </span>
+                    <span>
+            {#if product.showDetails}
+            <div class="details-dropdown">
+                {#if product.collectorImageSrc}
+                    <img class="collector-image" src={collectorImageSrc} alt="Collector's snapshot" />
+                {/if}
+                <p class="collector-description">{product.collectorDescription || 'No description provided.'}</p>
+            </div>
+        {/if}
+        </span>
                 </div>
                 <br>
 <!--                <span>Controller Description: {product.collectorDescription || 'No description'}</span>-->
@@ -368,17 +383,17 @@
             <div class="qr-code-section">
                 <div id="qrCodeContainer"></div>
             </div>
-            <div class="collector-panel">
-                <div id="qrCodeContainer"></div>
-                <div class="collector-details">
-                    <h2>Collector Image:</h2>
-                    {#if collectorImageSrc}
-                        <img class="collector-image" src={collectorImageSrc} alt="Collector's snapshot" />
-                    {/if}
-                    <h2>Collector Comments:</h2>
-                    <p class="collector-description">{collectorDescription || 'No description provided.'}</p>
-                </div>
-            </div>
+<!--            <div class="collector-panel">-->
+<!--                <div id="qrCodeContainer"></div>-->
+<!--                <div class="collector-details">-->
+<!--                    <h2>Collector Image:</h2>-->
+<!--                    {#if collectorImageSrc}-->
+<!--                        <img class="collector-image" src={collectorImageSrc} alt="Collector's snapshot" />-->
+<!--                    {/if}-->
+<!--                    <h2>Collector Comments:</h2>-->
+<!--                    <p class="collector-description">{collectorDescription || 'No description provided.'}</p>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
         <div class="status-section">
             <p>STATUS: {returnRequests.status}</p>
@@ -391,6 +406,50 @@
 </div>
 
 <style>
+    .product-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+        cursor: pointer; /* Indicate the row is clickable */
+        position: relative; /* For absolute positioning of the details dropdown */
+    }
+
+    .product-row:hover {
+        background-color: #f5f5f5; /* Light background on hover to indicate interactivity */
+    }
+
+    .product-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%; /* Ensure it takes up the full width of the container */
+    }
+
+    .details-dropdown {
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 1rem;
+        width: 100%; /* Make it as wide as the product row */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: add a shadow for better visibility */
+        z-index: 10;
+        top: 100%; /* Position it right below the product row */
+    }
+
+    .collector-image {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .collector-description {
+        color: #333;
+    }
     :root {
         --primary-color: #0056b3;
         --secondary-color: #ff9500;
