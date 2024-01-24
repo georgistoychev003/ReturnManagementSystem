@@ -37,6 +37,8 @@ router.get('/:rmaId/status', rmaController.getRmaStatus);
 
 router.get('/:rmaId/refund', rmaController.getRmaRefund);
 
+router.patch('/:rmaId/update-status', rmaController.UpdateStatus);
+
 router.get('/:rmaId/customer', rmaController.getRmaCustomer);
 router.get('/:rmaId/controller', rmaController.getRmaController);
 

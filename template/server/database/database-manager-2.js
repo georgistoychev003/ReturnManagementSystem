@@ -1,14 +1,12 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
-import * as initData from '../database/init-data.js'
-
 import {
-    assignRmaToControllerQuery, createReturnedProduct,
-    createRma, getLastRMA,
+    assignRmaToControllerQuery,
+    getLastRMA,
     getRmaDetailsQuery,
-    selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
-    selectStatusById
-} from "../database/database-queries.js";
+    selectControllerInfoByRMAId
+} from '../database/database-queries.js'
+import * as initData from '../database/init-data.js'
 
 
 let db;
@@ -409,10 +407,6 @@ export function updateTotalRefundAmount(RMAId, totalRefundAmount) {
     return update.run(totalRefundAmount, RMAId);
 }
 
-export function updateRMAStatusToFinished(RMAId) {
-    const update = db.prepare('UPDATE returntable SET statusRma = "Finished" WHERE RMAId = ? AND ...');
-    return update.run(RMAId);
-}
 
 export function getOrderDetails2(userId){
     return db.prepare(queries.getUserOrdersWithReturn).all(userId);
@@ -432,4 +426,9 @@ export function getProductPriceByOrderedProductId(orderedProductId) {
 export function getCollectorImageAndDescriptionById(returnedProductId) {
     const statement = db.prepare(queries.selectCollectorImageAndDescriptionById);
     return statement.get(returnedProductId);
+}
+
+export function updateRMAStatus(RMAId, statusRma){
+    const update = db.prepare('UPDATE returntable SET statusRma = ? WHERE RMAId = ?');
+    return update.run(statusRma, RMAId);
 }

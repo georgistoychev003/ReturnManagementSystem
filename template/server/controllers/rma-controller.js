@@ -18,13 +18,38 @@ import {
     updateReturnedProductQuantity,
     updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma,
     assignRmaToControllerDb, getControllerInfoByRMAId,
-    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId,
+    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId, updateRMAStatus,
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import * as queries from "../database/database-queries.js";
 import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
 import res from "express/lib/response.js";
 import * as databaseManager from "../database/database-manager-2.js";
+
+export async function UpdateStatus(req, res) {
+    const {rmaId} = req.params;
+    const {status} = req.body;
+
+    if (!rmaId || !status) {
+        return res.status(400).json({message: 'RMA ID and new status are required.'});
+    }
+
+    try {
+        console.log(rmaId)
+        console.log(status)
+        const result = await updateRMAStatus(rmaId, status);
+        console.log(result)
+        if (result.changes > 0) {
+            res.status(200).json({message: 'RMA status updated successfully'});
+        } else {
+            res.status(404).json({message: 'RMA not found'});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
+
 
 export function getAllRMAOfCustomerByEmail(req, res) {
     const { email } = req.params;
