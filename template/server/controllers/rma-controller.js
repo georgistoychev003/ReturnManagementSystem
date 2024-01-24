@@ -16,10 +16,29 @@ import {
     returnRMAaandDates,
     returnRMAPerMonth,
     updateReturnedProductQuantity,
-    assignRmaToControllerDb
+    updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma,
+    assignRmaToControllerDb, getControllerInfoByRMAId,
+    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId,
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
-import {getAllRmaDetails} from "../database/database-queries.js";
+import * as queries from "../database/database-queries.js";
+import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
+import res from "express/lib/response.js";
+
+export function getAllRMAOfCustomerByEmail(req, res) {
+    const { email } = req.params;
+    try {
+        console.log(email.json)
+        const RMAbyEmail = getRMAByClientEmail(email)
+        res.status(StatusCodes.OK).json(RMAbyEmail);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA for this customer with email: ${email}." });
+    }
+}
+
+
+
+
 
 export function deleteRma(req, res) {
     const { rmaId } = req.params;
@@ -65,7 +84,6 @@ export function getRmaPrice(req, res) {
 export function getRmaStatus(req, res) {
     const { rmaId } = req.params;
     try {
-
         const status = getStatusById(rmaId);
         res.status(StatusCodes.OK).json(status);
     } catch (error) {
@@ -83,14 +101,39 @@ export function getRmaCustomer(req, res) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA customer." });
     }
 }
+export function getRmaController(req, res) {
+    const { rmaId } = req.params;
+    try {
+        const controllerInfo = getControllerInfoByRMAId(rmaId);
+
+        if (controllerInfo) {
+            res.status(StatusCodes.OK).json(controllerInfo);
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ error: "Controller information not found for the given RMA ID." });
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get controller information." });
+    }
+}
+
+
 
 export function getRmaProducts(req, res) {
     const { rmaId } = req.params;
     try {
         const products = getProductByRMAId(rmaId);
         res.status(StatusCodes.OK).json(products.map(p => ({
+            returnedProductId: p.returnedProductId,
             orderedProductId: p.orderedProductId,
-            name: p.name
+            name: p.name,
+            price: p.price,
+            type: p.type,
+            imageURL: p.imageURL,
+            quantityToReturn: p.quantityToReturn,
+            returnedDate : p.returnedDate
+
+
+
         })));
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get RMA products." });
@@ -114,7 +157,6 @@ export function getRma(req, res) {
         let rmaResult;
         if (rmaId) {
             rmaResult = getAllRmaById(rmaId)
-            console.log(rmaResult)
         }
         if (rmaResult) {
             res.status(StatusCodes.OK).json(rmaResult);
@@ -238,9 +280,9 @@ export async function assignRmaToController(req, res) {
 
 
 export  function updateQuantities(req, res) {
-    const { productName, quantity, RMAId } = req.body;
+    const { productName, quantityToReturn, RMAId } = req.body;
     try {
-        updateReturnedProductQuantity(productName, quantity, RMAId);
+        updateReturnedProductQuantity(productName, quantityToReturn, RMAId);
         res.status(200).json({ message: 'Returned product quantity updated successfully' });
     } catch (error) {
         console.error('Error updating returned product quantity:', error);
@@ -248,5 +290,93 @@ export  function updateQuantities(req, res) {
     }
 
 }
+
+export async function updateImageDescriptionByCollector(req, res) {
+    const { collectorDescription, collectorImage } = req.body; // Assuming you're now sending both as part of the JSON body
+    const { returnedProductId } = req.params;
+
+    try {
+        // Directly use the string for the image since you're not handling file uploads here
+        updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId);
+        res.status(200).json({ message: 'Returned product image and description updated successfully' });
+    } catch (error) {
+        console.error('Error updating returned product description and image:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+export async function getLastRmaFrom(req, res) {
+    try {
+        const rma = getLastRma(); // Call the function
+        res.status(StatusCodes.OK).json(rma);
+    } catch (error) {
+        console.error("Error fetching last RMA:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve RMA's." });
+    }
+}
+
+export async function updateTotalRefund(req, res) {
+    const { RMAId } = req.params;
+    const { totalRefundAmount } = req.body;
+
+    try {
+        const result = updateTotalRefundAmount(RMAId, totalRefundAmount);
+        console.log(result)
+        if (result.changes > 0) {
+            res.status(StatusCodes.OK).json({ message: 'Total refund amount updated successfully.' });
+        } else {
+            res.status(StatusCodes.NOT_FOUND).json({ message: 'RMA not found.' });
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to update total refund amount.' });
+    }
+}
+
+export async function getRmaRefund(req, res) {
+    const { rmaId } = req.params;
+    try {
+        const result = getTotalRefundByRMAId(rmaId);
+        if (result) {
+            res.json({ totalRefundAmount: result.totalRefundAmount });
+        } else {
+            res.status(404).json({ error: 'RMA not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+export async function addNewRMARequest(req, res) {
+    try {
+        // Log received payload for debugging
+        console.log("Received JSON payload:", req.body);
+
+        // Normalize products to always be an array
+        let products = req.body;
+        if (!Array.isArray(products)) {
+            products = [products];
+        }
+
+        // Create RMA and retrieve ID (assuming insertRma is async)
+        const rmaId = await insertRma("barcodeX", "pending", 0);
+
+        // Get today's date in YYYY-MM-DD format
+        const formattedDate = new Date().toISOString().split('T')[0];
+
+        // Process each product
+        for (const product of products) {
+            await insertReturnedProduct(product.orderedProductId, rmaId, formattedDate, product.description, product.productWeight, "pending", product.quantityToReturn);
+        }
+
+        // Send a successful response back
+        res.status(200).json({ message: "RMA request added successfully" });
+    } catch (error) {
+        console.error("Error in addNewRMARequest:", error);
+        res.status(500).send("An error occurred while processing your request.");
+    }
+}
+
 
 

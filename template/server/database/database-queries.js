@@ -10,7 +10,7 @@ export const createProductTable = `CREATE TABLE IF NOT EXISTS product(
 )`
 
 export const createUserTable = `CREATE TABLE IF NOT EXISTS user(
-    userID INT PRIMARY KEY,
+    userID INTEGER PRIMARY KEY AUTOINCREMENT,
     userName TEXT NOT NULL, 
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
@@ -30,31 +30,33 @@ export const createOrderedProductTable = `CREATE TABLE IF NOT EXISTS orderedProd
     productId INT NOT NULL,
     quantity INT NOT NULL,
     unitPrice INT NOT NULL,
+    priceAtTimeOfOrder DOUBLE NOT NULL,
     FOREIGN KEY (orderId) REFERENCES "order"(orderId), 
     FOREIGN KEY (productId) REFERENCES product(productId)
---     unitPrice DOUBLE NOT NULL
---     ^^ Is this value the combined value for the quantity?
 )`
 
 export const createReturnTable = `CREATE TABLE IF NOT EXISTS returntable(
-    RMAId INTEGER NOT NULL PRIMARY KEY,
+    RMAId INTEGER PRIMARY KEY,
     barcode TEXT NOT NULL,
     statusRma TEXT NOT NULL,
+    credit DOUBLE NOT NULL,
     controllerId INT,
     lockTimestamp DATETIME,
+    totalRefundAmount INT,
     FOREIGN KEY (controllerId) REFERENCES "user"(userID)                                 
     )`
 
 export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedProduct(
-    returnedProductId INTEGER PRIMARY KEY AUTOINCREMENT,
+    returnedProductId INTEGER PRIMARY KEY ,
     orderedProductId INT NOT NULL,
     RMAId INT,
-    quantityToReturn INT,
     returnedDate DATE,
     description TEXT,
     weight DOUBLE,
     statusProduct TEXT,
-    quantity INT,
+    quantityToReturn INT,
+    collectorImage TEXT,
+    collectorDescription TEXT, 
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -69,11 +71,11 @@ export const countReturns = `SELECT count(RMAId) FROM returntable`
 export const countReturnedProducts = `SELECT count(returnedProductId) FROM returnedProduct`
 
 export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
-export const createRma = `INSERT INTO returntable (barcode, statusRma) VALUES (?, ?)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId, quantityToReturn,  returnedDate, description, weight, statusProduct, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )`
+export const createRma = `INSERT INTO returntable (barcode, statusRma, credit, totalRefundAmount) VALUES (?, ?, ?, 0)`;
+export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
-export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice) VALUES (?, ?, ?, ?, ?)`
+export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice, priceAtTimeOfOrder) VALUES (?, ?, ?, ?, ?, ?)`
 
 export const deleteUserByEmail = `DELETE FROM user WHERE email = ?`;
 export const deleteUserById = `DELETE FROM user WHERE userID = ?`;
@@ -91,6 +93,7 @@ export const updateOrderByOrderId = `UPDATE "order" SET userId = ?, orderDate = 
 export const updateOrderDetailById = `UPDATE orderDetail SET orderId = ?, productId = ?, quantity = ? WHERE orderDetailId = ?`;
 export const updateRmaById = `UPDATE returntable SET RMAId = ?, returnedProductId = ?, barcode = ?, statusRma = ? WHERE RMAId = ?`;
 export const updateReturnedProduct = `UPDATE returnedProduct SET returnedProductId = ?, orderedProductId = ?, RMAId = ?, returnedDate = ?,description = ?, weight = ?, statusProduct = ? WHERE RMAId = ? AND returnedProductId = ? AND orderedProductId = ?`;
+//export const updateUserCreditLine = `UPDATE user SET creditLine = ? WHERE userID = ?`;
 
 export const selectAllUsers = `SELECT * FROM user`;
 export const selectUserByEmail = `SELECT * FROM user WHERE email = ?`;
@@ -106,7 +109,18 @@ export const selectAllOrderDetails = `SELECT * FROM orderProduct`;
 export const selectAllReturns =  `SELECT * FROM returntable`;
 export const selectStatusById =  `SELECT statusRma FROM returntable WHERE RMAId = ?`;
 export const selectAllReturnedProducts =  `SELECT * FROM returnedProduct`;
-export const selectAllReturnedProductById = `SELECT * FROM returnedProduct WHERE RMAId = ?`;
+export const selectAllReturnedProductById = `SELECT * FROM returnedProduct 
+                                            JOIN orderedProduct ON returnedProduct.orderedProductId = orderedProduct.orderedProductId
+                                            JOIN product ON orderedProduct.productId = product.productId
+                                            WHERE RMAId = ?`;
+export const selectAllRMAbyCustomersEmail = `SELECT * FROM user
+                                                JOIN "order" o ON user.userId = o.userId
+                                                JOIN orderedProduct ON o.orderId = orderedProduct.orderId
+                                                JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId
+                                                JOIN returntable ON returnedProduct.RMAId = returntable.RMAId
+                                                WHERE email = ? AND returntable.RMAId >= 0
+                                                GROUP BY returntable.RMAId;
+                                                `;
 export const selectReturnedProductQuantityByRMAId = `
     SELECT rp.quantityToReturn
     FROM returnedProduct rp
@@ -114,11 +128,27 @@ export const selectReturnedProductQuantityByRMAId = `
     WHERE r.RMAId = ?;
 `;
 //TODO check once the design in corrected
+export const getLastRMA = `SELECT RMAId FROM returntable ORDER BY RMAId DESC LIMIT 1`;
+export const selectOrderedProducts = `SELECT
+                                          "order".orderId,
+                                          "order".orderDate,
+                                          orderedProduct.productId,
+                                          orderedProduct.orderedProductId, 
+                                          orderedProduct.quantity,
+                                          orderedProduct.priceAtTimeOfOrder,
+                                          product.name,
+                                          product.price,
+                                          product.type,
+                                          product.productWeight,
+                                          returnedProduct.quantityToReturn
+                                      FROM
+                                          "order"
+                                              LEFT JOIN orderedProduct ON "order".orderId = orderedProduct.orderId
+                                              LEFT JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId
+                                              JOIN product ON orderedProduct.productId = product.productId
+                                      WHERE
+                                          "order".orderId = ?`;
 
-export const selectOrderedProducts = `SELECT "order".orderId, "order".orderDate ,orderedProduct.productId, orderedProduct.quantity, product.name, product.price, product.type FROM "order" 
-           INNER JOIN orderedProduct ON "order".orderId = orderedProduct.orderId 
-           INNER JOIN product ON orderedProduct.productId = product.productId
-                     WHERE "order".orderId = ?;`;
 
 export const selectAllRMAByUserId = `SELECT rp.returnedProductId, rp.orderedProductId, rp.RMAId, rp.returnedDate, rp.description, rp.weight, rp.statusProduct FROM returnedProduct rp
 JOIN orderedProduct op ON op.orderedProductId = rp.orderedProductId
@@ -131,12 +161,19 @@ export const selectProductByBarcode = `SELECT * FROM product WHERE barcode = ?`;
 
 
 export const selectCustomerEmailByRMAId = `
-    SELECT u.email
+    SELECT u.email, u.userID, u.userName
     FROM user u
     JOIN "order" o ON u.userID = o.userId
     JOIN orderedProduct op ON o.orderId = op.orderId
     JOIN returnedProduct rp ON op.orderedProductId = rp.orderedProductId
     JOIN returntable r ON rp.RMAId = r.RMAId
+    WHERE r.RMAId = ?;
+`;
+
+export const selectControllerInfoByRMAId = `
+    SELECT u.userID, u.userName, u.email
+    FROM user u
+    JOIN returntable r ON u.userID = r.controllerId
     WHERE r.RMAId = ?;
 `;
 
@@ -186,7 +223,6 @@ SELECT
     rp.description,
     rp.weight,
     rp.statusProduct,
-    rp.quantity,
     u.userName AS staffName,
     u.email AS staffEmail
 FROM
@@ -214,6 +250,36 @@ export const getRMACountByMonth = `
         monthYear;
 `;
 
+export const getUserOrdersWithReturn = `
+    SELECT
+        u.userID,
+        o.orderId,
+        o.totalPrice,
+        o.orderDate,
+        COUNT(op.orderedProductId) AS productCount,
+        SUM(rp.quantityToReturn) AS totalReturnedQuantity,
+        rt.statusRma,
+        rt.credit
+    FROM
+        "user" u
+            LEFT JOIN "order" o ON o.userId = u.userID
+            LEFT JOIN orderedProduct op ON o.orderId = op.orderId
+            LEFT JOIN returnedProduct rp ON op.orderedProductId = rp.orderedProductId
+            LEFT JOIN returntable rt ON rp.RMAId = rt.RMAId
+    WHERE
+        u.userID = ?
+    GROUP BY
+        o.orderId
+`
+
 export const assignRmaToControllerQuery = `UPDATE returntable SET controllerId = ?, lockTimestamp = ? WHERE RMAId = ?`;
 
 export const getRmaDetailsQuery = `SELECT * FROM returntable WHERE RMAId = ?`;
+
+
+export const setImageDescriptionByController = `UPDATE returnedProduct
+SET collectorImage = ?,
+    collectorDescription = ?
+        WHERE returnedProductId = ?`;
+
+

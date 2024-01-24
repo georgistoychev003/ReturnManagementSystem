@@ -1,6 +1,10 @@
 <script>
     import page from 'page';
     import {onMount} from "svelte";
+    import {writable} from "svelte/store";
+    import {userEmail} from "../Store.js";
+
+    import { userIdStore } from '../Store.js';
 
     onMount(() => {
         clearToken();
@@ -33,6 +37,9 @@
             localStorage.setItem('token', data.token);
             const payload = JSON.parse(atob(data.token.split('.')[1]));
             userId = payload.id; // Extract the user ID from the token payload
+            username = payload.email;
+            //userEmail.set(username);
+            userIdStore.set(payload.id);
             console.log(payload)
             redirectToRolePage(payload.role);
         } else {
@@ -45,7 +52,10 @@
         switch(role) {
             case 'customer':
                 console.log("switched")
+                userIdStore.set(userId);
+                console.log(userId);
                 window.location.href='/client';
+
                 break;
             case 'admin':
                 window.location.href='/admin';

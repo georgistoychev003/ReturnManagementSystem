@@ -9,6 +9,8 @@ router.get('/', productRouter.getListOfProducts);
 
 router.get('/:productId', productRouter.getProduct);
 
+router.get('/:productId/price', productRouter.getProductPrice);
+
 router.patch('/:productId', productRouter.patchProduct);
 
 router.post('/uploadImage', productRouter.uploadImage);

@@ -25,11 +25,14 @@
 	import RMAClientForm from "./pages/client/ClientRMACreationForm.svelte"
 	import ResetPassword from "./pages/ResetPassword.svelte";
 	import RMAProducts from "./pages/client/RMAProducts.svelte";
+	import ReturnRequestDetail from "./pages/client/ReturnRequestDetail.svelte";
 	import TESTQRCODE from "./pages/TESTQRCODE.svelte";
+	import PrintingLabelPage from "./pages/client/PrintingLabelPage.svelte";
 
 	let page;
 	let params;
 	let currentRoute;
+	let showHeader = true;
 
 	router('/', (ctx) => {
 		page = Login;
@@ -118,6 +121,7 @@
 
 	router('/myReturns', (ctx) =>{
 		page = MyReturns;
+		params = ctx.params;
 		currentRoute = ctx.pathname;
 	});
 
@@ -130,8 +134,9 @@
 		page = ResetPassword;
 		currentRoute = ctx.pathname;
 	});
-	router('/RMAProducts', (ctx) => {
+	router('/RMAProducts/:rmaId', (ctx) => {
 		page = RMAProducts;
+		params = ctx.params;
 		currentRoute = ctx.pathname;
 	});
 
@@ -141,9 +146,22 @@
 		currentRoute = ctx.pathname;
 	});
 
+	//TODO PABLO
+	router('/requestReturnDetail/:RMAId', (ctx) => {
+		page = ReturnRequestDetail;
+		params = ctx.params;
+		currentRoute = ctx.pathname;
+	})
+
 	router('/barcode', (ctx) => {
 		page = TESTQRCODE;
 		currentRoute = ctx.pathname;
+	});
+
+	router('/printingLabel', (ctx) => {
+		page = PrintingLabelPage;
+		currentRoute = ctx.pathname;
+		showHeader = false;
 	})
 
 	router.start();
@@ -154,7 +172,7 @@
 </svelte:head>
 
 <main>
-	<Header active={currentRoute} />
+	<Header active={currentRoute} {showHeader} />
 	<div class="content">
 		<svelte:component this={page} {params} />
 	</div>

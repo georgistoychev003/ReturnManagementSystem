@@ -126,6 +126,15 @@
     };
 
     const deleteUser = async (userID) => {
+        // Display a confirmation dialog box
+        const isConfirmed = confirm('Are you sure you want to delete this user?');
+        if (!isConfirmed) {
+            // If the user clicks "Cancel", exit the function
+            console.log('User deletion cancelled.');
+            return;
+        }
+
+        // If the user clicks "OK", proceed with deletion
         try {
             const response = await fetch(`http://localhost:3000/users/${userID}`, {
                 method: 'DELETE'
@@ -152,9 +161,9 @@
     });
 
 // for now hard coded
-    //todo : database should be done for full functionality
-    const userID = '1';
-    fetchUserDetails(userID);
+//     //todo : database should be done for full functionality
+//     const userID = '1';
+//     fetchUserDetails(userID);
 
 </script>
 

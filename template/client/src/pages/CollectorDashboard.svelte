@@ -1,7 +1,10 @@
 <script>
     import {onMount} from "svelte";
-    import BarcodeReader  from 'barcode-reader';
     import page from 'page';
+    import jsQR from 'jsqr';
+    let videoElement;
+    let canvasElement;
+    let canvasContext;
 
 
     let name = 'COLLECTOR NAME'; // You can set a default name here
@@ -11,27 +14,49 @@
         alert(`HELLO COLLECTOR NAME ${name}`);
     }
 
+    onMount(() => {
+        canvasElement = document.createElement('canvas');
+        canvasContext = canvasElement.getContext('2d');
+    });
+
     async function scanBarcode() {
-        try {
-            // Check if the video element is already created
-            if (!videoElementCreated) {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const videoElement = document.createElement('video');
+        if (!videoElement) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                videoElement = document.createElement('video');
                 videoElement.srcObject = stream;
                 videoElement.setAttribute('autoplay', '');
+                videoElement.setAttribute('playsinline', ''); // needed for iOS
+                videoElement.addEventListener('loadeddata', onCameraStreamReceived);
                 document.body.appendChild(videoElement);
-                videoElementCreated = true; // Set the flag to true after creating the video element
-
-                const barcodeReader = new BarcodeReader(videoElement);
-                barcode = await barcodeReader.scan();
-
-                // Fetch RMA details only if barcode is found
-                if (barcode) {
-                    await fetchUserDetails();
-                }
+            } catch (err) {
+                console.error('Error accessing the camera: ', err);
             }
-        } catch (err) {
-            console.error('Error accessing the camera: ', err);
+        }
+    }
+
+    function onCameraStreamReceived() {
+        canvasElement.width = videoElement.videoWidth;
+        canvasElement.height = videoElement.videoHeight;
+
+        scanQRCode();
+    }
+
+    function scanQRCode() {
+        requestAnimationFrame(scanQRCode);
+        canvasContext.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+        let imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        let qrCodeData = jsQR(imageData.data, imageData.width, imageData.height);
+
+        if (qrCodeData) {
+            console.log('QR Code detected: ', qrCodeData.data);
+            // Stop the camera and further scanning
+            videoElement.srcObject.getTracks().forEach(track => track.stop());
+            videoElement.remove();
+            // Process the QR code data
+            barcode = qrCodeData.data;
+            // Continue with our application logic
+            page(`/RMAProducts/${barcode}`);
         }
     }
 
@@ -51,21 +76,16 @@
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                // Update the API endpoint based on the   barcode-router.js
-                const response = await fetch(`http://localhost:3000/barcode/scanBarcode`, {
+                const response = await fetch(`http://localhost:3000/rma/${barcode}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ barcode }),
+                    }
                 });
 
                 if (response.ok) {
                     const data = await response.json();
                     name = data.barcode;
                     barcode = data.barcode;
-
-                    // Redirect to the page showing the items for the RMA barcode
-                    page(`/RMAProducts/${barcode}`);
                 } else {
                     console.error('Failed to fetch user details');
                 }

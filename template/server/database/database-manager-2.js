@@ -2,7 +2,13 @@ import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
 
-import {assignRmaToControllerQuery, getRmaDetailsQuery, selectStatusById} from "../database/database-queries.js";
+import {
+    assignRmaToControllerQuery, createReturnedProduct,
+    createRma, getLastRMA,
+    getRmaDetailsQuery,
+    selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
+    selectStatusById
+} from "../database/database-queries.js";
 
 
 let db;
@@ -64,7 +70,7 @@ function insertOrderDetails(){
     if(countResult['count(orderId)'] === 0){
         const insert = db.prepare(queries.createOrderDetails);
         for(const order of initData.orderDetailsData){
-            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice);
+            insert.run(order.orderedProductId, order.orderId, order.productId, order.quantity, order.unitPrice, order.priceAtTimeOfSale);
         }
     }
 }
@@ -78,12 +84,12 @@ export function insertReturned(){
                 returnedProductData.returnedProductId,
                 returnedProductData.orderedProductId,
                 returnedProductData.RMAId,
-                returnedProductData.quantityToReturn,
                 returnedProductData.returnedDate,
                 returnedProductData.description,
                 returnedProductData.weight,
                 returnedProductData.statusProduct,
-                returnedProductData.quantity);
+                returnedProductData.quantityToReturn,
+            );
         }
     }
 }
@@ -93,7 +99,7 @@ export function insertRMA(){
     if(countResult['count(RMAId)'] === 0) {
         const insert = db.prepare(queries.createRma);
         for (const rma of initData.rmaData) {
-            insert.run(rma.barcode, rma.statusRma);
+            insert.run(rma.barcode, rma.statusRma, rma.credit);
         }
     }
 }
@@ -104,7 +110,23 @@ export function insertUser(user){
         user.userID, user.userName, user.email, user.password, user.userRole
     );
 }
+export function insertRma(barcode, statusRma, credit) {
+    const statement = db.prepare(queries.createRma);
+    const result = statement.run(barcode, statusRma, credit);
+    const rmaId = result.lastInsertRowid; // This is SQLite-specific; adjust for your DB
+    return rmaId;
+}
 
+export function getLastRma() {
+    const statement = db.prepare(getLastRMA);
+    return statement.get(); // Ensure this returns data
+}
+
+export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn){
+    const statement = db.prepare(queries.createReturnedProduct);
+    statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn);
+
+}
 export function getAllUsers() {
     return db.prepare(queries.selectAllUsers).all();
 }
@@ -164,7 +186,7 @@ export function getOrderByOrderId(orderId) {
     return db.prepare(queries.selectOrderById).get(orderId);
 }
 export function getOrderByUserId(orderId) {
-    return db.prepare(queries.selectOrderByUserId).get(orderId);
+    return db.prepare(queries.selectOrderByUserId).all(orderId);
 }
 
 export function deleteOrderById(orderId) {
@@ -199,7 +221,13 @@ export function getAllOrderDetails() {
 }
 
 export function getOrderedProductsByOrderId(orderId){
-    return db.prepare(queries.selectOrderedProducts).all(orderId);
+    try {
+        return db.prepare(queries.selectOrderedProducts).all(orderId);
+    } catch (error) {
+        // Handle or throw the error
+        console.error("Error in getOrderedProductsByOrderId:", error);
+        throw error;
+    }
 }
 //TODO check once the design in corrected
 export function getNumberOfRMA() {
@@ -237,7 +265,7 @@ export function getStatusById(RMAId) {
 
 export function getTotalPriceOfRMA(RMAId) {
     const query = `
-        SELECT r.RMAId, SUM(op.unitPrice * rp.quantity) AS TotalReturnPrice
+        SELECT r.RMAId, SUM(op.unitPrice * rp.quantityToReturn) AS TotalReturnPrice
         FROM returnedProduct rp
         JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
         JOIN returntable r ON rp.RMAId = r.RMAId
@@ -251,10 +279,19 @@ export function getCustomerEmailByRMAId(RMAId) {
     const statement = db.prepare(queries.selectCustomerEmailByRMAId);
     return statement.get(RMAId);
 }
+export function getControllerInfoByRMAId(RMAId) {
+    const statement = db.prepare(selectControllerInfoByRMAId);
+    return statement.get(RMAId);
+}
 
 export function getProductByRMAId(RMAId) {
     return db.prepare(queries.selectProductDescriptionsByRMAId).all(RMAId);
 }
+export function getTotalRefundByRMAId(RMAId) {
+    const statement = db.prepare('SELECT totalRefundAmount FROM returntable WHERE RMAId = ?');
+    return statement.get(RMAId); // This will return the row with the totalRefundAmount
+}
+
 
 export function getQunatityByRMAId(RMAId) {
     return db.prepare(queries.selectReturnedProductQuantityByRMAId).all(RMAId);
@@ -271,6 +308,10 @@ export function getAllReturnsByUserId(userId){
     return db.prepare(queries.selectAllRMAByUserId).all(userId);
 }
 
+export function getRMAByClientEmail(email){
+    return db.prepare(queries.selectAllRMAbyCustomersEmail).all(email);
+}
+
 
 export function getProductPriceByName(productName) {
     return db.prepare('SELECT price FROM product WHERE name = ?').get(productName);
@@ -278,6 +319,8 @@ export function getProductPriceByName(productName) {
 
 export function increaseProductStockByName(productName, quantity) {
     const currentStock = db.prepare('SELECT inventoryStock FROM product WHERE name = ?').get(productName).inventoryStock;
+    console.log(currentStock)
+    console.log(quantity)
     const newStock = currentStock + quantity;
     const update = db.prepare('UPDATE product SET inventoryStock = ? WHERE name = ?');
     return update.run(newStock, productName);
@@ -336,7 +379,7 @@ export function returnRMAPerMonth() {
 export function updateReturnedProductQuantity(productName, deductionQuantity, RMAId) {
     // Query to select the specific returned product based on productName and RMAId
     const select = db.prepare(`
-        SELECT rp.quantity, rp.returnedProductId
+        SELECT rp.quantityToReturn, rp.returnedProductId
         FROM returnedProduct rp
         JOIN orderedProduct op ON rp.orderedProductId = op.orderedProductId
         JOIN product p ON op.productId = p.productId
@@ -344,12 +387,43 @@ export function updateReturnedProductQuantity(productName, deductionQuantity, RM
         WHERE p.name = ? AND r.RMAId = ?;
     `);
     const returnedProduct = select.get(productName, RMAId);
+    console.log(returnedProduct)
+    console.log(deductionQuantity)
+    console.log("1")
 
     if (returnedProduct) {
-        const newQuantity = Math.max(0, returnedProduct.quantity - deductionQuantity);
-        const update = db.prepare('UPDATE returnedProduct SET quantity = ? WHERE returnedProductId = ?');
+        const newQuantity = Math.max(0, returnedProduct.quantityToReturn - deductionQuantity);
+        console.log(newQuantity)
+        const update = db.prepare('UPDATE returnedProduct SET quantityToReturn = ? WHERE returnedProductId = ?');
         return update.run(newQuantity, returnedProduct.returnedProductId);
     } else {
         throw new Error('Returned product not found');
     }
 }
+
+export function updateTotalRefundAmount(RMAId, totalRefundAmount) {
+    console.log("here")
+    const update = db.prepare('UPDATE returntable SET totalRefundAmount = ? WHERE RMAId = ?');
+    return update.run(totalRefundAmount, RMAId);
+}
+
+export function updateRMAStatusToFinished(RMAId) {
+    const update = db.prepare('UPDATE returntable SET statusRma = "Finished" WHERE RMAId = ? AND ...');
+    return update.run(RMAId);
+}
+
+export function getOrderDetails2(userId){
+    return db.prepare(queries.getUserOrdersWithReturn).all(userId);
+}
+
+
+export function updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId) {
+    const update = db.prepare(queries.setImageDescriptionByController);
+    return update.run(collectorImage, collectorDescription,  returnedProductId);
+}
+
+export function getProductPriceByOrderedProductId(orderedProductId) {
+    const query = `SELECT unitPrice FROM orderedProduct WHERE orderedProductId = ?`;
+    return db.prepare(query).get(orderedProductId);
+}
+

@@ -9,6 +9,7 @@ export async function checkUserCredentials(req, res) {
     const { email, password } = req.body;
 
     const user = await getUserByEmail(email);
+    console.log(email)
     console.log(user)
 
     // await bcrypt.compare(password, user.password)

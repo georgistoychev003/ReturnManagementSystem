@@ -13,8 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "barcode": "^0.1.0",
+    "barcode": "^0.0.4",
     "bcrypt": "^5.1.1",
+    "bwip-js": "^4.2.0",
     "canvas": "^2.11.2",
     "cors": "^2.8.5",
     "ejs": "^3.1.9",

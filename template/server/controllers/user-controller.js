@@ -188,10 +188,10 @@ export async function refundMail(req, res) {
     let productListHtml = '';
     for (const productInfo of products) {
         const product = getProductPriceByName(productInfo.name);
-        const productTotal = product.price * productInfo.quantity;
+        const productTotal = product.price * productInfo.quantityToReturn;
         totalPriceRefunded += productTotal;
-        productListHtml += `<li>${productInfo.name} (Quantity: ${productInfo.quantity}) - $${productTotal.toFixed(2)}</li>`;
-        increaseProductStockByName(productInfo.name, productInfo.quantity);
+        productListHtml += `<li>${productInfo.name} (Quantity: ${productInfo.quantityToReturn}) - $${productTotal.toFixed(2)}</li>`;
+        increaseProductStockByName(productInfo.name, productInfo.quantityToReturn);
     }
 
     try {
@@ -210,7 +210,7 @@ export async function refundMail(req, res) {
 
         let mailOptions = {
             from: 'mitkopetrovich2021@gmail.com',
-            to: 'frankie.walsh4@outlook.com',    //Change to email    ////////////////////////////
+            to: email,
             subject: 'RMA Refund',
             text: 'Please follow the link to reset your password.',
             html: `
@@ -237,7 +237,7 @@ export async function damagedMail(req, res) {
 
     let productListHtml = '';
     for (const productName of products) {
-        const product = getProductPriceByName(productName);
+        const product = getProductPriceByName(productName.name);
         productListHtml += `<li>${productName} - $${product.price.toFixed(2)}</li>`;
     }
 
@@ -257,7 +257,7 @@ export async function damagedMail(req, res) {
 
         let mailOptions = {
             from: 'mitkopetrovich2021@gmail.com',
-            to: 'frankie.walsh4@outlook.com',    //Change to email //////////////////
+            to: email,
             subject: 'Damaged Returned product',
             text: 'Please follow the link to reset your password.',
             html: `<p>Dear customer,</p>

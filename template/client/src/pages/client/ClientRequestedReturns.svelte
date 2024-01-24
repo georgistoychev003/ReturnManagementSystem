@@ -1,14 +1,25 @@
 <script>
     import { onMount } from 'svelte';
-
+    import page from 'page';
+    import {writable} from "svelte/store";
+    import {userEmail} from "../../Store.js";
+    import {RMAId as RMAIdFromStore} from "../../Store.js";
     let returnRequests = [];
     let isLoading = true;
     let errorMessage = '';
+    let currentUserEmail;
+
+
+    userEmail.subscribe(value => {
+        console.log(value)
+        currentUserEmail = value;
+    });
 
 
     const fetchReturnRequests = async () => {
         try {
-            const response = await fetch('http://localhost:3000/rma/returns/1');
+            console.log(userEmail)
+            const response = await fetch(`http://localhost:3000/rma/email/${currentUserEmail}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch return requests');
             }
@@ -29,9 +40,12 @@
         }
     });
 
-    const viewDetails = (requestId) => {
-        console.log(`View details for request ID: ${requestId}`);
-        // Here we should most likely  redirect the user to a details page or open a modal with more information
+    //TODO PABLO
+    const viewDetails = (RMAId) => {
+        console.log(`View details for request ID: ${RMAId}`);
+        RMAIdFromStore.set(RMAId);
+        //Here we should most likely  redirect the user to a details page or open a modal with more information
+        page(`/requestReturnDetail/:${RMAId}`)
     };
 </script>
 
@@ -45,25 +59,22 @@
         <table>
             <thead>
             <tr>
-                <th>RETURN ID</th>
+                <th>RMA ID</th>
                 <th>ORDER ID</th>
                 <th>DATE</th>
                 <th>STATUS</th>
-                <th>CREDIT</th>
                 <th></th> <!-- Details column -->
             </tr>
             </thead>
             <tbody>
             {#each returnRequests as request}
                 <tr>
-                    <td></td>
-                    <td>{request.returnedProductId}</td>
+                    <td>{request.RMAId}</td>
                     <td>{request.orderedProductId}</td>
                     <td>{request.returnedDate}</td>
                     <td>{request.statusProduct}</td>
-                    <td class="status">{request.status}</td>
                     <td>
-                        <button on:click={() => viewDetails(request.id)} class="details-btn">Details</button>
+                        <button on:click={() => viewDetails(request.RMAId)} class="details-btn">Details</button>
                     </td>
                 </tr>
             {/each}
@@ -71,6 +82,8 @@
         </table>
     </div>
 {/if}
+
+
 
 
 <style>
