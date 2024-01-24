@@ -10,7 +10,7 @@ export const createProductTable = `CREATE TABLE IF NOT EXISTS product(
 )`
 
 export const createUserTable = `CREATE TABLE IF NOT EXISTS user(
-    userID TEXT PRIMARY KEY ,
+    userID INTEGER PRIMARY KEY AUTOINCREMENT,
     userName TEXT NOT NULL, 
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
