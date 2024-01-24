@@ -22,7 +22,7 @@
 
 
     let mostReturnedProducts = [
-        { name: 'Product1', count: 20, color: 'rgba(255, 99, 132, 0.7)' },
+        { name: 'smartphone', count: 20, color: 'rgba(255, 99, 132, 0.7)' },
         { name: 'Product2', count: 7, color: 'rgba(54, 162, 235, 0.7)' },
         { name: 'Product3', count: 4, color: 'rgba(255, 206, 86, 0.7)' }
     ];
@@ -200,6 +200,7 @@
             pieChart.data.labels = mostReturnedProducts.map(product => '');
             pieChart.data.datasets[0].data = mostReturnedProducts.map(product => product.count);
             pieChart.data.datasets[0].backgroundColor = mostReturnedProducts.map(product => product.color);
+
             pieChart.update();
         }
     }
@@ -285,7 +286,21 @@
             options: {
                 plugins: {
                     legend: {
-                        display: true
+                        display: true,
+                        labels: {
+                            generateLabels: function (chart) {
+                                const originalLabels = Chart.overrides.pie.plugins.legend.labels.generateLabels(chart);
+                                originalLabels.forEach(label => {
+                                    const product = mostReturnedProducts.find(p => p.color === label.fillStyle);
+                                    if (product) {
+                                        label.text = product.name;
+                                        label.textFill = 'white';
+
+                                    }
+                                });
+                                return originalLabels;
+                            }
+                        }
                     },
                     title: {
                         display: true,
@@ -296,10 +311,7 @@
             },
             plugins: [Legend, Title]
         });
-
-
     });
-
 
 
     afterUpdate(() => {

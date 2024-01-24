@@ -6,6 +6,8 @@
     let canvasElement;
     let canvasContext;
 
+    let isCameraModalOpen = false;
+
 
     let name = 'COLLECTOR NAME'; // You can set a default name here
     let videoElementCreated = false; // Flag to track whether the video element is created
@@ -20,7 +22,8 @@
     });
 
     async function scanBarcode() {
-        if (!videoElement) {
+
+            isCameraModalOpen = true;
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
                 videoElement = document.createElement('video');
@@ -28,11 +31,13 @@
                 videoElement.setAttribute('autoplay', '');
                 videoElement.setAttribute('playsinline', ''); // needed for iOS
                 videoElement.addEventListener('loadeddata', onCameraStreamReceived);
-                document.body.appendChild(videoElement);
+                //document.body.appendChild(videoElement);
+                document.getElementById('camera-modal').appendChild(videoElement);
+
             } catch (err) {
                 console.error('Error accessing the camera: ', err);
             }
-        }
+
     }
 
     function onCameraStreamReceived() {
@@ -93,6 +98,17 @@
             }
         }
     }
+
+    function closeCameraModal() {
+        isCameraModalOpen = false;
+
+        if (videoElement) {
+            videoElement.srcObject.getTracks().forEach(track => track.stop());
+            videoElement.remove();
+
+
+        }
+    }
 </script>
 
 <div>
@@ -109,6 +125,16 @@
     </div>
 
     <p class="text-below-button">PLEASE HOLD THE CAMERA 2 CM AWAY FROM BARCODE</p>
+    {#if isCameraModalOpen}
+        <div id="camera-modal" class="camera-modal">
+            <div class="modal-frame">
+
+                <!-- Add a cancel button to close the modal -->
+                <button class="button cancel-button" on:click={closeCameraModal}>Cancel</button>
+                <!-- Add other camera modal content here -->
+            </div>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -173,5 +199,35 @@
         text-align: center;
         margin-top: 1vh;
         font-size: 1.5vh;
+    }
+
+    .camera-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+        transition: opacity 0.5s ease;
+        border: 2px solid red;
+    }
+
+    .modal-frame {
+        background-color: white;
+        padding: 0px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        position: relative;
+
+    }
+
+    .cancel-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
     }
 </style>
