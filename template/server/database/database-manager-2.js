@@ -429,6 +429,10 @@ export function getCollectorImageAndDescriptionById(returnedProductId) {
 }
 
 export function updateRMAStatus(RMAId, statusRma){
-    const update = db.prepare('UPDATE returntable SET statusRma = ? WHERE RMAId = ?');
     return update.run(statusRma, RMAId);
+}
+
+export function getTheMostReturnedProducts() {
+    console.log(db.prepare(queries.selectMostReturnedProducts).all());
+    return db.prepare(queries.selectMostReturnedProducts).all();
 }

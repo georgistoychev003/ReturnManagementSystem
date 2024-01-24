@@ -287,3 +287,22 @@ export const selectCollectorImageAndDescriptionById = `
     FROM returnedProduct
     WHERE returnedProductId = ?;
 `;
+
+
+export const selectMostReturnedProducts = `
+    SELECT
+        p.name AS productName,
+        COUNT(rp.returnedProductId) * SUM(rp.quantityToReturn) AS totalTimesReturned
+    FROM
+        returnedProduct rp
+            JOIN
+        orderedProduct op ON rp.orderedProductId = op.orderedProductId
+            JOIN
+        product p ON op.productId = p.productId
+    GROUP BY
+        p.name
+    ORDER BY
+        totalTimesReturned DESC
+        LIMIT 3;
+
+`;

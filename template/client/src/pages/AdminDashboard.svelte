@@ -22,10 +22,39 @@
 
 
     let mostReturnedProducts = [
-        { name: 'smartphone', count: 20, color: 'rgba(255, 99, 132, 0.7)' },
-        { name: 'Product2', count: 7, color: 'rgba(54, 162, 235, 0.7)' },
-        { name: 'Product3', count: 4, color: 'rgba(255, 206, 86, 0.7)' }
+        { name: 'SmartPhone', count: 20, color: 'rgba(255, 99, 132, 0.7)' },
+        { name: 'VideoGame', count: 7, color: 'rgba(54, 162, 235, 0.7)' },
+
     ];
+
+    onMount(async () => {
+        try {
+            const response = await fetch('http://localhost:3000/product/mostReturned');
+            const data = await response.json();
+
+            // Assign a new color for each fetched product
+            const newColor = generateRandomColor();
+            const fetchedProduct = {
+                name: data[0].productName,
+                count: data[0].totalTimesReturned,
+                color: newColor
+            };
+
+            // Update the mostReturnedProducts array
+            mostReturnedProducts = [...mostReturnedProducts, fetchedProduct];
+            updatePieChart();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
+        console.log(mostReturnedProducts);
+    });
+
+    function generateRandomColor() {
+        // Generate a random color using RGB values
+        const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.7)`;
+        return color;
+    }
 
     async function fetchNumberOfUsers() {
         try {
@@ -192,9 +221,6 @@
         chart.update();
     }
 
-
-
-
     function updatePieChart() {
         if (pieChart) {
             pieChart.data.labels = mostReturnedProducts.map(product => '');
@@ -299,7 +325,9 @@
                                     }
                                 });
                                 return originalLabels;
-                            }
+
+                            },
+                            color: 'white',
                         }
                     },
                     title: {
@@ -312,7 +340,6 @@
             plugins: [Legend, Title]
         });
     });
-
 
     afterUpdate(() => {
         fetchNumberOfRMA();
