@@ -24,6 +24,7 @@ import {StatusCodes} from "http-status-codes";
 import * as queries from "../database/database-queries.js";
 import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
 import res from "express/lib/response.js";
+import * as databaseManager from "../database/database-manager-2.js";
 
 export function getAllRMAOfCustomerByEmail(req, res) {
     const { email } = req.params;
@@ -379,4 +380,20 @@ export async function addNewRMARequest(req, res) {
 }
 
 
+export async function getCollectorImageAndDescription(req, res) {
+    const { returnedProductId } = req.params;
+    try {
+        const result = await databaseManager.getCollectorImageAndDescriptionById(returnedProductId);
+        if (result) {
+            res.status(StatusCodes.OK).json({
+                collectorImage: result.collectorImage,
+                collectorDescription: result.collectorDescription
+            });
+        } else {
+            res.status(StatusCodes.NOT_FOUND).send('Image and description not found for the given product ID.');
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to retrieve the image and description.' });
+    }
+}
 

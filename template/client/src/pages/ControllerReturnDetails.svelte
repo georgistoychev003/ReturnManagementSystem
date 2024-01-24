@@ -16,6 +16,10 @@
     let returnedDate = '';
 
     let returnDescription = '';
+    let collectorImageSrc = ''; // This will store the Base64 image data
+    let collectorDescription = ''; // This will store the collector's description
+
+
 
     function getRMAIdFromUrl() {
         const path = window.location.pathname;
@@ -31,6 +35,8 @@
     onMount(async () => {
         await fetchReturnRequests();
         await displayQRCode();
+        await getCollectorImageAndDescription();
+
     });
 
     async function handleConfirm() {
@@ -293,7 +299,27 @@
             return 0;
         }
     }
+
+
+
+
+    async function getCollectorImageAndDescription() {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/collector/imageAndDescription/${RMAId}`);
+            if (response.ok) {
+                const data = await response.json();
+                collectorImageSrc = 'data:image/png;base64,' + data.collectorImage;
+                collectorDescription = data.collectorDescription;
+            } else {
+                console.error('Failed to fetch collector data.');
+            }
+        } catch (error) {
+            console.error('Error fetching collector data:', error);
+        }
+    }
+
 </script>
+
 
 
 
@@ -341,6 +367,17 @@
 <!--            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>-->
             <div class="qr-code-section">
                 <div id="qrCodeContainer"></div>
+            </div>
+            <div class="collector-panel">
+                <div id="qrCodeContainer"></div>
+                <div class="collector-details">
+                    <h2>Collector Image:</h2>
+                    {#if collectorImageSrc}
+                        <img class="collector-image" src={collectorImageSrc} alt="Collector's snapshot" />
+                    {/if}
+                    <h2>Collector Comments:</h2>
+                    <p class="collector-description">{collectorDescription || 'No description provided.'}</p>
+                </div>
             </div>
         </div>
         <div class="status-section">
@@ -454,6 +491,42 @@
 
     .product-row span, .product-row input, .product-row label {
         text-align: center;
+    }
+    .collector-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        border: 2px solid #ccc;
+        margin-top: 1rem;
+    }
+
+    #qrCodeContainer {
+        max-width: 200px;
+        margin: 1rem auto;
+    }
+
+    .collector-details {
+        text-align: center;
+        width: 100%;
+    }
+
+    .collector-image {
+        max-width: 80%;
+        height: auto;
+        margin: 1rem 0;
+    }
+
+    .collector-description {
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    .collector-panel h2 {
+        color: #0056b3;
+        margin-bottom: 0.5rem;
     }
 
     /* QR Code Styles */

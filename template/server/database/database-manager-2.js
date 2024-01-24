@@ -426,3 +426,7 @@ export function getProductPriceByOrderedProductId(orderedProductId) {
     return db.prepare(query).get(orderedProductId);
 }
 
+export function getCollectorImageAndDescriptionById(returnedProductId) {
+    const statement = db.prepare(queries.selectCollectorImageAndDescriptionById);
+    return statement.get(returnedProductId);
+}

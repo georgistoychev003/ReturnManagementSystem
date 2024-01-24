@@ -7,6 +7,7 @@ import * as rmaController from '../controllers/rma-controller.js';
 
 
 
+
 router.get('/', rmaController.getListOfRmas);
 
 router.get('/count', rmaController.getCountOfRMA);
@@ -59,6 +60,7 @@ router.get('/email/:email', rmaController.getAllRMAOfCustomerByEmail);
 // router.post('/assignCollector/:RMAId', authenticateToken, rmaController.assignRmaToCollector);
 
 router.post('/assign/:RMAId', rmaController.assignRmaToController);
+router.get('/collector/imageAndDescription/:returnedProductId', rmaController.getCollectorImageAndDescription);
 
 
 router.post(`/returns/return-request`, rmaController.addNewRMARequest);

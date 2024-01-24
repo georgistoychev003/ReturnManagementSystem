@@ -71,7 +71,6 @@
             alert("Please enter a Return ID");
         }
     }
-
     async function fetchUserDetails() {
         const token = localStorage.getItem('token');
         if (token) {

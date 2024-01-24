@@ -5,13 +5,14 @@
 
     let videoElement;
     let canvasElement;
-    let imageData; // This will hold the Blob data of the image
     let snapshotSrc; // This will hold the image data URL for display purposes
 
-
     const dispatch = createEventDispatcher();
-    let images = [];
     let description = '';
+    let productImageDataList = [];
+    let selectedFile;
+    let selectedImageUrl;
+
 
     onMount(() => {
         startCamera();
@@ -31,102 +32,115 @@
         canvasElement.width = videoElement.videoWidth;
         canvasElement.height = videoElement.videoHeight;
         context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
-        snapshotSrc = canvasElement.toDataURL('image/png'); // For displaying the snapshot on the page
-        // Convert canvas to Blob and store in imageData
-        canvasElement.toBlob(blob => {
-            imageData = blob;
-        }, 'image/png');
+        snapshotSrc = canvasElement.toDataURL('image/png');
+        handleProductInteraction({ product: selectedProduct, imageData: snapshotSrc });
     }
-    function handleImageUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-            // we need to handle the file upload to the server here too
-            images.push(URL.createObjectURL(file));
+
+    function handleProductInteraction({ product, imageData }) {
+        const existingIndex = productImageDataList.findIndex(item => item.product.productId === product.productId);
+        if (existingIndex !== -1) {
+            productImageDataList[existingIndex].imageData = imageData;
+        } else {
+            productImageDataList.push({ product: product.productId, image: imageData });
+        }
+        console.log('Product and Image Data List:', productImageDataList);
+    }
+
+    function handleFileChange(event) {
+        selectedFile = event.target.files[0];
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                selectedImageUrl = e.target.result;
+                snapshotSrc = selectedImageUrl;
+            };
+            reader.readAsDataURL(selectedFile);
+        } else {
+            console.log('No file selected');
         }
     }
 
-
-
-    function closeDetails() {
-        dispatch('close');
-    }
-
-    function submitDetails() {
-        // Here we should handle the submission logic
-        alert("You successfully processed this product and it will be forwarded to the controller!")
-        page('/RMAProducts/' + selectedProduct.rmaId);
-    }
-
     async function handleUpload() {
-        const formData = new FormData();
-        // Omit the image data since you're not sending an actual image file for now
-        // formData.append('image', 'hardcoded_image_string');
-        formData.append('collectorDescription', description);
+        if (!selectedImageUrl) {
+            alert('Please take a snapshot or select an image file first.');
+            return;
+        }
+
+        const imageData = selectedImageUrl.split(',')[1]; // Get the Base64 encoded string
 
         try {
             const response = await fetch(`http://localhost:3000/rma/collector/${selectedProduct.productId}`, {
                 method: 'PUT',
                 headers: {
-                    // If you're sending a JSON object now, you need to set the header accordingly
                     'Content-Type': 'application/json'
                 },
-                // Convert your formData to a JSON string
                 body: JSON.stringify({
-                    collectorImage: 'hardcoded_image_string',
+                    collectorImage: imageData,
                     collectorDescription: description
                 })
             });
 
+            const result = await response.json();
             if (response.ok) {
-                const result = await response.json();
                 alert('Details updated successfully: ' + result.message);
                 page('/RMAProducts/' + selectedProduct.rmaId);
                 location.reload();
-
             } else {
-                const errorResult = await response.json();
-                alert('Failed to update details: ' + errorResult.error);
+                alert('Failed to update details: ' + result.error);
             }
         } catch (error) {
             console.error('Error updating details:', error);
             alert('Error occurred while updating details');
         }
     }
+    function closeDetails() {
+        dispatch('close');
+    }
 
 
+        async function submitDetails() {
+        // Call handleUpload to upload the image and details
+        await handleUpload();
+        alert("You successfully processed this product and it will be forwarded to the controller!");
+        page('/RMAProducts/' + selectedProduct.rmaId);
+    }
 </script>
+
 <!-- Camera stream and snapshot section -->
 <div class="camera-container">
+    <!-- Ensure these elements exist in your markup with the correct classes or IDs -->
     <video class="camera-stream" bind:this={videoElement} autoplay></video>
-    <canvas class="snapshot-canvas" bind:this={canvasElement} style="display: none;"></canvas>
+    <canvas class="snapshot-canvas" bind:this={canvasElement}></canvas>
     <button on:click={takeSnapshot}>Take Snapshot</button>
     {#if snapshotSrc}
         <img class="snapshot-image" src={snapshotSrc} alt="Snapshot" />
-        <button on:click={handleUpload}>Upload Snapshot</button>
     {/if}
 </div>
+
+<!-- Add only one file input for image upload -->
+<input type="file" accept="image/*" on:change={handleFileChange}>
+
+<!-- Show the selected image preview -->
+{#if selectedImageUrl}
+    <img src={selectedImageUrl} alt="Preview" />
+{/if}
 
 <!-- Product details section -->
 <div class="product-detail-container">
     <button class="close-button" on:click={closeDetails}>Close</button>
     <h2>Product Return Details - {selectedProduct.type}</h2>
     <div class="product-info">
+        <!-- Ensure this image src path is correct -->
         <img class="product-image" src={selectedProduct.productImage} alt={`Product ${selectedProduct.productId}`} />
         <p>Type: {selectedProduct.type}</p>
         <p>Quantity: {selectedProduct.quantity}</p>
         <p>Price: ${selectedProduct.price.toFixed(2)}</p>
         <p>Date: {new Date(selectedProduct.date).toLocaleDateString()}</p>
     </div>
-    <div class="image-upload-section">
-        <label for="image-upload" class="image-upload-label">Upload Product Image</label>
-        <input id="image-upload" type="file" on:change={handleImageUpload} />
-        {#each images as image, index (image)}
-            <img class="uploaded-image" src={image} alt={`Uploaded ${index}`} />
-        {/each}
-    </div>
     <textarea class="description-input" bind:value={description} placeholder="Add a description for the return"></textarea>
     <button class="submit-button" on:click={submitDetails}>Submit Details</button>
 </div>
+
 
 
 <style>
@@ -169,6 +183,7 @@
     .close-button:hover {
         background-color: #c82333;
     }
+
 
     .product-info {
         display: flex;
@@ -233,7 +248,8 @@
     }
 
     input[type="file"] {
-        display: none;
+        /*display: none;*/
+        margin-top: 10px; /* Add some space above the file input */
     }
 
     .description-input {

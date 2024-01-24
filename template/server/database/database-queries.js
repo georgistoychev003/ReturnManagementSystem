@@ -282,4 +282,8 @@ SET collectorImage = ?,
     collectorDescription = ?
         WHERE returnedProductId = ?`;
 
-
+export const selectCollectorImageAndDescriptionById = `
+    SELECT collectorImage, collectorDescription
+    FROM returnedProduct
+    WHERE returnedProductId = ?;
+`;
