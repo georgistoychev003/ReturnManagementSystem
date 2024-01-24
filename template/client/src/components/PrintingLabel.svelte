@@ -64,7 +64,7 @@
     }
 </script>
 
-
+<h1 class="message">This was your last step, your return request will now be processed!</h1>
 
 <div bind:this={contentElement}>
 <div class="shipping-label">
