@@ -29,7 +29,7 @@ router.get('/:barcode', rmaController.getRmaByBarcode);
 
 
 router.get('/:rmaId', rmaController.getRma);
-// router.get('/rma/:rmaId', rmaController.getRma);
+router.get('/rma/:rmaId', rmaController.getRma);
 
 router.get('/:rmaId/total-price', rmaController.getRmaPrice);
 

@@ -190,9 +190,10 @@
 
     async function fetchReturnRequests() {
         try {
-            const response = await fetch(`http://localhost:3000/rma/${RMAId}`);
+            const response = await fetch(`http://localhost:3000/rma/rma/${RMAId}`);
             if (response.ok) {
                 returnRequests = await response.json();
+                console.log(returnRequests)
                 if (returnRequests.length > 0) {
                     returnedDate = returnRequests[0].returnedDate;
                     returnDescription = returnRequests[0].description;
@@ -201,14 +202,22 @@
                 const customer = await fetchCustomerOfRMA(RMAId);
                 const productsResponse = await fetchProductsOfRMA(RMAId);
                 console.log(productsResponse)
-                products = productsResponse.map(product => ({
-                    name: product.name,
-                    quantityToReturn: product.quantityToReturn,
-                    orderedProductId: product.orderedProductId, // If you need to use this later
-                    showDetails: false, // Add this line
-                    collectorImageSrc: 'data:image/png;base64,' + product.collectorImage, // Assuming you have the image as base64
-                    collectorDescription: product.collectorDescription // Assuming you have the description
-                }));
+                products = productsResponse.map(product => {
+                    const correspondingReturnRequest = returnRequests.find(request => request.orderedProductId === product.orderedProductId);
+                    console.log(product)
+                    const collectorImage = correspondingReturnRequest ? `data:image/png;base64,${correspondingReturnRequest.collectorImage}` : '';
+                    const collectorDescription = correspondingReturnRequest ? correspondingReturnRequest.collectorDescription : 'No description provided.';
+
+                    return {
+                        name: product.name,
+                        quantityToReturn: product.quantityToReturn,
+                        orderedProductId: product.orderedProductId, // If you need to use this later
+                        showDetails: false, // Initial state for showing details
+                        collectorImageSrc: collectorImage,
+                        collectorDescription: collectorDescription
+                    };
+                });
+                console.log(products)
                 $: if (products.length > 0 && selectedProducts.size === 0) {
                     products.forEach(product => {
                         selectedProducts.set(product.name, { action: null, quantityToReturn: 0, maxQuantity: product.quantityToReturn });
@@ -217,7 +226,6 @@
                 returnRequests.customer = customer;
                 email=customer;
                 returnRequests.status = status
-                console.log(products)
             } else {
                 console.error('Failed to fetch return requests');
             }
@@ -318,7 +326,8 @@
     }
 
     function toggleDetails(index) {
-        console.log(products)
+
+        console.log(index)
         products[index].showDetails = !products[index].showDetails;
         products = products; // Reassign to trigger reactivity
     }
@@ -365,7 +374,7 @@
             {#if product.showDetails}
             <div class="details-dropdown">
                 {#if product.collectorImageSrc}
-                    <img class="collector-image" src={collectorImageSrc} alt="Collector's snapshot" />
+                    <img class="collector-image" src={product.collectorImageSrc} alt="Collector's snapshot" />
                 {/if}
                 <p class="collector-description">{product.collectorDescription || 'No description provided.'}</p>
             </div>
@@ -406,6 +415,22 @@
 </div>
 
 <style>
+
+    .collector-image {
+        max-width: 100px; /* Default size */
+        max-height: 100px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Larger images on wider screens */
+    @media (min-width: 768px) {
+        .collector-image {
+            max-width: 150px;
+            max-height: 150px;
+        }
+    }
     .product-row {
         display: flex;
         justify-content: space-between;
