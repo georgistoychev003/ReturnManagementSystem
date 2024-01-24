@@ -358,7 +358,7 @@
                 </span>
                 </div>
                 <br>
-                <span>Controller Description: {product.collectorDescription || 'No description'}</span>
+<!--                <span>Controller Description: {product.collectorDescription || 'No description'}</span>-->
                 <br>
                 <br>
             {/each}

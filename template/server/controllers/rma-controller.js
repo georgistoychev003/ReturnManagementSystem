@@ -131,7 +131,8 @@ export function getRmaProducts(req, res) {
             type: p.type,
             imageURL: p.imageURL,
             quantityToReturn: p.quantityToReturn,
-            returnedDate : p.returnedDate
+            returnedDate : p.returnedDate,
+            collectorDescription : p.collectorDescription
 
 
 

@@ -61,12 +61,16 @@
     }
 
     async function handleUpload() {
-        if (!selectedImageUrl) {
-            alert('Please take a snapshot or select an image file first.');
-            return;
+        let imageData = '';
+        if (selectedImageUrl) {
+            imageData = selectedImageUrl.split(',')[1]; // Get the Base64 encoded string
         }
 
-        const imageData = selectedImageUrl.split(',')[1]; // Get the Base64 encoded string
+        // Check if the description is not empty
+        if (description.trim() === '') {
+            alert('Please add a description before submitting.');
+            return false;
+        }
 
         try {
             const response = await fetch(`http://localhost:3000/rma/collector/${selectedProduct.productId}`, {
@@ -92,17 +96,20 @@
             console.error('Error updating details:', error);
             alert('Error occurred while updating details');
         }
+
+        return true; // Return true to indicate successful processing
     }
     function closeDetails() {
         dispatch('close');
     }
 
 
-        async function submitDetails() {
-        // Call handleUpload to upload the image and details
-        await handleUpload();
-        alert("You successfully processed this product and it will be forwarded to the controller!");
-        page('/RMAProducts/' + selectedProduct.rmaId);
+    async function submitDetails() {
+        const uploadSuccess = await handleUpload();
+        if (uploadSuccess) {
+            alert("You successfully processed this product and it will be forwarded to the controller!");
+            page('/RMAProducts/' + selectedProduct.rmaId);
+        }
     }
 </script>
 
