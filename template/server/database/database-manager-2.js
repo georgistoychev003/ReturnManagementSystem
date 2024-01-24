@@ -4,7 +4,6 @@ import {
     assignRmaToControllerQuery,
     getLastRMA,
     getRmaDetailsQuery,
-    selectControllerInfoByRMAId,
     selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
     selectStatusById
 } from '../database/database-queries.js'
@@ -125,7 +124,7 @@ export function getLastRma() {
 }
 
 export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn){
-    const statement = db.prepare(queries.createReturnedProduct2);
+    const statement = db.prepare(queries.createReturnedProduct);
     statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn);
 
 }
