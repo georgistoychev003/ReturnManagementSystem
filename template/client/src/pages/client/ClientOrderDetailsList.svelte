@@ -106,7 +106,7 @@
             <tr>
                 <th>QUANTITY</th>
                 <th>PRODUCT NAME</th>
-                <th>PRICE</th>
+                <th>PRODUCT PRICE</th>
                 <th>PREVIOUSLY RETURNED</th>
                 <th>CREDIT</th>
                 <th>QUANTITY TO RETURN</th>
@@ -119,7 +119,11 @@
                     <!-- Your table cells for each orderProducts -->
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
+                    <!--{#if orderProducts.statusRma === "Returned" }-->
+                    <!--    <td class="line-through">{orderProducts.price}</td>-->
+                    <!--{:else}-->
                     <td>{orderProducts.price}</td>
+                        <!--{/if}-->
                     {#if orderProducts.quantityToReturn == null}
                         <td>-</td>
                         {:else}
@@ -127,10 +131,10 @@
                         {/if}
                     {#if orderProducts.statusRma === null}
                         <td>-</td>
-                    {:else if orderProducts.statusRMA === "pending"}
-                        <td>pending</td>
+                    {:else if orderProducts.statusRma === "pending"}
+                        <td>Pending</td>
                         {:else}
-                        <td>{orderProducts.priceAtTimeOfOrder}</td>
+                        <td>{orderProducts.priceAtTimeOfOrder * orderProducts.quantityToReturn}</td>
                     {/if}
                     <!-- Conditional rendering based on product type and quantity -->
                     {#if (isReturnable(orderProducts.orderDate))}
@@ -317,6 +321,9 @@
         border: solid white;
         border-width: 0 3px 3px 0;
         transform: rotate(45deg);
+    }
+    .line-through {
+        text-decoration: line-through;
     }
 
 </style>

@@ -143,6 +143,7 @@ export const selectOrderedProducts = `SELECT
                                           product.type,
                                           product.productWeight,
                                           returnedProduct.quantityToReturn,
+                                          returnedProduct.statusProduct,
                                             returntable.statusRma
                                       FROM
                                           "order"
