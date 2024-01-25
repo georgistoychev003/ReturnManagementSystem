@@ -18,7 +18,7 @@ import {
     updateReturnedProductQuantity,
     updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma,
     assignRmaToControllerDb, getControllerInfoByRMAId,
-    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId, updateRMAStatus,
+    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId, updateRMAStatus, getDescriptionForRma,
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import * as queries from "../database/database-queries.js";
@@ -184,6 +184,7 @@ export function getRma(req, res) {
         let rmaResult;
         if (rmaId) {
             rmaResult = getAllRmaById(rmaId)
+            console.log(rmaResult)
         }
         if (rmaResult) {
             res.status(StatusCodes.OK).json(rmaResult);
@@ -394,8 +395,14 @@ export async function addNewRMARequest(req, res) {
 
         // Process each product
         for (const product of products) {
-            await insertReturnedProduct(product.orderedProductId, rmaId, formattedDate, product.description, product.productWeight, "pending", product.quantityToReturn);
+            await insertReturnedProduct(
+                product.orderedProductId, rmaId, formattedDate,
+                product.description, product.productWeight,
+                "pending", product.quantityToReturn,
+                product.imageBase64 // Include the Base64 image data
+            );
         }
+
 
         // Send a successful response back
         res.status(200).json({ message: "RMA request added successfully" });
@@ -420,6 +427,17 @@ export async function getCollectorImageAndDescription(req, res) {
         }
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to retrieve the image and description.' });
+    }
+}
+
+export async function getRmaDescription(req, res) {
+    const {returnedProductId} = req.params;
+    try {
+        const result = await getDescriptionForRma(returnedProductId);
+        console.log(result);
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get descriptions for RMA." });
     }
 }
 

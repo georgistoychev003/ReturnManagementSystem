@@ -74,7 +74,7 @@ export const countReturnedProducts = `SELECT count(returnedProductId) FROM retur
 export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma, credit, totalRefundAmount) VALUES (?, ?, ?, 0)`;
 export const createReturnedProduct2 = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-export const createReturnedProduct = `INSERT INTO returnedProduct (orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?)`
+export const createReturnedProduct = `INSERT INTO returnedProduct (orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn, customerImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice, priceAtTimeOfOrder) VALUES (?, ?, ?, ?, ?, ?)`
@@ -308,3 +308,7 @@ export const selectMostReturnedProducts = `
         LIMIT 3;
 
 `;
+
+export const selectAllRMADescriptionPerProducts = `SELECT description, customerImage
+                                                    FROM returnedProduct
+                                                    WHERE returnedProductId = ?;`;

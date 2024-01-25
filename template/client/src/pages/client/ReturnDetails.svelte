@@ -12,11 +12,19 @@
     let productImageDataList = [];
     let selectedFile;
     let selectedImageUrl;
+    let productDetails = {};
 
 
     onMount(() => {
         startCamera();
+        if (selectedProduct && selectedProduct.productId) {
+            fetchProductDetails(selectedProduct.productId);
+        }
     });
+
+    $: if (selectedProduct && selectedProduct.productId) {
+        fetchProductDetails(selectedProduct.productId);
+    }
 
     async function startCamera() {
         try {
@@ -35,6 +43,18 @@
     //     snapshotSrc = canvasElement.toDataURL('image/png');
     //     handleProductInteraction({ product: selectedProduct, imageData: snapshotSrc });
     // }
+
+    async function fetchProductDetails(productId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/description/${productId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            productDetails = await response.json();
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
+    }
 
     function handleProductInteraction({ product, imageData }) {
         const existingIndex = productImageDataList.findIndex(item => item.product.productId === product.productId);
@@ -105,12 +125,23 @@
 
 
     async function submitDetails() {
-        const uploadSuccess = await handleUpload();
-        if (uploadSuccess) {
-            alert("You successfully processed this product and it will be forwarded to the controller!");
-            page('/RMAProducts/' + selectedProduct.rmaId);
+        // Display the confirmation dialog
+        const isConfirmed = confirm("Are you sure you want to finalize the processing of this product? Once submitted, the state of the product cannot be modified anymore.");
+
+        // Check the user's response
+        if (isConfirmed) {
+            // Proceed with upload if confirmed
+            const uploadSuccess = await handleUpload();
+            if (uploadSuccess) {
+                alert("You successfully processed this product and it will be forwarded to the controller!");
+                page('/RMAProducts/' + selectedProduct.rmaId);
+            }
+        } else {
+            // Do nothing if cancelled
+            console.log("Product processing was cancelled.");
         }
     }
+
 </script>
 
 <!-- Camera stream and snapshot section -->
@@ -144,6 +175,19 @@
         <p>Price: ${selectedProduct.price.toFixed(2)}</p>
         <p>Date: {new Date(selectedProduct.date).toLocaleDateString()}</p>
     </div>
+
+    {#if productDetails}
+        <div>
+            <h3>Customer Description</h3>
+            <p>{productDetails.description}</p>
+        </div>
+        {#if productDetails.customerImage}
+            <div>
+                <h3>Customer Image</h3>
+                <img src={`data:image/png;base64,${productDetails.customerImage}`} alt="Returned Product Image from customer" />
+            </div>
+        {/if}
+    {/if}
     <textarea class="description-input" bind:value={description} placeholder="Add a description for the return"></textarea>
     <button class="submit-button" on:click={submitDetails}>Submit Details</button>
 </div>
@@ -190,7 +234,6 @@
     .close-button:hover {
         background-color: #c82333;
     }
-    /* Image upload styles */
     input[type="file"] {
         width: 100%;
         padding: 0.5em;
@@ -202,16 +245,32 @@
         box-sizing: border-box;
     }
 
-    /* Image display styles */
-    .snapshot-image, .product-image {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-        padding: 10px;
+    .product-info p {
+        margin-bottom: 0.5em;
+        margin-top: 0.5em;
+        line-height: 1.4;
+        clear: both;
     }
 
-    /* Responsive design adjustments */
+    .product-info p:first-child {
+        margin-top: 0;
+    }
+
+    .product-info p:last-child {
+        margin-bottom: 0;
+    }
+
+    .product-info {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+
     @media (max-width: 768px) {
         .product-detail-container {
             margin: 20px;

@@ -81,9 +81,9 @@
                 </div>
             </div>
         {/each}
-        <div class="comments-section">
-            <p>Comments: {user.comments}</p>
-        </div>
+<!--        <div class="comments-section">-->
+<!--            <p>Comments: {user.comments}</p>-->
+<!--        </div>-->
     </div>
 {/if}
 

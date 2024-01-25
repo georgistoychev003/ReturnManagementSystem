@@ -206,7 +206,9 @@
                     const correspondingReturnRequest = returnRequests.find(request => request.orderedProductId === product.orderedProductId);
                     console.log(product)
                     const collectorImage = correspondingReturnRequest ? `data:image/png;base64,${correspondingReturnRequest.collectorImage}` : '';
-                    const collectorDescription = correspondingReturnRequest ? correspondingReturnRequest.collectorDescription : 'No description provided.';
+                    const customerImage = correspondingReturnRequest ? `data:image/png;base64,${correspondingReturnRequest.customerImage}` : '';
+                    const collectorDescription = correspondingReturnRequest ? correspondingReturnRequest.collectorDescription : 'No description provided from collector.';
+                    const customerDescription = correspondingReturnRequest ? correspondingReturnRequest.description : 'No description provided from customer.';
 
                     return {
                         name: product.name,
@@ -214,7 +216,9 @@
                         orderedProductId: product.orderedProductId, // If you need to use this later
                         showDetails: false, // Initial state for showing details
                         collectorImageSrc: collectorImage,
-                        collectorDescription: collectorDescription
+                        collectorDescription: collectorDescription,
+                        customerDescription: customerDescription,
+                        customerImageSrc:customerImage
                     };
                 });
                 console.log(products)
@@ -378,13 +382,24 @@
                     <span>
             {#if product.showDetails}
             <div class="details-dropdown">
-                {#if product.collectorImageSrc}
-                    <img class="collector-image" src={product.collectorImageSrc} alt="Collector's snapshot" />
-                {/if}
-                <p class="collector-description">{product.collectorDescription || 'No description provided.'}</p>
+                <!-- Collector's Section -->
+                <div class="collector-section">
+                    <h3>Collector's Details</h3>
+                    {#if product.collectorImageSrc}
+                        <img class="collector-image" src={product.collectorImageSrc} alt="Collector's snapshot" />
+                    {/if}
+                    <p class="collector-description">{product.collectorDescription || 'No description provided from collector.'}</p>
+                </div>
+                <!-- Customer's Section -->
+                <div class="customer-section">
+                    <h3>Customer's Details</h3>
+                    {#if product.customerImageSrc}
+                        <img class="customer-image" src={product.customerImageSrc} alt="Customer's snapshot" />
+                    {/if}
+                    <p class="collector-description">{product.customerDescription || 'No description provided from customer.'}</p>
+                </div>
             </div>
         {/if}
-        </span>
                 </div>
                 <br>
 <!--                <span>Controller Description: {product.collectorDescription || 'No description'}</span>-->
@@ -458,6 +473,15 @@
         transition: color 0.3s; /* Smooth transition for text color */
     }
 
+    .collector-section, .customer-section {
+        margin-bottom: 1rem;
+    }
+
+    .collector-section h3, .customer-section h3 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
     .product-row:hover span:first-child {
         color: var(--hover-primary-color); /* Darker shade on hover */
     }
@@ -475,6 +499,14 @@
     }
 
     .collector-image {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .customer-image {
         width: 100%;
         max-width: 200px;
         height: auto;

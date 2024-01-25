@@ -19,17 +19,6 @@
         }, textInputs);
     }
 
-    function prepareAndSendProductDetails() {
-        // Update each product with its description
-        const productsWithDescriptions = selectedProducts.map(product => ({
-            ...product,
-            description: textInputs[product.productId] || '' // Add description or default to an empty string
-        }));
-
-        sendProductDetails(productsWithDescriptions);
-
-        handleSelection();
-    }
 
     async function sendProductDetails(products) {
         try {
@@ -57,6 +46,38 @@
         }, 100);
 
     }
+
+    function handleImageChange(event, productId) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const customerImage = e.target.result.split(',')[1]; // Extract Base64 data
+                // Update the product with its image data
+                selectedProducts = selectedProducts.map(product => {
+                    if (product.productId === productId) {
+                        return { ...product, customerImage  };
+                    }
+                    return product;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+
+    function prepareAndSendProductDetails() {
+        const productsWithDescriptionsAndImages = selectedProducts.map(product => ({
+            ...product,
+            description: textInputs[product.productId] || '',
+            imageBase64: product.customerImage || '' // Use customerImage field
+        }));
+
+
+        sendProductDetails(productsWithDescriptionsAndImages);
+        handleSelection();
+    }
+
 
 
     function clearStore() {
@@ -92,6 +113,12 @@
                     <td>{product.price}</td>
                     <td>
                         <input type="text" bind:value={textInputs[product.productId]} />
+                    </td>
+                    <td>
+                        <input type="file" accept="image/*" on:change={event => handleImageChange(event, product.productId)} />
+                        {#if product.imageData}
+                            <img src={product.imageData} alt="Uploaded Image" style="max-width: 100px;"/>
+                        {/if}
                     </td>
                 </tr>
             {/each}

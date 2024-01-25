@@ -12,25 +12,32 @@
     // const viewDetails = (requestId) => {
     //     page(`/controller/return-requests-details/${requestId}`);
     // };
+    const showFinished = writable(false);
 
     onMount(async () => {
         await fetchReturnRequests();
-        calculateTotalPages();
+        showFinished.set(false);
+        calculateTotalPages(); // Make sure this function exists and correctly calculates total pages
+        updatePaginatedRequests();
     });
 
     function calculateTotalPages() {
-        totalPages = Math.ceil(rawReturnRequests.length / requestsPerPage);
+        // Filter requests based on the showFinished value
+        const filteredRequests = rawReturnRequests.filter(req => $showFinished ? true : req.statusRMA !== 'Finished');
+        totalPages = Math.ceil(filteredRequests.length / requestsPerPage);
     }
-
     function changePage(newPage) {
         currentPage = Math.max(1, Math.min(newPage, totalPages)); // Ensure new page is within valid range
         updatePaginatedRequests();
     }
 
     function updatePaginatedRequests() {
+        calculateTotalPages(); // Ensure total pages are recalculated based on the current filter
         const startIndex = (currentPage - 1) * requestsPerPage;
         const endIndex = startIndex + requestsPerPage;
-        returnRequests = rawReturnRequests.slice(startIndex, endIndex);
+        // Apply the filter inside updatePaginatedRequests to account for changes in showFinished
+        const filteredRequests = rawReturnRequests.filter(req => $showFinished ? true : req.statusRMA !== 'Finished');
+        returnRequests = filteredRequests.slice(startIndex, endIndex);
     }
 
     function getUserIdFromToken() {
@@ -226,13 +233,16 @@
             alert('An error occurred while locking the RMA.');
         }
     };
-    const showFinished = writable(false);
     function toggleShowFinished() {
         showFinished.update(value => !value);
+        currentPage = 1; // Reset to the first page when toggling
+        // No need to explicitly call updatePaginatedRequests here, as it will be triggered by reactive statements
     }
-
     let rawReturnRequests = [];
     $: updatePaginatedRequests();
+
+    $: showFinished, updatePaginatedRequests();
+    $: currentPage, updatePaginatedRequests();
 
     $: returnRequests = $showFinished
         ? rawReturnRequests
@@ -243,7 +253,9 @@
 
 <div class="customer-returns">
     <h1>Customer Requests</h1>
-    <button class="toggle-btn" on:click={toggleShowFinished}>Toggle Finished RMAs</button>
+    <button class="toggle-btn" on:click={toggleShowFinished}>
+        Toggle Finished RMAs: {$showFinished ? 'Hide' : 'Show'}
+    </button>
 
 
     <table>
