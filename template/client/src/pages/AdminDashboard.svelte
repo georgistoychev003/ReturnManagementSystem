@@ -1,6 +1,7 @@
 <script>
     import { onMount, afterUpdate, onDestroy } from "svelte";
     import { Chart, registerables, LineController, CategoryScale, LinearScale, PieController, Legend, Title } from 'chart.js';
+    import allYears from "html2pdf.js";
     Chart.register(LineController, CategoryScale, LinearScale, PieController, Legend, Title);
 
     let numberOfRMA = 0;
@@ -22,7 +23,7 @@
 
 
     let mostReturnedProducts = [
-        { name: 'SmartPhone', count: 20, color: 'rgba(255, 99, 132, 0.7)' },
+        { name: 'SmartPhone', count: 2, color: 'rgba(255, 99, 132, 0.7)' },
         { name: 'VideoGame', count: 7, color: 'rgba(54, 162, 235, 0.7)' },
 
     ];
@@ -148,6 +149,9 @@
 
 
     function updateChart(chartData) {
+
+
+
         // Assuming chartData is an array of objects with monthYear and RMACount properties
         chart.data.labels = chartData.map(item => item.monthYear);
         chart.data.datasets[0].data = chartData.map(item => item.RMACount);
@@ -155,6 +159,7 @@
 
         const maxDataValue = Math.max(...chartData.map(item => item.RMACount) );
         console.log(maxDataValue)
+
 
 
         chart.options.scales.y = {
