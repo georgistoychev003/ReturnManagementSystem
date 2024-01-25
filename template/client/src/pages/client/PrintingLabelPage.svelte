@@ -2,10 +2,10 @@
     import PrintingLabel from "../../components/PrintingLabel.svelte";
 
     let shippingInfo = {
-        recipientName: 'John Doe',
+        recipientName: 'MyShop.com',
         recipientAddress: '123 Main St',
-        recipientCity: 'Anytown',
-        recipientState: 'CA',
+        recipientCity: 'Amsterdam',
+        recipientState: 'Noord-Holland',
         recipientZip: '12345',
         senderName: 'Jane Smith',
         senderAddress: '456 Elm St',
