@@ -184,6 +184,7 @@ export function getRma(req, res) {
         let rmaResult;
         if (rmaId) {
             rmaResult = getAllRmaById(rmaId)
+            console.log(rmaResult)
         }
         if (rmaResult) {
             res.status(StatusCodes.OK).json(rmaResult);
