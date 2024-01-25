@@ -394,8 +394,14 @@ export async function addNewRMARequest(req, res) {
 
         // Process each product
         for (const product of products) {
-            await insertReturnedProduct(product.orderedProductId, rmaId, formattedDate, product.description, product.productWeight, "pending", product.quantityToReturn);
+            await insertReturnedProduct(
+                product.orderedProductId, rmaId, formattedDate,
+                product.description, product.productWeight,
+                "pending", product.quantityToReturn,
+                product.imageBase64 // Include the Base64 image data
+            );
         }
+
 
         // Send a successful response back
         res.status(200).json({ message: "RMA request added successfully" });

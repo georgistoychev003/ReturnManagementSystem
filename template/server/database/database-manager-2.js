@@ -4,8 +4,7 @@ import {
     assignRmaToControllerQuery,
     getLastRMA,
     getRmaDetailsQuery,
-    selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
-    selectStatusById
+    selectControllerInfoByRMAId
 } from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
 
@@ -88,7 +87,8 @@ export function insertReturned(){
                 returnedProductData.description,
                 returnedProductData.weight,
                 returnedProductData.statusProduct,
-                returnedProductData.quantityToReturn
+                returnedProductData.quantityToReturn,
+                returnedProductData.imageData
             );
         }
     }
@@ -123,11 +123,11 @@ export function getLastRma() {
     return statement.get(); // Ensure this returns data
 }
 
-export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn){
+export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn, customerImage){
     const statement = db.prepare(queries.createReturnedProduct);
-    statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn);
-
+    statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn, customerImage);
 }
+
 export function getAllUsers() {
     return db.prepare(queries.selectAllUsers).all();
 }
