@@ -325,11 +325,15 @@
         }
     }
 
-    function toggleDetails(index) {
-
-        console.log(index)
-        products[index].showDetails = !products[index].showDetails;
-        products = products; // Reassign to trigger reactivity
+    function toggleDetails(index, event) {
+        // Check if the clicked element is not an input, label, or button
+        if (!['INPUT', 'LABEL', 'BUTTON'].includes(event.target.tagName)) {
+            products[index].showDetails = !products[index].showDetails;
+            products = products; // Trigger reactivity
+        }
+    }
+    function stopPropagation(event) {
+        event.stopPropagation(); // Prevent the event from bubbling up to the parent element
     }
 
 </script>
@@ -351,25 +355,26 @@
                 <span>Damaged</span>
             </div>
             {#each products as product, index}
-                <div class="product-row" on:click={() => toggleDetails(index)}>
+                <div class="product-row" on:click={() => toggleDetails(index, event)}>
                     <span>{product.name}</span>
                     <span>
-                <input type="number" min="0" max={product.quantityToReturn}
-                       value={productQuantities[product.name] || 0}
-                       on:input={(e) => handleQuantityChange(product.name, +e.target.value)} />
-
-
-            </span>
+            <input type="number" min="0" max={product.quantityToReturn}
+                   value={productQuantities[product.name] || 0}
+                   on:input={(e) => handleQuantityChange(product.name, +e.target.value)}
+                   on:click={stopPropagation} />
+        </span>
                     <span>
-                    <input type="radio" id={`refund-${product.name}`} name={`action-${product.name}`}
-                           on:change={() => handleRadioChange(product.name, 'refund')} />
-                    <label for={`refund-${product.name}`}>Refund</label>
-                </span>
+            <input type="radio" id={`refund-${product.name}`} name={`action-${product.name}`}
+                   on:change={() => handleRadioChange(product.name, 'refund')}
+                   on:click={stopPropagation} />
+            <label for={`refund-${product.name}`} on:click={stopPropagation}>Refund</label>
+        </span>
                     <span>
-                    <input type="radio" id={`damaged-${product.name}`} name={`action-${product.name}`}
-                           on:change={() => handleRadioChange(product.name, 'damaged')} />
-                    <label for={`damaged-${product.name}`}>Damaged</label>
-                </span>
+            <input type="radio" id={`damaged-${product.name}`} name={`action-${product.name}`}
+                   on:change={() => handleRadioChange(product.name, 'damaged')}
+                   on:click={stopPropagation} />
+            <label for={`damaged-${product.name}`} on:click={stopPropagation}>Damaged</label>
+        </span>
                     <span>
             {#if product.showDetails}
             <div class="details-dropdown">
@@ -437,19 +442,24 @@
         align-items: center;
         padding: 0.75rem;
         border-bottom: 1px solid var(--border-color);
-        cursor: pointer; /* Indicate the row is clickable */
+        cursor: pointer; /* Change cursor to indicate clickability */
+        transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
         position: relative; /* For absolute positioning of the details dropdown */
     }
 
     .product-row:hover {
-        background-color: #f5f5f5; /* Light background on hover to indicate interactivity */
+        background-color: #f5f5f5; /* Light background on hover */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
     }
 
-    .product-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        width: 100%; /* Ensure it takes up the full width of the container */
+    .product-row span:first-child {
+        text-decoration: underline; /* Underline the first span (product name) */
+        color: var(--primary-color); /* Change text color to primary color */
+        transition: color 0.3s; /* Smooth transition for text color */
+    }
+
+    .product-row:hover span:first-child {
+        color: var(--hover-primary-color); /* Darker shade on hover */
     }
 
     .details-dropdown {
