@@ -23,8 +23,7 @@
 
 
     let mostReturnedProducts = [
-        { name: 'SmartPhone', count: 2, color: 'rgba(255, 99, 132, 0.7)' },
-        { name: 'VideoGame', count: 7, color: 'rgba(54, 162, 235, 0.7)' },
+
 
     ];
 
@@ -35,14 +34,15 @@
 
             // Assign a new color for each fetched product
             const newColor = generateRandomColor();
-            const fetchedProduct = {
-                name: data[0].productName,
-                count: data[0].totalTimesReturned,
-                color: newColor
-            };
+            // Create a new array with the fetched products
+            const updatedProducts = data.map(product => ({
+                name: product.productName,
+                count: product.totalTimesReturned,
+                color: generateRandomColor()
+            }));
 
             // Update the mostReturnedProducts array
-            mostReturnedProducts = [...mostReturnedProducts, fetchedProduct];
+            mostReturnedProducts = [...mostReturnedProducts, ...updatedProducts];
             updatePieChart();
         } catch (error) {
             console.error('Error fetching data:', error);
