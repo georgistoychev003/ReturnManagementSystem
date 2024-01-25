@@ -12,11 +12,19 @@
     let productImageDataList = [];
     let selectedFile;
     let selectedImageUrl;
+    let productDetails = {};
 
 
     onMount(() => {
         startCamera();
+        if (selectedProduct && selectedProduct.productId) {
+            fetchProductDetails(selectedProduct.productId);
+        }
     });
+
+    $: if (selectedProduct && selectedProduct.productId) {
+        fetchProductDetails(selectedProduct.productId);
+    }
 
     async function startCamera() {
         try {
@@ -35,6 +43,18 @@
     //     snapshotSrc = canvasElement.toDataURL('image/png');
     //     handleProductInteraction({ product: selectedProduct, imageData: snapshotSrc });
     // }
+
+    async function fetchProductDetails(productId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/description/${productId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            productDetails = await response.json();
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        }
+    }
 
     function handleProductInteraction({ product, imageData }) {
         const existingIndex = productImageDataList.findIndex(item => item.product.productId === product.productId);
@@ -155,6 +175,19 @@
         <p>Price: ${selectedProduct.price.toFixed(2)}</p>
         <p>Date: {new Date(selectedProduct.date).toLocaleDateString()}</p>
     </div>
+
+    {#if productDetails}
+        <div>
+            <h3>Customer Description</h3>
+            <p>{productDetails.description}</p>
+        </div>
+        {#if productDetails.customerImage}
+            <div>
+                <h3>Customer Image</h3>
+                <img src={`data:image/png;base64,${productDetails.customerImage}`} alt="Returned Product Image from customer" />
+            </div>
+        {/if}
+    {/if}
     <textarea class="description-input" bind:value={description} placeholder="Add a description for the return"></textarea>
     <button class="submit-button" on:click={submitDetails}>Submit Details</button>
 </div>

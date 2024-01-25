@@ -438,3 +438,8 @@ export function getTheMostReturnedProducts() {
     console.log(db.prepare(queries.selectMostReturnedProducts).all());
     return db.prepare(queries.selectMostReturnedProducts).all();
 }
+
+export function getDescriptionForRma(returnedProductId){
+    return db.prepare(queries.selectAllRMADescriptionPerProducts).get(returnedProductId);
+
+}

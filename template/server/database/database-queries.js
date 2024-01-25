@@ -308,3 +308,7 @@ export const selectMostReturnedProducts = `
         LIMIT 3;
 
 `;
+
+export const selectAllRMADescriptionPerProducts = `SELECT description, customerImage
+                                                    FROM returnedProduct
+                                                    WHERE returnedProductId = ?;`;
