@@ -294,7 +294,7 @@ export const selectCollectorImageAndDescriptionById = `
 export const selectMostReturnedProducts = `
     SELECT
         p.name AS productName,
-        COUNT(rp.returnedProductId) * SUM(rp.quantityToReturn) AS totalTimesReturned
+        COUNT(rp.orderedProductId) * rp.quantityToReturn AS totalTimesReturned
     FROM
         returnedProduct rp
             JOIN
