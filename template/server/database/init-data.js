@@ -208,9 +208,9 @@ export const orderDetailsData = [
     {"orderedProductId": 12, "orderId": 4, "productId": 1, "quantity": 2, "unitPrice": 599.99, "priceAtTimeOfSale": 599.99},
 
     {"orderedProductId": 101, "orderId": 101, "productId": 6, "quantity": 1, "unitPrice": 80, "priceAtTimeOfSale": 80.00},
-    {"orderedProductId": 102, "orderId": 102, "productId": 4, "quantity": 1, "unitPrice": 24.99, "priceAtTimeOfSale": 24.99},
-    {"orderedProductId": 103, "orderId": 103, "productId": 4, "quantity": 1, "unitPrice": 24.99, "priceAtTimeOfSale": 24.99},
-    {"orderedProductId": 104, "orderId": 104, "productId": 4, "quantity": 1, "unitPrice": 24.99, "priceAtTimeOfSale": 24.99},
+    {"orderedProductId": 102, "orderId": 102, "productId": 2, "quantity": 1, "unitPrice": 40.00, "priceAtTimeOfSale": 40.},
+    {"orderedProductId": 103, "orderId": 103, "productId": 2, "quantity": 1, "unitPrice": 40.00, "priceAtTimeOfSale": 40.00},
+    {"orderedProductId": 104, "orderId": 104, "productId": 2, "quantity": 1, "unitPrice": 40.00, "priceAtTimeOfSale": 40.99},
     {"orderedProductId": 105, "orderId": 105, "productId": 2, "quantity": 6, "unitPrice": 40, "priceAtTimeOfSale": 240.00},
     {"orderedProductId": 106, "orderId": 106, "productId": 1, "quantity": 1, "unitPrice": 599.99, "priceAtTimeOfSale": 599.99},
     {"orderedProductId": 107, "orderId": 107, "productId": 5, "quantity": 1, "unitPrice": 35, "priceAtTimeOfSale": 35.00},

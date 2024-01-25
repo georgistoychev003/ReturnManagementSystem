@@ -74,7 +74,7 @@
 
 <div class="auth-container">
     <div class="logo">
-        <img class="logo" src="public/images/myshop-logo.png" alt="Logo">
+        <img class="logo" src="/images/myshop-logo.png" alt="Logo">
     </div>
     <h2>LOGIN</h2>
     <form on:submit|preventDefault={login}>
