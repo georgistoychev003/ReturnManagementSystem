@@ -142,12 +142,14 @@ export const selectOrderedProducts = `SELECT
                                           product.price,
                                           product.type,
                                           product.productWeight,
-                                          returnedProduct.quantityToReturn
+                                          returnedProduct.quantityToReturn,
+                                            returntable.statusRma
                                       FROM
                                           "order"
                                               LEFT JOIN orderedProduct ON "order".orderId = orderedProduct.orderId
                                               LEFT JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId
                                               JOIN product ON orderedProduct.productId = product.productId
+                                            LEFT JOIN returntable ON returnedProduct.RMAId = returntable.RMAId
                                       WHERE
                                           "order".orderId = ?`;
 

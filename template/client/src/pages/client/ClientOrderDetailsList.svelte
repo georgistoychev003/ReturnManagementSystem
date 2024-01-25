@@ -108,6 +108,7 @@
                 <th>PRODUCT NAME</th>
                 <th>PRICE</th>
                 <th>PREVIOUSLY RETURNED</th>
+                <th>CREDIT</th>
                 <th>QUANTITY TO RETURN</th>
                 <th>RETURN (CHECK IF YES)</th>
             </tr>
@@ -124,6 +125,13 @@
                         {:else}
                     <td>{orderProducts.quantityToReturn}</td>
                         {/if}
+                    {#if orderProducts.statusRma === null}
+                        <td>-</td>
+                    {:else if orderProducts.statusRMA === "pending"}
+                        <td>pending</td>
+                        {:else}
+                        <td>{orderProducts.priceAtTimeOfOrder}</td>
+                    {/if}
                     <!-- Conditional rendering based on product type and quantity -->
                     {#if (isReturnable(orderProducts.orderDate))}
                     {#if  orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}
