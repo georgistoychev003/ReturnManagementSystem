@@ -76,6 +76,7 @@
 
         sendProductDetails(productsWithDescriptionsAndImages);
         handleSelection();
+        clearStore();
     }
 
 

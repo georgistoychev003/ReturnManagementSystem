@@ -34,6 +34,7 @@
                     ...currentSelected,
                     { ...product, quantityToReturn }
                 ]);
+                console.log(selectedProductsStore);
             }
         } else {
             selectedProductsStore.update(currentSelected =>
@@ -124,7 +125,7 @@
                     <td>{orderProducts.quantityToReturn}</td>
                         {/if}
                     <!-- Conditional rendering based on product type and quantity -->
-<!--                    isReturnable(orderProducts.orderDate) &&-->
+                    {#if (isReturnable(orderProducts.orderDate))}
                     {#if  orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}
                     <td>
                             <input type="number" value="1"  min="1" max={orderProducts.quantity - orderProducts.quantityToReturn}
@@ -142,6 +143,10 @@
                         <td colspan="2">
                             {orderProducts.type === "Food" ? 'Food items cannot be returned' : 'Max returns made'}
                         </td>
+                        {/if}
+
+                        {:else}
+                        <td>Not available for return, more than 14 days</td>
                         {/if}
                 </tr>
             {/each}

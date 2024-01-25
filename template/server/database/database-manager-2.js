@@ -429,6 +429,8 @@ export function getCollectorImageAndDescriptionById(returnedProductId) {
 
 export function updateRMAStatus(RMAId, statusRma){
     const update = db.prepare('UPDATE returntable SET statusRma = ? WHERE RMAId = ?');
+    const update2 = db.prepare('UPDATE returnedProduct SET statusProduct = ? WHERE RMAId = ?');
+    update2.run(statusRma,RMAId)
     return update.run(statusRma, RMAId);
 }
 
