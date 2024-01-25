@@ -356,9 +356,7 @@ export function returnAllRmaDetails() {
 
 export function returnRMAaandDates() {
     try {
-        console.log("Before executing the query");
         const result = db.prepare(queries.getRMAandDATE).all();
-        console.log("After executing the query");
         console.log(result); // Log the result to the console
         return result;
     } catch (error) {
