@@ -37,10 +37,6 @@
 
 [7.0 Plan of approach:](#plan-of-approach)
 
-[7.5 Organization](#75-organization)
-
-[7.6 Borders and Risks](#76-borders-and-risks)
-
 [8.0 Appendices:](#appendices)
 
 [Appendix A: Return requirement:](#_Toc153742658)
@@ -51,13 +47,13 @@
 
 # Changelog
 
-| Version | Date       | Location     | Description                               | Author         |
-|---------|------------|--------------|-------------------------------------------|----------------|
-| 1.0     | 01-12-2023 | -            | Initial Document Created – Pending Review | Entire Group 2 |
-| 1.1     | 05-12-2023 | Requirements | Updated based on clients feedback         | Georgi/Badr    |
-| 2.0     | 16-12-2023 | Wireframes   | Updated based on Lecturers feedback       | Badr           |
-|         |            |              |                                           |                |
-|         |            |              |                                           |                |
+| Version | Date       | Location          | Description                                                  | Author         |
+|---------|------------|-------------------|--------------------------------------------------------------|----------------|
+| 1.0     | 01-12-2023 | -                 | Initial Document Created – Pending Review                    | Entire Group 2 |
+| 1.1     | 05-12-2023 | Requirements      | Updated based on clients feedback                            | Georgi/Badr    |
+| 2.0     | 16-12-2023 | Wireframes        | Updated based on Lecturers feedback                          | Badr           |
+| 3.0     | 27-01-2024 | Table of Contents | Reduce the content of the table of content base on feed back | Pablo          |
+|         |            |                   |                                                              |                |
 
 ## *See Appendix C for a full list of changes
 

@@ -42,7 +42,7 @@ they achieve in this course.
 |         |            |                          |                                                          |                |
 
 
-# stakeholders
+# Stakeholders 
 ## Team Overview:
 We are a dynamic group of seven international students from Saxion University in Deventer,
 specializing in software engineering. As part of our academic curriculum, we have embarked on a
@@ -92,13 +92,13 @@ Email: e.h.a.jannink@saxion.nl
 Our teacher, Eelco Jannink, will oversee the academic aspects of the project, ensuring that our work
 aligns with the course objectives and educational standards.
 
+# table of content 
+ [see Plan Of approach here](Documentation/PlanOfApproach.md)
+ [see API Specifications here](Documentation/Myshop-Api.md)
+ [see Functional Design here](Documentation/SO2-MyShop-FunctionalDesign.md)
+ [see Code Of Conduct here](Documentation/CodeOfConduct.md)
 
 
-
-
-
-
- 
 
 
 
