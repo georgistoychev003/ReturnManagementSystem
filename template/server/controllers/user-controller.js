@@ -32,19 +32,22 @@ export async function getUser(req, res) {
     }
 }
 
-export async  function postUser(req, res) {
+export async function postUser(req, res) {
     const user = req.body;
     console.log(user);
 
-    // Generate a UUID for the new user
-
     try {
+        // Hash the password before storing it
+        const saltRounds = 10; // You can adjust the salt rounds as needed
+        user.password = await bcrypt.hash(user.password, saltRounds);
+
+        // Insert the user with the hashed password
         db.insertUser(user);
 
         res.status(StatusCodes.CREATED).json({ message: "User created successfully." });
-
     } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "INTERNAL_SERVER_ERROR Failed to create user." });
+        console.error('Error:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to create user." });
     }
 }
 

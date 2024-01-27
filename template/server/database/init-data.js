@@ -257,9 +257,6 @@ export const returnedProduct = [
         "quantityToReturn": "2"
     },
     {"returnedProductId": 101, "orderedProductId": 101, "RMAId": 2, "returnedDate": "2024-02-02", "description": "Wrong item", "weight": 0.84, "statusProduct": "Returned", "quantityToReturn": 1},
-    {"returnedProductId": 102, "orderedProductId": 102, "RMAId": 3, "returnedDate": "2024-01-20", "description": "item doesnt work", "weight": 3.32, "statusProduct": "Returned", "quantityToReturn": 1},
-    {"returnedProductId": 103, "orderedProductId": 103, "RMAId": 4, "returnedDate": "2024-02-02", "description": "wrong size", "weight": 2.68, "statusProduct": "Returned", "quantityToReturn": 1},
-    {"returnedProductId": 104, "orderedProductId": 104, "RMAId": 5, "returnedDate": "2024-01-18", "description": "Defective item", "weight": 2.68, "statusProduct": "Returned", "quantityToReturn": 1},
     {"returnedProductId": 105, "orderedProductId": 105, "RMAId": 6, "returnedDate": "2024-01-16", "description": "wrong size", "weight": 4.75, "statusProduct": "Returned", "quantityToReturn": 6},
     {"returnedProductId": 106, "orderedProductId": 106, "RMAId": 7, "returnedDate": "2024-01-01", "description": "Defective item", "weight": 1.71, "statusProduct": "Returned", "quantityToReturn": 1},
     {"returnedProductId": 107, "orderedProductId": 107, "RMAId": 8, "returnedDate": "2024-01-03", "description": "wrong size", "weight": 4.75, "statusProduct": "Returned", "quantityToReturn": 1},
