@@ -5,11 +5,26 @@ GET http://localhost:3000/users
 Content-Type: application/json
 Accept: application/json
 
+> {%
+    client.test("Get all users successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(Array.isArray(response.body), "Expected body to be an array");
+    });
+%}
+
 
 ### Count all users
 GET http://localhost:3000/users/count
 Content-Type: application/json
 Accept: application/json
+
+> {%
+    client.test("Get count of all users successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'number', "Expected body to be a number");
+    });
+%}
+
 
 
 ### Get user by email
@@ -17,47 +32,87 @@ GET http://localhost:3000/users/controller@email.com
 Content-Type: application/json
 Accept: application/json
 
+> {%
+    client.test("Get all users successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'string', "Expected body to be a string");
+    });
+%}
+
+
 
 ### Get user by ID
 GET http://localhost:3000/users/3
 Content-Type: application/json
 Accept: application/json
 
+> {%
+    client.test("Get all users successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(Array.isArray(response.body), "Expected body to be an array");
+    });
+%}
+
+
 
 ### Create new user(*)
 POST http://localhost:3000/users
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "userId": 6,
-  "userName" : "Brice",
+  "userName" : "mewUser",
   "email": "newuser@email.com",
   "password": "password",
   "userRole": "customer"
 }
+
+> {%
+    client.test("Create new user successfully", function () {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(Array.isArray(response.body), "Expected body to be an array");
+    });
+%}
+
 
 
 ### Update user information
 PATCH http://localhost:3000/users/3
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{admin_token}}
 
 {
   "userRole": "admin"
 }
+
+> {%
+    client.test("Create user role successfully", function () {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(Array.isArray(response.body), "Expected body to be an array");
+    });
+%}
+
 
 
 ### Delete user by email(*)
 DELETE http://localhost:3000/users/controller@email.com
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{admin_token}}
+
+
+
 
 
 ### Delete user by ID(*)
 DELETE http://localhost:3000/users/1
 Content-Type: application/json
 Accept: application/json
+
+
 
 
 ### Send forgot password email
@@ -69,6 +124,14 @@ Accept: application/json
   "email": "newuser@email.com"
 }
 
+> {%
+    client.test("Send forgot password successfully", function () {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'string', "Expected body to be a string");
+    });
+%}
+
+
 
 ### Reset password(*)
 POST http://localhost:3000/users/reset-password
@@ -77,8 +140,9 @@ Accept: application/json
 
 {
   "token": "ShhhhhItsASecret",
-  "newPassword": "newpassword"
+  "newPassword": "newpassword123"
 }
+
 
 
 ### Send refund email(*)
@@ -95,6 +159,7 @@ Accept: application/json
     }
   ]
 }
+
 
 
 ### Send damaged product email(*)
