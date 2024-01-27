@@ -20,6 +20,27 @@ We aim to deliver a product that not only meets the technical requirements but a
 valuable learning experience for our team and their individual set of learning objectives they wish
 they achieve in this course.
 
+# table of content
+[changelog]()
+
+[see Plan Of approach here](Documentation/PlanOfApproach.md)
+
+[see API Specifications here](Documentation/Myshop-Api.md)
+
+[see Functional Design here](Documentation/SO2-MyShop-FunctionalDesign.md)
+
+[see Code Of Conduct here](Documentation/CodeOfConduct.md)
+
+# Changelog
+
+
+| Version | Date       | Location                 | Description                                              | Author         |
+|---------|------------|--------------------------|----------------------------------------------------------|----------------|
+| 1.0     | 01-12-2023 | -                        | Initial Document Created – Pending Review                | Entire Group 2 |
+| 2.0     | 27-01-2024 | Team contact Information | Added the contact information of each team member        | Pablo          |
+| 2.0     | 27-02-2024 | StakeHolder              | Added teacher to Stakeholder and his contact information | Pablo          |
+|         |            |                          |                                                          |                |
+
 
 # stakeholders 
 ## Team Overview:
@@ -40,6 +61,18 @@ Similar to the Scrum Master, the role of the Note Taker will also rotate with ea
 ### Client Contact:
 Primary Contact: Georgi Stoychev (Email: 536097@student.saxion.nl)
 Georgi will be responsible for maintaining clear and consistent communication with our client.
+### Teams Contact Information:
+Georgi Stoychev : 536097@student.saxion.nl
+
+Pablo Alonso : 527547@student.saxion.nl
+
+Badr Belardi : 508343@student.saxion.nl
+
+Desmond Bingham : 541270@student.saxion.nl
+
+Brice Nana Nyamgam : 490377@student.saxion.nl
+
+Frankie Walsh : 540556@student.saxion.nl
 ### Developers:
 Desmond, Badr, Marcelo, Frankie, Georgi, Pablo, Brice.
 Our developers are tasked with the technical aspects of the project, including coding, testing, and
@@ -52,17 +85,14 @@ Name: John Zanoni
 Email: john.zanoni@myshop.com
 As the project owner and our client, John Zanoni will provide us with project requirements, feedback,
 and approval throughout the development process.
+Teacher: Eelco Jannink, contact information: e.h.a.jannink@saxion.nl
 ## Academic Supervisor:
 Name: Eelco Jannink
 Email: e.h.a.jannink@saxion.nl
 Our teacher, Eelco Jannink, will oversee the academic aspects of the project, ensuring that our work
 aligns with the course objectives and educational standards.
 
-# table of content 
- [see Plan Of approach here](Documentation/PlanOfApproach.md)
- [see API Specifications here](Documentation/Myshop-Api.md)
- [see Functional Design here](Documentation/SO2-MyShop-FunctionalDesign.md)
- [see Code Of Conduct here](Documentation/CodeOfConduct.md)
+
 
 
 
