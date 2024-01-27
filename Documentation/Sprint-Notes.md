@@ -32,7 +32,7 @@ This is what each member had completed by this standUp :
 * Brice: worked on user requirements. They weren't meeting our quality criteria after team check. (Georgi refactored, check georgi's notes)
 * Marcelo: He didn't finish task notes (Appendix B in Functional requirement) on time. Therefore, he got remarks from team members to keep up with the deadlines.
 
-And those new tasks got assigned to some members who were already done with their current tasks to take over the missing elements of the FD.
+And those new tasks got assigned to some members who have already done with their current tasks to take over the missing elements of the FD.
 
 
 ### sprint 0 standUp 4 (2023-11-28)
@@ -69,7 +69,7 @@ During this meeting, we had a group discussion to address the internal issues su
 A warning was given to Marcelo to get more involved into the project and stick with the deadlines. 
 
 Afterward, we did the scrum poker planning to evaluate the weight of each task, and then we stared to fill in the issues into GitLab's backlog. We did not manage to finalize all 
-the issues into GitLab, so we gave each member to convert 3 user stories to issues(tasks) by the following day.
+the issues into GitLab, so we gave each member to convert three user stories to issues(tasks) by the following day.
 
 
 ### sprint 0  standUp 7(2023-12-03)
@@ -148,17 +148,17 @@ these are the results of this sprint, all the objectives that were planned are d
 Scrum Master - Georgi
 Note Taker - Desmond
 
-### Sprint 2 Standup 1 (19/12/23)
+### Sprint 2 StandUp 1 (19/12/23)
 * Badr - Role dropdown is created, but not complete and tested bcz there is no endpoint for that
 * Brice - Added missing notes what brice did and when through the documentation for refactoring.
 * Desmond - Updated the system design
 * Frankie - Updated the POA
-* Georgi - Ceated the return constraints on the client side so that an item (food, non sealed video game, order after 14 days) cannot be returned.
+* Georgi - Created the return constraints on the client side so that an item (food, non-sealed video game, order after 14 days) cannot be returned.
 * Pablo - Updated the COC document
 
 
-### Sprint 2 Standup 2 (21/12/23)
-* Badr - Created the drop down in the create user admin page
+### Sprint 2 StandUp 2 (21/12/23)
+* Badr - Created the drop-down in the creation user admin page
 * Brice -  Implementation of the controller RMA.
 * Desmond - Updated the functional design
 * Frankie - Connected the controller to the backend
@@ -166,7 +166,7 @@ Note Taker - Desmond
 * Pablo - Updated the Database design and implemented the new tables/queries
 
 
-### Sprint 2 Standup 3 (23/12/23)
+### Sprint 2 StandUp 3 (23/12/23)
 * Badr - Connecting the frontend and backend of the admin
 * Brice - Create the backend logic to store the image location in the database
 * Desmond - Connecting the backend and frontend of the client
@@ -174,15 +174,15 @@ Note Taker - Desmond
 * Georgi - Researched API for email service for user to reset password
 * Pablo - Connecting the backend and frontend of the collector
 
-### Sprint 2 Standup 4 (09/01/24)
+### Sprint 2 StandUp 4 (09/01/24)
 * Badr - Continued connecting the frontend and backend of the admin
 * Brice - Developed the image upload for the controller
 * Desmond - Continued connecting the backend and frontend of the client
-* Frankie - Connecting the backend and frontedn fof the controller
+* Frankie - Connecting the backend and frontend fof the controller
 * Georgi - Implemented the reset password function by sending an actual email to the client using external api
 * Pablo - Continued Connecting the backend and frontend of the collector
 
-### Sprint 2 Standup 5 (11/01/24)
+### Sprint 2 StandUp 5 (11/01/24)
 * Badr - Developed the admin graphs further and added some data points such as numbr of users
 * Brice - Developed the barcode scanner
 * Desmond - Developed the client further - request rmas
@@ -194,24 +194,24 @@ Note Taker - Desmond
 Scrum Master - Badr
 Note Taker - Georgi
 
-### Sprint 3 Standup 1 (16/01/24)
-* georgi- tried to fix issues in the working on making the components responsive
-* pablo- worked on client returns - see details (image, quantity, price, date description, status)
-* desmond- working on rma creation form
-* brice- testing the barcode, has problem and will ask desmond for help
+### Sprint 3 StandUp 1 (16/01/24)
+* georgi - tried to fix issues in the working on making the components responsive
+* pablo - worked on client returns - see details (image, quantity, price, date description, status)
+* desmond - working on a rma creation form
+* brice - testing the barcode and scan barcode, has a problem and asks help to desmond
 * badr-trying to retrieve details for users and rma (for admin), has issue switching pages
  
 * The following tasks were assigned for next stand-up:
 
-* georgi and badr- work and finalize functionalities for admin
-* pablo- work on the page of the return request details of the client
-* desmond and brice- work on collecor functionalitis for scanning a barcode and generating a barcode for the client
+* georgi and badr - work and finalize functionalities for admin
+* pablo - work on the page of the return request details of the client
+* desmond and brice - work on collector functionalities for scanning a barcode and generating a barcode for the client
 * frankie - assigned to work controller functionalities
 
-### Sprint 3 Standup 2 (18/01/24)
+### Sprint 3 StandUp 2 (18/01/24)
 * georgi - fixed the graph for weekly/monthly/yearly RMAs to display, made the deletion of a user, creation of a user, assignment of a role to a user and the displaying of details of a user work
 * badr- still working on making the RMA graph display statistics, he is facing issues from the backend
-* pablo- made a page so that the client can see the deatils of the return request he makes, he can see the status, image, price etc.
+* pablo- made a page so that the client can see the details of the return request he makes, he can see the status, image, price etc.
 * brice and desmond - working on the barcode creation and working on the page for the printing label.
 
 Assigned tasks:
@@ -220,37 +220,40 @@ Assigned tasks:
 * brice and desmond - finish their previously assigned tasks
 * frankie - finalize the controller's dashboard.
 
-### Sprint 3 Standup 3 (21/01/24)
-* frankie- finished all functionality of the controller
-* desmond- fixed "my orders" of the customer and worked on improving the database queries
-* Badr- finished line chart for analytics on the Admin dashboard, implemented the functionality of the admin to overrule the controller.
-* pablo- faces problem on the client side of the Client dashboard of returned requests will ask for help from our teacher Eelco Jannink.
+### Sprint 3 StandUp 3 (21/01/24)
+* frankie - finished all functionality of the controller
+* desmond - fixed "my orders" of the customer and worked on improving the database queries
+* Badr - finished line chart for analytics on the Admin dashboard, implemented the functionality of the admin to overrule the controller.
+* pablo - faces problem on the client side of the Client dashboard of returned requests will ask for help from our teacher Eelco Jannink.
 * georgi - made the lock functionality for Controller so that only one controller can process an RMA at a time.
 
 Assigned tasks:
 * desmond - work on fixing issues in Customer dashboard, add more intuitive steps and instructions on how to return a product.
 * brice - make HTTP tests
-* pablo - resolve issues he is facing with his task and finalize it
-* frankie - add credit line to controller dashboard, add alerts for important actions, show the amount that will be refunded when pressed on refund button
-* georgi - implement all functionalities of collector (qr code scanning, navigate to RMA page after qr scanning, dealing with products within an RMA individually, locking already processed products within an RMA, implement functionality to upload an image as a collector, make the entire collector fully responsive)
+* pablo - resolve issues he is facing with his task and finalizes it
+* frankie - add credit line to controller dashboard, add alerts for important actions, show the amount that will be refunded when pressed on the refund button
+* georgi - implement all functionalities of collector (qr code scanning, navigate to RMA page after qr scanning, dealing with products within an RMA individually, 
+locking already processed products within an RMA, implement functionality to upload an image as a collector, make the entire collector fully responsive)
 
-### Sprint 3 Standup 4 (23/01/24)
-* frankie- completed his assigned task
-* desmond- completed his assigned task
-* pablo- completed his assigned task
+### Sprint 3 StandUp 4 (23/01/24)
+* frankie - completed his assigned task
+* desmond - completed his assigned task
+* pablo - completed his assigned task
 * georgi - completed his assigned tasks
-* brice - still working on making the tests
+* brice - completed his assigned tasks
 
 New tasks that were assigned
 * desmond - implement image uploading functionality for customers
-* brice - work on his tests task
-* pablo - make a progress bar for more intuitive return process for customers, prepare a test scenario documentation to provide the client to test the application with in the final demo
-* frankie - display the images and comments per product within an RMA ( images and comments placed by customer and collector)
-* georgi - improve the entire styling of the website, display the image and description placed by a customer per product within an RMA, add a toggle that display instructions on how to process and rma as a collector, fix the issue of displaying the description wrong in the customer dashboard.
-* badr - fix the pie chart in the admin dashbaord, improve the styling of the camera instance of the qr scanner, prepare the final presentation of sprint 3
+* brice - add more HTTP tests
+* pablo - make a progress bar for a more intuitive return process for customers, prepare test scenario documentation to provide the client to test the application with in the final demo
+* frankie - display the images and comments per product within an RMA (images and comments placed by customer and collector)
+* georgi - improve the entire styling of the website,
+  display the image and description placed by a customer per product within an RMA, add a toggle that displays 
+instructions on how to process and rma as a collector, fix the issue of displaying the description wrong in the customer dashboard.
+* badr - fix the pie chart in the admin dashboard, improve the styling of the camera instance of the qr scanner, prepare the final presentation of sprint 3
 
-### Sprint 3 Standup 5 (25/01/24)
+### Sprint 3 StandUp 5 (25/01/24)
 * Tasks were completed.
 
-In sprint 3 we overachieved and had our most successful sprint of all 3, we impressed ourselves and also the client of what we are capable achieving in less than 2 weeks. Here is the burndown chart of sprint 3:
+In sprint 3 we overachieved and had our most successful sprint of all 3, we impressed ourselves and also the client of what we are capable achieving in less than 2 weeks. Here is the burn down chart of sprint 3:
 ![img_2.png](images/Sprint3BurnDownChart.png)
