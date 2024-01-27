@@ -141,7 +141,7 @@ During this standUp, we checked who had done what, and here are the results:
 
 
 these are the results of this sprint, all the objectives that were planned are done. and here is the burnout chart : 
-![img_1.png](img_1.png)
+![img_1.png](images/Sprint1BurnDownChart.png)
 
 
 ## Sprint 2 (18/12/23 - 14/01/24)
@@ -250,6 +250,7 @@ New tasks that were assigned
 * badr - fix the pie chart in the admin dashbaord, improve the styling of the camera instance of the qr scanner, prepare the final presentation of sprint 3
 
 ### Sprint 3 Standup 5 (25/01/24)
-Tasks were completed.
+* Tasks were completed.
 
-
+In sprint 3 we overachieved and had our most successful sprint of all 3, we impressed ourselves and also the client of what we are capable achieving in less than 2 weeks. Here is the burndown chart of sprint 3:
+![img_2.png](images/Sprint3BurnDownChart.png)
