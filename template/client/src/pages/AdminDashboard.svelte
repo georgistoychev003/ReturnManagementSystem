@@ -3,7 +3,6 @@
     import { Chart, registerables, LineController, CategoryScale, LinearScale, PieController, Legend, Title } from 'chart.js';
     import allYears from "html2pdf.js";
     Chart.register(LineController, CategoryScale, LinearScale, PieController, Legend, Title);
-
     let numberOfRMA = 0;
     let numberOfUsers = 0;
     let selectedInterval = 'month'; // Default interval
