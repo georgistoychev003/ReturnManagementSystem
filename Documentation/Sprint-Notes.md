@@ -1,8 +1,30 @@
+# Sprint Documentation
+Throughout the coming Sprints, we have adopted the Scrum framework, an agile development method that focuses on flexibility, collaboration and client input. Scrum will allow our team to divide our backlog into more manageable sets known as sprints, allowing us to collaborate on the overall sprint goals and incorporate client feedback throughout the development process.
+
+For the project, we have 4 Sprints, 0-3, where the initial sprint is project planning and approval by the client. After Sprint 0, we will begin implementing the plan set out previously and throughout Sprints 1-3, we will be working to achieve the goals set out and ensure the client agrees with the direction we are taking.
+
+The scrum master and note taker will be rotating each sprint.
+
+## Project Backlog
+The project backlog was developed during Sprint 0, we have a total of 125 items in the backlog which we hope to achieve by the end of Sprint 3.
+![img.png](images/backlog.png)
+![img_1.png](images/backlog_1.png)
+![img_2.png](images/backlog_2.png)
+![img_3.png](images/backlog_3.png)
+![img_4.png](images/backlog_4.png)
+![img_5.png](images/backlog_5.png)
+![img_6.png](images/backlog_6.png)
+![img_7.png](images/backlog_7.png)
+
 # SPRINT NOTES
-
-
-
 ## Sprint 0
+### Goals 
+The following goals are what we wish to achieve during Sprint 0:
+- Ensure everyone has an understanding of the project
+- Assign team roles for each sprint
+- Create the required documentation - PoA, CoC, Functional Design, System Design
+- Create the product backlog as shown above
+
 ### sprint 0 standUp 1 (2023-11-21)
 
 We as a team got familiar with the project, read the assignment description, asked for teacher explanation for the unclear aspects of the projects, started planning the questions 
@@ -81,8 +103,9 @@ During this standUp, we checked who had done what, and here are the results:
 * Marcelo: finished his task (Security architecture from System design documentation) after deadline and finished Gitlab issues. 
 * Pablo: finished Gitlab issues
 * Frankie: finished Gitlab issues
+### Sprint 0 Review
 
-
+### Sprint 0 Retrospective
 ## Sprint 1
 ### sprint 1 standUp 1 (2023-12-05)
 On Monday (2023-12-04), we received the client's feedback of what we had delivered last week, he wanted us to refactor FD, add some details and send him our SD.

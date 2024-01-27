@@ -58,9 +58,9 @@
 - Register your work time in the mutual Excel time management spreadsheet.
 
 
-### Dicipline
+### Discipline
 - In the case that someone does not respect the rules and the values that we are stading on, actions will be taken against them:
--  - In case its the first time, we will give a warning.
+-  - In case it's the first time, we will give a warning.
 -  - Second time, a strike will be given to the person
 -  - Third time, a second strike will be given to the person
 -  - And lastly the person will be removed from the team.
