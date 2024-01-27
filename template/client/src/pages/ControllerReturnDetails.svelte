@@ -436,268 +436,180 @@
 
 <style>
 
-    .collector-image {
-        max-width: 100px; /* Default size */
-        max-height: 100px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
-    }
-
-    /* Larger images on wider screens */
-    @media (min-width: 768px) {
-        .collector-image {
-            max-width: 150px;
-            max-height: 150px;
-        }
-    }
-    .product-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.75rem;
-        border-bottom: 1px solid var(--border-color);
-        cursor: pointer; /* Change cursor to indicate clickability */
-        transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
-        position: relative; /* For absolute positioning of the details dropdown */
-    }
-
-    .product-row:hover {
-        background-color: #f5f5f5; /* Light background on hover */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-    }
-
-    .product-row span:first-child {
-        text-decoration: underline; /* Underline the first span (product name) */
-        color: var(--primary-color); /* Change text color to primary color */
-        transition: color 0.3s; /* Smooth transition for text color */
-    }
-
-    .collector-section, .customer-section {
-        margin-bottom: 1rem;
-    }
-
-    .collector-section h3, .customer-section h3 {
-        color: var(--primary-color);
-        margin-bottom: 0.5rem;
-    }
-
-    .product-row:hover span:first-child {
-        color: var(--hover-primary-color); /* Darker shade on hover */
-    }
-
-    .details-dropdown {
-        position: absolute;
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 1rem;
-        width: 100%; /* Make it as wide as the product row */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Optional: add a shadow for better visibility */
-        z-index: 10;
-        top: 100%; /* Position it right below the product row */
-    }
-
-    .collector-image {
-        width: 100%;
-        max-width: 200px;
-        height: auto;
-        display: block;
-        margin-bottom: 1rem;
-    }
-
-    .customer-image {
-        width: 100%;
-        max-width: 200px;
-        height: auto;
-        display: block;
-        margin-bottom: 1rem;
-    }
-
-    .collector-description {
-        color: #333;
-    }
+    /* Base and General Styles */
     :root {
         --primary-color: #0056b3;
-        --secondary-color: #ff9500;
-        --success-color: #4CAF50;
-        --error-color: #FF3B30;
+        --secondary-color: #4CAF50;
+        --accent-color: #ff9500;
         --background-color: #f4f4f4;
         --text-color: #333;
-        --border-color: #ccc;
+        --border-color: #ddd;
+        --font-family: 'Arial', sans-serif;
     }
 
     * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
     }
 
     body {
-        font-family: 'Arial', sans-serif;
+        font-family: var(--font-family);
         background-color: var(--background-color);
         color: var(--text-color);
         line-height: 1.6;
     }
 
+    /* Request Card Styling */
     .request-card {
-        max-width: 90%;
-        margin: 2rem auto;
-        padding: 2rem;
+        max-width: 80%;
+        margin: 30px auto;
+        padding: 20px;
         background: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-size: 1rem; /* Default font size */
-        display: flex;
-        flex-direction: column;
-        overflow: hidden; /* i make sure nothing spills out */
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
     /* Header Styles */
     .request-header {
-        font-size: 1.5rem; /* Larger font for headers */
+        font-size: 2rem;
         font-weight: bold;
-        margin-bottom: 2rem;
+        margin-bottom: 20px;
         text-align: center;
+        color: var(--primary-color);
     }
 
     /* Details Section */
     .details-section {
         display: flex;
-        flex-wrap: wrap; /* Wrap the child elements on smaller screens */
-        gap: 2rem; /* Spacing between sections */
+        flex-wrap: wrap;
+        gap: 20px;
     }
 
     .details, .status-section {
-        flex: 1 1 50%; /* Take up half of the container, but also can shrink and grow */
-        min-width: 300px; /* Minimum width before wrapping */
+        flex: 1 1 45%;
+        min-width: 300px;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Product Row Styles */
+    .product-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid var(--border-color);
+        cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+
+    .product-row:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* Input and Label Styles */
+    input[type='number'], input[type='radio'], label {
+        text-align: center;
     }
 
     /* Button Styles */
     .action-btn, .confirm-btn {
-        padding: 1rem 1.5rem;
+        padding: 10px 15px;
         border: none;
-        border-radius: 0.3rem;
+        border-radius: 5px;
         font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
-        margin-bottom: 1rem; /* Space between buttons */
+        transition: background-color 0.2s;
     }
 
-    .action-btn {
+    .confirm-btn {
         background-color: var(--secondary-color);
         color: white;
     }
 
-    .action-btn.selected {
-        background-color: var(--primary-color);
-        transform: scale(1.02);
-    }
-
-    .confirm-btn {
-        background-color: var(--success-color);
+    .action-btn {
+        background-color: var(--accent-color);
         color: white;
     }
 
-    /* Input and Label Styles */
-    .product-header, .product-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* Four equal columns */
-        gap: 1rem; /* Space between grid items */
-        align-items: center;
-        padding: 1rem 0; /* Padding on top and bottom */
-    }
-
-    .product-header {
-        background-color: #e7e7e7; /* Distinguish headers with a different color */
-        font-weight: bold;
-    }
-
-    .product-row {
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .product-row span, .product-row input, .product-row label {
-        text-align: center;
-    }
-    .collector-panel {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem;
-        border: 2px solid #ccc;
-        margin-top: 1rem;
-    }
-
-    #qrCodeContainer {
-        max-width: 200px;
-        margin: 1rem auto;
-    }
-
-    .collector-details {
-        text-align: center;
+    /* Details Dropdown */
+    .details-dropdown {
+        position: absolute;
+        background-color: white;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        padding: 15px;
         width: 100%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 10;
+        top: 100%;
+        display: none; /* Initially hidden */
     }
 
-    .collector-image {
-        max-width: 80%;
+    .product-row:hover .details-dropdown {
+        display: block; /* Show on hover */
+    }
+
+    /* Image Styles */
+    .collector-image, .customer-image {
+        width: 100%;
+        max-width: 200px;
         height: auto;
-        margin: 1rem 0;
+        display: block;
+        margin: 10px auto;
+        border-radius: 5px;
     }
 
-    .collector-description {
-        background-color: #f8f8f8;
-        border: 1px solid #ccc;
-        padding: 1rem;
-        margin-top: 1rem;
-    }
-
-    .collector-panel h2 {
-        color: #0056b3;
-        margin-bottom: 0.5rem;
+    /* Description Text */
+    .collector-description, .customer-description {
+        color: #333;
+        margin: 5px 0;
     }
 
     /* QR Code Styles */
     .qr-code-section {
-        text-align: center; /* Center the QR code */
-        padding: 1rem;
-        margin-top: 2rem; /* Add some space above the QR code */
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
     }
 
     #qrCodeContainer {
-        max-width: 200px; /* Set a maximum width for the QR code */
-        max-height: 200px; /* Set a maximum height for the QR code */
-        margin: 0 auto; /* Center the QR code in the container */
-        overflow: hidden;
+        max-width: 200px;
+        margin: auto;
     }
 
-    /* Adjust QR code size on smaller screens */
+    /* Responsive Design */
     @media (max-width: 768px) {
+        .details-section {
+            flex-direction: column;
+        }
+
+        .product-row {
+            grid-template-columns: 1fr;
+        }
+
         #qrCodeContainer {
-            max-width: 150px; /* Smaller QR code on medium screens */
-            max-height: 150px;
+            max-width: 150px;
         }
     }
 
     @media (max-width: 480px) {
-        #qrCodeContainer {
-            max-width: 100px; /* Even smaller QR code on small screens */
-            max-height: 100px;
-        }
-    }
-
-    /* Media Queries for Responsiveness */
-    @media (max-width: 768px) {
-        .details, .status-section {
-            flex-basis: 100%;
-        }
-
         .request-header {
-            font-size: 1.25rem; /* Slightly smaller font for headers */
+            font-size: 1.5rem;
+        }
+
+        .action-btn, .confirm-btn {
+            padding: 8px 10px;
+        }
+
+        #qrCodeContainer {
+            max-width: 100px;
         }
     }
 
-    @media (max-width: 480px) {
-        .action-btn, .confirm-btn {
-            padding: 0.75rem; /* Smaller padding for smaller screens */
-        }
-    }
 </style>
