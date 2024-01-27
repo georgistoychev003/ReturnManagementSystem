@@ -35,12 +35,16 @@ insertOrderDetails();
 insertRMA();
 insertReturned();
 
-function insertUsers(){
+import bcrypt from 'bcrypt';
+
+async function insertUsers() {
     const countResult = db.prepare(queries.countUsers).get();
-    if(countResult && countResult['count(email)'] === 0){
+    const saltRounds = 10;
+    if (countResult && countResult['count(email)'] === 0) {
         const insert = db.prepare(queries.createUser);
-        for(const user of initData.usersData){
-            insert.run(user.userId, user.userName, user.email, user.password, user.userRole);
+        for (const user of initData.usersData) {
+            const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+            insert.run(user.userId, user.userName, user.email, hashedPassword, user.userRole);
         }
     }
 }
