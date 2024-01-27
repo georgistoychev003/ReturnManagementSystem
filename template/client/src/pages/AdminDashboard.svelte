@@ -1,8 +1,8 @@
 <script>
     import { onMount, afterUpdate, onDestroy } from "svelte";
     import { Chart, registerables, LineController, CategoryScale, LinearScale, PieController, Legend, Title } from 'chart.js';
+    import allYears from "html2pdf.js";
     Chart.register(LineController, CategoryScale, LinearScale, PieController, Legend, Title);
-
     let numberOfRMA = 0;
     let numberOfUsers = 0;
     let selectedInterval = 'month'; // Default interval
@@ -22,10 +22,39 @@
 
 
     let mostReturnedProducts = [
-        { name: 'Product1', count: 20, color: 'rgba(255, 99, 132, 0.7)' },
-        { name: 'Product2', count: 7, color: 'rgba(54, 162, 235, 0.7)' },
-        { name: 'Product3', count: 4, color: 'rgba(255, 206, 86, 0.7)' }
+
+
     ];
+
+    onMount(async () => {
+        try {
+            const response = await fetch('http://localhost:3000/product/mostReturned');
+            const data = await response.json();
+
+            // Assign a new color for each fetched product
+            const newColor = generateRandomColor();
+            // Create a new array with the fetched products
+            const updatedProducts = data.map(product => ({
+                name: product.productName,
+                count: product.totalTimesReturned,
+                color: generateRandomColor()
+            }));
+
+            // Update the mostReturnedProducts array
+            mostReturnedProducts = [...mostReturnedProducts, ...updatedProducts];
+            updatePieChart();
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+
+        console.log(mostReturnedProducts);
+    });
+
+    function generateRandomColor() {
+        // Generate a random color using RGB values
+        const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.7)`;
+        return color;
+    }
 
     async function fetchNumberOfUsers() {
         try {
@@ -119,6 +148,9 @@
 
 
     function updateChart(chartData) {
+
+
+
         // Assuming chartData is an array of objects with monthYear and RMACount properties
         chart.data.labels = chartData.map(item => item.monthYear);
         chart.data.datasets[0].data = chartData.map(item => item.RMACount);
@@ -126,6 +158,7 @@
 
         const maxDataValue = Math.max(...chartData.map(item => item.RMACount) );
         console.log(maxDataValue)
+
 
 
         chart.options.scales.y = {
@@ -192,14 +225,12 @@
         chart.update();
     }
 
-
-
-
     function updatePieChart() {
         if (pieChart) {
             pieChart.data.labels = mostReturnedProducts.map(product => '');
             pieChart.data.datasets[0].data = mostReturnedProducts.map(product => product.count);
             pieChart.data.datasets[0].backgroundColor = mostReturnedProducts.map(product => product.color);
+
             pieChart.update();
         }
     }
@@ -285,7 +316,23 @@
             options: {
                 plugins: {
                     legend: {
-                        display: true
+                        display: true,
+                        labels: {
+                            generateLabels: function (chart) {
+                                const originalLabels = Chart.overrides.pie.plugins.legend.labels.generateLabels(chart);
+                                originalLabels.forEach(label => {
+                                    const product = mostReturnedProducts.find(p => p.color === label.fillStyle);
+                                    if (product) {
+                                        label.text = product.name;
+                                        label.textFill = 'white';
+
+                                    }
+                                });
+                                return originalLabels;
+
+                            },
+                            color: 'white',
+                        }
                     },
                     title: {
                         display: true,
@@ -296,11 +343,7 @@
             },
             plugins: [Legend, Title]
         });
-
-
     });
-
-
 
     afterUpdate(() => {
         fetchNumberOfRMA();

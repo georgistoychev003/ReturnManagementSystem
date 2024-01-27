@@ -5,7 +5,7 @@
     let email = '';
     let password = '';
     let repeatPassword = '';
-    let address = '';
+    // let address = '';
     let isAdmin = false;
     let userRole = '';
 
@@ -48,7 +48,6 @@
         // Escape HTML characters
         userName = escapeHTML(userName);
         email = escapeHTML(email);
-        address = escapeHTML(address);
         userRole = 'client';
         isAdmin = 'false';
        let userId = 100;
@@ -95,14 +94,13 @@
     <input type="email" bind:value={email} placeholder="Email" required>
     <input type="password" bind:value={password} placeholder="Password" required>
     <input type="password" bind:value={repeatPassword} placeholder="Repeat Password" required>
-    <input type="text" bind:value={address} placeholder="Address" required>
     <select bind:value={userRole} on:change={assignUserRole}>
         <option value="">Select User Role</option>
         <!-- Fetch and populate options dynamically from user roles -->
         <option value= "admin"> Admin </option>
         <option value="collector">Collector</option>
         <option value="controller">Controller</option>
-        <option value="customer">customer</option>
+        <option value="customer">Customer</option>
     </select>
     <button class="create-user-button" on:click={createUser}>Create User</button>
 </div>

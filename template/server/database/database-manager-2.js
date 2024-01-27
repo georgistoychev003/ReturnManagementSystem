@@ -1,14 +1,14 @@
 import Database from "better-sqlite3";
 import * as queries from '../database/database-queries.js'
+import {
+    assignRmaToControllerQuery,
+    getLastRMA,
+    getRmaDetailsQuery,
+    selectControllerInfoByRMAId
+} from '../database/database-queries.js'
 import * as initData from '../database/init-data.js'
 
-import {
-    assignRmaToControllerQuery, createReturnedProduct,
-    createRma, getLastRMA,
-    getRmaDetailsQuery,
-    selectAllRMAbyCustomersEmail, selectControllerInfoByRMAId,
-    selectStatusById
-} from "../database/database-queries.js";
+import {returnedProduct} from "../database/init-data.js";
 
 
 let db;
@@ -81,7 +81,6 @@ export function insertReturned(){
         const insert = db.prepare(queries.createReturnedProduct);
         for (const returnedProductData of initData.returnedProduct) {
             insert.run(
-                returnedProductData.returnedProductId,
                 returnedProductData.orderedProductId,
                 returnedProductData.RMAId,
                 returnedProductData.returnedDate,
@@ -89,6 +88,7 @@ export function insertReturned(){
                 returnedProductData.weight,
                 returnedProductData.statusProduct,
                 returnedProductData.quantityToReturn,
+                returnedProductData.imageData
             );
         }
     }
@@ -106,6 +106,7 @@ export function insertRMA(){
 
 export function insertUser(user){
     const insert = db.prepare(queries.createUser);
+    console.log( user.userID +  user.userName +  user.email +  user.password +  user.userRole);
     insert.run(
         user.userID, user.userName, user.email, user.password, user.userRole
     );
@@ -122,11 +123,11 @@ export function getLastRma() {
     return statement.get(); // Ensure this returns data
 }
 
-export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn){
+export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn, customerImage){
     const statement = db.prepare(queries.createReturnedProduct);
-    statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn);
-
+    statement.run(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn, customerImage);
 }
+
 export function getAllUsers() {
     return db.prepare(queries.selectAllUsers).all();
 }
@@ -355,9 +356,7 @@ export function returnAllRmaDetails() {
 
 export function returnRMAaandDates() {
     try {
-        console.log("Before executing the query");
         const result = db.prepare(queries.getRMAandDATE).all();
-        console.log("After executing the query");
         console.log(result); // Log the result to the console
         return result;
     } catch (error) {
@@ -407,10 +406,6 @@ export function updateTotalRefundAmount(RMAId, totalRefundAmount) {
     return update.run(totalRefundAmount, RMAId);
 }
 
-export function updateRMAStatusToFinished(RMAId) {
-    const update = db.prepare('UPDATE returntable SET statusRma = "Finished" WHERE RMAId = ? AND ...');
-    return update.run(RMAId);
-}
 
 export function getOrderDetails2(userId){
     return db.prepare(queries.getUserOrdersWithReturn).all(userId);
@@ -427,3 +422,24 @@ export function getProductPriceByOrderedProductId(orderedProductId) {
     return db.prepare(query).get(orderedProductId);
 }
 
+export function getCollectorImageAndDescriptionById(returnedProductId) {
+    const statement = db.prepare(queries.selectCollectorImageAndDescriptionById);
+    return statement.get(returnedProductId);
+}
+
+export function updateRMAStatus(RMAId, statusRma){
+    const update = db.prepare('UPDATE returntable SET statusRma = ? WHERE RMAId = ?');
+    const update2 = db.prepare('UPDATE returnedProduct SET statusProduct = ? WHERE RMAId = ?');
+    update2.run(statusRma,RMAId)
+    return update.run(statusRma, RMAId);
+}
+
+export function getTheMostReturnedProducts() {
+    console.log(db.prepare(queries.selectMostReturnedProducts).all());
+    return db.prepare(queries.selectMostReturnedProducts).all();
+}
+
+export function getDescriptionForRma(returnedProductId){
+    return db.prepare(queries.selectAllRMADescriptionPerProducts).get(returnedProductId);
+
+}

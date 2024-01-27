@@ -16,6 +16,10 @@
     let returnedDate = '';
 
     let returnDescription = '';
+    let collectorImageSrc = ''; // This will store the Base64 image data
+    let collectorDescription = ''; // This will store the collector's description
+
+
 
     function getRMAIdFromUrl() {
         const path = window.location.pathname;
@@ -31,6 +35,8 @@
     onMount(async () => {
         await fetchReturnRequests();
         await displayQRCode();
+        await getCollectorImageAndDescription();
+
     });
 
     async function handleConfirm() {
@@ -71,6 +77,20 @@
                 } catch (error) {
                     console.error(`Error fetching price for product: ${product.name}`, error);
                 }
+            }
+        }
+
+        if (refundPayload.length > 0) {
+            const confirmRefund = confirm(`Are you sure you want to refund $${totalRefundAmount.toFixed(2)}?`);
+            if (!confirmRefund) {
+                return;
+            }
+        }
+
+        if (damagedPayload.length > 0) {
+            const confirmDamaged = confirm(`Are you sure you want to confirm the product as damaged?`);
+            if (!confirmDamaged) {
+                return;
             }
         }
 
@@ -170,9 +190,10 @@
 
     async function fetchReturnRequests() {
         try {
-            const response = await fetch(`http://localhost:3000/rma/${RMAId}`);
+            const response = await fetch(`http://localhost:3000/rma/rma/${RMAId}`);
             if (response.ok) {
                 returnRequests = await response.json();
+                console.log(returnRequests)
                 if (returnRequests.length > 0) {
                     returnedDate = returnRequests[0].returnedDate;
                     returnDescription = returnRequests[0].description;
@@ -182,14 +203,25 @@
                 const productsResponse = await fetchProductsOfRMA(RMAId);
                 console.log(productsResponse)
                 products = productsResponse.map(product => {
-                    const matchingReturnRequest = returnRequests.find(req => req.orderedProductId === product.orderedProductId);
-                    console.log(matchingReturnRequest)
+                    const correspondingReturnRequest = returnRequests.find(request => request.orderedProductId === product.orderedProductId);
+                    console.log(product)
+                    const collectorImage = correspondingReturnRequest ? `data:image/png;base64,${correspondingReturnRequest.collectorImage}` : '';
+                    const customerImage = correspondingReturnRequest ? `data:image/png;base64,${correspondingReturnRequest.customerImage}` : '';
+                    const collectorDescription = correspondingReturnRequest ? correspondingReturnRequest.collectorDescription : 'No description provided from collector.';
+                    const customerDescription = correspondingReturnRequest ? correspondingReturnRequest.description : 'No description provided from customer.';
+
                     return {
                         name: product.name,
-                        quantityToReturn: matchingReturnRequest ? matchingReturnRequest.quantityToReturn : 0,
-                        orderedProductId: product.orderedProductId // If you need to use this later
+                        quantityToReturn: product.quantityToReturn,
+                        orderedProductId: product.orderedProductId, // If you need to use this later
+                        showDetails: false, // Initial state for showing details
+                        collectorImageSrc: collectorImage,
+                        collectorDescription: collectorDescription,
+                        customerDescription: customerDescription,
+                        customerImageSrc:customerImage
                     };
-                })
+                });
+                console.log(products)
                 $: if (products.length > 0 && selectedProducts.size === 0) {
                     products.forEach(product => {
                         selectedProducts.set(product.name, { action: null, quantityToReturn: 0, maxQuantity: product.quantityToReturn });
@@ -198,7 +230,6 @@
                 returnRequests.customer = customer;
                 email=customer;
                 returnRequests.status = status
-                console.log(products)
             } else {
                 console.error('Failed to fetch return requests');
             }
@@ -279,7 +310,38 @@
             return 0;
         }
     }
+
+
+
+
+    async function getCollectorImageAndDescription() {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/collector/imageAndDescription/${RMAId}`);
+            if (response.ok) {
+                const data = await response.json();
+                collectorImageSrc = 'data:image/png;base64,' + data.collectorImage;
+                collectorDescription = data.collectorDescription;
+            } else {
+                console.error('Failed to fetch collector data.');
+            }
+        } catch (error) {
+            console.error('Error fetching collector data:', error);
+        }
+    }
+
+    function toggleDetails(index, event) {
+        // Check if the clicked element is not an input, label, or button
+        if (!['INPUT', 'LABEL', 'BUTTON'].includes(event.target.tagName)) {
+            products[index].showDetails = !products[index].showDetails;
+            products = products; // Trigger reactivity
+        }
+    }
+    function stopPropagation(event) {
+        event.stopPropagation(); // Prevent the event from bubbling up to the parent element
+    }
+
 </script>
+
 
 
 
@@ -296,27 +358,53 @@
                 <span>Refund</span>
                 <span>Damaged</span>
             </div>
-            {#each products as product}
-                <div class="product-row">
+            {#each products as product, index}
+                <div class="product-row" on:click={() => toggleDetails(index, event)}>
                     <span>{product.name}</span>
                     <span>
-                <input type="number" min="0" max={product.quantityToReturn}
-                       value={productQuantities[product.name] || 0}
-                       on:input={(e) => handleQuantityChange(product.name, +e.target.value)} />
-
-
-            </span>
+            <input type="number" min="0" max={product.quantityToReturn}
+                   value={productQuantities[product.name] || 0}
+                   on:input={(e) => handleQuantityChange(product.name, +e.target.value)}
+                   on:click={stopPropagation} />
+        </span>
                     <span>
-                    <input type="radio" id={`refund-${product.name}`} name={`action-${product.name}`}
-                           on:change={() => handleRadioChange(product.name, 'refund')} />
-                    <label for={`refund-${product.name}`}>Refund</label>
-                </span>
+            <input type="radio" id={`refund-${product.name}`} name={`action-${product.name}`}
+                   on:change={() => handleRadioChange(product.name, 'refund')}
+                   on:click={stopPropagation} />
+            <label for={`refund-${product.name}`} on:click={stopPropagation}>Refund</label>
+        </span>
                     <span>
-                    <input type="radio" id={`damaged-${product.name}`} name={`action-${product.name}`}
-                           on:change={() => handleRadioChange(product.name, 'damaged')} />
-                    <label for={`damaged-${product.name}`}>Damaged</label>
-                </span>
+            <input type="radio" id={`damaged-${product.name}`} name={`action-${product.name}`}
+                   on:change={() => handleRadioChange(product.name, 'damaged')}
+                   on:click={stopPropagation} />
+            <label for={`damaged-${product.name}`} on:click={stopPropagation}>Damaged</label>
+        </span>
+                    <span>
+            {#if product.showDetails}
+            <div class="details-dropdown">
+                <!-- Collector's Section -->
+                <div class="collector-section">
+                    <h3>Collector's Details</h3>
+                    {#if product.collectorImageSrc}
+                        <img class="collector-image" src={product.collectorImageSrc} alt="Collector's snapshot" />
+                    {/if}
+                    <p class="collector-description">{product.collectorDescription || 'No description provided from collector.'}</p>
                 </div>
+                <!-- Customer's Section -->
+                <div class="customer-section">
+                    <h3>Customer's Details</h3>
+                    {#if product.customerImageSrc}
+                        <img class="customer-image" src={product.customerImageSrc} alt="Customer's snapshot" />
+                    {/if}
+                    <p class="collector-description">{product.customerDescription || 'No description provided from customer.'}</p>
+                </div>
+            </div>
+        {/if}
+                </div>
+                <br>
+<!--                <span>Controller Description: {product.collectorDescription || 'No description'}</span>-->
+                <br>
+                <br>
             {/each}
             <p>DATE: {returnedDate}</p>
             <p>CUSTOMER NAME: {returnRequests.customer}</p>
@@ -324,24 +412,22 @@
             <div class="qr-code-section">
                 <div id="qrCodeContainer"></div>
             </div>
+<!--            <div class="collector-panel">-->
+<!--                <div id="qrCodeContainer"></div>-->
+<!--                <div class="collector-details">-->
+<!--                    <h2>Collector Image:</h2>-->
+<!--                    {#if collectorImageSrc}-->
+<!--                        <img class="collector-image" src={collectorImageSrc} alt="Collector's snapshot" />-->
+<!--                    {/if}-->
+<!--                    <h2>Collector Comments:</h2>-->
+<!--                    <p class="collector-description">{collectorDescription || 'No description provided.'}</p>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
         <div class="status-section">
             <p>STATUS: {returnRequests.status}</p>
             <div class="image-placeholder"></div>
-            <p>DESCRIPTION: {returnDescription}</p>
             <div class="actions">
-<!--                <button-->
-<!--                        class="action-btn"-->
-<!--                        class:selected={selectedAction === 'refund'}-->
-<!--                        on:click={() => selectAction('refund')}>-->
-<!--                    REFUND CUSTOMER, SEND TO STOCK-->
-<!--                </button>-->
-<!--                <button-->
-<!--                        class="action-btn"-->
-<!--                        class:selected={selectedAction === 'damage'}-->
-<!--                        on:click={() => selectAction('damage')}>-->
-<!--                    PRODUCT DAMAGED, NOTIFY CUSTOMER-->
-<!--                </button>-->
             </div>
             <button class="confirm-btn" on:click={handleConfirm}>CONFIRM</button>
         </div>
@@ -349,151 +435,181 @@
 </div>
 
 <style>
+
+    /* Base and General Styles */
     :root {
         --primary-color: #0056b3;
-        --secondary-color: #ff9500;
-        --success-color: #4CAF50;
-        --error-color: #FF3B30;
+        --secondary-color: #4CAF50;
+        --accent-color: #ff9500;
         --background-color: #f4f4f4;
         --text-color: #333;
-        --border-color: #ccc;
+        --border-color: #ddd;
+        --font-family: 'Arial', sans-serif;
     }
 
     * {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
     }
 
     body {
-        font-family: 'Arial', sans-serif;
+        font-family: var(--font-family);
         background-color: var(--background-color);
         color: var(--text-color);
         line-height: 1.6;
     }
 
+    /* Request Card Styling */
     .request-card {
-        max-width: 90%;
-        margin: 2rem auto;
-        padding: 2rem;
+        max-width: 80%;
+        margin: 30px auto;
+        padding: 20px;
         background: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        font-size: 1rem; /* Default font size */
-        display: flex;
-        flex-direction: column;
-        overflow: hidden; /* i make sure nothing spills out */
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
     /* Header Styles */
     .request-header {
-        font-size: 1.5rem; /* Larger font for headers */
+        font-size: 2rem;
         font-weight: bold;
-        margin-bottom: 2rem;
+        margin-bottom: 20px;
         text-align: center;
+        color: var(--primary-color);
     }
 
     /* Details Section */
     .details-section {
         display: flex;
-        flex-wrap: wrap; /* Wrap the child elements on smaller screens */
-        gap: 2rem; /* Spacing between sections */
+        flex-wrap: wrap;
+        gap: 20px;
     }
 
     .details, .status-section {
-        flex: 1 1 50%; /* Take up half of the container, but also can shrink and grow */
-        min-width: 300px; /* Minimum width before wrapping */
+        flex: 1 1 45%;
+        min-width: 300px;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Product Row Styles */
+    .product-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid var(--border-color);
+        cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s;
+    }
+
+    .product-row:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* Input and Label Styles */
+    input[type='number'], input[type='radio'], label {
+        text-align: center;
     }
 
     /* Button Styles */
     .action-btn, .confirm-btn {
-        padding: 1rem 1.5rem;
+        padding: 10px 15px;
         border: none;
-        border-radius: 0.3rem;
+        border-radius: 5px;
         font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
-        margin-bottom: 1rem; /* Space between buttons */
+        transition: background-color 0.2s;
     }
 
-    .action-btn {
+    .confirm-btn {
         background-color: var(--secondary-color);
         color: white;
     }
 
-    .action-btn.selected {
-        background-color: var(--primary-color);
-        transform: scale(1.02);
-    }
-
-    .confirm-btn {
-        background-color: var(--success-color);
+    .action-btn {
+        background-color: var(--accent-color);
         color: white;
     }
 
-    /* Input and Label Styles */
-    .product-header, .product-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* Four equal columns */
-        gap: 1rem; /* Space between grid items */
-        align-items: center;
-        padding: 1rem 0; /* Padding on top and bottom */
+    /* Details Dropdown */
+    .details-dropdown {
+        position: absolute;
+        background-color: white;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        padding: 15px;
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 10;
+        top: 100%;
+        display: none; /* Initially hidden */
     }
 
-    .product-header {
-        background-color: #e7e7e7; /* Distinguish headers with a different color */
-        font-weight: bold;
+    .product-row:hover .details-dropdown {
+        display: block; /* Show on hover */
     }
 
-    .product-row {
-        border-bottom: 1px solid var(--border-color);
+    /* Image Styles */
+    .collector-image, .customer-image {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        display: block;
+        margin: 10px auto;
+        border-radius: 5px;
     }
 
-    .product-row span, .product-row input, .product-row label {
-        text-align: center;
+    /* Description Text */
+    .collector-description, .customer-description {
+        color: #333;
+        margin: 5px 0;
     }
 
     /* QR Code Styles */
     .qr-code-section {
-        text-align: center; /* Center the QR code */
-        padding: 1rem;
-        margin-top: 2rem; /* Add some space above the QR code */
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
     }
 
     #qrCodeContainer {
-        max-width: 200px; /* Set a maximum width for the QR code */
-        max-height: 200px; /* Set a maximum height for the QR code */
-        margin: 0 auto; /* Center the QR code in the container */
-        overflow: hidden;
+        max-width: 200px;
+        margin: auto;
     }
 
-    /* Adjust QR code size on smaller screens */
+    /* Responsive Design */
     @media (max-width: 768px) {
+        .details-section {
+            flex-direction: column;
+        }
+
+        .product-row {
+            grid-template-columns: 1fr;
+        }
+
         #qrCodeContainer {
-            max-width: 150px; /* Smaller QR code on medium screens */
-            max-height: 150px;
+            max-width: 150px;
         }
     }
 
     @media (max-width: 480px) {
-        #qrCodeContainer {
-            max-width: 100px; /* Even smaller QR code on small screens */
-            max-height: 100px;
-        }
-    }
-
-    /* Media Queries for Responsiveness */
-    @media (max-width: 768px) {
-        .details, .status-section {
-            flex-basis: 100%;
-        }
-
         .request-header {
-            font-size: 1.25rem; /* Slightly smaller font for headers */
+            font-size: 1.5rem;
+        }
+
+        .action-btn, .confirm-btn {
+            padding: 8px 10px;
+        }
+
+        #qrCodeContainer {
+            max-width: 100px;
         }
     }
 
-    @media (max-width: 480px) {
-        .action-btn, .confirm-btn {
-            padding: 0.75rem; /* Smaller padding for smaller screens */
-        }
-    }
 </style>

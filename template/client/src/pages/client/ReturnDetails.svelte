@@ -5,17 +5,26 @@
 
     let videoElement;
     let canvasElement;
-    let imageData; // This will hold the Blob data of the image
     let snapshotSrc; // This will hold the image data URL for display purposes
 
-
     const dispatch = createEventDispatcher();
-    let images = [];
     let description = '';
+    let productImageDataList = [];
+    let selectedFile;
+    let selectedImageUrl;
+    let productDetails = {};
+
 
     onMount(() => {
         startCamera();
+        if (selectedProduct && selectedProduct.productId) {
+            fetchProductDetails(selectedProduct.productId);
+        }
     });
+
+    $: if (selectedProduct && selectedProduct.productId) {
+        fetchProductDetails(selectedProduct.productId);
+    }
 
     async function startCamera() {
         try {
@@ -26,107 +35,163 @@
         }
     }
 
-    function takeSnapshot() {
-        const context = canvasElement.getContext('2d');
-        canvasElement.width = videoElement.videoWidth;
-        canvasElement.height = videoElement.videoHeight;
-        context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
-        snapshotSrc = canvasElement.toDataURL('image/png'); // For displaying the snapshot on the page
-        // Convert canvas to Blob and store in imageData
-        canvasElement.toBlob(blob => {
-            imageData = blob;
-        }, 'image/png');
-    }
-    function handleImageUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-            // we need to handle the file upload to the server here too
-            images.push(URL.createObjectURL(file));
+    // function takeSnapshot() {
+    //     const context = canvasElement.getContext('2d');
+    //     canvasElement.width = videoElement.videoWidth;
+    //     canvasElement.height = videoElement.videoHeight;
+    //     context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
+    //     snapshotSrc = canvasElement.toDataURL('image/png');
+    //     handleProductInteraction({ product: selectedProduct, imageData: snapshotSrc });
+    // }
+
+    async function fetchProductDetails(productId) {
+        try {
+            const response = await fetch(`http://localhost:3000/rma/description/${productId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            productDetails = await response.json();
+        } catch (error) {
+            console.error('Error fetching product details:', error);
         }
     }
 
-
-
-    function closeDetails() {
-        dispatch('close');
+    function handleProductInteraction({ product, imageData }) {
+        const existingIndex = productImageDataList.findIndex(item => item.product.productId === product.productId);
+        if (existingIndex !== -1) {
+            productImageDataList[existingIndex].imageData = imageData;
+        } else {
+            productImageDataList.push({ product: product.productId, image: imageData });
+        }
+        console.log('Product and Image Data List:', productImageDataList);
     }
 
-    function submitDetails() {
-        // Here we should handle the submission logic
-        alert("You successfully processed this product and it will be forwarded to the controller!")
-        page('/RMAProducts/' + selectedProduct.rmaId);
+    function handleFileChange(event) {
+        selectedFile = event.target.files[0];
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                selectedImageUrl = e.target.result;
+                snapshotSrc = selectedImageUrl;
+            };
+            reader.readAsDataURL(selectedFile);
+        } else {
+            console.log('No file selected');
+        }
     }
 
     async function handleUpload() {
-        const formData = new FormData();
-        // Omit the image data since you're not sending an actual image file for now
-        // formData.append('image', 'hardcoded_image_string');
-        formData.append('collectorDescription', description);
+        let imageData = '';
+        if (selectedImageUrl) {
+            imageData = selectedImageUrl.split(',')[1]; // Get the Base64 encoded string
+        }
+
+        // Check if the description is not empty
+        if (description.trim() === '') {
+            alert('Please add a description before submitting.');
+            return false;
+        }
 
         try {
             const response = await fetch(`http://localhost:3000/rma/collector/${selectedProduct.productId}`, {
                 method: 'PUT',
                 headers: {
-                    // If you're sending a JSON object now, you need to set the header accordingly
                     'Content-Type': 'application/json'
                 },
-                // Convert your formData to a JSON string
                 body: JSON.stringify({
-                    collectorImage: 'hardcoded_image_string',
+                    collectorImage: imageData,
                     collectorDescription: description
                 })
             });
 
+            const result = await response.json();
             if (response.ok) {
-                const result = await response.json();
                 alert('Details updated successfully: ' + result.message);
                 page('/RMAProducts/' + selectedProduct.rmaId);
                 location.reload();
-
             } else {
-                const errorResult = await response.json();
-                alert('Failed to update details: ' + errorResult.error);
+                alert('Failed to update details: ' + result.error);
             }
         } catch (error) {
             console.error('Error updating details:', error);
             alert('Error occurred while updating details');
         }
+
+        return true; // Return true to indicate successful processing
+    }
+    function closeDetails() {
+        dispatch('close');
     }
 
 
+    async function submitDetails() {
+        // Display the confirmation dialog
+        const isConfirmed = confirm("Are you sure you want to finalize the processing of this product? Once submitted, the state of the product cannot be modified anymore.");
+
+        // Check the user's response
+        if (isConfirmed) {
+            // Proceed with upload if confirmed
+            const uploadSuccess = await handleUpload();
+            if (uploadSuccess) {
+                alert("You successfully processed this product and it will be forwarded to the controller!");
+                page('/RMAProducts/' + selectedProduct.rmaId);
+            }
+        } else {
+            // Do nothing if cancelled
+            console.log("Product processing was cancelled.");
+        }
+    }
+
 </script>
+
 <!-- Camera stream and snapshot section -->
 <div class="camera-container">
+    <!-- Ensure these elements exist in your markup with the correct classes or IDs -->
     <video class="camera-stream" bind:this={videoElement} autoplay></video>
-    <canvas class="snapshot-canvas" bind:this={canvasElement} style="display: none;"></canvas>
-    <button on:click={takeSnapshot}>Take Snapshot</button>
+    <canvas class="snapshot-canvas" bind:this={canvasElement}></canvas>
+<!--    <button on:click={takeSnapshot}>Take Snapshot</button>-->
     {#if snapshotSrc}
-        <img class="snapshot-image" src={snapshotSrc} alt="Snapshot" />
-        <button on:click={handleUpload}>Upload Snapshot</button>
+<!--        <img class="snapshot-image" src={snapshotSrc} alt="Snapshot" />-->
     {/if}
 </div>
+
+<!-- Add only one file input for image upload -->
+<input type="file" accept="image/*" on:change={handleFileChange}>
+
+<!-- Show the selected image preview -->
+{#if selectedImageUrl}
+    <img src={selectedImageUrl} alt="Preview" />
+{/if}
 
 <!-- Product details section -->
 <div class="product-detail-container">
     <button class="close-button" on:click={closeDetails}>Close</button>
     <h2>Product Return Details - {selectedProduct.type}</h2>
     <div class="product-info">
+        <!-- Ensure this image src path is correct -->
         <img class="product-image" src={selectedProduct.productImage} alt={`Product ${selectedProduct.productId}`} />
         <p>Type: {selectedProduct.type}</p>
         <p>Quantity: {selectedProduct.quantity}</p>
         <p>Price: ${selectedProduct.price.toFixed(2)}</p>
         <p>Date: {new Date(selectedProduct.date).toLocaleDateString()}</p>
     </div>
-    <div class="image-upload-section">
-        <label for="image-upload" class="image-upload-label">Upload Product Image</label>
-        <input id="image-upload" type="file" on:change={handleImageUpload} />
-        {#each images as image, index (image)}
-            <img class="uploaded-image" src={image} alt={`Uploaded ${index}`} />
-        {/each}
-    </div>
+
+    {#if productDetails}
+        <div>
+            <h3>Customer Description</h3>
+            <p>{productDetails.description}</p>
+        </div>
+        {#if productDetails.customerImage}
+            <div>
+                <h3>Customer Image</h3>
+                <img src={`data:image/png;base64,${productDetails.customerImage}`} alt="Returned Product Image from customer" />
+            </div>
+        {/if}
+    {/if}
     <textarea class="description-input" bind:value={description} placeholder="Add a description for the return"></textarea>
     <button class="submit-button" on:click={submitDetails}>Submit Details</button>
 </div>
+
 
 
 <style>
@@ -169,6 +234,71 @@
     .close-button:hover {
         background-color: #c82333;
     }
+    input[type="file"] {
+        width: 100%;
+        padding: 0.5em;
+        margin-top: 1em;
+        border: 1px solid #ced4da;
+        border-radius: 0.3em;
+        font-size: 1em;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    .product-info p {
+        margin-bottom: 0.5em;
+        margin-top: 0.5em;
+        line-height: 1.4;
+        clear: both;
+    }
+
+    .product-info p:first-child {
+        margin-top: 0;
+    }
+
+    .product-info p:last-child {
+        margin-bottom: 0;
+    }
+
+    .product-info {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5em;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    @media (max-width: 768px) {
+        .product-detail-container {
+            margin: 20px;
+            padding: 10px;
+        }
+
+        .product-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .product-image {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .description-input, .submit-button {
+            width: calc(100% - 20px);
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .product-item {
+            flex-basis: 100%; /* Full width on small screens */
+        }
+    }
+
 
     .product-info {
         display: flex;
@@ -233,7 +363,8 @@
     }
 
     input[type="file"] {
-        display: none;
+        /*display: none;*/
+        margin-top: 10px; /* Add some space above the file input */
     }
 
     .description-input {

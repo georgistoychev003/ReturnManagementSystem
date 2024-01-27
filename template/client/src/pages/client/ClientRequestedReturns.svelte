@@ -4,6 +4,7 @@
     import {writable} from "svelte/store";
     import {userEmail} from "../../Store.js";
     import {RMAId as RMAIdFromStore} from "../../Store.js";
+
     let returnRequests = [];
     let isLoading = true;
     let errorMessage = '';
@@ -48,6 +49,8 @@
         page(`/requestReturnDetail/:${RMAId}`)
     };
 </script>
+
+
 
 {#if isLoading}
     <p>Loading return requests...</p>

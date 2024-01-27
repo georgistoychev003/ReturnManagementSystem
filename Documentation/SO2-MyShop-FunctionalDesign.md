@@ -17,71 +17,17 @@
 
 [4.0 Context analysis:](#_Toc153742608)
 
-[4.1 Scope of the Project](#41-scope-of-the-project)
-
-[4.2 Final Product Delivery](#42-final-product-delivery)
-
-[4.3 Key Features:](#43-key-features)
-
-[4.4 Context within the Company’s Ecosystem](#44-context-within-the-companys-ecosystem)
-
-[4.5 Target Audience](#45-target-audience)
-
-[4.6 Business Impact](#46-business-impact)
-
-[4.7 Technological Context](#47-technological-context)
-
-[4.8 Compliance with law](#48-compliance-with-law)
-
 [5. Solution Overview:](#_Toc153742617)
 
 [6. Functional Design](#6-functional-design)
 
 [6.1 Requirements](#_Toc153742619)
 
-[6.1.1 Business Requirements](#_Toc153742620)
-
-[6.1.2 - User Requirements:](#612---user-requirements)
-
 [6.2- System requirements:](#62--system-requirements)
-
-[6.2.1- Functional Requirements](#_Toc153742623)
-
-[6.2.2 - Non-Functional Requirements](#_Toc153742624)
 
 [6.2 Use case diagram:](#62-use-case-diagram)
 
 [6.3 User Stories:](#63-user-stories)
-
-[U1: As an administrator, I want to be able to create accounts for all users (collectors, and controllers) so that only authorized users can access the system.](#u1-as-an-administrator-i-want-to-be-able-to-create-accounts-for-all-users-collectors-and-controllers-so-that-only-authorized-users-can-access-the-system)
-
-[U2: As an administrator, I want to be able to assign roles to any user.](#u2-as-an-administrator-i-want-to-be-able-to-assign-roles-to-any-user)
-
-[U3: As an administrator, I want to be able to retrieve an RMA history and the staff who processed it so that I have an overview of the system and establish quality control.](#u3-as-an-administrator-i-want-to-be-able-to-retrieve-an-rma-history-and-the-staff-who-processed-it-so-that-i-have-an-overview-of-the-system-and-establish-quality-control)
-
-[U4: As a customer, I want to create and track an RMA for a product or group of products that meet the return requirements and are within the legal return period of 14 days.](#u4-as-a-customer-i-want-to-create-and-track-an-rma-for-a-product-or-group-of-products-that-meet-the-return-requirements-and-are-within-the-legal-return-period-of-14-days)
-
-[U5: As a customer, I want to be able to add a comment to the RMA.](#u5-as-a-customer-i-want-to-be-able-to-add-a-comment-to-the-rma)
-
-[U6: As a customer, I want to be able to download a return label.](#u6-as-a-customer-i-want-to-be-able-to-download-a-return-label)
-
-[U7: As a customer, I want to be able to cancel an RMA if no label has been already created/downloaded.](#u7-as-a-customer-i-want-to-be-able-to-cancel-an-rma-if-no-label-has-been-already-createddownloaded)
-
-[U8: As a customer, I want to be able to see a list of my placed orders so that I can choose which order to return.](#u8-as-a-customer-i-want-to-be-able-to-see-a-list-of-my-placed-orders-so-that-i-can-choose-which-order-to-return)
-
-[U9: As a collector, I want to be able to scan the barcode of an RMA package so that I can ensure all the items are present and manage any discrepancies.](#u9-as-a-collector-i-want-to-be-able-to-scan-the-barcode-of-an-rma-package-so-that-i-can-ensure-all-the-items-are-present-and-manage-any-discrepancies)
-
-[U10: As a collector, I want to be able to add images of damaged goods so that I can have proof of the state of the product.](#u10-as-a-collector-i-want-to-be-able-to-add-images-of-damaged-goods-so-that-i-can-have-proof-of-the-state-of-the-product)
-
-[U11: As a controller, I want to be able to pick an RMA for processing and decide to refund the payment or notify the customer if the product is damaged/missing.](#u11-as-a-controller-i-want-to-be-able-to-pick-an-rma-for-processing-and-decide-to-refund-the-payment-or-notify-the-customer-if-the-product-is-damagedmissing)
-
-[U12: As a controller, I want to be able to place a product back in stock.](#u12-as-a-controller-i-want-to-be-able-to-place-a-product-back-in-stock)
-
-[U13: As a controller, I want to be able to view the RMA history of a customer so that I can validate the process.](#u13-as-a-controller-i-want-to-be-able-to-view-the-rma-history-of-a-customer-so-that-i-can-validate-the-process)
-
-[U14: As a user (customer, controller, collector, administrator) I want to be able to log into the system using my username and password.](#u14-as-a-user-customer-controller-collector-administrator-i-want-to-be-able-to-log-into-the-system-using-my-username-and-password)
-
-[U15: As a user, I want to be able to change my password in case I have forgotten mine.](#u15-as-a-user-i-want-to-be-able-to-change-my-password-in-case-i-have-forgotten-mine)
 
 [6.4- Flow diagram:](#_Toc153742642)
 
@@ -89,25 +35,7 @@
 
 [6.6- Wireframes:](#_Toc153742644)
 
-[6.6.1 Login:](#661-login)
-
-[6.6.2 Admin POV:](#662-admin-pov)
-
-[6.6.3 Customer POV:](#663-customer-pov)
-
-[6.6.4 Collector POV:](#664-collector-pov)
-
-[6.6.5 CONTROLLER POV:](#665-controller-pov)
-
 [7.0 Plan of approach:](#plan-of-approach)
-
-[7.1 Sprint 1: Basic Functionality and Setup](#71-sprint-1-basic-functionality-and-setup)
-
-[7.2 Sprint 2: Advanced Development and Feature Integration](#72-sprint-2-advanced-development-and-feature-integration)
-
-[7.3 Sprint 3: Refinement and Finalization](#73-sprint-3-refinement-and-finalization)
-
-[7.4 Results (Deliverables)](#74-results-deliverables)
 
 [7.5 Organization](#75-organization)
 
@@ -173,17 +101,11 @@ Primary Contact: Georgi Stoychev (Email: 536097@student.saxion.nl)
 
 Georgi will be responsible for maintaining clear and consistent communication with our client.
 
-**2.6 Developers**:
-
-Desmond, Badr, Marcelo, Frankie, Georgi, Pablo, Brice.
-
-Our developers are tasked with the technical aspects of the project, including coding, testing, and implementation.
-
 **2.7 Stakeholders:**
 
 Our project involves key stakeholders who play a crucial role in guiding and shaping the outcome of our work. These stakeholders include:
 
-**2.8 Client (Project Owner)**:
+**Client (Project Owner)**:
 
 Name: John Zanoni
 
@@ -191,13 +113,18 @@ Email: john.zanoni@myshop.com
 
 As the project owner and our client, John Zanoni will provide us with project requirements, feedback, and approval throughout the development process.
 
-**2.9 Academic Supervisor**:
+**Academic Supervisor**:
 
 Name: Eelco Jannink
 
 Email: e.h.a.jannink@saxion.nl
 
 Our teacher, Eelco Jannink, will oversee the academic aspects of the project, ensuring that our work aligns with the course objectives and educational standards.
+
+**2.6 Developers**
+Desmond, Badr, Marcelo, Frankie, Georgi, Pablo, Brice.
+
+Our developers are tasked with the technical aspects of the project, including coding, testing, and implementation.
 
 # 3.0 Problem Overview:
 

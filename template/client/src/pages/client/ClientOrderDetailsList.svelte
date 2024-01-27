@@ -4,6 +4,8 @@
     import { writable } from 'svelte/store';
     import { selectedProductsStore, orderStore } from '../../Store.js';
     import page from 'page';
+    import ProgressBar from "../../components/ProgressBar.svelte";
+    let currentStep = 3;
 
     let order = $orderStore;
     let orders = [];
@@ -32,6 +34,7 @@
                     ...currentSelected,
                     { ...product, quantityToReturn }
                 ]);
+                console.log(selectedProductsStore);
             }
         } else {
             selectedProductsStore.update(currentSelected =>
@@ -88,6 +91,8 @@
 
 </script>
 
+<ProgressBar {currentStep} />
+
 <div class="rma-container">
 {#if isLoading}
     <p>Loading orders...</p>
@@ -101,8 +106,9 @@
             <tr>
                 <th>QUANTITY</th>
                 <th>PRODUCT NAME</th>
-                <th>PRICE</th>
+                <th>PRODUCT PRICE</th>
                 <th>PREVIOUSLY RETURNED</th>
+                <th>CREDIT</th>
                 <th>QUANTITY TO RETURN</th>
                 <th>RETURN (CHECK IF YES)</th>
             </tr>
@@ -113,10 +119,25 @@
                     <!-- Your table cells for each orderProducts -->
                     <td>{orderProducts.quantity}</td>
                     <td>{orderProducts.name}</td>
+                    <!--{#if orderProducts.statusRma === "Returned" }-->
+                    <!--    <td class="line-through">{orderProducts.price}</td>-->
+                    <!--{:else}-->
                     <td>{orderProducts.price}</td>
+                        <!--{/if}-->
+                    {#if orderProducts.quantityToReturn == null}
+                        <td>-</td>
+                        {:else}
                     <td>{orderProducts.quantityToReturn}</td>
+                        {/if}
+                    {#if orderProducts.statusRma === null}
+                        <td>-</td>
+                    {:else if orderProducts.statusRma === "pending"}
+                        <td>Pending</td>
+                        {:else}
+                        <td>{orderProducts.priceAtTimeOfOrder * orderProducts.quantityToReturn}</td>
+                    {/if}
                     <!-- Conditional rendering based on product type and quantity -->
-<!--                    isReturnable(orderProducts.orderDate) &&-->
+                    {#if (isReturnable(orderProducts.orderDate))}
                     {#if  orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}
                     <td>
                             <input type="number" value="1"  min="1" max={orderProducts.quantity - orderProducts.quantityToReturn}
@@ -134,6 +155,10 @@
                         <td colspan="2">
                             {orderProducts.type === "Food" ? 'Food items cannot be returned' : 'Max returns made'}
                         </td>
+                        {/if}
+
+                        {:else}
+                        <td>Not available for return, more than 14 days</td>
                         {/if}
                 </tr>
             {/each}
@@ -296,6 +321,9 @@
         border: solid white;
         border-width: 0 3px 3px 0;
         transform: rotate(45deg);
+    }
+    .line-through {
+        text-decoration: line-through;
     }
 
 </style>

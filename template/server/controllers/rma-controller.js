@@ -18,12 +18,38 @@ import {
     updateReturnedProductQuantity,
     updateImageDescriptionBycollector, insertRma, insertReturnedProduct, getLastRma,
     assignRmaToControllerDb, getControllerInfoByRMAId,
-    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId,
+    getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId, updateRMAStatus, getDescriptionForRma,
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import * as queries from "../database/database-queries.js";
 import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
 import res from "express/lib/response.js";
+import * as databaseManager from "../database/database-manager-2.js";
+
+export async function UpdateStatus(req, res) {
+    const {rmaId} = req.params;
+    const {status} = req.body;
+
+    if (!rmaId || !status) {
+        return res.status(400).json({message: 'RMA ID and new status are required.'});
+    }
+
+    try {
+        console.log(rmaId)
+        console.log(status)
+        const result = await updateRMAStatus(rmaId, status);
+        console.log(result)
+        if (result.changes > 0) {
+            res.status(200).json({message: 'RMA status updated successfully'});
+        } else {
+            res.status(404).json({message: 'RMA not found'});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
+
 
 export function getAllRMAOfCustomerByEmail(req, res) {
     const { email } = req.params;
@@ -130,7 +156,8 @@ export function getRmaProducts(req, res) {
             type: p.type,
             imageURL: p.imageURL,
             quantityToReturn: p.quantityToReturn,
-            returnedDate : p.returnedDate
+            returnedDate : p.returnedDate,
+            collectorDescription : p.collectorDescription
 
 
 
@@ -157,6 +184,7 @@ export function getRma(req, res) {
         let rmaResult;
         if (rmaId) {
             rmaResult = getAllRmaById(rmaId)
+            console.log(rmaResult)
         }
         if (rmaResult) {
             res.status(StatusCodes.OK).json(rmaResult);
@@ -367,8 +395,14 @@ export async function addNewRMARequest(req, res) {
 
         // Process each product
         for (const product of products) {
-            await insertReturnedProduct(product.orderedProductId, rmaId, formattedDate, product.description, product.productWeight, "pending", product.quantityToReturn);
+            await insertReturnedProduct(
+                product.orderedProductId, rmaId, formattedDate,
+                product.description, product.productWeight,
+                "pending", product.quantityToReturn,
+                product.imageBase64 // Include the Base64 image data
+            );
         }
+
 
         // Send a successful response back
         res.status(200).json({ message: "RMA request added successfully" });
@@ -379,4 +413,31 @@ export async function addNewRMARequest(req, res) {
 }
 
 
+export async function getCollectorImageAndDescription(req, res) {
+    const { returnedProductId } = req.params;
+    try {
+        const result = await databaseManager.getCollectorImageAndDescriptionById(returnedProductId);
+        if (result) {
+            res.status(StatusCodes.OK).json({
+                collectorImage: result.collectorImage,
+                collectorDescription: result.collectorDescription
+            });
+        } else {
+            res.status(StatusCodes.NOT_FOUND).send('Image and description not found for the given product ID.');
+        }
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to retrieve the image and description.' });
+    }
+}
+
+export async function getRmaDescription(req, res) {
+    const {returnedProductId} = req.params;
+    try {
+        const result = await getDescriptionForRma(returnedProductId);
+        console.log(result);
+        res.status(200).json(result)
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to get descriptions for RMA." });
+    }
+}
 

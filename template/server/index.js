@@ -18,11 +18,9 @@ app.use(express.urlencoded({
 
 app.set('view engine', 'ejs');
 
-app.use(cors({
-    origin: '*', // Allow requests from any origin
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-}));
+// Enable CORS for all routes
+app.use(cors());
+app.use('/users', userRouter);
 const port = 3000
 
 app.get('/', (req, res) => {

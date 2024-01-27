@@ -57,6 +57,7 @@ export const createReturnedProductTable = `CREATE TABLE IF NOT EXISTS returnedPr
     quantityToReturn INT,
     collectorImage TEXT,
     collectorDescription TEXT, 
+    customerImage TEXT,
     FOREIGN KEY (orderedProductId) REFERENCES orderedProduct(orderedProductId),
     FOREIGN KEY (RMAId) REFERENCES returntable(RMAId)
     )`;
@@ -72,7 +73,8 @@ export const countReturnedProducts = `SELECT count(returnedProductId) FROM retur
 
 export const createUser = `INSERT INTO user (userID, userName, email, password, userRole) VALUES (?, ?, ?, ?, ?)`
 export const createRma = `INSERT INTO returntable (barcode, statusRma, credit, totalRefundAmount) VALUES (?, ?, ?, 0)`;
-export const createReturnedProduct = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+export const createReturnedProduct2 = `INSERT INTO returnedProduct (returnedProductId, orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+export const createReturnedProduct = `INSERT INTO returnedProduct (orderedProductId, RMAId,  returnedDate, description, weight, statusProduct, quantityToReturn, customerImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 export const createProduct = `INSERT INTO product (type, price, name, imageURL, productWeight, inventoryStock) VALUES (?, ?, ?, ?, ?, ?)`
 export const createOrder = `INSERT INTO "order" (orderId, userId, orderDate, totalPrice) VALUES (?, ?, ?, ?)`
 export const createOrderDetails = `INSERT INTO orderedProduct (orderedProductId, orderId, productId, quantity, unitPrice, priceAtTimeOfOrder) VALUES (?, ?, ?, ?, ?, ?)`
@@ -140,12 +142,15 @@ export const selectOrderedProducts = `SELECT
                                           product.price,
                                           product.type,
                                           product.productWeight,
-                                          returnedProduct.quantityToReturn
+                                          returnedProduct.quantityToReturn,
+                                          returnedProduct.statusProduct,
+                                            returntable.statusRma
                                       FROM
                                           "order"
                                               LEFT JOIN orderedProduct ON "order".orderId = orderedProduct.orderId
                                               LEFT JOIN returnedProduct ON orderedProduct.orderedProductId = returnedProduct.orderedProductId
                                               JOIN product ON orderedProduct.productId = product.productId
+                                            LEFT JOIN returntable ON returnedProduct.RMAId = returntable.RMAId
                                       WHERE
                                           "order".orderId = ?`;
 
@@ -282,4 +287,31 @@ SET collectorImage = ?,
     collectorDescription = ?
         WHERE returnedProductId = ?`;
 
+export const selectCollectorImageAndDescriptionById = `
+    SELECT collectorImage, collectorDescription
+    FROM returnedProduct
+    WHERE returnedProductId = ?;
+`;
 
+
+export const selectMostReturnedProducts = `
+    SELECT
+        p.name AS productName,
+        COUNT(rp.orderedProductId) * rp.quantityToReturn AS totalTimesReturned
+    FROM
+        returnedProduct rp
+            JOIN
+        orderedProduct op ON rp.orderedProductId = op.orderedProductId
+            JOIN
+        product p ON op.productId = p.productId
+    GROUP BY
+        p.name
+    ORDER BY
+        totalTimesReturned DESC
+        LIMIT 3;
+
+`;
+
+export const selectAllRMADescriptionPerProducts = `SELECT description, customerImage
+                                                    FROM returnedProduct
+                                                    WHERE returnedProductId = ?;`;

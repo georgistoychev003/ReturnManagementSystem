@@ -3,7 +3,7 @@ import {
     getAllProducts,
     getProductById, getProductPriceByOrderedProductId,
     updateProductById,
-    updateProductStock
+    updateProductStock,getTheMostReturnedProducts
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
 import * as path from "path";
@@ -108,4 +108,13 @@ export async function uploadImage(req, res) {
 
         return res.status(StatusCodes.OK).json({message: 'Image uploaded and product updated successfully.'});
     });
+}
+
+export async function getMostReturnedProducts(req, res) {
+    try {
+        const products = await getTheMostReturnedProducts();
+        res.status(StatusCodes.OK).json(products);
+    } catch (error) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve products." });
+    }
 }

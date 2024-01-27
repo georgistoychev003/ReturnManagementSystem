@@ -7,6 +7,8 @@ import * as rmaController from '../controllers/rma-controller.js';
 
 
 
+
+
 router.get('/', rmaController.getListOfRmas);
 
 router.get('/count', rmaController.getCountOfRMA);
@@ -28,13 +30,15 @@ router.get('/:barcode', rmaController.getRmaByBarcode);
 
 
 router.get('/:rmaId', rmaController.getRma);
-// router.get('/rma/:rmaId', rmaController.getRma);
+router.get('/rma/:rmaId', rmaController.getRma);
 
 router.get('/:rmaId/total-price', rmaController.getRmaPrice);
 
 router.get('/:rmaId/status', rmaController.getRmaStatus);
 
 router.get('/:rmaId/refund', rmaController.getRmaRefund);
+
+router.patch('/:rmaId/update-status', rmaController.UpdateStatus);
 
 router.get('/:rmaId/customer', rmaController.getRmaCustomer);
 router.get('/:rmaId/controller', rmaController.getRmaController);
@@ -59,7 +63,9 @@ router.get('/email/:email', rmaController.getAllRMAOfCustomerByEmail);
 // router.post('/assignCollector/:RMAId', authenticateToken, rmaController.assignRmaToCollector);
 
 router.post('/assign/:RMAId', rmaController.assignRmaToController);
-
+router.get('/collector/imageAndDescription/:returnedProductId', rmaController.getCollectorImageAndDescription);
+router.get('/description/:returnedProductId', rmaController.getRmaDescription);
 
 router.post(`/returns/return-request`, rmaController.addNewRMARequest);
+
 export default router;

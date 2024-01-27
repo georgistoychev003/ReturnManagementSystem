@@ -2,7 +2,7 @@
     import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher();
-    let roles = ['admin', 'collector', 'controller', 'customer'];
+    let roles = ['admin', 'collector', 'controller'];
     let selectedRole = '';
 
     // Emit the selected role when it changes

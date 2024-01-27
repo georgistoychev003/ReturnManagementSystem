@@ -18,7 +18,8 @@ export async function checkUserCredentials(req, res) {
         const payload = {
             id: user.userID,
             email: user.email,
-            role: user.userRole
+            role: user.userRole,
+            userName : user.userName
         };
 
         const token = jwt.sign(payload, jwtSecret, {

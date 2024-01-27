@@ -29,7 +29,8 @@
                     quantity: product.quantityToReturn,
                     productImage: product.imageURL,
                     date: product.returnedDate,
-                    rmaId: rmaId
+                    rmaId: rmaId,
+                    collectorDescription: product.collectorDescription
                 }));
             } else {
                 console.error(`Failed to fetch products for RMA ID: ${rmaId}`);
@@ -69,7 +70,8 @@
             {/if}
         </div>
         {#each products as product}
-            <div class="product-card" on:click={() => (selectedProduct = product)}>
+            <div class={product.collectorDescription ? 'product-card processed' : 'product-card'}
+                 on:click={product.collectorDescription ? null : () => (selectedProduct = product)}>
                 <img class="product-image" src={product.productImage} alt={`Product ${product.productId}`} />
                 <div class="product-info">
                     <h3>{product.type}</h3>
@@ -79,9 +81,9 @@
                 </div>
             </div>
         {/each}
-        <div class="comments-section">
-            <p>Comments: {user.comments}</p>
-        </div>
+<!--        <div class="comments-section">-->
+<!--            <p>Comments: {user.comments}</p>-->
+<!--        </div>-->
     </div>
 {/if}
 
@@ -108,6 +110,15 @@
         font-size: 1.5em;
     }
 
+    .product-card.processed {
+        background-color: #e0e0e0; /* Grey background */
+        color: #a0a0a0; /* Greyed out text */
+        pointer-events: none;
+        cursor: default;
+
+        /* Temporarily add a noticeable border for testing */
+        border: 2px solid red;
+    }
     .product-card {
         display: flex;
         align-items: center;

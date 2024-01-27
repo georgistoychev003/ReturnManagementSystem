@@ -2,33 +2,23 @@
     import {orderStore, selectedProductsStore} from '../../Store.js';
     import { onDestroy, onMount } from "svelte";
     import page from "page";
-
+    import ProgressBar from "../../components/ProgressBar.svelte";
+    let currentStep = 4;
     let selectedProducts = [];
     let textInputs = {};
 
     $: selectedProducts = $selectedProductsStore;
 
     // Initialize text inputs when selectedProducts changes
-    $: {
+    $: if (selectedProducts) {
         textInputs = selectedProducts.reduce((acc, product) => {
-            if (!(product.id in acc)) {
-                acc[product.id] = ''; // Initialize with empty string or existing value
+            if (!(product.productId in acc)) {
+                acc[product.productId] = ''; // Initialize with empty string if not already set
             }
             return acc;
-        }, {...textInputs});
+        }, textInputs);
     }
 
-    function prepareAndSendProductDetails() {
-        // Update each product with its description
-        const productsWithDescriptions = selectedProducts.map(product => ({
-            ...product,
-            description: textInputs[product.id] || '' // Add description or default to an empty string
-        }));
-
-        sendProductDetails(productsWithDescriptions);
-
-        handleSelection();
-    }
 
     async function sendProductDetails(products) {
         try {
@@ -57,6 +47,39 @@
 
     }
 
+    function handleImageChange(event, productId) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const customerImage = e.target.result.split(',')[1]; // Extract Base64 data
+                // Update the product with its image data
+                selectedProducts = selectedProducts.map(product => {
+                    if (product.productId === productId) {
+                        return { ...product, customerImage  };
+                    }
+                    return product;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+
+    function prepareAndSendProductDetails() {
+        const productsWithDescriptionsAndImages = selectedProducts.map(product => ({
+            ...product,
+            description: textInputs[product.productId] || '',
+            imageBase64: product.customerImage || '' // Use customerImage field
+        }));
+
+
+        sendProductDetails(productsWithDescriptionsAndImages);
+        handleSelection();
+        clearStore();
+    }
+
+
 
     function clearStore() {
         selectedProductsStore.set([]);
@@ -64,6 +87,8 @@
 
 
 </script>
+
+<ProgressBar {currentStep} />
 
 <div class="rma-container">
     <h1>Return Request Details</h1>
@@ -88,7 +113,13 @@
                     <td>{product.quantityToReturn}</td>
                     <td>{product.price}</td>
                     <td>
-                        <input type="text" bind:value={textInputs[product.id]} />
+                        <input type="text" bind:value={textInputs[product.productId]} />
+                    </td>
+                    <td>
+                        <input type="file" accept="image/*" on:change={event => handleImageChange(event, product.productId)} />
+                        {#if product.imageData}
+                            <img src={product.imageData} alt="Uploaded Image" style="max-width: 100px;"/>
+                        {/if}
                     </td>
                 </tr>
             {/each}
@@ -99,9 +130,9 @@
     <div id="buttons">
         <button on:click={prepareAndSendProductDetails} class="create-request-btn">Create Request</button>
 
-    <a href="/myOrders">
-        <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
-    </a>
+        <a href="/myOrders">
+            <button class="create-request-btn" id="cancel-btn">Cancel Request</button>
+        </a>
     </div>
     <h5>Verify the items you want to return and enter a reason for the return. Once finished, click 'Create Request'</h5>
     <h5>** On 'Create Request' the order can no longer be cancelled</h5>
