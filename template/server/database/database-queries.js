@@ -95,7 +95,6 @@ export const updateOrderByOrderId = `UPDATE "order" SET userId = ?, orderDate = 
 export const updateOrderDetailById = `UPDATE orderDetail SET orderId = ?, productId = ?, quantity = ? WHERE orderDetailId = ?`;
 export const updateRmaById = `UPDATE returntable SET RMAId = ?, returnedProductId = ?, barcode = ?, statusRma = ? WHERE RMAId = ?`;
 export const updateReturnedProduct = `UPDATE returnedProduct SET returnedProductId = ?, orderedProductId = ?, RMAId = ?, returnedDate = ?,description = ?, weight = ?, statusProduct = ? WHERE RMAId = ? AND returnedProductId = ? AND orderedProductId = ?`;
-//export const updateUserCreditLine = `UPDATE user SET creditLine = ? WHERE userID = ?`;
 
 export const selectAllUsers = `SELECT * FROM user`;
 export const selectUserByEmail = `SELECT * FROM user WHERE email = ?`;
