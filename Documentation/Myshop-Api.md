@@ -385,7 +385,7 @@ POST table:
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
-<tr><td colspan="1" rowspan="5"></td><td colspan="1">201 </td><td colspan="2">The request  is created  </td></tr>
+<tr><td colspan="1" rowspan="5"></td><td colspan="1">201 </td><td colspan="2">The request  is created. {"message": "rma Created"}</td></tr>
 <tr><td colspan="1">400 </td><td colspan="2">The request is not created  </td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
@@ -395,7 +395,7 @@ POST table:
 <table>
 <tr>
     <th>POST</th>
-    <th colspan="4">/url/products</th>
+    <th colspan="4">localhost:3000/products/</th>
   </tr>
   <tr>
     <td colspan="5">Creates a new product</td>
@@ -471,6 +471,84 @@ POST table:
 </table>
 
 
+<table>
+<tr>
+    <th>POST</th>
+    <th colspan="4">localhost:3000/tokens/</th>
+  </tr>
+  <tr>
+    <td colspan="5">Creates a new session token</td>
+  </tr>
+  <tr>
+    <td colspan="5"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Parameters:</b></td>
+    <td colspan="1"><b>Name</b></td>
+    <td colspan="1"><b>Type</b></td>
+    <td colspan="1"><b>Description</b></td>
+  </tr>
+  <tr>
+    <td colspan="2" rowspan="4" valign="top"><i>* required parameters.</i></td>
+    <td colspan="1">Token*</td>
+    <td colspan="1">body</td>
+    <td colspan="1">
+      <p>The token to create. As JSON, based on content-type header.</p>
+      <p>Example:</p>
+      <pre>
+      {
+        "email": "collector@email.com",
+        "password": "password"
+      }
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Responses:</b></td>
+    <td colspan="1"><b>Code</b></td>
+    <td colspan="2"><b>Description / example if successful. <pre>
+{"token" : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjb2xsZWN0b3JAZW1haWwuY29tIiwicm9sZSI6ImNvbGxlY3RvciIsInVzZXJOYW1lIjoiR2VvcmdpIiwiaWF0IjoxNzA2NDM4OTY4LCJleHAiOjE3MDY0NDI1Njh9._0Sqx8jwXHZj7pAbHOUl5ViFxR-QU2QzqKo6HUhHNf8
+</pre>
+</b></td>
+  </tr>
+  <tr>
+    <td colspan="2" rowspan="5"></td>
+    <td colspan="1">201</td>
+    <td colspan="2">The product is created successfully</td>
+  </tr>
+  <tr>
+    <td colspan="1">400</td>
+    <td colspan="2">The product is not created due to invalid arguments</td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="2"></td>
+  </tr>
+
+</table>
 
 
 
@@ -544,7 +622,7 @@ PUT table:
 
 DELETE tables: 
 
-<table><tr><th colspan="1"><b>DELETE</b> </th><th colspan="4"><b>/url/users/{userId}</b> </th></tr>
+<table><tr><th colspan="1"><b>DELETE</b> </th><th colspan="4"><b>/localhost:3000/users/{userId}</b> </th></tr>
 <tr><td colspan="5">The user with the id passed in the params will be deleted  </td></tr>
 <tr><td colspan="5"></td></tr>
 <tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
@@ -554,7 +632,9 @@ DELETE tables:
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="2"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
-<tr><td colspan="2" rowspan="5"></td><td colspan="1">204 </td><td colspan="2">The user is deleted successfully. </td></tr>
+<tr><td colspan="2" rowspan="5"></td><td colspan="1">204 </td><td colspan="2">The user is deleted successfully. <pre>{
+    "message": "User deleted successfully."
+}</pre> </td></tr>
 <tr><td colspan="1">404 </td><td colspan="2">The user is not found, so nothing was deleted. </td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
@@ -562,18 +642,21 @@ DELETE tables:
 </table>
 
 
-<table><tr><th colspan="1"><b>DELETE</b> </th><th colspan="4"><b>/url/requests/{requestId}</b> </th></tr>
-<tr><td colspan="5">The request with the id passed in the params will be deleted  </td></tr>
+<table><tr><th colspan="1"><b>DELETE</b> </th><th colspan="4"><b>/localhost:3000/rma/{RMAId}</b> </th></tr>
+<tr><td colspan="5">The rma with the id passed in the params will be deleted  </td></tr>
 <tr><td colspan="5"></td></tr>
 <tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
-<tr><td colspan="2" rowspan="5" valign="top"><i>* required parameters.</i> </td><td colspan="1"><b>requestId*</b> </td><td colspan="1">path </td><td colspan="1">The unique id of the request </td></tr>
+<tr><td colspan="2" rowspan="5" valign="top"><i>* required parameters.</i> </td><td colspan="1"><b>RMAId*</b> </td><td colspan="1">path </td><td colspan="1">The unique id of the rma </td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="2"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
-<tr><td colspan="2" rowspan="5"></td><td colspan="1">204 </td><td colspan="2">The request is deleted successfully. </td></tr>
-<tr><td colspan="1">404 </td><td colspan="2">The request is not found, so nothing was deleted. </td></tr>
+<tr><td colspan="2" rowspan="5"></td><td colspan="1">204 </td><td colspan="2">The rma is deleted successfully.
+<pre>{
+    "message": "RMA deleted successfully."
+}</pre> </td></tr>
+<tr><td colspan="1">404 </td><td colspan="2">The rma is not found, so nothing was deleted. </td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
