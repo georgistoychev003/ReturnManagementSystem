@@ -25,7 +25,6 @@
 	import ResetPassword from "./pages/ResetPassword.svelte";
 	import RMAProducts from "./pages/client/RMAProducts.svelte";
 	import ReturnRequestDetail from "./pages/client/ReturnRequestDetail.svelte";
-	import TESTQRCODE from "./pages/TESTQRCODE.svelte";
 	import PrintingLabelPage from "./pages/client/PrintingLabelPage.svelte";
 
 	let page;
