@@ -44,3 +44,6 @@ To fully experience the system's functionality, it is recommended to use the acc
 2. Collector
 3. Controller
 4. Admin
+
+Because of problems with Cors, the images that are sent by the collector and the customer can be small. We tried to fix
+this issue but there didn't seem to be a solution we could do.

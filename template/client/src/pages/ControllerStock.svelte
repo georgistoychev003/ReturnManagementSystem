@@ -1,5 +1,4 @@
 <script>
-    // Sample data for return stocks, we should replace it with the database contents when database is setup
     import {onMount} from "svelte";
     let returnStock = [];
 
@@ -109,7 +108,6 @@
         line-height: 1.6;
     }
 
-    /* Container */
     .stock {
         max-width: 96%;
         margin: 2rem auto;
@@ -117,7 +115,7 @@
         background: var(--container-bg-color);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 0.5rem;
-        overflow-x: auto; /* Allow horizontal scrolling */
+        overflow-x: auto;
     }
 
     h1 {
@@ -128,7 +126,6 @@
         font-weight: 300;
     }
 
-    /* Table Styles */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -139,7 +136,7 @@
         text-align: left;
         padding: 0.75rem;
         border-bottom: 1px solid var(--border-color);
-        word-break: break-word; /* Allow text to wrap within cells */
+        word-break: break-word;
     }
 
     th {
@@ -156,7 +153,7 @@
         border-radius: 0.25rem;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.3s ease;
-        white-space: nowrap; /* Prevent button text from wrapping */
+        white-space: nowrap;
     }
 
     .update-btn:hover {
@@ -164,19 +161,16 @@
         transform: scale(0.98);
     }
 
-    /* Responsive Design */
     @media only screen and (max-width: 768px) {
         h1 {
             font-size: 1.5rem;
         }
 
-        /* Smaller padding and font size within table cells for smaller screens */
         th, td {
             padding: 0.5rem;
             font-size: 0.9rem;
         }
 
-        /* Smaller buttons on smaller screens */
         .update-btn {
             padding: 0.3rem 0.6rem;
             font-size: 0.8rem;
@@ -188,13 +182,11 @@
             font-size: 1.2rem;
         }
 
-        /* Even smaller padding and font size within table cells for mobile screens */
         th, td {
             padding: 0.4rem;
             font-size: 0.8rem;
         }
 
-        /* Adjust button sizes for mobile screens */
         .update-btn {
             padding: 0.25rem 0.5rem;
             font-size: 0.7rem;

@@ -9,33 +9,29 @@
     let currentPage = 1;
     let totalPages;
 
-    // const viewDetails = (requestId) => {
-    //     page(`/controller/return-requests-details/${requestId}`);
-    // };
     const showFinished = writable(false);
 
     onMount(async () => {
         await fetchReturnRequests();
         showFinished.set(false);
-        calculateTotalPages(); // Make sure this function exists and correctly calculates total pages
+        calculateTotalPages();
         updatePaginatedRequests();
     });
 
     function calculateTotalPages() {
-        // Filter requests based on the showFinished value
         const filteredRequests = rawReturnRequests.filter(req => $showFinished ? true : req.statusRMA !== 'Finished');
         totalPages = Math.ceil(filteredRequests.length / requestsPerPage);
     }
     function changePage(newPage) {
-        currentPage = Math.max(1, Math.min(newPage, totalPages)); // Ensure new page is within valid range
+        currentPage = Math.max(1, Math.min(newPage, totalPages));
         updatePaginatedRequests();
     }
 
     function updatePaginatedRequests() {
-        calculateTotalPages(); // Ensure total pages are recalculated based on the current filter
+        calculateTotalPages();
         const startIndex = (currentPage - 1) * requestsPerPage;
         const endIndex = startIndex + requestsPerPage;
-        // Apply the filter inside updatePaginatedRequests to account for changes in showFinished
+
         const filteredRequests = rawReturnRequests.filter(req => $showFinished ? true : req.statusRMA !== 'Finished');
         returnRequests = filteredRequests.slice(startIndex, endIndex);
     }
@@ -113,7 +109,6 @@
         }
     }
 
-    // This function fetches the controller's information for a specific RMA.
     async function fetchControllerInfo(RMAId) {
         try {
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/controller`);
@@ -121,15 +116,15 @@
                 const data = await response.json();
                 return {
                     controllerId: data.controllerId,
-                    controllerName: data.userName // Assuming the API returns a userName field
+                    controllerName: data.userName
                 };
             } else {
                 console.error('Failed to fetch controller info for RMA', RMAId);
-                return { controllerId: null, controllerName: 'nobody' }; // Default values
+                return { controllerId: null, controllerName: 'nobody' };
             }
         } catch (error) {
             console.error('Error:', error);
-            return { controllerId: null, controllerName: 'Error' }; // Error values
+            return { controllerId: null, controllerName: 'Error' };
         }
     }
 
@@ -144,15 +139,15 @@
                     const totalPrice = await fetchTotalPriceOfRMA(request.RMAId);
                     const status = await fetchStatusOfRMA(request.RMAId);
                     const customer = await fetchCustomerOfRMA(request.RMAId);
-                    const controllerInfo = await fetchControllerInfo(request.RMAId); // Fetch controller info for each RMA
+                    const controllerInfo = await fetchControllerInfo(request.RMAId);
                     request.totalRefund = await getTotalRefundAmount(request.RMAId);
                     request.email = customer;
                     request.totalReturnPrice = totalPrice;
                     request.statusRMA = status
-                    request.controllerInfo = controllerInfo; // Add the controller info to the request object
+                    request.controllerInfo = controllerInfo;
                     if (totalPrice === 0 && status !== 'Finished') {
                         await updateRMAStatusToFinished(request.RMAId);
-                        request.statusRMA = 'Finished'; // Update the status in the current client state
+                        request.statusRMA = 'Finished';
                     }
                 }
                 const aggregatedRequests = aggregateRequestsByRMA(requests);
@@ -172,7 +167,7 @@
     async function updateRMAStatusToFinished(RMAId) {
         try {
             const response = await fetch(`http://localhost:3000/rma/${RMAId}/update-status`, {
-                method: 'PATCH', // or 'PUT' depending on your backend
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -195,7 +190,7 @@
             if (!aggregated[request.RMAId]) {
                 aggregated[request.RMAId] = { ...request, products: [] };
             }
-            aggregated[request.RMAId].products.push(request.product); // Assuming 'product' field exists
+            aggregated[request.RMAId].products.push(request.product);
         }
 
         return aggregated;
@@ -235,8 +230,7 @@
     };
     function toggleShowFinished() {
         showFinished.update(value => !value);
-        currentPage = 1; // Reset to the first page when toggling
-        // No need to explicitly call updatePaginatedRequests here, as it will be triggered by reactive statements
+        currentPage = 1;
     }
     let rawReturnRequests = [];
     $: updatePaginatedRequests();
@@ -342,7 +336,7 @@
         background: white;
         border-radius: 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        overflow-x: auto; /* Allow horizontal scrolling */
+        overflow-x: auto;
     }
 
     h1 {
@@ -352,7 +346,6 @@
         color: var(--dark-gray);
     }
 
-    /* Table Styles */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -373,7 +366,7 @@
 
     td {
         font-size: 1rem;
-        word-break: break-word; /* Ensure the text wraps in cells */
+        word-break: break-word;
     }
 
     .status {
@@ -383,7 +376,7 @@
     .controller-cell {
         display: flex;
         align-items: center;
-        justify-content: flex-end; /* Aligns items to the right */
+        justify-content: flex-end;
         gap: 10px;
     }
 
@@ -395,11 +388,11 @@
     }
 
     .assigned {
-        background-color: var(--error-color); /* Red label for assigned RMAs */
+        background-color: var(--error-color);
     }
 
     .not-assigned {
-        background-color: var(--success-color); /* Green label for unassigned RMAs */
+        background-color: var(--success-color);
     }
 
     .details-btn {
@@ -428,7 +421,7 @@
         }
 
         th, td {
-            padding: 0.5rem; /* Smaller padding for smaller screens */
+            padding: 0.5rem;
             font-size: 0.9rem;
         }
 
@@ -444,7 +437,7 @@
         }
 
         th, td {
-            padding: 0.4rem; /* Even smaller padding for mobile screens */
+            padding: 0.4rem;
             font-size: 0.8rem;
         }
 
@@ -476,7 +469,6 @@
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* Responsive Design for Button */
     @media (max-width: 768px) {
         .toggle-btn {
             padding: 0.4rem 0.8rem;

@@ -37,11 +37,9 @@ export async function postUser(req, res) {
     console.log(user);
 
     try {
-        // Hash the password before storing it
-        const saltRounds = 10; // You can adjust the salt rounds as needed
+        const saltRounds = 10;
         user.password = await bcrypt.hash(user.password, saltRounds);
 
-        // Insert the user with the hashed password
         db.insertUser(user);
 
         res.status(StatusCodes.CREATED).json({ message: "User created successfully." });
@@ -104,7 +102,7 @@ export async function getListOfUsers(req, res){
 
 
 
-const jwtSecret = 'ShhhhhItsASecret'; //we need to replace this with a, environment-specific variable
+const jwtSecret = 'ShhhhhItsASecret';
 
 export async function forgotPassword(req, res) {
     const { email } = req.body;
@@ -131,7 +129,7 @@ export async function forgotPassword(req, res) {
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'mitkopetrovich2021@gmail.com', // our test email sender
+                user: 'mitkopetrovich2021@gmail.com',
                 pass: 'kdml xmqm osug vzks'
             }
         });
@@ -204,7 +202,7 @@ export async function refundMail(req, res) {
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'mitkopetrovich2021@gmail.com', // our test email sender
+                user: 'mitkopetrovich2021@gmail.com',
                 pass: 'kdml xmqm osug vzks'
             }
         });
@@ -251,7 +249,7 @@ export async function damagedMail(req, res) {
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'mitkopetrovich2021@gmail.com', // our test email sender
+                user: 'mitkopetrovich2021@gmail.com',
                 pass: 'kdml xmqm osug vzks'
             }
         });
