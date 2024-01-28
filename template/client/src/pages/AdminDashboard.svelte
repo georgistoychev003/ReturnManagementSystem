@@ -484,6 +484,7 @@
     #rmaChart, #pieChart {
         max-width: 100%;
         max-height: 400px;
+    }
 
     .controls {
         position: absolute;
