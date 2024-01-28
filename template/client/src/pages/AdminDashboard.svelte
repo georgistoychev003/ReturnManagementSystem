@@ -402,7 +402,7 @@
 </div>
 
 <style>
-    /* General Base Styles */
+
     :root {
         --color-blue: #3498db;
         --color-red: #e74c3c;
@@ -425,7 +425,7 @@
         line-height: 1.6;
     }
 
-    /* Container Styles */
+
     .container {
         max-width: 95%;
         margin: 1rem auto;
@@ -433,7 +433,7 @@
     }
 
     .greeting {
-        font-size: 2rem; /* Responsive font size */
+        font-size: 2rem;
         margin-bottom: 1rem;
         color: var(--text-dark);
         text-align: center;
@@ -456,7 +456,7 @@
 
     .red-box {
         flex: 1;
-        min-width: 250px; /* Minimum width for small screens */
+        min-width: 250px;
         text-align: center;
         background-color: var(--color-purple);
         padding: 1rem;
@@ -471,7 +471,7 @@
         margin: 1rem 0;
     }
 
-    /* Chart Styles */
+
     .big-red-rectangle {
         position: relative;
         background-color: var(--color-blue);
@@ -483,8 +483,7 @@
 
     #rmaChart, #pieChart {
         max-width: 100%;
-        max-height: 400px; /* Set a maximum height for the chart */
-    }
+        max-height: 400px;
 
     .controls {
         position: absolute;
@@ -509,7 +508,7 @@
         background-color: var(--color-red);
     }
 
-    /* Responsive Design */
+
     @media (max-width: 768px) {
         .red-boxes {
             flex-direction: column;
