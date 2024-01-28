@@ -55,11 +55,9 @@
 
 
         // Create user object
-     //   const user = { username, email, password, address };
         const user = {  email, userName, password, userRole, isAdmin };
         console.log('Creating user:', user);
 
-        // Send request to backend to create the user
         fetch('http://localhost:3000/users', {
             method: 'POST',
             headers: {
@@ -75,12 +73,10 @@
                 return response.json();
             })
             .then(data => {
-                // Handle successful creation
                 console.log('User created:', data);
                 alert('User created successfully!');
             })
             .catch(error => {
-                // Handle errors
                 console.error('There was a problem creating the user:', error);
                 alert('Failed to create user. Please try again.');
             });
@@ -96,7 +92,6 @@
     <input type="password" bind:value={repeatPassword} placeholder="Repeat Password" required>
     <select bind:value={userRole} on:change={assignUserRole}>
         <option value="">Select User Role</option>
-        <!-- Fetch and populate options dynamically from user roles -->
         <option value= "admin"> Admin </option>
         <option value="collector">Collector</option>
         <option value="controller">Controller</option>

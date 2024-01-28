@@ -13,10 +13,8 @@
             });
             const data = await response.json();
             console.log(data);
-            // Handle response, show confirmation message, etc.
         } catch (error) {
             console.error('Error:', error);
-            // Handle error, show error message, etc.
         }
     };
 </script>

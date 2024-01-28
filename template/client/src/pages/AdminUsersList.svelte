@@ -22,7 +22,7 @@
         try {
             const response = await fetch('http://localhost:3000/users');
             if (response.ok) {
-                users = await response.json(); //i fill the users array directly
+                users = await response.json();
             } else {
                 console.error('Failed to fetch users');
             }
@@ -31,14 +31,10 @@
         }
     }
 
-
-    // Function to handle more users loading, we need to implement it in accordance to the backend
     const handleMoreUsersClick = () => {
         console.log('Load more users');
     };
 
-
-    // Function to handle creating a new user, we need to implement it in accordance to the backend
     const createUser = () => {
         navigateTo("/createUser");
 

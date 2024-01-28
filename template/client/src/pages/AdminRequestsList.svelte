@@ -100,7 +100,7 @@
             if (!aggregated[request.RMAId]) {
                 aggregated[request.RMAId] = { ...request, products: [] };
             }
-            aggregated[request.RMAId].products.push(request.product); // Assuming 'product' field exists
+            aggregated[request.RMAId].products.push(request.product);
         }
 
         return aggregated;

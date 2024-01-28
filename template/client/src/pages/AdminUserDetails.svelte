@@ -1,10 +1,9 @@
 <script>
-    //fetch and select the user
     import UserRoleDropdown from '../components/UserRoleDropdown.svelte';
     import {onMount} from "svelte";
     import page from "page";
     export let params;
-    let selectedUserRole; // This will store the selected role from the dropdown
+    let selectedUserRole;
 
 
     const fetchReturns = async (userID) => {
@@ -13,8 +12,8 @@
 
             if (response.ok) {
                 const returns = await response.json();
-                selectedUser.requests = returns; // Update selectedUser.requests with the returns data
-                renderUserDetails(); // Call the function to render user details after fetching returns data
+                selectedUser.requests = returns;
+                renderUserDetails();
             } else {
                 console.error('Failed to fetch returns');
             }
@@ -28,12 +27,10 @@
 
             if (response.ok) {
                 selectedUser = await response.json();
-
-                // Ensure requests is an array
                 selectedUser.requests = selectedUser.requests || [];
                 await fetchReturns(userID);
 
-                renderUserDetails(); // Call the function to render user details after fetching data
+                renderUserDetails();
             } else {
                 console.error('Failed to fetch user details');
             }
@@ -43,7 +40,6 @@
     };
 
 
-    // Placeholder for the selected user's details, we neeed to replace with actual database data
     let selectedUser = {
         username: 'USERXX',
         name: 'XXXXXXXXXXXXXXXX',
@@ -53,9 +49,6 @@
             { id: 'XX', products: 'XXXXXX', returnedDate: 'XXXX', price: 'XXX' },
 
         ]
-    };
-    const isUserAdmin = (role) => {
-        return role.toLowerCase() === 'admin';
     };
 
     //render
@@ -75,7 +68,6 @@
         roleElement.textContent = `Role: ${selectedUser.userRole}`;
         emailElement.textContent = `Email: ${selectedUser.email}`;
 
-        // Clear existing rows
         tableBody.innerHTML = '';
 
         // Populate the table with fetched user requests data
@@ -97,8 +89,8 @@
 
         if (isAdmin || isCustomer) {
             assignRoleButton.style.display = 'none';
-            deleteUserButton.style.display = isAdmin ? 'none' : 'inline-block'; // Only hide the delete button for admins
-            roleDropdown.style.display = 'none'; // Hide the dropdown for both admins and customers
+            deleteUserButton.style.display = isAdmin ? 'none' : 'inline-block';
+            roleDropdown.style.display = 'none';
         } else {
             assignRoleButton.style.display = 'inline-block';
             deleteUserButton.style.display = 'inline-block';
@@ -106,10 +98,9 @@
         }
     };
 
-    // Function to assign a new role to the user
+
     const assignRole = async (newRole) => {
-        // Make sure `newRole` is the role you want to assign
-        if (!newRole) return;  // Return if the newRole is not provided
+        if (!newRole) return;
 
         try {
             const response = await fetch(`http://localhost:3000/users/${selectedUser.userID}`, {
@@ -117,11 +108,10 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userRole: newRole }) // Send only the userRole field
+                body: JSON.stringify({ userRole: newRole })
             });
 
             if (response.ok) {
-                // Re-fetch user details to update the UI reactively
                 await fetchUserDetails(selectedUser.userID);
             } else {
                 const error = await response.json();
@@ -132,7 +122,6 @@
         }
     };
 
-    // This function is called when the "Assign Role" button is clicked
     const confirmRoleAssignment = async () => {
         if (!selectedUserRole) {
             console.error('No role selected');
@@ -146,7 +135,6 @@
         // Display a confirmation dialog box
         const isConfirmed = confirm('Are you sure you want to delete this user?');
         if (!isConfirmed) {
-            // If the user clicks "Cancel", exit the function
             console.log('User deletion cancelled.');
             return;
         }
@@ -158,7 +146,6 @@
             });
 
             if (response.ok) {
-                // User was deleted successfully
                 console.log('User deleted successfully');
                 page('/users');
             } else {
@@ -176,12 +163,6 @@
             console.error('User ID not provided in the URL params.');
         }
     });
-
-// for now hard coded
-//     //todo : database should be done for full functionality
-//     const userID = '1';
-//     fetchUserDetails(userID);
-
 </script>
 
 <div class="user-details">
@@ -240,7 +221,7 @@
         --border-radius: 0.25rem;
         --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         --transition-speed: 0.3s;
-        --spacing-unit: 1rem; /* for consistent spacing */
+        --spacing-unit: 1rem;
         --input-padding: 0.5rem 1rem;
         --input-border-radius: var(--border-radius);
         --input-border: 1px solid var(--border-color);
@@ -271,8 +252,8 @@
 
     .header {
         display: grid;
-        grid-template-columns: 1fr auto auto; /* Divide the header into three columns */
-        gap: 1.5rem; /* Increase gap size for better spacing */
+        grid-template-columns: 1fr auto auto;
+        gap: 1.5rem;
         align-items: center;
         text-align: left;
     }
@@ -305,7 +286,7 @@
     }
     @media (min-width: 768px) {
         .details {
-            grid-template-columns: repeat(3, 1fr); /* three columns for larger screens */
+            grid-template-columns: repeat(3, 1fr);
         }
     }
     .role-dropdown select {
@@ -314,7 +295,7 @@
         border: var(--input-border);
         background-color: var(--input-background);
         width: 100%;
-        max-width: 300px; /* max-width for larger screens */
+        max-width: 300px;
         box-shadow: var(--box-shadow);
         transition: border var(--transition-speed);
     }
@@ -337,13 +318,13 @@
     }
 
     .details p {
-        margin: 0; /* reset margin for p elements */
+        margin: 0;
         padding: var(--input-padding);
-        background: var(--bg-color); /* a light background for the details */
+        background: var(--bg-color);
         border: var(--input-border);
         border-radius: var(--border-radius);
         color: var(--text-color-header);
-        font-weight: bold; /* make text bold */
+        font-weight: bold;
     }
 
 

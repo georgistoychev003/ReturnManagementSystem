@@ -30,14 +30,12 @@
             const response = await fetch('http://localhost:3000/product/mostReturned');
             const data = await response.json();
 
-            // Create a new array with the fetched products
             const updatedProducts = data.map(product => ({
                 name: product.productName,
                 count: product.totalTimesReturned,
                 color: generateRandomColor()
             }));
 
-            // Update the mostReturnedProducts array
             mostReturnedProducts = [...mostReturnedProducts, ...updatedProducts];
             updatePieChart();
         } catch (error) {
@@ -48,7 +46,6 @@
     });
 
     function generateRandomColor() {
-        // Generate a random color using RGB values
         const color = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.7)`;
         return color;
     }
@@ -104,14 +101,12 @@
         const currentYear = new Date().getFullYear();
         const yearsToShow = 3;
 
-        // Extract all unique years and months from the RMA data
         const uniqueYears = [...new Set(rmaData.map(rma => new Date(rma.monthYear).getFullYear()))];
         const uniqueMonths = [...new Set(rmaData.map(rma => new Date(rma.monthYear).getMonth() + 1))];
 
         console.log('these are :' + uniqueMonths);
         console.log('these are unique years : ' + uniqueYears);
 
-        // Create an array containing all years to be displayed
         const allYears = Array.from(
             { length: yearsToShow * 2 + 1 },
             (_, i) => currentYear - yearsToShow + i
@@ -122,7 +117,6 @@
             const month = new Date(rma.monthYear).getMonth() + 1;
 
             console.log('this is shown month' + month);
-            // Include the year or month in the processed data based on the selected interval
             const intervalValue = selectedInterval === 'month' ? month : year;
             acc[intervalValue] = (acc[intervalValue] || 0) + rma.RMACount;
 
@@ -145,18 +139,12 @@
 
 
     function updateChart(chartData) {
-
-
-
-        // Assuming chartData is an array of objects with monthYear and RMACount properties
         chart.data.labels = chartData.map(item => item.monthYear);
         chart.data.datasets[0].data = chartData.map(item => item.RMACount);
         console.log('this is some data : ' + chartData.map(item => item.RMACount));
 
         const maxDataValue = Math.max(...chartData.map(item => item.RMACount) );
         console.log(maxDataValue)
-
-
 
         chart.options.scales.y = {
             type: 'linear',
@@ -178,7 +166,6 @@
             }
         };
 
-
         // Update x-axis configuration for 'year' interval
         if (selectedInterval === 'month') {
             chart.options.scales.x.type = 'category';
@@ -189,8 +176,6 @@
                 min: monthNames[0],
                 max: monthNames[11]
             };
-
-
         } else if (selectedInterval === 'week') {
             chart.options.scales.x.type = 'category';
             chart.options.scales.x.labels = weekDays;
@@ -209,14 +194,9 @@
                 min: weekDays[0],
                 max: weekDays[weekDays.length-1]
             };
-        }
-
-
-        else {
+        } else {
             chart.options.scales.x.type = 'linear';
         }
-
-
 
         chart.options.plugins.title.text = `Number of requests per: ${selectedInterval}`;
         chart.update();
@@ -378,7 +358,6 @@
             <div class="big-number">{numberOfUsers < 10 ? `0${numberOfUsers}` : numberOfRMA}</div>
         </div>
         <div class="red-box">
-           <!-- <div>Most returned products</div> -->
 
             <canvas id="pieChart" ></canvas>
         </div>

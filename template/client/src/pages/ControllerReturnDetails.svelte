@@ -17,7 +17,7 @@
 
     let returnDescription = '';
     let collectorImageSrc = ''; // This will store the Base64 image data
-    let collectorDescription = ''; // This will store the collector's description
+    let collectorDescription = '';
 
 
 
@@ -41,7 +41,6 @@
 
     async function handleConfirm() {
         let totalRefundAmount = 0;
-        // Preparing payload for refund or damaged
         console.log(selectedProducts.entries())
         const productsForAction = Array.from(selectedProducts.entries())
             .filter(([_, value]) => value.action === 'refund' || value.action === 'damaged')
@@ -51,7 +50,6 @@
                 quantityToReturn: value.quantityToReturn
             }));
 
-        // Check if there are any products selected
         if (productsForAction.length === 0) {
             alert("No products selected.");
             return;
@@ -121,7 +119,6 @@
             await updateTotalRefundAmount(RMAId, totalRefundAmount);
         }
 
-        // Redirect to the controller page
         page(`/controller`);
     }
 
@@ -213,8 +210,8 @@
                     return {
                         name: product.name,
                         quantityToReturn: product.quantityToReturn,
-                        orderedProductId: product.orderedProductId, // If you need to use this later
-                        showDetails: false, // Initial state for showing details
+                        orderedProductId: product.orderedProductId,
+                        showDetails: false,
                         collectorImageSrc: collectorImage,
                         collectorDescription: collectorDescription,
                         customerDescription: customerDescription,
@@ -253,7 +250,7 @@
         const clampedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
 
         selectedProducts.set(productName, { ...productInfo, quantityToReturn: clampedQuantity });
-        productQuantities[productName] = clampedQuantity; // Ensure this updates the reactive variable
+        productQuantities[productName] = clampedQuantity;
     };
 
 
@@ -330,14 +327,14 @@
     }
 
     function toggleDetails(index, event) {
-        // Check if the clicked element is not an input, label, or button
+
         if (!['INPUT', 'LABEL', 'BUTTON'].includes(event.target.tagName)) {
             products[index].showDetails = !products[index].showDetails;
-            products = products; // Trigger reactivity
+            products = products;
         }
     }
     function stopPropagation(event) {
-        event.stopPropagation(); // Prevent the event from bubbling up to the parent element
+        event.stopPropagation();
     }
 
 </script>
@@ -382,7 +379,6 @@
                     <span>
             {#if product.showDetails}
             <div class="details-dropdown">
-                <!-- Collector's Section -->
                 <div class="collector-section">
                     <h3>Collector's Details</h3>
                     {#if product.collectorImageSrc}
@@ -390,7 +386,6 @@
                     {/if}
                     <p class="collector-description">{product.collectorDescription || 'No description provided from collector.'}</p>
                 </div>
-                <!-- Customer's Section -->
                 <div class="customer-section">
                     <h3>Customer's Details</h3>
                     {#if product.customerImageSrc}
@@ -402,27 +397,15 @@
         {/if}
                 </div>
                 <br>
-<!--                <span>Controller Description: {product.collectorDescription || 'No description'}</span>-->
+
                 <br>
                 <br>
             {/each}
             <p>DATE: {returnedDate}</p>
             <p>CUSTOMER NAME: {returnRequests.customer}</p>
-<!--            <p>COMMENTS: XXXXXXXX XXXXXXXXX</p>-->
             <div class="qr-code-section">
                 <div id="qrCodeContainer"></div>
             </div>
-<!--            <div class="collector-panel">-->
-<!--                <div id="qrCodeContainer"></div>-->
-<!--                <div class="collector-details">-->
-<!--                    <h2>Collector Image:</h2>-->
-<!--                    {#if collectorImageSrc}-->
-<!--                        <img class="collector-image" src={collectorImageSrc} alt="Collector's snapshot" />-->
-<!--                    {/if}-->
-<!--                    <h2>Collector Comments:</h2>-->
-<!--                    <p class="collector-description">{collectorDescription || 'No description provided.'}</p>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
         <div class="status-section">
             <p>STATUS: {returnRequests.status}</p>
@@ -435,8 +418,6 @@
 </div>
 
 <style>
-
-    /* Base and General Styles */
     :root {
         --primary-color: #0056b3;
         --secondary-color: #4CAF50;
@@ -460,7 +441,6 @@
         line-height: 1.6;
     }
 
-    /* Request Card Styling */
     .request-card {
         max-width: 80%;
         margin: 30px auto;
@@ -470,7 +450,6 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
-    /* Header Styles */
     .request-header {
         font-size: 2rem;
         font-weight: bold;
@@ -479,7 +458,6 @@
         color: var(--primary-color);
     }
 
-    /* Details Section */
     .details-section {
         display: flex;
         flex-wrap: wrap;
@@ -495,7 +473,6 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
-    /* Product Row Styles */
     .product-row {
         display: grid;
         grid-template-columns: 2fr 1fr 1fr 1fr;
@@ -512,12 +489,10 @@
         background-color: #f5f5f5;
     }
 
-    /* Input and Label Styles */
     input[type='number'], input[type='radio'], label {
         text-align: center;
     }
 
-    /* Button Styles */
     .action-btn, .confirm-btn {
         padding: 10px 15px;
         border: none;
@@ -532,12 +507,6 @@
         color: white;
     }
 
-    .action-btn {
-        background-color: var(--accent-color);
-        color: white;
-    }
-
-    /* Details Dropdown */
     .details-dropdown {
         position: absolute;
         background-color: white;
@@ -555,7 +524,6 @@
         display: block; /* Show on hover */
     }
 
-    /* Image Styles */
     .collector-image, .customer-image {
         width: 100%;
         max-width: 200px;
@@ -565,13 +533,11 @@
         border-radius: 5px;
     }
 
-    /* Description Text */
     .collector-description, .customer-description {
         color: #333;
         margin: 5px 0;
     }
 
-    /* QR Code Styles */
     .qr-code-section {
         text-align: center;
         padding: 20px;
@@ -583,7 +549,6 @@
         margin: auto;
     }
 
-    /* Responsive Design */
     @media (max-width: 768px) {
         .details-section {
             flex-direction: column;

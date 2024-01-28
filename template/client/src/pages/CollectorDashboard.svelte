@@ -254,9 +254,8 @@
         border: none;
     }
 
-    /* Responsive design adjustments */
+
     @media only screen and (max-width: 600px) {
-        /* ... existing styles ... */
         .menu-toggle {
             padding: 5px 10px;
             font-size: 12px;
@@ -281,19 +280,9 @@
         font-size: 1.5vh;
     }
 
-    .returnId-container {
-        display: flex;
-        margin-top: 1vh;
-    }
-
     #returnIdInput {
         padding: 1vh;
         font-size: 1.5vh;
-    }
-
-    .submit-button {
-        margin-left: 1vh;
-        background-color: green;
     }
 
     .text-below-button {
