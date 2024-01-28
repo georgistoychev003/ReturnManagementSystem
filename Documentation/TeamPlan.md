@@ -3,6 +3,8 @@
 
 # Table of Contents
 
+[Changelog](#_)
+
 [Introduction](#_)
 
 [Project Overview](#_)
@@ -21,8 +23,8 @@
 
 [Conclusion](#_)
 
-# Changelog
 
+# Changelog
 
 | Version | Date       | Location      | Description                                                             | Author         |
 |---------|------------|---------------|-------------------------------------------------------------------------|----------------|
