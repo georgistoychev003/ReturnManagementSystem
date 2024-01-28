@@ -211,6 +211,85 @@ POST table:
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 </table>
 
+<table>
+<tr>
+    <th>POST</th>
+    <th colspan="4">/url/products</th>
+  </tr>
+  <tr>
+    <td colspan="5">Creates a new product</td>
+  </tr>
+  <tr>
+    <td colspan="5"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Parameters:</b></td>
+    <td colspan="1"><b>Name</b></td>
+    <td colspan="1"><b>Type</b></td>
+    <td colspan="1"><b>Description</b></td>
+  </tr>
+  <tr>
+    <td colspan="2" rowspan="4" valign="top"><i>* required parameters.</i></td>
+    <td colspan="1">Product*</td>
+    <td colspan="1">body</td>
+    <td colspan="1">
+      <p>The product to add. As JSON, based on content-type header.</p>
+      <p>Example:</p>
+      <pre>
+      {
+        "name": "New Product",
+        "description": "Description of the new product",
+        "price": 29.99,
+        "quantity": 100
+      }
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+    <td colspan="1"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><b>Responses:</b></td>
+    <td colspan="1"><b>Code</b></td>
+    <td colspan="2"><b>Description / example if successful</b></td>
+  </tr>
+  <tr>
+    <td colspan="2" rowspan="5"></td>
+    <td colspan="1">201</td>
+    <td colspan="2">The product is created successfully</td>
+  </tr>
+  <tr>
+    <td colspan="1">400</td>
+    <td colspan="2">The product is not created due to invalid arguments</td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="2"></td>
+  </tr>
+  <tr>
+    <td colspan="1"></td>
+    <td colspan="2"></td>
+  </tr>
+
+</table>
+
+
 
 4. PUT<a name="_page8_x69.00_y72.92"></a> requests 
 
