@@ -5,20 +5,20 @@
     import ClientreturnSteps from "../../components/ClientreturnSteps.svelte";
 
     let currentStep = 1;
-    let userName = "Mr Zanoni"; // Temporary placeholder
+    let userName = "Mr Zanoni";
 
     onMount(() => {
         const token = localStorage.getItem('token');
         if (token) {
             try {
-                const payload = JSON.parse(atob(token.split('.')[1])); // Decoding from Base64URL
+                const payload = JSON.parse(atob(token.split('.')[1]));
                 userName = payload.userName;
             } catch (e) {
                 console.error('Error parsing the token', e);
-                userName = "Guest"; // Fallback if there's an error
+                userName = "Guest";
             }
         } else {
-            userName = "Guest"; // Fallback if there is no token or it's invalid
+            userName = "Guest";
         }
     });
 </script>

@@ -23,7 +23,7 @@ they achieve in this course.
 # table of content
 [changelog](#changelog)
 
-[see Plan Of approach here](Documentation/TeamPlan.md)
+[see Team Plan here](Documentation/Team-Plan.md)
 
 [see API Specifications here](Documentation/Myshop-Api.md)
 

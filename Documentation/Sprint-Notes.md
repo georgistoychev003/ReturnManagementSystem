@@ -15,7 +15,6 @@ The following document contains the Project Backlog, Sprint Goals, Sprint Standu
 
 [3.1.3 Sprint 0 Review](#313-sprint-0-review)
 
-
 [3.2 Sprint 1](#32-sprint-1)
 
 [3.2.1 Sprint 1 Goals](#321-sprint-1-goals) 
@@ -29,13 +28,12 @@ The following document contains the Project Backlog, Sprint Goals, Sprint Standu
 [3.3 Sprint 2](#33-sprint-2-181223---140124)
 
 [3.3.1 Sprint 2 Goals](#331-sprint-2-goals)
+
 [3.3.2 Sprint 2 Backlog](#332-sprint-2-assigned-tasks)
 
 [3.3.3 Sprint 2 Standups](#333-sprint-2-standups)
 
 [3.3.4 Sprint 2 Review](#334-sprint-2-review)
-
-[3.3.5 Sprint 2 Retrospective](#335-sprint-2-retrospective)
 
 [3.4 Sprint 3](#34-sprint-3-150124---280124)
 
@@ -46,8 +44,6 @@ The following document contains the Project Backlog, Sprint Goals, Sprint Standu
 [3.4.3 Sprint 3 Standups](#sprint-3-standups)
 
 [3.4.4 Sprint 3 Review](#344-sprint-3-review)
-
-[3.4.5 Sprint 3 Retrospective](#345-sprint-3-retrospective)
 
 ## 1.0 Introduction
 Throughout the coming Sprints, we have adopted the Scrum framework, an agile development method that focuses on flexibility, collaboration and client input. Scrum will allow our team to divide our backlog into more manageable sets known as sprints, allowing us to collaborate on the overall sprint goals and incorporate client feedback throughout the development process.

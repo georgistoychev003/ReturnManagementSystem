@@ -168,9 +168,6 @@
         font-size: 2rem;
         color: #555;
     }
-    .return-info{
-        text-align: center;
-    }
 
     /* Table Styles */
     table {
@@ -193,7 +190,7 @@
 
     td {
         font-size: 1rem;
-        word-break: break-word; /* Ensure the text wraps in cells */
+        word-break: break-word;
     }
 
     tbody tr:hover {

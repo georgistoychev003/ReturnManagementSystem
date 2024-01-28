@@ -78,7 +78,6 @@
             imageData = selectedImageUrl.split(',')[1]; // Get the Base64 encoded string
         }
 
-        // Check if the description is not empty
         if (description.trim() === '') {
             alert('Please add a description before submitting.');
             return false;
@@ -109,7 +108,7 @@
             alert('Error occurred while updating details');
         }
 
-        return true; // Return true to indicate successful processing
+        return true;
     }
     function closeDetails() {
         dispatch('close');
@@ -120,9 +119,7 @@
         // Display the confirmation dialog
         const isConfirmed = confirm("Are you sure you want to finalize the processing of this product? Once submitted, the state of the product cannot be modified anymore.");
 
-        // Check the user's response
         if (isConfirmed) {
-            // Proceed with upload if confirmed
             const uploadSuccess = await handleUpload();
             if (uploadSuccess) {
                 alert("You successfully processed this product and it will be forwarded to the controller!");
@@ -138,12 +135,12 @@
 
 <!-- Camera stream and snapshot section -->
 <div class="camera-container">
-    <!-- Ensure these elements exist in your markup with the correct classes or IDs -->
+
     <video class="camera-stream" bind:this={videoElement} autoplay></video>
     <canvas class="snapshot-canvas" bind:this={canvasElement}></canvas>
-<!--    <button on:click={takeSnapshot}>Take Snapshot</button>-->
+
     {#if snapshotSrc}
-<!--        <img class="snapshot-image" src={snapshotSrc} alt="Snapshot" />-->
+
     {/if}
 </div>
 
@@ -160,7 +157,6 @@
     <button class="close-button" on:click={closeDetails}>Close</button>
     <h2>Product Return Details - {selectedProduct.type}</h2>
     <div class="product-info">
-        <!-- Ensure this image src path is correct -->
         <img class="product-image" src={selectedProduct.productImage} alt={`Product ${selectedProduct.productId}`} />
         <p>Type: {selectedProduct.type}</p>
         <p>Quantity: {selectedProduct.quantity}</p>
@@ -309,32 +305,13 @@
         margin-right: 20px;
     }
 
-    .product-info-text {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 10px;
-        row-gap: 5px;
-        font-size: 18px;
-        color: #495057;
-    }
-
     .product-info-text > div {
         background-color: #e9ecef;
         padding: 10px;
         border-radius: 10px;
     }
 
-    .image-upload-label {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #28a745;
-        color: white;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        margin-top: 20px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    }
+
 
     .image-upload-label:hover {
         background-color: #218838;
@@ -349,13 +326,7 @@
         display: none; /* Hide the canvas element by default */
     }
 
-    .snapshot-image {
-        width: 50%; /* Set the width as desired */
-        margin-top: 10px;
-    }
-
     input[type="file"] {
-        /*display: none;*/
         margin-top: 10px; /* Add some space above the file input */
     }
 

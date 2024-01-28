@@ -9,11 +9,10 @@
 
     $: selectedProducts = $selectedProductsStore;
 
-    // Initialize text inputs when selectedProducts changes
     $: if (selectedProducts) {
         textInputs = selectedProducts.reduce((acc, product) => {
             if (!(product.productId in acc)) {
-                acc[product.productId] = ''; // Initialize with empty string if not already set
+                acc[product.productId] = '';
             }
             return acc;
         }, textInputs);

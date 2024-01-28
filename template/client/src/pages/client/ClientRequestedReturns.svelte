@@ -120,10 +120,6 @@
         color: #555;
     }
 
-    .status {
-        color: #007BFF;
-    }
-
     .details-btn {
         padding: 0.5rem 1rem;
         background-color: #007BFF;

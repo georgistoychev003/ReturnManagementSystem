@@ -36,14 +36,12 @@
         try {
             const response = await fetch(`http://localhost:3000/returns/${requestId}`, {
                 method: 'DELETE',
-                // Include headers if your API requires them, e.g., Authorization
             });
             if (!response.ok) {
                 throw new Error(`Failed to cancel RMA request: ${response.statusText}`);
             }
             const result = await response.json();
             console.log('RMA request cancelled', result);
-            // Remove the cancelled request from the list
             returnRequests = returnRequests.filter(request => request.id !== requestId);
         } catch (error) {
             console.error('Error cancelling RMA request:', error);
@@ -70,7 +68,6 @@
                     <p><strong>Comment:</strong> {request.comment}</p>
                 </div>
                 <div class="barcode-container">
-                    <!-- Replace the following with your barcode image generation logic -->
                     <img src="/path-to-barcode/{request.label}" alt="Barcode for RMA Request" />
                     <p>{request.label}</p>
                 </div>

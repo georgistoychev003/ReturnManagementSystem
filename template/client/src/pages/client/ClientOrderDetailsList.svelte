@@ -74,10 +74,6 @@
             });
         }
     });
-    const requestReturn = (order) => {
-        console.log(`Return requested for order: ${order.product}`);
-        // Implement return logic here
-    };
 
     function isReturnable(orderDate) {
         const today = new Date();
@@ -136,7 +132,6 @@
                         {:else}
                         <td>{orderProducts.priceAtTimeOfOrder * orderProducts.quantityToReturn}</td>
                     {/if}
-                    <!-- Conditional rendering based on product type and quantity -->
                     {#if (isReturnable(orderProducts.orderDate))}
                     {#if  orderProducts.type !== "Food" && orderProducts.quantity !== orderProducts.quantityToReturn}
                     <td>
@@ -148,9 +143,6 @@
                                    on:change={(e) => updateSelectedProducts(orderProducts.productId, e.target.checked)}
                                    class="custom-checkbox" id="checkbox-{orderProducts.productId}">
                         </td>
-                    <!--{:else if !isReturnable(orderProducts.orderDate)}-->
-                    <!--    &lt;!&ndash; Non-returnable product due to 14 days limit &ndash;&gt;-->
-                    <!--    <td colspan="2">Cannot return after 14 days</td>-->
                     {:else}
                         <td colspan="2">
                             {orderProducts.type === "Food" ? 'Food items cannot be returned' : 'Max returns made'}
@@ -178,7 +170,6 @@
     </div>
 
 {/if}
-    <!--    test purposes will delete when finished-->
     <div class="selected-products">
 
         <h5> To start a return, select the quantity and select the checkbox. Once you have decided on all items, click the 'Return Selected Products' button</h5>
@@ -202,7 +193,7 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        z-index: 1000; /* Ensure it's above other content */
+        z-index: 1000;
     }
     :root {
         --primary-color: #0056b3;
@@ -264,7 +255,7 @@
 
     td {
         font-size: 1rem;
-        word-break: break-word; /* Ensure the text wraps in cells */
+        word-break: break-word;
     }
 
     tbody tr:hover {
@@ -304,7 +295,6 @@
         background-color: blue;
     }
 
-    /* Optional: style for when the checkbox is focused with keyboard navigation */
     .custom-checkbox:focus {
         outline: none;
         border-color: #3B82F6;

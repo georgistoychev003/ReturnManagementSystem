@@ -27,7 +27,7 @@
             }
 
             const data = await response.json();
-            const rmaId = data.RMAId; // It fetches quicker than the post from the prviouse page; // Extract rmaId from response
+            const rmaId = data.RMAId; // It fetches quicker than the post from the previous page;
 
             console.log("RMA ID:", rmaId);
 
@@ -47,7 +47,6 @@
         displayQRCode();
     }
 
-    // Call displayQRCode when the component is mounted
     onMount(() => {
         displayQRCode();
     });
@@ -58,7 +57,7 @@
     }
 
     function printLabel() {
-        showPrintMessage = false; // Hide the message before printing
+        showPrintMessage = false;
         window.print();
         showPrintMessage = true;
     }
@@ -93,32 +92,32 @@
     .shipping-label {
         display: flex;
         flex-direction: column;
-        align-items: center; /* Center align items for better presentation */
-        max-width: 30em; /* Adjust as needed */
+        align-items: center;
+        max-width: 30em;
         margin: auto;
         padding: 20px;
-        border: 1px solid #ccc; /* Optional: for visual structure */
-        border-radius: 10px; /* Optional: for rounded corners */
-        background-color: #f9f9f9; /* Light background */
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
     }
 
     .label-image {
         background-color: white;
-        padding: 10px; /* Add some padding around QR code */
-        margin-bottom: 20px; /* Space between QR code and recipient info */
+        padding: 10px;
+        margin-bottom: 20px;
     }
 
     .recipient-info {
-        text-align: left; /* Align text to the left */
+        text-align: left;
         font-size: 25px;
     }
 
     .recipient-info p {
-        margin: 5px 0; /* Spacing between lines */
+        margin: 5px 0;
     }
 
     .label {
-        font-weight: bold; /* Make label text bold */
+        font-weight: bold;
     }
 
     #qrcode-container{
@@ -134,13 +133,11 @@
         cursor: pointer;
     }
 
-    /* Hide the button when printing */
     @media print {
         .print-button  {
             display: none;
         }
     }
-    /* Hide the button when printing */
     @media print {
         .message  {
             display: none;

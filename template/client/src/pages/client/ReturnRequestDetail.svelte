@@ -47,7 +47,6 @@
 {:else if returnRequests.length === 0}
     <p>No return requests found.</p>
 {:else}
-    <!-- Rest of your code remains the same -->
     <table>
         <thead>
         <tr>
@@ -82,11 +81,6 @@
 {/if}
 
 <style>
-    .client-return-order {
-        max-width: 960px;
-        margin: 2rem auto;
-        padding: 1rem;
-    }
 
     h1 {
         text-align: left;

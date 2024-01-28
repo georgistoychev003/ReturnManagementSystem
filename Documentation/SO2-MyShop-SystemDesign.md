@@ -54,25 +54,9 @@
 
 [4.1 Logical view (functional components)](#_Toc153670439)
 
-[4.1.1 Users](#users)
-
-[4.1.2 Functionality:](#412-functionality)
-
-[4.1.3 System Type](#413-system-type)
-
-[4.1.4 Logical View Conclusion](#414-logical-view-conclusion)
-
 [4.2 Hardware architecture (deploy)](#hardware-architecture-deploy)
 
 [4.3 Software Architecture (overview, libs, protocols, frameworks, components, APIs, etc)](#_Toc153670445)
-
-[4.3.1 Svelte](#431-svelte)
-
-[4.3.2 Node.js with Express.js](#432-nodejs-with-expressjs)
-
-[4.3.3 JSON Web Token (JWT)](#433-json-web-token-jwt)
-
-[4.3.4 SQLite Database](#434-sqlite-database)
 
 [4.4 Component Interactions - Sequence Diagram](#_Toc1536704510)
 
@@ -80,29 +64,17 @@
 
 [4.6 Performance](#performance)
 
-[4.6.1 Performance Goals](#451-performance-goals)
-
-[4.6.2 System Responsiveness](#452-system-responsiveness)
-
-[4.6.3 Load Handling](#453-load-handling)
-
-[4.6.4 Error Handling](#454-error-handling)
-
 [5.0 System Design](#system-design)
 
 [5.1 Database design](#_Toc153670457)
 
 [5.2. User interface design](#_Toc153670458)
 
-[5.2.1 Admin User Interface](#_Toc153670459)
-
-[5.2.2 Customer User Interface](#_Toc153670460)
-
-[5.2.3 Collector User Interface](#_Toc153670461)
-
-[5.2.4 Controller User Interface](#_Toc153670462)
+[5.3 Hardware Design](#53-hardware-design)
 
 [5.4 Security Design](#54-security-design)
+
+[5.5 API Specification](#55-api-specification)
 
 [Appendix A: Record of Changes](#appendix-a-record-of-changes)
 
@@ -499,6 +471,9 @@ On the client side, this JWT token is stored in ‘TokenStore.js.’ enabling ou
 
 ![A diagram of a software flow Description automatically generated](images/918abc0a17941ad3d394d0acceba4d9b.png)
 
+## 5.5 API Specification
+The detailed API Specification can be found at [see API Specifications here](/Documentation/Myshop-Api.md)
+/Documentation/Myshop-Api.md
 # Appendix A: Record of Changes
 
 Version 1.1: 04-12-2023 – Georgi
