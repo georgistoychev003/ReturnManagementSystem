@@ -56,7 +56,10 @@ GET table:
 <tr><td colspan="2"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
 <tr><td colspan="2" rowspan="5"></td><td colspan="1" valign="top">200 </td><td colspan="2">The rma with the id passed in params is shown successfully, it shows the list of returned products attached to rma<p> example :  </p>
 <pre>
-{"returnedProductId":1,"orderedProductId":1,"RMAId":1,"returnedDate":"2023-01-01","description":"Defective item","weight":1.2,"statusProduct":"Returned","quantityToReturn":2,"collectorImage":null,"collectorDescription":null,"customerImage":null,"orderId":1,"productId":2,"quantity":2,"unitPrice":40,"priceAtTimeOfOrder":40,"type":"Clothing","price":40,"name":"T-shirt","imageURL":"https://media.idkids.fr/media/productstorage/images/okaidi/0702494/thumbs/0474699_500.jpg","productWeight":0.3,"inventoryStock":100}</pre></td></tr>
+{"returnedProductId":1,"orderedProductId":1,"RMAId":1,"returnedDate":"2023-01-01","description":"Defective item",
+"weight":1.2,"statusProduct":"Returned","quantityToReturn":2,"collectorImage":null,"collectorDescription":null,
+"customerImage":null,"orderId":1,"productId":2,"quantity":2,"unitPrice":40,"priceAtTimeOfOrder":40,"type":"Clothing",
+"price":40,"name":"T-shirt","imageURL":"https://media.idkids.fr/media/productstorage/images/okaidi/0702494/thumbs/0474699_500.jpg","productWeight":0.3,"inventoryStock":100}</pre></td></tr>
 <tr><td colspan="1">404 </td><td colspan="2">The request with {RMAId} is not found.  </td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
 <tr><td colspan="1"></td><td colspan="2"></td></tr>
@@ -373,6 +376,24 @@ POST table:
 </table>
 
 
+<table><tr><th colspan="1"><b>POST</b> </th><th colspan="4"><b>localhost:3000/users/refund</b> </th></tr>
+<tr><td colspan="5">New user is created </td></tr>
+<tr><td colspan="5"></td></tr>
+<tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
+<tr><td colspan="2" rowspan="5" valign="top"><i>* required parameters.</i> </td><td colspan="1" valign="top">User* </td><td colspan="1" valign="top">body </td><td colspan="1"><p>The user to add. Either plain or JSON, based on content-type header. </p><p>Example: example of json body  { </p><p>name: ”test”, </p><p>email: “test”, </p><p>username: ”test”, </p><p>password: “123”, </p><p>address: “street123”, </p><p>role : “collector” </p><p>} </p></td></tr>
+<tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
+<tr><td colspan="2"><b>Responses:</b> </td><td colspan="1"><b>Code</b> </td><td colspan="2"><b>Description / example if successful</b> </td></tr>
+<tr><td colspan="2" rowspan="5"></td><td colspan="1">201 </td><td colspan="2">The user is created.  {"message :" "User created successfully"} </td></tr>
+<tr><td colspan="1">400 </td><td colspan="2">The user is not created  {"error" :"Failed to create user."}</td></tr>
+<tr><td colspan="1"></td><td colspan="2"></td></tr>
+<tr><td colspan="1"></td><td colspan="2"></td></tr>
+<tr><td colspan="1"></td><td colspan="2"></td></tr>
+</table>
+
+
 <table><tr><th colspan="1"><b>POST</b> </th><th colspan="4"><b>localhost:3000/requests</b> </th></tr>
 <tr><td colspan="5">New request is created </td></tr>
 <tr><td colspan="5"></td></tr>
@@ -554,10 +575,13 @@ POST table:
 
 
 
+
+
+
 4. PUT<a name="_page8_x69.00_y72.92"></a> requests 
 
 PUT table: 
-<table><tr><th colspan="1"><b>PUT</b> </th><th colspan="4"><b>/url/users/{userId}</b> </th></tr>
+<table><tr><th colspan="1"><b>PUT</b> </th><th colspan="4"><b>localhost:3000/users/{userId}</b> </th></tr>
 <tr><td colspan="5">User with the id passed in the params is updated </td></tr>
 <tr><td colspan="5"></td></tr>
 <tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
@@ -575,7 +599,7 @@ PUT table:
 </table>
 
 
-<table><tr><th colspan="1"><b>PUT</b> </th><th colspan="4"><b>/url/request/{userId}</b> </th></tr>
+<table><tr><th colspan="1"><b>PUT</b> </th><th colspan="4"><b>localhost:3000/rma/{RMAId}</b> </th></tr>
 <tr><td colspan="5">User with the id passed in the params is updated </td></tr>
 <tr><td colspan="5"></td></tr>
 <tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
@@ -583,10 +607,6 @@ PUT table:
 <tr><td colspan="1" valign="top">Request*  </td><td colspan="1" valign="top">body </td><td colspan="1"><p>The kit attributes values to. As a JSON, based on content-type header. </p><p>Example: example of json body  { </p><p>Status : “delivered” </p><p>} </p></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
 <tr><td colspan="1"></td><td colspan="1"></td><td colspan="1"></td></tr>
-
-
-
-
 
 
 <tr><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th><th colspan="1"></th></tr>
@@ -599,7 +619,7 @@ PUT table:
 </table>
 
 
-<table><tr><th colspan="1"><b>PUT</b> </th><th colspan="4"><b>/url/products/{productId}</b> </th></tr>
+<table><tr><th colspan="1"><b>PUT</b> </th><th colspan="4"><b>localhost:3000/products/{productId}</b> </th></tr>
 <tr><td colspan="5">Product with the id passed in the params is updated </td></tr>
 <tr><td colspan="5"></td></tr>
 <tr><td colspan="2"><b>Parameters:</b> </td><td colspan="1"><b>Name</b> </td><td colspan="1"><b>Type</b> </td><td colspan="1"><b>Description</b> </td></tr>
