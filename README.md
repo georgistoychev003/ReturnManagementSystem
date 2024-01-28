@@ -21,7 +21,7 @@ valuable learning experience for our team and their individual set of learning o
 they achieve in this course.
 
 # table of content
-[changelog]()
+[changelog](#changelog)
 
 [see Plan Of approach here](Documentation/PlanOfApproach.md)
 
@@ -40,7 +40,6 @@ they achieve in this course.
 | 2.0     | 27-01-2024 | Team contact Information | Added the contact information of each team member        | Pablo          |
 | 2.0     | 27-02-2024 | StakeHolder              | Added teacher to Stakeholder and his contact information | Pablo          |
 |         |            |                          |                                                          |                |
-
 
 # Stakeholders 
 ## Team Overview:
@@ -91,15 +90,3 @@ Name: Eelco Jannink
 Email: e.h.a.jannink@saxion.nl
 Our teacher, Eelco Jannink, will oversee the academic aspects of the project, ensuring that our work
 aligns with the course objectives and educational standards.
-
-# table of content 
- [see Plan Of approach here](Documentation/PlanOfApproach.md)
- [see API Specifications here](Documentation/Myshop-Api.md)
- [see Functional Design here](Documentation/SO2-MyShop-FunctionalDesign.md)
- [see Code Of Conduct here](Documentation/CodeOfConduct.md)
-
-
-
-
-
- 

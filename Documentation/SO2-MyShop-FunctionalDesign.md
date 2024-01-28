@@ -37,6 +37,18 @@
 
 [7.0 Plan of approach:](#plan-of-approach)
 
+[7.1 Sprint 1: Basic Functionality and Setup](#71-sprint-1-basic-functionality-and-setup)
+
+[7.2 Sprint 2: Advanced Development and Feature Integration](#72-sprint-2-advanced-development-and-feature-integration)
+
+[7.3 Sprint 3: Refinement and Finalization](#73-sprint-3-refinement-and-finalization)
+
+[7.4 Results (Deliverables)](#74-results-deliverables)
+
+[7.5 Organization](#75-organization)
+
+[7.6 Borders and Risks](#76-borders-and-risks)
+
 [8.0 Appendices:](#appendices)
 
 [Appendix A: Return requirement:](#_Toc153742658)
@@ -97,11 +109,17 @@ Primary Contact: Georgi Stoychev (Email: 536097@student.saxion.nl)
 
 Georgi will be responsible for maintaining clear and consistent communication with our client.
 
+**2.6 Developers**:
+
+Desmond, Badr, Marcelo, Frankie, Georgi, Pablo, Brice.
+
+Our developers are tasked with the technical aspects of the project, including coding, testing, and implementation.
+
 **2.7 Stakeholders:**
 
 Our project involves key stakeholders who play a crucial role in guiding and shaping the outcome of our work. These stakeholders include:
 
-**Client (Project Owner)**:
+**2.8 Client (Project Owner)**:
 
 Name: John Zanoni
 
@@ -109,18 +127,13 @@ Email: john.zanoni@myshop.com
 
 As the project owner and our client, John Zanoni will provide us with project requirements, feedback, and approval throughout the development process.
 
-**Academic Supervisor**:
+**2.9 Academic Supervisor**:
 
 Name: Eelco Jannink
 
 Email: e.h.a.jannink@saxion.nl
 
 Our teacher, Eelco Jannink, will oversee the academic aspects of the project, ensuring that our work aligns with the course objectives and educational standards.
-
-**2.6 Developers**
-Desmond, Badr, Marcelo, Frankie, Georgi, Pablo, Brice.
-
-Our developers are tasked with the technical aspects of the project, including coding, testing, and implementation.
 
 # 3.0 Problem Overview:
 

@@ -158,10 +158,10 @@ export async function resetPassword(req, res) {
 
     try {
         const decoded = jwt.verify(token, jwtSecret);
-        // const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         // Update the user's password in the database
-        const updateResult = updateUserPasswordById(decoded.userId, newPassword);
+        const updateResult = updateUserPasswordById(decoded.userId, hashedPassword);
         if (updateResult) {
             res.status(StatusCodes.OK).json({ message: 'Password successfully reset.' });
         } else {

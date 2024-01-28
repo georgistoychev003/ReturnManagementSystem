@@ -15,7 +15,6 @@ The following document contains the Project Backlog, Sprint Goals, Sprint Standu
 
 [3.1.3 Sprint 0 Review](#313-sprint-0-review)
 
-[3.1.4 Sprint 0 Retrospective](#314-sprint-0-retrospective)
 
 [3.2 Sprint 1](#32-sprint-1)
 
@@ -26,8 +25,6 @@ The following document contains the Project Backlog, Sprint Goals, Sprint Standu
 [3.2.3 Sprint 1 Standups](#323-sprint-1-standups)
 
 [3.2.4 Sprint 1 Review](#324-sprint-1-review-)
-
-[3.2.5 Sprint 1 Retrospective](#325-sprint-1-retrospective)
 
 [3.3 Sprint 2](#33-sprint-2-181223---140124)
 
@@ -110,7 +107,7 @@ This is what each member had completed by this standUp :
 * Brice: worked on user requirements. They weren't meeting our quality criteria after team check. (Georgi refactored, check georgi's notes)
 * Marcelo: He didn't finish task notes (Appendix B in Functional requirement) on time. Therefore, he got remarks from team members to keep up with the deadlines.
 
-And those new tasks got assigned to some members who were already done with their current tasks to take over the missing elements of the FD.
+And those new tasks got assigned to some members who have already done with their current tasks to take over the missing elements of the FD.
 
 
 ### sprint 0 standUp 4 (2023-11-28)
@@ -147,7 +144,7 @@ During this meeting, we had a group discussion to address the internal issues su
 A warning was given to Marcelo to get more involved into the project and stick with the deadlines. 
 
 Afterward, we did the scrum poker planning to evaluate the weight of each task, and then we stared to fill in the issues into GitLab's backlog. We did not manage to finalize all 
-the issues into GitLab, so we gave each member to convert 3 user stories to issues(tasks) by the following day.
+the issues into GitLab, so we gave each member to convert three user stories to issues(tasks) by the following day.
 
 
 ### sprint 0  standUp 7(2023-12-03)
@@ -170,24 +167,6 @@ ensuring a comprehensive understanding of the project among the team, assigning 
 - Product Backlog: The product backlog was successfully created and prioritized, reflecting our project's requirements and setting a clear direction for development.
 
 On completion of the documentation, we submitted it to the client for feedback which we should have by the start of Sprint 1.
-### 3.1.4 Sprint 0 Retrospective
-Throughout the Sprints, we will use the "What went well, what went wrong, what will we improve" method as a team to continuously refine our processes, enhance collaboration, and 
-increase the quality and effectiveness of our deliverables.
-
-#### What went well?
-- Documentation: The team excelled in creating comprehensive and clear documentation, which included: 
-  - Plan of Action (PoA): Outlined the strategic approach, milestones, and timelines, providing a clear roadmap for the project. 
-  - Code of Conduct (CoC): Established a set of principles for team interaction. 
-  - Functional Design Document: Thoroughly described the product's functionalities, user interactions, and requirements, ensuring that the development team has a precise guide to follow. 
-  - System Design Document: Detailed the system architecture
-
-#### What went wrong?
-- The initial Sprint had some difficulties as a member had a family issue, meaning we had to reassign some tasks
-- Overall, nothing went wrong as we mainly focused on documentation which everyone completed on time.
-
-#### What we plan to improve?
-- Due to the nature of Sprint 0, it was difficult to identify what we could improve since it was document focused and the initial setup.
-
 
 ## 3.2 Sprint 1
 ### 3.2.1 Sprint 1 Goals
@@ -264,21 +243,11 @@ before the next stand-up as shown by the burn down chart below.
 ![img_1.png](images/Sprint1BurnDownChart.png)
 
 
-### 3.2.5 Sprint 1 Retrospective
-#### What went well?
-- Good Communication: The team maintained a high level of communication throughout the Sprint. This ensured that everyone was aligned on goals, had a clear understanding of their tasks, and could offer timely support to one another when needed.
-- Overachieved: Our team has shown commendable effort in exceeding the targets for several key tasks in the Sprint. This has put us in a strong position with several components of the project and reflects our team's ability to work efficiently and effectively.
-#### What went wrong?
-- Team Member Departure: We faced an unexpected challenge with the departure of a team member. This event tested our resilience and required us to adapt quickly to redistribute the workload and ensure that our Sprint goals were still met.
-- Documentation Delays: There was trouble getting started with the actual development work as changes in documentation took longer than anticipated. These changes also required reapproval, which further delayed our progress.
-#### What will be improved?
-- Implement Document Version Control as currently document changes are untracked
-- Ensure all project members understand each task to enhance flexibility among members
-
 ## 3.3 Sprint 2 (18/12/23 - 14/01/24)
 Scrum Master - Georgi
 Note Taker - Desmond
 
+### Sprint 2 StandUp 1 (19/12/23)
 ## 3.3.1 Sprint 2 Goals
 - To connect the frontend and backend logic
 - To remove dummy data
@@ -295,12 +264,12 @@ Note Taker - Desmond
 * Brice - Added missing notes what brice did and when through the documentation for refactoring.
 * Desmond - Updated the system design
 * Frankie - Updated the POA
-* Georgi - Ceated the return constraints on the client side so that an item (food, non sealed video game, order after 14 days) cannot be returned.
+* Georgi - Created the return constraints on the client side so that an item (food, non-sealed video game, order after 14 days) cannot be returned.
 * Pablo - Updated the COC document
 
 
-### Sprint 2 Standup 2 (21/12/23)
-* Badr - Created the drop down in the create user admin page
+### Sprint 2 StandUp 2 (21/12/23)
+* Badr - Created the drop-down in the creation user admin page
 * Brice -  Implementation of the controller RMA.
 * Desmond - Updated the functional design
 * Frankie - Connected the controller to the backend
@@ -308,7 +277,7 @@ Note Taker - Desmond
 * Pablo - Updated the Database design and implemented the new tables/queries
 
 
-### Sprint 2 Standup 3 (23/12/23)
+### Sprint 2 StandUp 3 (23/12/23)
 * Badr - Connecting the frontend and backend of the admin
 * Brice - Create the backend logic to store the image location in the database
 * Desmond - Connecting the backend and frontend of the client
@@ -316,15 +285,15 @@ Note Taker - Desmond
 * Georgi - Researched API for email service for user to reset password
 * Pablo - Connecting the backend and frontend of the collector
 
-### Sprint 2 Standup 4 (09/01/24)
+### Sprint 2 StandUp 4 (09/01/24)
 * Badr - Continued connecting the frontend and backend of the admin
 * Brice - Developed the image upload for the controller
 * Desmond - Continued connecting the backend and frontend of the client
-* Frankie - Connecting the backend and frontedn fof the controller
+* Frankie - Connecting the backend and frontend fof the controller
 * Georgi - Implemented the reset password function by sending an actual email to the client using external api
 * Pablo - Continued Connecting the backend and frontend of the collector
 
-### Sprint 2 Standup 5 (11/01/24)
+### Sprint 2 StandUp 5 (11/01/24)
 * Badr - Developed the admin graphs further and added some data points such as numbr of users
 * Brice - Developed the barcode scanner
 * Desmond - Developed the client further - request rmas
@@ -349,17 +318,6 @@ This has particularly impacted the frontend, where the necessary fetches are nee
 Unfortunately, while we were communicating to assign tasks and working to ensure tasks were completed, we never moved tasks from testing to Done 
 causing our burn-down chart to be incorrect and something we will work on during Sprint 3.
 ![img.png](images/burndown_Sprint2.png)
-
-### 3.3.5 Sprint 2 Retrospective
-### What went well?
-- Collaboration and Commitment: The team displayed excellent collaboration, with all members actively contributing and making strides in their respective tasks.
-- Project progress - After the first sprint, we were lacking functionality for the client to see, however, vast improvements were made to ensure functionality for the clients next visit.
-### What went wrong?
-- Incomplete Task Implementation: Despite our efforts, the frontend and backend logic integration remains incomplete, primarily due to unforeseen complexities in data fetching which necessitated additional queries.
-- Task Closure Process: A procedural oversight led to tasks not being moved to 'Done' even after significant work, which inaccurately reflected in our burn-down chart.
-### What will be improved?
-- Burn-Down Chart Accuracy: To maintain a true reflection of our progress, we will implement a more rigorous process for moving tasks to 'Done'. This will involve more frequent checks and balances during our standups to ensure that completed work is accurately recorded.
-- Task Completion Criteria: We will revisit our 'Definition of Done' to make sure it aligns with our current needs and is clearly communicated to all team members.
 
 ## 3.4 Sprint 3 (15/01/24 - 28/01/24)
 Scrum Master - Badr
@@ -414,42 +372,33 @@ Assigned tasks:
 * Georgi - made the lock functionality for Controller so that only one controller can process an RMA at a time.
 
 Assigned tasks:
-* Desmond - work on fixing issues in Customer dashboard, add more intuitive steps and instructions on how to return a product.
-* Brice - make HTTP tests
-* Pablo - resolve issues he is facing with his task and finalize it
-* Frankie - add credit line to controller dashboard, add alerts for important actions, show the amount that will be refunded when pressed on refund button
-* Georgi - implement all functionalities of collector (qr code scanning, navigate to RMA page after qr scanning, dealing with products within an RMA individually, locking already processed products within an RMA, implement functionality to upload an image as a collector, make the entire collector fully responsive)
+* desmond - work on fixing issues in Customer dashboard, add more intuitive steps and instructions on how to return a product.
+* brice - make HTTP tests
+* pablo - resolve issues he is facing with his task and finalizes it
+* frankie - add credit line to controller dashboard, add alerts for important actions, show the amount that will be refunded when pressed on the refund button
+* georgi - implement all functionalities of collector (qr code scanning, navigate to RMA page after qr scanning, dealing with products within an RMA individually,
+  locking already processed products within an RMA, implement functionality to upload an image as a collector, make the entire collector fully responsive)
 
 ### Sprint 3 Standup 4 (23/01/24)
 * Frankie- completed his assigned task
 * Desmond- completed his assigned task
 * Pablo- completed his assigned task
 * Georgi - completed his assigned tasks
-* Brice - still working on making the tests
+* Brice - completed his assigned tasks
 
 New tasks that were assigned
-* Desmond - implement image uploading functionality for customers
-* Brice - work on his tests task
-* Pablo - make a progress bar for more intuitive return process for customers, prepare a test scenario documentation to provide the client to test the application with in the final demo
-* Frankie - display the images and comments per product within an RMA ( images and comments placed by customer and collector)
-* Georgi - improve the entire styling of the website, display the image and description placed by a customer per product within an RMA, add a toggle that display instructions on how to process and rma as a collector, fix the issue of displaying the description wrong in the customer dashboard.
-* Badr - fix the pie chart in the admin dashboard, improve the styling of the camera instance of the qr scanner, prepare the final presentation of sprint 3
+* desmond - implement image uploading functionality for customers
+* brice - add more HTTP tests
+* pablo - make a progress bar for more intuitive return process for customers, prepare a test scenario documentation to provide the client to test the application with in the final demo
+* frankie - display the images and comments per product within an RMA ( images and comments placed by customer and collector)
+* georgi -  improve the entire styling of the website,
+  display the image and description placed by a customer per product within an RMA, add a toggle that displays
+  instructions on how to process and rma as a collector, fix the issue of displaying the description wrong in the customer dashboard.
+* badr - fix the pie chart in the admin dashboard, improve the styling of the camera instance of the qr scanner, prepare the final presentation of sprint 3
 
-### Sprint 3 Standup 5 (25/01/24)
+### Sprint 3 StandUp 5 (25/01/24)
 * Tasks were completed.
 
 ### 3.4.4 Sprint 3 Review
 In sprint 3 we overachieved and had our most successful sprint of all 3, we impressed ourselves and also the client of what we are capable of achieving in less than 2 weeks. Here is the burn down chart of sprint 3:
 ![img_2.png](images/Sprint3BurnDownChart.png)
-
-### 3.4.5 Sprint 3 Retrospective
-### What went well?
-- Again Communication - The team communicated effectively leading to the successful completion of the project
-- Client feedback implementation - On receiving the client feedback 4 days before the final presentation, we were quick to react and make the necesary changes
-- Key functionalities - All the key functionalities of the system where there as expected by the client
-- Significant UI enhancements - UI improvements have been significant, making the system more intuitive and user-friendly
-### What went wrong?
-- Very little went wrong across this sprint as we worked together to ensure we had a functioning product.
-### What should be improved?
-- Further Backend Optimization: To prevent similar issues in future sprints, we will allocate time to optimize backend processes and ensure more rigorous pre-deployment checks.
-- Enhanced Error Handling: Additional focus will be placed on improving error handling for edge cases to bolster the system's resilience and reliability.

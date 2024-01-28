@@ -1,0 +1,146 @@
+## Retrieve Information related to orders
+
+## Good Weather tests:
+
+### Get all orders
+GET http://localhost:3000/orders
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get all orders successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(Array.isArray(response.body), "Expected body to be an array");
+    });
+%}
+
+
+
+### Get orders by ID
+GET http://localhost:3000/orders/3
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get order by ID successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
+        client.assert(response.body.orderId === 3, "Expected orderId to be 3");
+    });
+%}
+
+
+### Get all order details
+GET http://localhost:3000/orders/details
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get all order details successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(Array.isArray(response.body), "Expected body to be an array");
+    });
+%}
+
+
+
+### Update order by ID
+PATCH http://localhost:3000/orders/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": 1,
+  "orderDate": "2023-12-01",
+  "totalPrice": 299.99
+}
+
+> {%
+    client.test("Patch order successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(response.body.totalPrice === 299.99, "Expected totalPrice to be 299.99");
+    });
+%}
+
+
+
+
+
+### Bad Weather tests
+
+### Get orders for user ID
+GET http://localhost:3000/orders/MyOrders/99
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get orders for non-existent user I should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Update order by ID
+PUT http://localhost:3000/orders/435
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": 435,
+  "orderDate": "2023-12-01",
+    "totalPrice": 199.99
+}
+
+> {%
+    client.test("Update non-existent order should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Delete non-exixtent order
+DELETE http://localhost:3000/orders/123
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Delete non-existent order should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Get non-existent product details by order ID
+GET http://localhost:3000/orders/details/278
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get product details by non-existent order ID should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Update order detail by ID
+PUT http://localhost:3000/orders/details/15
+Content-Type: application/json
+Accept: application/json
+
+{
+  "orderedProductId": 15,
+  "orderId": 15,
+  "productId": 51,
+  "quantity": 35,
+  "unitPrice": 150
+}
+
+> {%
+    client.test("Update order detail by ID successfully", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}

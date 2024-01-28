@@ -1,0 +1,117 @@
+# Good Weather Tests
+
+
+### Get all products
+GET http://localhost:3000/product
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get all products successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(Array.isArray(response.body), "Expected body to be an array");
+    });
+%}
+
+
+
+### Get product by ID
+GET http://localhost:3000/product/3
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get product by ID successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
+        client.assert(response.body.productId === 3, "Expected productId to be 3");
+    });
+%}
+
+
+
+### Update product by ID
+PATCH http://localhost:3000/product/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "Electronics",
+  "price": 1999.98,
+  "name": "Smartphone",
+  "imageURL": "https://example.com/image1.jpg",
+  "productWeight": 0.86,
+  "inventoryStock": 574
+}
+
+> {%
+    client.test("Update product by ID successfully", function() {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(response.body.prooductWeight === 0.86, "Expected name to be 'Smartphone'");
+        client.assert(response.body.price === 1999.98, "Expected price to be 1999.98");
+    });
+%}
+
+
+
+
+### Bad Weather Tests:
+
+### Get all non-existent product
+GET http://localhost:3000/products
+Content-type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get all non-existent ID should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to bge 404");
+    });
+ %}
+
+
+
+### Get product by non-existent ID
+GET http://localhost:3000/product/345
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get product by non-existent ID should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Update non-existent product
+PATCH http://localhost:3000/product/24
+Content-Type: application/json
+Accept: application/json
+
+{
+  "type": "Electronics",
+  "price": 999.98,
+  "name": "Smartphone",
+  "imageURL": "https://example.com/image1.jpg",
+  "productWeight": 0.56,
+  "inventoryStock": 574
+}
+
+> {%
+    client.test("Update non-existent product should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Delete non-existent product by ID
+DELETE http://localhost:3000/product?/786
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Delete non-existent product should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
