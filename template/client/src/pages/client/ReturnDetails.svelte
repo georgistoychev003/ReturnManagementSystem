@@ -35,14 +35,6 @@
         }
     }
 
-    // function takeSnapshot() {
-    //     const context = canvasElement.getContext('2d');
-    //     canvasElement.width = videoElement.videoWidth;
-    //     canvasElement.height = videoElement.videoHeight;
-    //     context.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
-    //     snapshotSrc = canvasElement.toDataURL('image/png');
-    //     handleProductInteraction({ product: selectedProduct, imageData: snapshotSrc });
-    // }
 
     async function fetchProductDetails(productId) {
         try {
