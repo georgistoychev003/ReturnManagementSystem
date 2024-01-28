@@ -81,7 +81,6 @@
                 </div>
             </div>
         {/each}
-
     </div>
 {/if}
 
@@ -108,11 +107,28 @@
         font-size: 1.5em;
     }
 
+    .product-card.processed {
+        background-color: #e0e0e0; /* Grey background */
+        color: #a0a0a0; /* Greyed out text */
+        pointer-events: none;
+        cursor: default;
+
+        border: 2px solid red;
+    }
+    .product-card {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+        padding: 1em;
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        transition: transform 0.2s ease-in-out;
+    }
+
     .product-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
-
 
     .product-image {
         width: 100px;
@@ -133,4 +149,8 @@
         color: #666666;
     }
 
+    .comments-section {
+        margin: 1em 0;
+        text-align: left;
+    }
 </style>
