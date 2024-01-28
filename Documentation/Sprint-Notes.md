@@ -1,6 +1,58 @@
 # Sprint Documentation
 The following document contains the Project Backlog, Sprint Goals, Sprint Standup notes, Sprint Review and Sprint Retrospectives.
 
+[1.0 Introduction](#introduction)
+
+[2.0 Project Backlog](#20-project-backlog)
+
+[3.0 Sprint Notes](#30-sprint-notes)
+
+[3.1 Sprint 0](#31-sprint-0)
+
+[3.1.1 Sprint 0 Goals](#311-sprint-0-goals-)
+
+[3.1.2 Sprint 0 Standups](#312-sprint-0-standups)
+
+[3.1.3 Sprint 0 Review](#313-sprint-0-review)
+
+[3.1.4 Sprint 0 Retrospective](#314-sprint-0-retrospective)
+
+[3.2 Sprint 1](#32-sprint-1)
+
+[3.2.1 Sprint 1 Goals](#321-sprint-1-goals) 
+
+[3.2.2 Sprint 1 Backlog](#322-sprint-1-assigned-tasks-)
+
+[3.2.3 Sprint 1 Standups](#323-sprint-1-standups)
+
+[3.2.4 Sprint 1 Review](#324-sprint-1-review-)
+
+[3.2.5 Sprint 1 Retrospective](#325-sprint-1-retrospective)
+
+[3.3 Sprint 2](#33-sprint-2-181223---140124)
+
+[3.3.1 Sprint 2 Goals](#331-sprint-2-goals)
+[3.3.2 Sprint 2 Backlog](#332-sprint-2-assigned-tasks)
+
+[3.3.3 Sprint 2 Standups](#333-sprint-2-standups)
+
+[3.3.4 Sprint 2 Review](#334-sprint-2-review)
+
+[3.3.5 Sprint 2 Retrospective](#335-sprint-2-retrospective)
+
+[3.4 Sprint 3](#34-sprint-3-150124---280124)
+
+[3.4.1 Sprint 3 Goals](#341-sprint-3-goals)
+
+[3.4.2 Sprint 3 Backlog](#332-sprint-2-assigned-tasks)
+
+[3.4.3 Sprint 3 Standups](#sprint-3-standups)
+
+[3.4.4 Sprint 3 Review](#344-sprint-3-review)
+
+[3.4.5 Sprint 3 Retrospective](#345-sprint-3-retrospective)
+
+## 1.0 Introduction
 Throughout the coming Sprints, we have adopted the Scrum framework, an agile development method that focuses on flexibility, collaboration and client input. Scrum will allow our team to divide our backlog into more manageable sets known as sprints, allowing us to collaborate on the overall sprint goals and incorporate client feedback throughout the development process.
 
 For the project, we have 4 Sprints, 0-3, where the initial sprint is project planning and approval by the client. After Sprint 0, we will begin implementing the plan set out previously and throughout Sprints 1-3, we will be working to achieve the goals set out and ensure the client agrees with the direction we are taking.
@@ -8,7 +60,7 @@ For the project, we have 4 Sprints, 0-3, where the initial sprint is project pla
 The scrum master and note taker will be rotating each sprint.
 
 
-## Project Backlog
+## 2.0 Project Backlog
 The project backlog was developed during Sprint 0, we have a total of 125 items in the backlog which we hope to achieve by the end of Sprint 3.
 ![img.png](images/backlog.png)
 ![img_1.png](images/backlog_1.png)
@@ -19,15 +71,16 @@ The project backlog was developed during Sprint 0, we have a total of 125 items 
 ![img_6.png](images/backlog_6.png)
 ![img_7.png](images/backlog_7.png)
 
-# SPRINT NOTES
-##  Sprint 0
-### Sprint 0 Goals 
+# 3.0 SPRINT NOTES
+##  3.1 Sprint 0
+### 3.1.1 Sprint 0 Goals 
 The following goals are what we wish to achieve during Sprint 0:
 - Ensure everyone has an understanding of the project
 - Assign team roles for each sprint
 - Create the required documentation - PoA, CoC, Functional Design, System Design
 - Create the product backlog as shown above
 
+### 3.1.2 Sprint 0 Standups
 ### print 0 standUp 1 (2023-11-21)
 
 We as a team got familiar with the project, read the assignment description, asked for teacher explanation for the unclear aspects of the projects, started planning the questions 
@@ -107,7 +160,7 @@ During this standUp, we checked who had done what, and here are the results:
 * Pablo: finished Gitlab issues
 * Frankie: finished Gitlab issues
 * 
-### Sprint 0 Review
+### 3.1.3 Sprint 0 Review
 In this Sprint Review, we focused on the outcomes related to our initial Sprint goals, which were the foundations for the project's success. These goals included 
 ensuring a comprehensive understanding of the project among the team, assigning roles, creating essential documentation, and establishing a well-defined product backlog.
 
@@ -117,7 +170,7 @@ ensuring a comprehensive understanding of the project among the team, assigning 
 - Product Backlog: The product backlog was successfully created and prioritized, reflecting our project's requirements and setting a clear direction for development.
 
 On completion of the documentation, we submitted it to the client for feedback which we should have by the start of Sprint 1.
-### Sprint 0 Retrospective
+### 3.1.4 Sprint 0 Retrospective
 Throughout the Sprints, we will use the "What went well, what went wrong, what will we improve" method as a team to continuously refine our processes, enhance collaboration, and 
 increase the quality and effectiveness of our deliverables.
 
@@ -136,8 +189,8 @@ increase the quality and effectiveness of our deliverables.
 - Due to the nature of Sprint 0, it was difficult to identify what we could improve since it was document focused and the initial setup.
 
 
-## Sprint 1
-### Sprint 1 Goals
+## 3.2 Sprint 1
+### 3.2.1 Sprint 1 Goals
 - Frontend
   - Login page
   - Dashboards for controller, admin
@@ -145,9 +198,11 @@ increase the quality and effectiveness of our deliverables.
 - Backend
   - Set up the initial backend with routes, controllers, database and queries
 
-### Sprint 1 Assigned Tasks 
+### 3.2.2 Sprint 1 Assigned Tasks 
 The following tasks were assigned with hopes to finish by Sprint 1.
 ![img.png](images/sprint1_tasks.png)
+
+### 3.2.3 Sprint 1 Standups
 ### sprint 1 standUp 1 (2023-12-05)
 On Monday (2023-12-04), we received the client's feedback of what we had delivered last week, he wanted us to refactor FD, add some details and send him our SD.
 We assigned the following tasks and started working on them in class: 
@@ -203,13 +258,13 @@ During this standUp, we checked who had done what, and here are the results:
 * Brice: went through the documentation for refactoring and update the logical view (requirements).
 
 
-### Sprint 1 Review 
+### 3.2.4 Sprint 1 Review 
 Overall, Sprint 1 was a success, as we assigned tasks and each member successfully completed the tasks given 
 before the next stand-up as shown by the burn down chart below.
 ![img_1.png](images/Sprint1BurnDownChart.png)
 
 
-### Sprint 1 Retrospective
+### 3.2.5 Sprint 1 Retrospective
 #### What went well?
 - Good Communication: The team maintained a high level of communication throughout the Sprint. This ensured that everyone was aligned on goals, had a clear understanding of their tasks, and could offer timely support to one another when needed.
 - Overachieved: Our team has shown commendable effort in exceeding the targets for several key tasks in the Sprint. This has put us in a strong position with several components of the project and reflects our team's ability to work efficiently and effectively.
@@ -220,20 +275,21 @@ before the next stand-up as shown by the burn down chart below.
 - Implement Document Version Control as currently document changes are untracked
 - Ensure all project members understand each task to enhance flexibility among members
 
-## Sprint 2 (18/12/23 - 14/01/24)
+## 3.3 Sprint 2 (18/12/23 - 14/01/24)
 Scrum Master - Georgi
 Note Taker - Desmond
 
-## Sprint 2 Goals
+## 3.3.1 Sprint 2 Goals
 - To connect the frontend and backend logic
 - To remove dummy data
 - To link frontend pages together
 - Implement the customer UI, admin analytics, user role restrictions
 - Integrate email API
 
-## Sprint 2 Assigned Tasks
+## 3.3.2 Sprint 2 Assigned Tasks
 ![img_1.png](images/sprint2_tasks.png)
 
+### 3.3.3 Sprint 2 Standups
 ### Sprint 2 Standup 1 (19/12/23)
 * Badr - Role dropdown is created, but not complete and tested bcz there is no endpoint for that
 * Brice - Added missing notes what brice did and when through the documentation for refactoring.
@@ -276,7 +332,7 @@ Note Taker - Desmond
 * Georgi - Developed the collector further - page after scanning the barcode
 * Pablo - Developed the collector further - testing
 
-### Sprint 2 Review
+### 3.3.4 Sprint 2 Review
 As we conclude our latest sprint, we have made significant progress toward aligning our project 
 goals with the developmental milestones we set. Here's a summary of our progress:
 
@@ -294,7 +350,7 @@ Unfortunately, while we were communicating to assign tasks and working to ensure
 causing our burn-down chart to be incorrect and something we will work on during Sprint 3.
 ![img.png](images/burndown_Sprint2.png)
 
-### Sprint 2 Retrospective
+### 3.3.5 Sprint 2 Retrospective
 ### What went well?
 - Collaboration and Commitment: The team displayed excellent collaboration, with all members actively contributing and making strides in their respective tasks.
 - Project progress - After the first sprint, we were lacking functionality for the client to see, however, vast improvements were made to ensure functionality for the clients next visit.
@@ -305,11 +361,11 @@ causing our burn-down chart to be incorrect and something we will work on during
 - Burn-Down Chart Accuracy: To maintain a true reflection of our progress, we will implement a more rigorous process for moving tasks to 'Done'. This will involve more frequent checks and balances during our standups to ensure that completed work is accurately recorded.
 - Task Completion Criteria: We will revisit our 'Definition of Done' to make sure it aligns with our current needs and is clearly communicated to all team members.
 
-## Sprint 3 (15/01/24 - 28/01/24)
+## 3.4 Sprint 3 (15/01/24 - 28/01/24)
 Scrum Master - Badr
 Note Taker - Georgi
 
-### Sprint 3 Goals
+### 3.4.1 Sprint 3 Goals
 - Implement features from client feedback from Sprint 2
 - Finalise features including backend queries
   - Customer RMA form, upload image, add comments, credit line
@@ -319,11 +375,12 @@ Note Taker - Georgi
 - Add error handling for bad weather user cases such as admin can't delete admin
 - UI Improvements
 
-### Sprint 3 Assigned Tasks
+### 3.4.2 Sprint 3 Assigned Tasks
 ![img_3.png](images/sprint3_tasks_1.png)
 ![img_2.png](images/sprint3_tasks_2.png)
 
-### Sprint 3 Standup 1 (16/01/24)
+### Sprint 3 Standups
+### 3.4.3 Sprint 3 Standup 1 (16/01/24)
 * Georgi- tried to fix issues in the working on making the components responsive
 * Pablo- worked on client returns - see details (image, quantity, price, date description, status)
 * Desmond- working on rma creation form
@@ -381,11 +438,11 @@ New tasks that were assigned
 ### Sprint 3 Standup 5 (25/01/24)
 * Tasks were completed.
 
-### Sprint Review
+### 3.4.4 Sprint 3 Review
 In sprint 3 we overachieved and had our most successful sprint of all 3, we impressed ourselves and also the client of what we are capable of achieving in less than 2 weeks. Here is the burn down chart of sprint 3:
 ![img_2.png](images/Sprint3BurnDownChart.png)
 
-### Sprint Retrospective
+### 3.4.5 Sprint 3 Retrospective
 ### What went well?
 - Again Communication - The team communicated effectively leading to the successful completion of the project
 - Client feedback implementation - On receiving the client feedback 4 days before the final presentation, we were quick to react and make the necesary changes
