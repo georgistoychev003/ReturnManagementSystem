@@ -75,7 +75,7 @@
                 return response.json();
             })
             .then(data => {
-                // Handle successful creation (you may add further logic here)
+                // Handle successful creation
                 console.log('User created:', data);
                 alert('User created successfully!');
             })
