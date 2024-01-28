@@ -1,7 +1,5 @@
 <script>
-    import {orderStore, selectedProductsStore} from '../../Store.js';
-    import { onDestroy, onMount } from "svelte";
-    import page from "page";
+    import { selectedProductsStore} from '../../Store.js';
     import ProgressBar from "../../components/ProgressBar.svelte";
     let currentStep = 4;
     let selectedProducts = [];

@@ -1,8 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import About from "../About.svelte";
     import {orderStore, userIdStore} from '../../Store.js';
-    import Help from "../../components/Help.svelte";
     import page from "page";
     import ProgressBar from "../../components/ProgressBar.svelte";
     let currentStep = 2;

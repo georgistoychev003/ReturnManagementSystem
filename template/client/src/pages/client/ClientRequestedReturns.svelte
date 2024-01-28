@@ -1,7 +1,6 @@
 <script>
     import { onMount } from 'svelte';
     import page from 'page';
-    import {writable} from "svelte/store";
     import {userEmail} from "../../Store.js";
     import {RMAId as RMAIdFromStore} from "../../Store.js";
 

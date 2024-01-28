@@ -1,7 +1,6 @@
 
 <script>
     import { onMount } from 'svelte';
-    import { writable } from 'svelte/store';
     import { selectedProductsStore, orderStore } from '../../Store.js';
     import page from 'page';
     import ProgressBar from "../../components/ProgressBar.svelte";
@@ -13,7 +12,6 @@
     let isLoading = true;
     let errorMessage = '';
     let orderId = 1;
-    let isClicked = false;
     let OrderId;
 
     function getOrderIdFromUrl() {
@@ -275,10 +273,6 @@
         background-color: #0056b3;
         transform: translateY(-2px);
     }
-    .checkbox-container {
-        display: inline-block;
-        position: relative;
-    }
 
     .custom-checkbox {
         appearance: none;
@@ -311,9 +305,6 @@
         border: solid white;
         border-width: 0 3px 3px 0;
         transform: rotate(45deg);
-    }
-    .line-through {
-        text-decoration: line-through;
     }
 
 </style>

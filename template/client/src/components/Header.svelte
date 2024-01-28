@@ -4,8 +4,6 @@
 
  import {userEmail} from "../Store.js";
 
-
- export let active;
  export let showHeader = true;
  import router from 'page';
  import { onMount } from 'svelte';

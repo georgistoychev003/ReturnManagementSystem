@@ -1,7 +1,6 @@
 <script>
     // Sample data
     import {onMount} from "svelte";
-    import page from 'page';
     import {RMAId as RMAIdFromStore, userEmail} from "../../Store.js";
 
     let products =[];

@@ -1,7 +1,6 @@
 <script>
     import { onMount, afterUpdate, onDestroy } from "svelte";
     import { Chart, registerables, LineController, CategoryScale, LinearScale, PieController, Legend, Title } from 'chart.js';
-    import allYears from "html2pdf.js";
     Chart.register(LineController, CategoryScale, LinearScale, PieController, Legend, Title);
     let numberOfRMA = 0;
     let numberOfUsers = 0;
@@ -31,8 +30,6 @@
             const response = await fetch('http://localhost:3000/product/mostReturned');
             const data = await response.json();
 
-            // Assign a new color for each fetched product
-            const newColor = generateRandomColor();
             // Create a new array with the fetched products
             const updatedProducts = data.map(product => ({
                 name: product.productName,

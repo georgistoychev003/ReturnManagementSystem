@@ -5,7 +5,6 @@
     import {userIdStore} from "../Store.js";import html2pdf from 'html2pdf.js';
 
     let contentElement;
-    let qrCodeData = 'yourData';
     let qrCodeSVG = '';
     let userId = $userIdStore;
     let showPrintMessage = true;
@@ -51,10 +50,6 @@
         displayQRCode();
     });
 
-    function openQRCodeInNewTab() {
-        const qrCodeWindow = window.open('', '_blank');
-        qrCodeWindow.document.write(qrCodeSVG);
-    }
 
     function printLabel() {
         showPrintMessage = false;
