@@ -21,6 +21,16 @@
 
 [Conclusion](#_)
 
+# Changelog
+
+
+| Version | Date       | Location      | Description                                                             | Author         |
+|---------|------------|---------------|-------------------------------------------------------------------------|----------------|
+| 1.0     | 01-12-2023 | -             | Initial Document Created – Pending Review                               | Entire Group 2 |
+| 2.0     | 27-01-2024 | COD, DOD, POA | added the COC AND DOD as well as Plan of Approach and changed file name | Pablo          |
+|         |            |               |                                                                         |                |
+
+
 
 ---
 
