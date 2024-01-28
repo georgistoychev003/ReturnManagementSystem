@@ -21,7 +21,7 @@ valuable learning experience for our team and their individual set of learning o
 they achieve in this course.
 
 # table of content
-[changelog]()
+[changelog](#changelog)
 
 [see Plan Of approach here](Documentation/PlanOfApproach.md)
 
@@ -98,8 +98,8 @@ aligns with the course objectives and educational standards.
 
 
 
- 
-
-
 
  
+
+
+

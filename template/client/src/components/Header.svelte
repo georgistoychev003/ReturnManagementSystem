@@ -30,6 +30,7 @@
    userEmail.set(email)
    console.log(userRole)
    userId = payload.id;
+   console.log(userId)
    userIdStore.set(userId)
   }
  });
