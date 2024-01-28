@@ -2,7 +2,7 @@ import {
     deleteOrderById,
     deleteOrderDetailById, getAllOrderDetails,
     getAllOrders,
-    getOrderByOrderId, getOrderByUserId, getOrderDetailById, getOrderDetails2, getOrderedProductsByOrderId,
+    getOrderByOrderId, getOrderDetails2, getOrderedProductsByOrderId,
     updateOrderByOrderId, updateOrderDetailById
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
@@ -39,17 +39,6 @@ export async function patchOrderDetails(req, res) {
         res.status(StatusCodes.OK).json(updatedOrderDetails);
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to update order details." });
-    }
-}
-
-export async function getOrderDetails(req, res){
-    const { orderId } = req.params;
-    try {
-        const orderDetails = await getOrderDetailById(orderId);
-            res.status(StatusCodes.OK).json(orderDetails);
-
-    } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to retrieve order details." });
     }
 }
 
@@ -96,19 +85,6 @@ export async function getListOfOrders(req, res) {
     }
 }
 
-export async function getOrderForUserId(req, res) {
-    const {userId} = req.params;
-    try {
-        const order = await getOrderByUserId(userId);
-        if (order) {
-            res.status(StatusCodes.OK).json(order);
-        } else {
-            res.status(StatusCodes.NOT_FOUND).json({error: "Order not found."});
-        }
-    } catch (error) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: "Failed to retrieve order."});
-    }
-}
 
 export async function getProductDetailsByOrderId(req, res){
     const {orderId} = req.params;

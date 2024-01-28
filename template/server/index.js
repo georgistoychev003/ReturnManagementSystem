@@ -17,16 +17,12 @@ app.use(express.urlencoded({
 }));
 
 app.set('view engine', 'ejs');
-
-// Enable CORS for all routes
 app.use(cors());
 app.use('/users', userRouter);
 const port = 3000
 
 app.get('/', (req, res) => {
     console.log(req);
-    // res.send('Hello World!')
-    res.json({ msg: "hello world"});
 })
 
 app.use('/users', userRouter);

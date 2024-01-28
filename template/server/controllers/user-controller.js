@@ -1,5 +1,4 @@
 import * as db  from "../database/database-manager-2.js";
-import * as queries from "../database/database-queries.js";
 import {StatusCodes} from "http-status-codes";
 import { v4 as uuidv4 } from 'uuid';
 import nodemailer from 'nodemailer';
@@ -12,6 +11,7 @@ import {
     updateUserPasswordById
 } from "../database/database-manager-2.js";
 
+const jwtSecret = 'ShhhhhItsASecret';
 
 export async function getUser(req, res) {
     const { emailOrUserId } = req.params;
@@ -102,7 +102,6 @@ export async function getListOfUsers(req, res){
 
 
 
-const jwtSecret = 'ShhhhhItsASecret';
 
 export async function forgotPassword(req, res) {
     const { email } = req.body;

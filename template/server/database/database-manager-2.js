@@ -124,7 +124,7 @@ export function insertRma(barcode, statusRma, credit) {
 
 export function getLastRma() {
     const statement = db.prepare(getLastRMA);
-    return statement.get(); // Ensure this returns data
+    return statement.get();
 }
 
 export function insertReturnedProduct(orderedProductId, rmaId, formattedDate, description, weight, status, quantityToReturn, customerImage){
@@ -229,12 +229,11 @@ export function getOrderedProductsByOrderId(orderId){
     try {
         return db.prepare(queries.selectOrderedProducts).all(orderId);
     } catch (error) {
-        // Handle or throw the error
         console.error("Error in getOrderedProductsByOrderId:", error);
         throw error;
     }
 }
-//TODO check once the design in corrected
+
 export function getNumberOfRMA() {
     return db.prepare(queries.countReturns).get();
 }
@@ -294,7 +293,7 @@ export function getProductByRMAId(RMAId) {
 }
 export function getTotalRefundByRMAId(RMAId) {
     const statement = db.prepare('SELECT totalRefundAmount FROM returntable WHERE RMAId = ?');
-    return statement.get(RMAId); // This will return the row with the totalRefundAmount
+    return statement.get(RMAId);
 }
 
 
@@ -333,11 +332,8 @@ export function increaseProductStockByName(productName, quantity) {
 export async function assignRmaToControllerDb(RMAId, controllerId) {
     const rmaDetails = db.prepare(getRmaDetailsQuery).get(RMAId);
 
-    // Check if the RMA is locked.
     if (rmaDetails && rmaDetails.controllerId) {
-        // Check if the lock is still valid.
         if (new Date() - new Date(rmaDetails.lockTimestamp) < 2 * 60 * 60 * 1000) {
-            // Check if it's the current user.
             if (rmaDetails.controllerId === controllerId) {
                 // Current user has the lock, so grant access.
                 return { alreadyLockedByThisController: true };
@@ -361,11 +357,11 @@ export function returnAllRmaDetails() {
 export function returnRMAaandDates() {
     try {
         const result = db.prepare(queries.getRMAandDATE).all();
-        console.log(result); // Log the result to the console
+        console.log(result);
         return result;
     } catch (error) {
-        console.error("Error executing the query:", error.message); // Log the error message
-        throw error; // Rethrow the error to propagate it
+        console.error("Error executing the query:", error.message);
+        throw error;
     }
 }
 
@@ -373,14 +369,13 @@ export function returnRMAPerMonth() {
     try {
         return db.prepare(queries.getRMACountByMonth).all();
     } catch (error) {
-        console.error("Error executing the query:", error.message); // Log the error message
+        console.error("Error executing the query:", error.message);
         throw error;
     }
 }
 
 
 export function updateReturnedProductQuantity(productName, deductionQuantity, RMAId) {
-    // Query to select the specific returned product based on productName and RMAId
     const select = db.prepare(`
         SELECT rp.quantityToReturn, rp.returnedProductId
         FROM returnedProduct rp

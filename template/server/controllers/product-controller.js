@@ -52,17 +52,15 @@ export async function getListOfProducts(req, res) {
 
 export async function patchProduct(req, res) {
     const { productId } = req.params;
-    const { inventoryStock } = req.body; // Extract only inventoryStock
+    const { inventoryStock } = req.body;
     try {
         const product = await getProductById(productId);
         if (!product) {
             return res.status(StatusCodes.NOT_FOUND).json({ error: "Product not found." });
         }
 
-        // Update the product stock and wait for the operation to complete
         await updateProductStock(productId, inventoryStock);
 
-        // Fetch the updated products list
         const updatedProducts = await getAllProducts();
         console.log(updatedProducts);
 
@@ -97,13 +95,11 @@ export async function uploadImage(req, res) {
 
     const uploadPath = path.join('uploads', image.name);
 
-    // Move the uploaded file to the desired upload path
     await image.mv(uploadPath, (err) => {
         if (err) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: 'Error while uploading the image.'});
         }
 
-        // Update the product with the image location in the database
         updateProductById(productId, {imageURL: uploadPath});
 
         return res.status(StatusCodes.OK).json({message: 'Image uploaded and product updated successfully.'});

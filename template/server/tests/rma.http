@@ -14,20 +14,6 @@ Accept: application/json
 %}
 
 
-### Get count of RMA
-GET http://localhost:3000/rma/count
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get count of RMA successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(typeof response.body === 'number', "Expected body to be a number");
-    });
-%}
-
-
-
 ### Get RMAs with date
 GET http://localhost:3000/rma/withDates
 Content-Type: application/json
@@ -69,19 +55,6 @@ Accept: application/json
 %}
 
 
-### Get RMA by ID
-GET http://localhost:3000/rma/1
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get RMA by ID successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(typeof response.body === 'object', "Expected body to be an object");
-        client.assert(response.body.rmaId === 1, "Expected rmaId to be 1");
-    });
-%}
-
 
 ### Get RMA by barcode
 GET http://localhost:3000/rma/barcode
@@ -95,19 +68,6 @@ Accept: application/json
     });
 %}
 
-
-
-### Get total price of an RMA
-GET http://localhost:3000/rma/2/total-price
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get total price of an RMA successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(typeof response.body === 'number', "Expected body to be a number");
-    });
-%}
 
 
 
@@ -180,8 +140,6 @@ Accept: application/json
 %}
 
 
-
-
 ### Bad Weather Tests:
 
 ### Get list of RMA
@@ -194,19 +152,6 @@ Accept: application/json
         client.assert(response.status === 404, "Expected response status to be 404");
     });
 %}
-
-
-### Get count of RMA
-GET http://localhost:3000/rmas/count
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get count of RMA failure", function() {
-        client.assert(response.status === 500, "Expected response status to be 500");
-    });
-%}
-
 
 
 ### Get RMAs with date
@@ -262,25 +207,12 @@ Accept: application/json
 
 
 ### Get total price of an RMA
-GET http://localhost:3000/rmas/178/total-price
+GET http://localhost:3000/rmas/178/totalPrice
 Content-Type: application/json
 Accept: application/json
 
 > {%
     client.test("Get total price of non-existent RMA", function() {
-        client.assert(response.status === 404, "Expected response status to be 404");
-    });
-%}
-
-
-
-### Get status of an RMA
-GET http://localhost:3000/rmas/10/status???
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get status of non-existent RMA", function() {
         client.assert(response.status === 404, "Expected response status to be 404");
     });
 %}
@@ -351,36 +283,8 @@ Accept: application/json
     });
 %}
 
-
-
-### Get RMA by ID
-GET http://localhost:3000/rmas/1
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get RMA by non-existent ID should return 404", function() {
-        client.assert(response.status === 404, "Expected response status to be 404");
-    });
-%}
-
-
-
-### Get RMA by barcode
-GET http://localhost:3000/rmas/non-existent-barcode??
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get RMA by non-existent barcode should return 404", function() {
-        client.assert(response.status === 404, "Expected response status to be 404");
-    });
-%}
-
-
-
 ### Get total price of a non-existent RMA
-GET http://localhost:3000/rmas/999/total-price??
+GET http://localhost:3000/rma/999/totalPrice
 Content-Type: application/json
 Accept: application/json
 

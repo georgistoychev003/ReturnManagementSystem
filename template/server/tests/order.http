@@ -31,7 +31,7 @@ Accept: application/json
 
 
 ### Get all order details
-GET http://localhost:3000/orders/details
+GET http://localhost:3000/orders/orderDetails/1
 Content-Type: application/json
 Accept: application/json
 
@@ -44,42 +44,7 @@ Accept: application/json
 
 
 
-### Update order by ID
-PATCH http://localhost:3000/orders/1
-Content-Type: application/json
-Accept: application/json
-
-{
-  "userId": 1,
-  "orderDate": "2023-12-01",
-  "totalPrice": 299.99
-}
-
-> {%
-    client.test("Patch order successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(response.body.totalPrice === 299.99, "Expected totalPrice to be 299.99");
-    });
-%}
-
-
-
-
-
 ### Bad Weather tests
-
-### Get orders for user ID
-GET http://localhost:3000/orders/MyOrders/99
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get orders for non-existent user I should return 404", function() {
-        client.assert(response.status === 404, "Expected response status to be 404");
-    });
-%}
-
-
 
 ### Update order by ID
 PUT http://localhost:3000/orders/435

@@ -3,7 +3,6 @@ import {
     getAllRma,
     getAllRmaById,
     getALlReturnedProducts,
-    getALlReturnedProductsByRMAId,
     updateOrderDetailById,
     getNumberOfRMA,
     getAllReturnsByUserId,
@@ -21,9 +20,6 @@ import {
     getRMAByClientEmail, updateTotalRefundAmount, getTotalRefundByRMAId, updateRMAStatus, getDescriptionForRma,
 } from "../database/database-manager-2.js";
 import {StatusCodes} from "http-status-codes";
-import * as queries from "../database/database-queries.js";
-import {getAllRmaDetails, selectAllRMAbyCustomersEmail} from "../database/database-queries.js";
-import res from "express/lib/response.js";
 import * as databaseManager from "../database/database-manager-2.js";
 
 export async function UpdateStatus(req, res) {
@@ -197,7 +193,6 @@ export function getRma(req, res) {
 }
 
 export function getRmaByBarcode(req, res) {
-    //TODO get an rma
     const { barcode } = req.params;
     try {
         let rmaBarcode;
@@ -320,11 +315,10 @@ export  function updateQuantities(req, res) {
 }
 
 export async function updateImageDescriptionByCollector(req, res) {
-    const { collectorDescription, collectorImage } = req.body; // Assuming you're now sending both as part of the JSON body
+    const { collectorDescription, collectorImage } = req.body;
     const { returnedProductId } = req.params;
 
     try {
-        // Directly use the string for the image since you're not handling file uploads here
         updateImageDescriptionBycollector(collectorImage, collectorDescription, returnedProductId);
         res.status(200).json({ message: 'Returned product image and description updated successfully' });
     } catch (error) {
@@ -334,7 +328,7 @@ export async function updateImageDescriptionByCollector(req, res) {
 }
 export async function getLastRmaFrom(req, res) {
     try {
-        const rma = getLastRma(); // Call the function
+        const rma = getLastRma();
         res.status(StatusCodes.OK).json(rma);
     } catch (error) {
         console.error("Error fetching last RMA:", error);
@@ -378,22 +372,18 @@ export async function getRmaRefund(req, res) {
 
 export async function addNewRMARequest(req, res) {
     try {
-        // Log received payload for debugging
         console.log("Received JSON payload:", req.body);
 
-        // Normalize products to always be an array
         let products = req.body;
         if (!Array.isArray(products)) {
             products = [products];
         }
 
-        // Create RMA and retrieve ID (assuming insertRma is async)
         const rmaId = await insertRma("barcodeX", "pending", 0);
 
         // Get today's date in YYYY-MM-DD format
         const formattedDate = new Date().toISOString().split('T')[0];
 
-        // Process each product
         for (const product of products) {
             await insertReturnedProduct(
                 product.orderedProductId, rmaId, formattedDate,
@@ -403,8 +393,6 @@ export async function addNewRMARequest(req, res) {
             );
         }
 
-
-        // Send a successful response back
         res.status(200).json({ message: "RMA request added successfully" });
     } catch (error) {
         console.error("Error in addNewRMARequest:", error);

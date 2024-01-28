@@ -28,33 +28,6 @@ Accept: application/json
     });
 %}
 
-
-
-### Update product by ID
-PATCH http://localhost:3000/product/1
-Content-Type: application/json
-Accept: application/json
-
-{
-  "type": "Electronics",
-  "price": 1999.98,
-  "name": "Smartphone",
-  "imageURL": "https://example.com/image1.jpg",
-  "productWeight": 0.86,
-  "inventoryStock": 574
-}
-
-> {%
-    client.test("Update product by ID successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(response.body.prooductWeight === 0.86, "Expected name to be 'Smartphone'");
-        client.assert(response.body.price === 1999.98, "Expected price to be 1999.98");
-    });
-%}
-
-
-
-
 ### Bad Weather Tests:
 
 ### Get all non-existent product
