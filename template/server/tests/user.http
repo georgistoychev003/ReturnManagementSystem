@@ -1,5 +1,7 @@
 ## Retreive info related to users
 
+## Good Weather Tests:
+
 ### Get all users
 GET http://localhost:3000/users
 Content-Type: application/json
@@ -11,6 +13,7 @@ Accept: application/json
         client.assert(Array.isArray(response.body), "Expected body to be an array");
     });
 %}
+
 
 
 ### Count all users
@@ -28,7 +31,7 @@ Accept: application/json
 
 
 ### Get user by email
-GET http://localhost:3000/users/controller@email.com
+GET http://localhost:3000/users/admin@email.com
 Content-Type: application/json
 Accept: application/json
 
@@ -42,7 +45,7 @@ Accept: application/json
 
 
 ### Get user by ID
-GET http://localhost:3000/users/3
+GET http://localhost:3000/users/2
 Content-Type: application/json
 Accept: application/json
 
@@ -55,15 +58,14 @@ Accept: application/json
 
 
 
-### Create new user(*)
+### Create new user
 POST http://localhost:3000/users
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{admin_token}}
 
 {
-  "userId": 6,
-  "userName" : "mewUser",
+  "userName": "newUser",
   "email": "newuser@email.com",
   "password": "password",
   "userRole": "customer"
@@ -71,15 +73,15 @@ Authorization: Bearer {{admin_token}}
 
 > {%
     client.test("Create new user successfully", function () {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(Array.isArray(response.body), "Expected body to be an array");
+        client.assert(response.status === 201, "Expected response status to be 201");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
     });
 %}
 
 
 
 ### Update user information
-PATCH http://localhost:3000/users/3
+PATCH http://localhost:3000/users/2
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{admin_token}}
@@ -89,29 +91,41 @@ Authorization: Bearer {{admin_token}}
 }
 
 > {%
-    client.test("Create user role successfully", function () {
+    client.test("Update user role successfully", function () {
         client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(Array.isArray(response.body), "Expected body to be an array");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
     });
 %}
 
 
 
-### Delete user by email(*)
-DELETE http://localhost:3000/users/controller@email.com
+### Delete user by email
+DELETE http://localhost:3000/users/collector@email.com
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer {{admin_token}}
 
+> {%
+    client.test("Delete user by email successfully", function () {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
+    });
+%}
 
 
 
-
-### Delete user by ID(*)
-DELETE http://localhost:3000/users/1
+### Delete user by ID
+DELETE http://localhost:3000/users/3
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{admin_token}}
 
+> {%
+    client.test("Delete user by ID successfully", function () {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
+    });
+%}
 
 
 
@@ -133,7 +147,7 @@ Accept: application/json
 
 
 
-### Reset password(*)
+### Reset password
 POST http://localhost:3000/users/reset-password
 Content-Type: application/json
 Accept: application/json
@@ -143,32 +157,119 @@ Accept: application/json
   "newPassword": "newpassword123"
 }
 
+> {%
+    client.test("Reset password successfully", function () {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
+    });
+%}
 
 
-### Send refund email(*)
-POST http://localhost:3000/users/refund
+
+### Send refund email
+POST http://localhost:3000/refund
 Content-Type: application/json
 Accept: application/json
 
 {
-  "email": "newuser@email.com",
+  "email": "customer@email.com",
   "products": [
-    {
-      "name": "Product1",
-      "quantity": 1
-    }
+    { "name": "Coffee Machine", "quantityToReturn": 2 },
+    { "name": "Keyboard", "quantityToReturn": 1 }
   ]
 }
 
+> {%
+    client.test("Refund mail sent successfully", function () {
+        client.assert(response.status === 200, "Expected response status to be 200");
+        client.assert(typeof response.body === 'object', "Expected body to be an object");
+        client.assert(response.body.message === 'Refund email sent', "Expected success message");
+    });
+%}
 
 
-### Send damaged product email(*)
-POST http://localhost:3000/users/damaged
+
+
+### Bad Weather Tests:
+
+### Get user with non-existent email
+GET http://localhost:3000/users/adminadmin@email.com
+Content-Type: application/json
+Accept: application/json
+
+> {%
+    client.test("Get user with non-existent email should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Create a User with Existing Email
+POST http://localhost:3000/users
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "userName": "Badr",
+  "email": "admin@email.com",
+  "password": "admin",
+  "userRole": "admin"
+}
+
+> {%
+    client.test("Attempt to create user with existing email should return 409", function () {
+        client.assert(response.status === 409, "Expected response status to be 409");
+    });
+%}
+
+
+### Attempt to Update User Information with Invalid User ID
+PATCH http://localhost:3000/users/67
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{admin_token}}
+
+{
+  "userRole": "admin"
+}
+
+> {%
+    client.test("Attempt to update user with invalid user ID should return 404", function () {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Attempt to Delete User by Non-Admin User
+DELETE http://localhost:3000/users/3
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{non_admin_token}} (*)
+
+> {%
+    client.test("Attempt to delete user by non-admin user should return 403", function () {
+        client.assert(response.status === 403, "Expected response status to be 403");
+    });
+%}
+
+
+
+### Attempt to Reset Password with Invalid Token
+POST http://localhost:3000/users/reset-password
 Content-Type: application/json
 Accept: application/json
 
 {
-  "email": "newuser@email.com",
-  "products": "Smartphone"
+  "token": "InvalidToken",
+  "newPassword": "newpassword123"
 }
+
+> {%
+    client.test("Attempt to reset password with invalid token should return 401", function () {
+        client.assert(response.status === 401, "Expected response status to be 401");
+    });
+%}
 

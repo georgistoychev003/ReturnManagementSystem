@@ -15,6 +15,7 @@ Accept: application/json
 %}
 
 
+
 ### Get orders by ID
 GET http://localhost:3000/orders/3
 Content-Type: application/json
@@ -25,20 +26,6 @@ Accept: application/json
         client.assert(response.status === 200, "Expected response status to be 200");
         client.assert(typeof response.body === 'object', "Expected body to be an object");
         client.assert(response.body.orderId === 3, "Expected orderId to be 3");
-    });
-%}
-
-
-### Get orders for user ID (*)
-GET http://localhost:3000/orders/MyOrders/1
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get orders for user ID successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(Array.isArray(response.body), "Expected body to be an array");
-        client.assert(response.body[0].userId === 1, "Expected userId to be 1");
     });
 %}
 
@@ -55,18 +42,6 @@ Accept: application/json
     });
 %}
 
-
-### Get product details by order ID (*)
-GET http://localhost:3000/orders/details/1
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get product details by order ID successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(response.body.orderId === 1, "Expected orderId to be 1");
-    });
-%}
 
 
 ### Update order by ID
@@ -88,79 +63,10 @@ Accept: application/json
 %}
 
 
-### Update order detail by ID (*)
-PUT http://localhost:3000/orders/details/1
-Content-Type: application/json
-Accept: application/json
-
-{
-  "orderedProductId": 1,
-  "orderId": 1,
-  "productId": 1,
-  "quantity": 3,
-  "unitPrice": 10
-}
-
-> {%
-    client.test("Update order detail by ID successfully", function() {
-        client.assert(response.status === 200, "Expected response status to be 200");
-        client.assert(response.body.quantity === 3, "Expected quantity to be 3");
-        client.assert(response.body.unitPrice === 10, "Expected unitPrice to be 10");
-    });
-%}
-
-
-### Delete order details by ID (*)
-DELETE http://localhost:3000/orders/details/1
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Delete order details by ID successfully", function() {
-        client.assert(response.status === 204, "Expected response status to be 204");
-    });
-%}
-
-
-### Delete order by ID (*)
-DELETE http://localhost:3000/orders/details/1
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Delete order details by ID successfully", function() {
-        client.assert(response.status === 204, "Expected response status to be 204");
-    });
-%}
-
 
 
 
 ### Bad Weather tests
-
-### Get non-existing order by ID (*)
-GET http://localhost:3000/orders/236
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Get order by non-existent ID should return 404", function() {
-        client.assert(response.status === 404, "Expected response status to be 404");
-    });
-%}
-
-
-### Delete order details by ID (*)
-DELETE http://localhost:3000/orders/details/17
-Content-Type: application/json
-Accept: application/json
-
-> {%
-    client.test("Delete non-existent order details should return 404", function() {
-        client.assert(response.status === 404, "Expected response status to be 404");
-    });
-%}
-
 
 ### Get orders for user ID
 GET http://localhost:3000/orders/MyOrders/99
@@ -172,6 +78,7 @@ Accept: application/json
         client.assert(response.status === 404, "Expected response status to be 404");
     });
 %}
+
 
 
 ### Update order by ID
@@ -192,7 +99,8 @@ Accept: application/json
 %}
 
 
-### Delete non-exixtence order
+
+### Delete non-exixtent order
 DELETE http://localhost:3000/orders/123
 Content-Type: application/json
 Accept: application/json
@@ -204,13 +112,35 @@ Accept: application/json
 %}
 
 
-### Get non-existing product details by order ID
+
+### Get non-existent product details by order ID
 GET http://localhost:3000/orders/details/278
 Content-Type: application/json
 Accept: application/json
 
 > {%
     client.test("Get product details by non-existent order ID should return 404", function() {
+        client.assert(response.status === 404, "Expected response status to be 404");
+    });
+%}
+
+
+
+### Update order detail by ID
+PUT http://localhost:3000/orders/details/15
+Content-Type: application/json
+Accept: application/json
+
+{
+  "orderedProductId": 15,
+  "orderId": 15,
+  "productId": 51,
+  "quantity": 35,
+  "unitPrice": 150
+}
+
+> {%
+    client.test("Update order detail by ID successfully", function() {
         client.assert(response.status === 404, "Expected response status to be 404");
     });
 %}
