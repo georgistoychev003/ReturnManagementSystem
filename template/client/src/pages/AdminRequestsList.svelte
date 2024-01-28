@@ -4,9 +4,6 @@
 
     let returnRequests = [];
 
-    // const viewDetails = (requestId) => {
-    //     page(`/controller/return-requests-details/${requestId}`);
-    // };
 
     onMount(async () => {
         await fetchReturnRequests();

@@ -5,28 +5,6 @@ import {getUserByEmail} from "../database/database-manager-2.js";
 
 const jwtSecret = 'ShhhhhItsASecret';
 
-export async function postUser(req, res) {
-    const user = req.body;
-    console.log(user);
-
-    // Generate a UUID for the new user
-    user.userId = uuidv4();
-
-    try {
-        // Hash the password before storing it
-        const saltRounds = 10; // You can adjust the salt rounds as needed
-        user.password = await bcrypt.hash(user.password, saltRounds);
-
-        // Insert the user with the hashed password
-        db.insertUser(user);
-
-        res.status(StatusCodes.CREATED).json({ message: "User created successfully." });
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Failed to create user." });
-    }
-}
-
 
 export async function checkUserCredentials(req, res) {
     const { email, password } = req.body;

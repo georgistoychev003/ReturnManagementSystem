@@ -170,12 +170,12 @@
                 color : 'white',
             },
             grid: {
-                color: 'black' // Set the color of the x-axis grid lines (keep them black)
+                color: 'black'
             },
             ticks: {
                 color: 'white',
-                precision: 0, // Round tick values to integers
-               max: maxDataValue + 2, // Set suggested max value
+                precision: 0,
+               max: maxDataValue + 2,
                 min: 0,
                 beginAtZero: true
             }
@@ -276,7 +276,7 @@
                         },
                         labels: selectedInterval === 'month' ?
                             ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] :
-                            undefined // Set labels for months if interval is 'year'
+                            undefined
                     },
                     y: {
                         type: 'linear',
@@ -286,10 +286,10 @@
                             text: 'Number of RMA'
                         },
                         grid: {
-                            color: 'black' // Set the color of the x-axis grid lines (keep them black)
+                            color: 'black'
                         },
                         ticks: {
-                            color: 'white', // Set the color of the x-axis grid lines
+                            color: 'white',
                             min : 0,
                             beginAtZero: true,
 
@@ -402,7 +402,7 @@
 </div>
 
 <style>
-    /* General Base Styles */
+
     :root {
         --color-blue: #3498db;
         --color-red: #e74c3c;
@@ -425,7 +425,7 @@
         line-height: 1.6;
     }
 
-    /* Container Styles */
+
     .container {
         max-width: 95%;
         margin: 1rem auto;
@@ -433,7 +433,7 @@
     }
 
     .greeting {
-        font-size: 2rem; /* Responsive font size */
+        font-size: 2rem;
         margin-bottom: 1rem;
         color: var(--text-dark);
         text-align: center;
@@ -456,7 +456,7 @@
 
     .red-box {
         flex: 1;
-        min-width: 250px; /* Minimum width for small screens */
+        min-width: 250px;
         text-align: center;
         background-color: var(--color-purple);
         padding: 1rem;
@@ -471,7 +471,7 @@
         margin: 1rem 0;
     }
 
-    /* Chart Styles */
+
     .big-red-rectangle {
         position: relative;
         background-color: var(--color-blue);
@@ -483,7 +483,7 @@
 
     #rmaChart, #pieChart {
         max-width: 100%;
-        max-height: 400px; /* Set a maximum height for the chart */
+        max-height: 400px;
     }
 
     .controls {
@@ -509,7 +509,7 @@
         background-color: var(--color-red);
     }
 
-    /* Responsive Design */
+
     @media (max-width: 768px) {
         .red-boxes {
             flex-direction: column;
