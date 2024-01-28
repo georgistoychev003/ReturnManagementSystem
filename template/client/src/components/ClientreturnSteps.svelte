@@ -3,6 +3,7 @@
 </script>
 
 <div class="rma-steps">
+    <div class="rma-flex">
     <h2>Return Process:</h2>
     <ol>
         <li>Navigate to "My Orders" page.</li>
@@ -11,9 +12,16 @@
         <li>Add a comment regarding the return.</li>
         <li>Print and attach the label to your package.</li>
     </ol>
+    </div>
 </div>
 
 <style>
+    .rma-steps{
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center;
+        width: 100%;
+    }
     .rma-steps h2 {
         margin-bottom: 1rem;
     }
