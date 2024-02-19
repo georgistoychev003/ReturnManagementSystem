@@ -4,16 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9a30bb09-d24a-4c2e-b415-e3a44b64f884" name="Changes" comment="corrected markdown for COC" />
+    <list default="true" id="9a30bb09-d24a-4c2e-b415-e3a44b64f884" name="Changes" comment="fixes in styling bug">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2.2_P.CoB_Time_registration_for10.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/2.2_P.CoB_Time_registration_for10.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/template/server/package.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="ReturnDetails" />
+        <option value="RMAProducts" />
+        <option value="JavaScript File" />
+        <option value="Hamburger.svelte" />
+        <option value="Sidebar" />
+        <option value="WelcomeGreeting" />
+        <option value="ClientreturnSteps" />
+        <option value="CameraModal" />
+        <option value="CollectorInstructionsMenu" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="badre &lt;508343@student.saxion.nl&gt;" />
+      </list>
+    </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="DevelopmentTest" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -21,25 +47,73 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2ZDCWOsKloxz35WO1RwxHccKUOv" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/Universidad/Documents/Second Year/SecondQuartail/ProjectClientOnBoard/AssignmentCode&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Git.Branch.Popup.ShowAllRemotes": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Georgi/Downloads",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "cassandra"
+    ]
   }
-}</component>
+}]]></component>
+  <component name="RunManager" selected="HTTP Request.All in user">
+    <configuration name="All in order" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$PROJECT_DIR$/template/server/tests/order.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="All in product" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$PROJECT_DIR$/template/server/tests/product.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="All in rma" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$PROJECT_DIR$/template/server/tests/rma.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="All in user" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$PROJECT_DIR$/template/server/tests/user.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/template/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="HTTP Request.All in user" />
+        <item itemvalue="HTTP Request.All in rma" />
+        <item itemvalue="HTTP Request.All in product" />
+        <item itemvalue="HTTP Request.All in order" />
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -54,6 +128,15 @@
       <workItem from="1702990872465" duration="112000" />
       <workItem from="1702991591148" duration="45000" />
       <workItem from="1702991794541" duration="1948000" />
+      <workItem from="1705049251324" duration="600000" />
+      <workItem from="1705164251900" duration="30491000" />
+      <workItem from="1705531709105" duration="8416000" />
+      <workItem from="1705695389025" duration="54135000" />
+      <workItem from="1705960218973" duration="32164000" />
+      <workItem from="1706050048865" duration="55495000" />
+      <workItem from="1706431071978" duration="17964000" />
+      <workItem from="1706801771620" duration="34000" />
+      <workItem from="1708361421703" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="routers and controllers pablo">
       <created>1702240872765</created>
@@ -97,22 +180,245 @@
       <option name="project" value="LOCAL" />
       <updated>1702844636802</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="collectror page after scanning the barcode, and dealing with the inspection of products is implemented but with dummy data. Next step is to replace that with backend connection and eliminate the hardcoded data.">
+      <option name="closed" value="true" />
+      <created>1704965354077</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1704965354077</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fixed the issue with fetching the details of a user.">
+      <option name="closed" value="true" />
+      <created>1705440751798</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705440751799</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fixed and made the deletion of a user work properly">
+      <option name="closed" value="true" />
+      <created>1705444719906</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1705444719906</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fixed the line graph and pie chart to correctly display visually. The actual fetch of the data is not working properly yet.">
+      <option name="closed" value="true" />
+      <created>1705523392875</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1705523392875</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed the issue with navigation from users to user details page in the Admin dashboard">
+      <option name="closed" value="true" />
+      <created>1705525654402</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1705525654402</updated>
+    </task>
+    <task id="LOCAL-00012" summary="implemented the assigning and changing the role of a user both on the client and the server side, improved code quality and fixed small issues and bugs in code.">
+      <option name="closed" value="true" />
+      <created>1705532254116</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1705532254116</updated>
+    </task>
+    <task id="LOCAL-00013" summary="implemented and fully working the logic to lock an rma to a controller for processing with a timeout of 2 hours.">
+      <option name="closed" value="true" />
+      <created>1705774427851</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1705774427851</updated>
+    </task>
+    <task id="LOCAL-00014" summary="improved styling of the admin dashboard, added responsiveness for any device size.">
+      <option name="closed" value="true" />
+      <created>1705862970740</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1705862970740</updated>
+    </task>
+    <task id="LOCAL-00015" summary="improved styling of the controller dashboard, added responsiveness for any device size.">
+      <option name="closed" value="true" />
+      <created>1705863530399</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1705863530399</updated>
+    </task>
+    <task id="LOCAL-00016" summary="implemented the qr code scanning on the client side ( only to detect a qr code )">
+      <option name="closed" value="true" />
+      <created>1705866424475</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1705866424475</updated>
+    </task>
+    <task id="LOCAL-00017" summary="me-Georgi and badr implemented the collector to be able to scan a barcode, retrieve the rma associated with the barcode, and the retuend products belonging to that rma, we can take a picture and post description of the state of the item ( done per item). Left to implement: upload the image taken to the database">
+      <option name="closed" value="true" />
+      <created>1705889110149</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1705889110149</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Made the controller assigned to an rma show per RMA, if no controller has locked an RMA it displays an availability status in green">
+      <option name="closed" value="true" />
+      <created>1705966480377</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1705966480377</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Implemented security check before Admin deletes a user. There is an alert that asks the Admin if he is sure he wants to delete the user.">
+      <option name="closed" value="true" />
+      <created>1705967174359</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1705967174359</updated>
+    </task>
+    <task id="LOCAL-00020" summary="implemented the fucntionality to not allow an admin to be deleted or change role of. Customer also cannot be changed role to any other user. Implemented instructions for returning a product as a client on the ClientHomePage.svelte">
+      <option name="closed" value="true" />
+      <created>1706034255700</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1706034255700</updated>
+    </task>
+    <task id="LOCAL-00021" summary="display the client's name on home page when they log in.">
+      <option name="closed" value="true" />
+      <created>1706039205580</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1706039205580</updated>
+    </task>
+    <task id="LOCAL-00022" summary="fixed the bug with password resetting, now you can successfully reset a user's password.">
+      <option name="closed" value="true" />
+      <created>1706042815938</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1706042815938</updated>
+    </task>
+    <task id="LOCAL-00023" summary="fixed issue with the description mirroring across all the descriptions of products within a return">
+      <option name="closed" value="true" />
+      <created>1706045382088</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1706045382088</updated>
+    </task>
+    <task id="LOCAL-00024" summary="implemented functionality to save an image in the database, functionality to upload an image as a collctor for a returned product, functionality to display the collector image and description of a product within rma on the controller's dashboard">
+      <option name="closed" value="true" />
+      <created>1706057586231</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1706057586231</updated>
+    </task>
+    <task id="LOCAL-00025" summary="implemented the feature that when a collector handles a product of an RMA the product of that rma becomes grey and non-clickable. Then the collector can process the other products of that RMA.">
+      <option name="closed" value="true" />
+      <created>1706092017316</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1706092017316</updated>
+    </task>
+    <task id="LOCAL-00026" summary="fixed issues in displaying the image uploaded accurately for collector, made the design for collector responsive, added a manual with instruction on how to handle the rma as a collector">
+      <option name="closed" value="true" />
+      <created>1706100002940</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1706100002940</updated>
+    </task>
+    <task id="LOCAL-00027" summary="small fixes">
+      <option name="closed" value="true" />
+      <created>1706143904519</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1706143904519</updated>
+    </task>
+    <task id="LOCAL-00028" summary="made client upload image successfully">
+      <option name="closed" value="true" />
+      <created>1706172036793</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1706172036793</updated>
+    </task>
+    <task id="LOCAL-00029" summary="displaying the description and image of customer for a returned product on the collectors rma page ( per product)">
+      <option name="closed" value="true" />
+      <created>1706175109033</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1706175109033</updated>
+    </task>
+    <task id="LOCAL-00030" summary="split the client welcome page page into reusable components and did the Team-Retrospectives.md">
+      <option name="closed" value="true" />
+      <created>1706434117602</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1706434117602</updated>
+    </task>
+    <task id="LOCAL-00031" summary="split the client welcome page page into reusable components and did the Team-Retrospectives.md">
+      <option name="closed" value="true" />
+      <created>1706434173046</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1706434173046</updated>
+    </task>
+    <task id="LOCAL-00032" summary="team plan refactored into Team-Plan.md by pablo i am committing as I fixed a small issue in the navigability of the table of contents">
+      <option name="closed" value="true" />
+      <created>1706436612042</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1706436612042</updated>
+    </task>
+    <task id="LOCAL-00033" summary="small fix in table of contents">
+      <option name="closed" value="true" />
+      <created>1706436781937</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1706436781937</updated>
+    </task>
+    <task id="LOCAL-00034" summary="deleted unused routers">
+      <option name="closed" value="true" />
+      <created>1706450082742</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1706450082742</updated>
+    </task>
+    <task id="LOCAL-00035" summary="fixes in styling bug">
+      <option name="closed" value="true" />
+      <created>1706451557622</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1706451557622</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
     <option name="RECENT_FILTERS">
       <map>
         <entry key="Branch">
@@ -128,13 +434,42 @@
         </entry>
       </map>
     </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="routers and controllers pablo" />
-    <MESSAGE value="rma database controller" />
-    <MESSAGE value="update" />
-    <MESSAGE value="database finished not tested and hopefully all queries" />
-    <MESSAGE value="corrected markdown for COC" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected markdown for COC" />
+    <MESSAGE value="implemented the assigning and changing the role of a user both on the client and the server side, improved code quality and fixed small issues and bugs in code." />
+    <MESSAGE value="implemented and fully working the logic to lock an rma to a controller for processing with a timeout of 2 hours." />
+    <MESSAGE value="improved styling of the admin dashboard, added responsiveness for any device size." />
+    <MESSAGE value="improved styling of the controller dashboard, added responsiveness for any device size." />
+    <MESSAGE value="implemented the qr code scanning on the client side ( only to detect a qr code )" />
+    <MESSAGE value="query to put collector description and image" />
+    <MESSAGE value="me-Georgi and badr implemented the collector to be able to scan a barcode, retrieve the rma associated with the barcode, and the retuend products belonging to that rma, we can take a picture and post description of the state of the item ( done per item). Left to implement: upload the image taken to the database" />
+    <MESSAGE value="Added refund amoiunt" />
+    <MESSAGE value="Made the controller assigned to an rma show per RMA, if no controller has locked an RMA it displays an availability status in green" />
+    <MESSAGE value="Implemented security check before Admin deletes a user. There is an alert that asks the Admin if he is sure he wants to delete the user." />
+    <MESSAGE value="implemented the fucntionality to not allow an admin to be deleted or change role of. Customer also cannot be changed role to any other user. Implemented instructions for returning a product as a client on the ClientHomePage.svelte" />
+    <MESSAGE value="display the client's name on home page when they log in." />
+    <MESSAGE value="fixed the bug with password resetting, now you can successfully reset a user's password." />
+    <MESSAGE value="fixed issue with the description mirroring across all the descriptions of products within a return" />
+    <MESSAGE value="implemented functionality to save an image in the database, functionality to upload an image as a collctor for a returned product, functionality to display the collector image and description of a product within rma on the controller's dashboard" />
+    <MESSAGE value="implemented the feature that when a collector handles a product of an RMA the product of that rma becomes grey and non-clickable. Then the collector can process the other products of that RMA." />
+    <MESSAGE value="fixed issues in displaying the image uploaded accurately for collector, made the design for collector responsive, added a manual with instruction on how to handle the rma as a collector" />
+    <MESSAGE value="small fixes" />
+    <MESSAGE value="made client upload image successfully" />
+    <MESSAGE value="displaying the description and image of customer for a returned product on the collectors rma page ( per product)" />
+    <MESSAGE value="split the client welcome page page into reusable components and did the Team-Retrospectives.md" />
+    <MESSAGE value="team plan refactored into Team-Plan.md by pablo i am committing as I fixed a small issue in the navigability of the table of contents" />
+    <MESSAGE value="small fix in table of contents" />
+    <MESSAGE value="deleted unused routers" />
+    <MESSAGE value="fixes in styling bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixes in styling bug" />
   </component>
 </project>
